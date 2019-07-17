@@ -45,15 +45,14 @@ namespace EmbedIO
         /// <param name="contentType">The MIME type of the content. If <see langword="null"/>, the content type will not be set.</param>
         /// <param name="encoding">The <see cref="Encoding"/> to use.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="content"/> is <see langword="null"/>.</para>
         /// <para>- or -</para>
         /// <para><paramref name="encoding"/> is <see langword="null"/>.</para>
         /// </exception>
-        public static async Task<bool> SendStringAsync(
+        public static async Task SendStringAsync(
             this IHttpContext @this,
             string content,
             string contentType,
@@ -71,8 +70,6 @@ namespace EmbedIO
 
             using (var text = @this.OpenResponseText(encoding))
                 await text.WriteAsync(content).ConfigureAwait(false);
-
-            return true;
         }
 
         /// <summary>
@@ -81,12 +78,11 @@ namespace EmbedIO
         /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
         /// <param name="statusCode">The HTTP status code of the response.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
         /// <seealso cref="SendStandardHtmlAsync(IHttpContext,int,Action{TextWriter},CancellationToken)"/>
-        public static Task<bool> SendStandardHtmlAsync(this IHttpContext @this, int statusCode, CancellationToken cancellationToken)
+        public static Task SendStandardHtmlAsync(this IHttpContext @this, int statusCode, CancellationToken cancellationToken)
             => SendStandardHtmlAsync(@this, statusCode, null, cancellationToken);
 
         /// <summary>
@@ -98,12 +94,11 @@ namespace EmbedIO
         /// to a <see cref="TextWriter"/> representing the response output.
         /// If not <see langword="null"/>, the callback is called immediately before closing the HTML <c>body</c> tag.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">There is no standard status description for <paramref name="statusCode"/>.</exception>
         /// <seealso cref="SendStandardHtmlAsync(IHttpContext,int,CancellationToken)"/>
-        public static Task<bool> SendStandardHtmlAsync(
+        public static Task SendStandardHtmlAsync(
             this IHttpContext @this,
             int statusCode,
             Action<TextWriter> writeAdditionalHtml,
@@ -123,7 +118,7 @@ namespace EmbedIO
                 text.Write(StandardHtmlFooter);
             }
 
-            return Task.FromResult(true);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -134,16 +129,12 @@ namespace EmbedIO
         /// <param name="this">The <see cref="IHttpContext"/> interface on which this method is called.</param>
         /// <param name="data">The data to serialize.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <seealso cref="SendDataAsync(IHttpContext,ResponseSerializerCallback,object,CancellationToken)"/>
         /// <seealso cref="ResponseSerializer.Default"/>
-        public static async Task<bool> SendDataAsync(this IHttpContext @this, object data, CancellationToken cancellationToken)
-        {
-            await ResponseSerializer.Default(@this, data, cancellationToken).ConfigureAwait(false);
-            return true;
-        }
+        public static Task SendDataAsync(this IHttpContext @this, object data, CancellationToken cancellationToken)
+            => ResponseSerializer.Default(@this, data, cancellationToken);
 
         /// <summary>
         /// <para>Asynchronously sends serialized data as a response, using the specified response serializer.</para>
@@ -154,22 +145,16 @@ namespace EmbedIO
         /// <param name="serializer">A <see cref="ResponseSerializerCallback"/> used to prepare the response.</param>
         /// <param name="data">The data to serialize.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will always be <see langword="true"/>.
-        /// This allows a call to this method to be the last instruction in a <see cref="RequestHandlerCallback"/>.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="serializer"/> is <see langword="null"/>.</exception>
         /// <seealso cref="SendDataAsync(IHttpContext,ResponseSerializerCallback,object,CancellationToken)"/>
         /// <seealso cref="ResponseSerializer.Default"/>
-        public static async Task<bool> SendDataAsync(
+        public static Task SendDataAsync(
             this IHttpContext @this,
             ResponseSerializerCallback serializer,
             object data,
             CancellationToken cancellationToken)
-        {
-            await Validate.NotNull(nameof(serializer), serializer)(@this, data, cancellationToken)
-                .ConfigureAwait(false);
-
-            return true;
-        }
+            => Validate.NotNull(nameof(serializer), serializer)(@this, data, cancellationToken);
     }
 }

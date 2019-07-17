@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Routing
@@ -17,8 +18,8 @@ namespace EmbedIO.Routing
     public abstract class RouteResolverBase<TContext, TData> : ConfiguredObject
     {
         private readonly RouteMatcher _matcher;
-        private readonly List<(TData data, RouteHandler<TContext> handler)> _dataHandlerPairs
-            = new List<(TData data, RouteHandler<TContext> handler)>();
+        private readonly List<(TData data, RouteHandlerCallback<TContext> handler)> _dataHandlerPairs
+            = new List<(TData data, RouteHandlerCallback<TContext> handler)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteResolverBase{TContext,TData}"/> class.
@@ -45,11 +46,11 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RouteHandler{TContext}"/>
+        /// <seealso cref="RouteHandlerCallbackCallback{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public void Add(TData data, RouteHandler<TContext> handler)
+        public void Add(TData data, RouteHandlerCallback<TContext> handler)
         {
             EnsureConfigurationNotLocked();
 
@@ -68,16 +69,19 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RouteHandler{TContext}"/>
+        /// <seealso cref="RouteHandlerCallbackCallback{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public void Add(TData data, SyncRouteHandler<TContext> handler)
+        public void Add(TData data, SyncRouteHandlerCallback<TContext> handler)
         {
             EnsureConfigurationNotLocked();
 
             handler = Validate.NotNull(nameof(handler), handler);
-            _dataHandlerPairs.Add((data, (ctx, route, ct) => Task.FromResult(handler(ctx, route, ct))));
+            _dataHandlerPairs.Add((data, (ctx, route, ct) => {
+                handler(ctx, route, ct);
+                return Task.CompletedTask;
+            }));
         }
 
         /// <summary>
@@ -96,8 +100,8 @@ namespace EmbedIO.Routing
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> use to cancel the operation.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
-        /// <seealso cref="Add(TData,RouteHandler{TContext})"/>
-        /// <seealso cref="Add(TData,SyncRouteHandler{TContext})"/>
+        /// <seealso cref="Add(TData,RouteHandlerCallback{TContext})"/>
+        /// <seealso cref="Add(TData,SyncRouteHandlerCallback{TContext})"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
         public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken cancellationToken)
@@ -115,10 +119,15 @@ namespace EmbedIO.Routing
                 if (!MatchContextData(contextData, data))
                     continue;
 
-                if (await handler(context, match, cancellationToken).ConfigureAwait(false))
+                try
+                {
+                    await handler(context, match, cancellationToken).ConfigureAwait(false);
                     return RouteResolutionResult.Success;
-
-                result = RouteResolutionResult.NoHandlerSuccessful;
+                }
+                catch (RequestHandlerPassThroughException)
+                {
+                    result = RouteResolutionResult.NoHandlerSuccessful;
+                }
             }
 
             return result;

@@ -64,7 +64,7 @@ namespace EmbedIO.Cors
         }
 
         /// <inheritdoc />
-        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             var isOptions = context.Request.HttpVerb == HttpVerbs.Options;
 
@@ -72,67 +72,54 @@ namespace EmbedIO.Cors
             if (_origins == All && _headers == All && _methods == All)
             {
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin, All);
-                var result = isOptions && ValidateHttpOptions(_methods, context, _validMethods);
+                if (isOptions)
+                    ValidateHttpOptions(_methods, context, _validMethods);
 
-                return Task.FromResult(result);
+                return Task.CompletedTask;
             }
 
             var currentOrigin = context.Request.Headers[HttpHeaderNames.Origin];
-                
             if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
-            {
-                return Task.FromResult(false);
-            }
+                return Task.CompletedTask;
 
             if (_origins == All)
-            {
-                return Task.FromResult(false);
-            }
+                return Task.CompletedTask;
 
             if (_validOrigins.Contains(currentOrigin))
             {
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
 
                 if (isOptions)
-                {
-                    return Task.FromResult(ValidateHttpOptions(_methods, context, _validMethods));
-                }
+                    ValidateHttpOptions(_methods, context, _validMethods);
             }
 
-            return Task.FromResult(false);
+            return Task.CompletedTask;
         }
-        
-        private static bool ValidateHttpOptions(
+
+        private static void ValidateHttpOptions(
             string option, 
             IHttpContext context,
             IEnumerable<string> options)
         {
-            var currentMethod = context.Request.Headers[HttpHeaderNames.AccessControlRequestMethod];
-            var currentHeader = context.Request.Headers[HttpHeaderNames.AccessControlRequestHeaders];
-
-            if (!string.IsNullOrWhiteSpace(currentHeader))
+            var requestHeadersHeader = context.Request.Headers[HttpHeaderNames.AccessControlRequestHeaders];
+            if (!string.IsNullOrWhiteSpace(requestHeadersHeader))
             {
-                // TODO: I need to remove headers out from AllowHeaders
-                context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowHeaders, currentHeader);
+                // TODO: Remove unwanted headers from request
+                context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowHeaders, requestHeadersHeader);
             }
 
-            if (string.IsNullOrWhiteSpace(currentMethod)) 
-                return true;
+            var requestMethodHeader = context.Request.Headers[HttpHeaderNames.AccessControlRequestMethod];
+            if (string.IsNullOrWhiteSpace(requestMethodHeader)) 
+                return;
 
-            var currentMethods = currentMethod.ToLowerInvariant()
+            var currentMethods = requestMethodHeader.ToLowerInvariant()
                 .SplitByComma(StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim());
 
-            if (option == All || currentMethods.All(options.Contains))
-            {
-                context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowMethods, currentMethod);
+            if (option != All && !currentMethods.Any(options.Contains))
+                throw HttpException.BadRequest();
 
-                return true;
-            }
-
-            context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-
-            return false;
+            context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowMethods, requestMethodHeader);
         }
     }
 }

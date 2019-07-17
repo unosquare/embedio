@@ -64,6 +64,9 @@ namespace EmbedIO.WebSockets
             _encoding = Encoding.UTF8;
         }
 
+        /// <inheritdoc />
+        public sealed override bool IsFinalHandler => false;
+
         /// <summary>
         /// <para>Gets or sets the maximum size of a received message.
         /// If a message exceeding the maximum size is received from a client,
@@ -143,12 +146,12 @@ namespace EmbedIO.WebSockets
         }
 
         /// <inheritdoc />
-        protected sealed override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected sealed override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             // The WebSocket endpoint must match exactly, giving a path of "/".
             // In all other cases the path is longer, so there's no need to compare strings here.
             if (path.Length > 1)
-                return false;
+                return;
 
             var requestedProtocols = context.Request.Headers.GetValues(HttpHeaderNames.SecWebSocketProtocol)
                                          ?.Select(s => s.Trim())
@@ -173,8 +176,10 @@ namespace EmbedIO.WebSockets
                 $"{BaseUrlPath} - Rejecting WebSocket connection: no subprotocol was accepted.".Debug(nameof(WebSocketModule));
                 foreach (var protocol in _protocols)
                     context.Response.Headers.Add(HttpHeaderNames.SecWebSocketProtocol, protocol);
+
                 context.Response.SetEmptyResponse((int)HttpStatusCode.BadRequest);
-                return true;
+                context.Handled = true;
+                return;
             }
 
             if (!(context is IHttpContextImpl contextImpl))
@@ -218,7 +223,7 @@ namespace EmbedIO.WebSockets
                 RemoveWebSocket(webSocketContext);
             }
 
-            return true;
+            context.Handled = true;
         }
 
         /// <inheritdoc />

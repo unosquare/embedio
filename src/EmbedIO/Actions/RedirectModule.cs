@@ -72,6 +72,9 @@ namespace EmbedIO.Actions
             _shouldRedirect = useCallback ? Validate.NotNull(nameof(shouldRedirect), shouldRedirect) : null;
         }
 
+        /// <inheritdoc />
+        public override bool IsFinalHandler => false;
+
         /// <summary>
         /// Gets the redirect URL.
         /// </summary>
@@ -83,13 +86,15 @@ namespace EmbedIO.Actions
         public HttpStatusCode StatusCode { get; }
 
         /// <inheritdoc />
-        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
-            if (_shouldRedirect != null && !_shouldRedirect(context, path))
-                return Task.FromResult(false);
+            if (_shouldRedirect?.Invoke(context, path) ?? true)
+            {
+                context.Redirect(RedirectUrl, (int)StatusCode);
+                context.Handled = true;
+            }
 
-            context.Redirect(RedirectUrl, (int)StatusCode);
-            return Task.FromResult(true);
+            return Task.CompletedTask;
         }
     }
 }

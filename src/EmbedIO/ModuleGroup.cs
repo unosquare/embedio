@@ -69,7 +69,7 @@ namespace EmbedIO
             => _mimeTypeCustomizer.PreferCompression(mimeType, preferCompression);
 
         /// <inheritdoc />
-        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
             => _modules.DispatchRequestAsync(context, cancellationToken);
 
         /// <summary>

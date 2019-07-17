@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+using EmbedIO.Internal;
 
 namespace EmbedIO
 {
@@ -13,79 +12,53 @@ namespace EmbedIO
 #pragma warning disable CA1801 // Unused parameters
 
         /// <summary>
-        /// <para>Unconditionally passes a request down the module chain.</para>
+        /// <para>Returns an exception object that, when thrown from a module's
+        /// <see cref="IWebModule.HandleRequestAsync">HandleRequestAsync</see> method, will cause the HTTP context
+        /// to be passed down along the module chain, regardless of the value of the module's
+        /// <see cref="IWebModule.IsFinalHandler">IsFinalHandler</see> property.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-        /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A completed <see cref="Task"/> whose result will be <see langword="false"/>, unless
-        /// <paramref name="cancellationToken"/> has been canceled, in which case an <see cref="OperationCanceledException"/>
-        /// is thrown.</returns>
-        public static Task<bool> PassThrough(IHttpContext context, string path, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(false);
-        }
+        /// <returns>A newly-created <see cref="Exception"/>.</returns>
+        public static Exception PassThrough() => new RequestHandlerPassThroughException();
 
         /// <summary>
-        /// <para>Unconditionally sends a <c>401 Unauthorized</c> response.</para>
+        /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>401 Unauthorized</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-        /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowUnauthorized(IHttpContext context, string path, CancellationToken cancellationToken)
-            => throw HttpException.Unauthorized();
+        /// <param name="message">A message to include in the response.</param>
+        /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
+        public static RequestHandlerCallback ThrowUnauthorized(string message = null)
+            => (ctx, path, ct) => throw HttpException.Unauthorized(message);
 
         /// <summary>
-        /// <para>Unconditionally sends a <c>403 Forbidden</c> response.</para>
+        /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>403 Forbidden</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-        /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowForbidden(IHttpContext context, string path, CancellationToken cancellationToken)
-            => throw HttpException.Forbidden();
+        /// <param name="message">A message to include in the response.</param>
+        /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
+        public static RequestHandlerCallback ThrowForbidden(string message = null)
+            => (ctx, path, ct) => throw HttpException.Forbidden(message);
 
         /// <summary>
-        /// <para>Unconditionally sends a <c>400 Bad Request</c> response.</para>
+        /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>400 Bad Request</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-        /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowBadRequest(IHttpContext context, string path, CancellationToken cancellationToken)
-            => throw HttpException.BadRequest();
+        /// <param name="message">A message to include in the response.</param>
+        /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
+        public static RequestHandlerCallback ThrowBadRequest(string message = null)
+            => (ctx, path, ct) => throw HttpException.BadRequest(message);
 
         /// <summary>
-        /// <para>Unconditionally sends a <c>404 Not Found</c> response.</para>
+        /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>404 Not Found</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-        /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowNotFound(IHttpContext context, string path, CancellationToken cancellationToken)
-            => throw HttpException.NotFound();
+        /// <param name="message">A message to include in the response.</param>
+        /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
+        public static RequestHandlerCallback ThrowNotFound(string message = null)
+            => (ctx, path, ct) => throw HttpException.NotFound(message);
 
         /// <summary>
-        /// <para>Unconditionally sends a <c>405 Method Not Allowed</c> response.</para>
+        /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>405 Method Not Allowed</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-        /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowMethodNotAllowed(IHttpContext context, string path, CancellationToken cancellationToken)
-            => throw HttpException.MethodNotAllowed();
-
-        /// <summary>
-        /// <para>Unconditionally sends a <c>406 Not Acceptable</c> response.</para>
-        /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-        /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowNotAcceptable(IHttpContext context, string path, CancellationToken cancellationToken)
-            => throw HttpException.NotAcceptable();
+        /// <param name="message">A message to include in the response.</param>
+        /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
+        public static RequestHandlerCallback ThrowMethodNotAllowed(string message = null)
+            => (ctx, path, ct) => throw HttpException.MethodNotAllowed();
 
 #pragma warning disable CA1801 // Unused parameters
     }

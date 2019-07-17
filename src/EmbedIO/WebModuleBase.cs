@@ -68,6 +68,9 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
+        public virtual bool IsFinalHandler => true;
+
+        /// <inheritdoc />
         /// <remarks>
         /// <para>The module's configuration is locked before returning from this method.</para>
         /// </remarks>
@@ -78,11 +81,11 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public async Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        public async Task HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             try
             {
-                return await OnRequestAsync(context, path, cancellationToken).ConfigureAwait(false);
+                await OnRequestAsync(context, path, cancellationToken).ConfigureAwait(false);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -103,8 +106,6 @@ namespace EmbedIO
                     .ConfigureAwait(false);
 
             }
-
-            return true;
         }
 
         /// <summary>
@@ -118,15 +119,14 @@ namespace EmbedIO
         /// <param name="context">The context of the request being handled.</param>
         /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>. See the Remarks section for more information.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns><see langword="true"/> if the request has been handled;
-        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
+        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         /// <remarks>
         /// <para>The path specified in the requested URL is stripped of the <see cref="BaseUrlPath"/>
         /// and passed in the <paramref name="path"/> parameter.</para>
         /// <para>The <paramref name="path"/> parameter is in itself a valid URL path, including an initial
         /// slash (<c>/</c>) character.</para>
         /// </remarks>
-        protected abstract Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
+        protected abstract Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
 
         /// <summary>
         /// Called when a module is started, immediately before locking the module's configuration.

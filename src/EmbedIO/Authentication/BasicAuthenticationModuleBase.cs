@@ -30,14 +30,17 @@ namespace EmbedIO.Authentication
 
             _wwwAuthenticateHeaderValue = $"Basic realm=\"{Realm}\" charset=UTF-8";
         }
-        
+
+        /// <inheritdoc />
+        public override bool IsFinalHandler => false;
+
         /// <summary>
         /// Gets the authentication realm.
         /// </summary>
         public string Realm { get; }
 
         /// <inheritdoc />
-        protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             async Task<bool> IsAuthenticatedAsync()
             {
@@ -57,7 +60,6 @@ namespace EmbedIO.Authentication
                 throw HttpException.Unauthorized();
 
             context.Response.Headers.Set(HttpHeaderNames.WWWAuthenticate, _wwwAuthenticateHeaderValue);
-            return false;
         }
 
         /// <summary>
@@ -68,9 +70,8 @@ namespace EmbedIO.Authentication
         /// <param name="userName">The user name, or <see langword="null" /> if none has been given.</param>
         /// <param name="password">The password, or <see langword="null" /> if none has been given.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken" /> use to cancel the operation.</param>
-        /// <returns>
-        ///   <see langword="true" /> if the given credentials are valid; otherwise, <see langword="false" />.
-        /// </returns>
+        /// <returns>A <see cref="Task{TResult}"/> whose result will be <see langword="true" /> if the given credentials
+        /// are valid, <see langword="false" /> if they are not.</returns>
         protected abstract Task<bool> VerifyCredentialsAsync(string path, string userName, string password, CancellationToken cancellationToken);
 
         private static (string UserName, string Password) GetCredentials(IHttpRequest request)

@@ -21,6 +21,12 @@ namespace EmbedIO
         string BaseUrlPath { get; }
 
         /// <summary>
+        /// Gets a value indicating whether processing of a request should stop
+        /// after a module has handled it.
+        /// </summary>
+        bool IsFinalHandler{ get; }
+
+        /// <summary>
         /// <para>Gets or sets a callback that is called every time an unhandled exception
         /// occurs during the processing of a request.</para>
         /// <para>If this property is <see langword="null"/> (the default),
@@ -52,14 +58,13 @@ namespace EmbedIO
         /// <param name="context">The context of the request being handled.</param>
         /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>. See the Remarks section for more information.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns><see langword="true"/> if the request has been handled;
-        /// <see langword="false"/> if the request should be passed down the module chain.</returns>
+        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         /// <remarks>
         /// <para>The path specified in the requested URL is stripped of the <see cref="BaseUrlPath"/>
         /// and passed in the <paramref name="path"/> parameter.</para>
         /// <para>The <paramref name="path"/> parameter is in itself a valid URL path, including an initial
         /// slash (<c>/</c>) character.</para>
         /// </remarks>
-        Task<bool> HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
+        Task HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
     }
 }

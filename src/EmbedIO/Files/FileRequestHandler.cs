@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO.Files
@@ -19,14 +18,9 @@ namespace EmbedIO.Files
         /// <param name="info">If <paramref name="path"/> has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-        /// <returns>A completed <see cref="Task"/> whose result will be <see langword="false"/>, unless
-        /// <paramref name="cancellationToken"/> has been canceled, in which case an <see cref="OperationCanceledException"/>
-        /// is thrown.</returns>
-        public static Task<bool> PassThrough(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(false);
-        }
+        /// <returns>This method never returns; it throws an exception instead.</returns>
+        public static Task PassThrough(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
+            => throw RequestHandler.PassThrough();
 
         /// <summary>
         /// <para>Unconditionally sends a <c>403 Unauthorized</c> response.</para>
@@ -37,7 +31,7 @@ namespace EmbedIO.Files
         /// otherwise, <see langword="null"/>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowUnauthorized(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
+        public static Task ThrowUnauthorized(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
             => throw HttpException.Unauthorized();
 
         /// <summary>
@@ -49,7 +43,7 @@ namespace EmbedIO.Files
         /// otherwise, <see langword="null"/>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowNotFound(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
+        public static Task ThrowNotFound(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
             => throw HttpException.NotFound();
 
         /// <summary>
@@ -61,7 +55,7 @@ namespace EmbedIO.Files
         /// otherwise, <see langword="null"/>.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task<bool> ThrowMethodNotAllowed(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
+        public static Task ThrowMethodNotAllowed(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken)
             => throw HttpException.MethodNotAllowed();
 #pragma warning restore CA1801
     }

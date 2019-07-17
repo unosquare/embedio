@@ -16,7 +16,7 @@ namespace EmbedIO.Tests.TestObjects
         public const string CookieName = "MyCookie";
 
         [Route(HttpVerbs.Get, "/getcookie")]
-        public Task<bool> GetCookieC()
+        public Task GetCookieC()
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
@@ -25,21 +25,21 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [Route(HttpVerbs.Get, "/deletesession")]
-        public Task<bool> DeleteSessionC()
+        public Task DeleteSessionC()
         {
             HttpContext.Session.Delete();
             return HttpContext.SendStringAsync("Deleted", MimeType.PlainText, Encoding.UTF8, CancellationToken);
         }
 
         [Route(HttpVerbs.Get, "/putdata")]
-        public Task<bool> PutDataSession()
+        public Task PutDataSession()
         {
             HttpContext.Session["sessionData"] = MyData;
             return HttpContext.SendStringAsync(HttpContext.Session["sessionData"].ToString(), MimeType.PlainText, Encoding.UTF8, CancellationToken);
         }
 
         [Route(HttpVerbs.Get, "/getdata")]
-        public Task<bool> GetDataSession()
+        public Task GetDataSession()
             => HttpContext.SendStringAsync(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty, MimeType.PlainText, Encoding.UTF8, CancellationToken);
     }
 }

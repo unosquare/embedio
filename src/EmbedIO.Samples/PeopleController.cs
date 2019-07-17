@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,13 +25,13 @@ namespace EmbedIO.Samples
         // This will respond to 
         //     GET http://localhost:9696/api/people
         [Route(HttpVerbs.Get, "/people")]
-        public async Task<object> GetAllPeople() => await _dbContext.People.SelectAllAsync().ConfigureAwait(false);
+        public async Task<IEnumerable<Person>> GetAllPeople() => await _dbContext.People.SelectAllAsync().ConfigureAwait(false);
 
         // Gets the first record.
         // This will respond to 
         //     GET http://localhost:9696/api/people/first
         [Route(HttpVerbs.Get, "/people/first")]
-        public async Task<object> GetFirstPeople() => (await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).First();
+        public async Task<Person> GetFirstPeople() => (await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).First();
 
         // Gets a single record.
         // This will respond to 
@@ -42,23 +44,23 @@ namespace EmbedIO.Samples
         // If the given ID cannot be converted to an integer, an exception will be thrown.
         // By default, WebApiModule will then respond with "500 Internal Server Error".
         [Route(HttpVerbs.Get, "/people/{id?}")]
-        public async Task<object> GetPeople(int id)
+        public async Task<Person> GetPeople(int id)
             => await _dbContext.People.SingleAsync(id).ConfigureAwait(false)
             ?? throw HttpException.NotFound();
 
         // Posts the people Tubular model.
         [Route(HttpVerbs.Post, "/people")]
-        public async Task<object> PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
+        public async Task<GridDataResponse> PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
             => gridDataRequest.CreateGridDataResponse((await _dbContext.People.SelectAllAsync().ConfigureAwait(false)).AsQueryable());
 
         // Echoes request form data in JSON format.
         [Route(HttpVerbs.Post, "/echo")]
-        public object Echo([FormData] NameValueCollection data)
+        public Dictionary<string, object> Echo([FormData] NameValueCollection data)
             => data.ToDictionary();
 
         // Select by name
         [Route(HttpVerbs.Get, "/peopleByName/{name}")]
-        public async Task<object> GetPeopleByName(string name)
+        public async Task<Person> GetPeopleByName(string name)
             => await _dbContext.People.FirstOrDefaultAsync(nameof(Person.Name), name).ConfigureAwait(false)
             ?? throw HttpException.NotFound();
 

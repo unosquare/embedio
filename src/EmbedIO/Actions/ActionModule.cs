@@ -40,8 +40,16 @@ namespace EmbedIO.Actions
         }
 
         /// <inheritdoc />
-        protected override async Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken) =>
-            (_verb == HttpVerbs.Any || context.Request.HttpVerb == _verb)
-         && await _handler(context, path, cancellationToken).ConfigureAwait(false);
+        public override bool IsFinalHandler => false;
+
+        /// <inheritdoc />
+        protected override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        {
+            if (_verb != HttpVerbs.Any && context.Request.HttpVerb != _verb)
+                return;
+
+            await _handler(context, path, cancellationToken).ConfigureAwait(false);
+            context.Handled = true;
+        }
     }
 }

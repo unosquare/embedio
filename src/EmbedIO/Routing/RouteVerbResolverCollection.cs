@@ -17,8 +17,6 @@ namespace EmbedIO.Routing
     /// <seealso cref="RouteVerbResolver"/>
     public sealed class RouteVerbResolverCollection : RouteResolverCollectionBase<IHttpContext, HttpVerbs, RouteVerbResolver>
     {
-        private static readonly MethodInfo TaskFromResultMethod = typeof(Task).GetMethod(nameof(Task.FromResult));
-
         private readonly string _logSource;
 
         internal RouteVerbResolverCollection(string logSource)
@@ -28,7 +26,7 @@ namespace EmbedIO.Routing
 
         /// <summary>
         /// <para>Adds handlers, associating them with HTTP method / route pairs by means
-        /// of <see cref="RouteAttribute">RouteHandler</see> attributes.</para>
+        /// of <see cref="RouteAttribute">Route</see> attributes.</para>
         /// <para>A compatible handler is a static or instance method that takes 3
         /// parameters having the following types, in order:</para>
         /// <list type="number">
@@ -36,10 +34,10 @@ namespace EmbedIO.Routing
         /// <item><description><see cref="RouteMatch"/></description></item>
         /// <item><description><see cref="CancellationToken"/></description></item>
         /// </list>
-        /// <para>The return type of a compatible handler may be either <see langword="bool"/>
-        /// or <see cref="Task{TResult}">Task&lt;bool&gt;</see>.</para>
+        /// <para>The return type of a compatible handler may be either <see langword="void"/>
+        /// or <see cref="Task"/>.</para>
         /// <para>A compatible handler, in order to be added to a <see cref="RouteVerbResolverCollection"/>,
-        /// must have one or more <see cref="RouteAttribute">RouteHandler</see> attributes.
+        /// must have one or more <see cref="RouteAttribute">Route</see> attributes.
         /// The same handler will be added once for each such attribute, either declared on the handler,
         /// or inherited (if the handler is a virtual method).</para>
         /// <para>This method behaves according to the type of the <paramref name="target"/>
@@ -63,7 +61,7 @@ namespace EmbedIO.Routing
         /// <param name="target">Where to look for compatible handlers. See the Summary section for more information.</param>
         /// <returns>
         /// <para>The number of handlers that were added to the collection.</para>
-        /// <para>Note that methods with multiple <see cref="RouteAttribute">RouteHandler</see> attributes
+        /// <para>Note that methods with multiple <see cref="RouteAttribute">Route</see> attributes
         /// will count as one for each attribute.</para>
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
@@ -95,11 +93,11 @@ namespace EmbedIO.Routing
         {
             isSynchronous = false;
             var returnType = method.ReturnType;
-            if (returnType == typeof(bool))
+            if (returnType == typeof(void))
             {
                 isSynchronous = true;
             }
-            else if (returnType != typeof(Task<bool>))
+            else if (returnType != typeof(Task))
             {
                 return false;
             }
@@ -138,14 +136,14 @@ namespace EmbedIO.Routing
                 Expression.Parameter(typeof(CancellationToken), "cancellationToken"),
             };
 
-            var body = Expression.Call(Expression.Constant(target), method, parameters.Cast<Expression>());
+            Expression body = Expression.Call(Expression.Constant(target), method, parameters.Cast<Expression>());
             if (isSynchronous)
             {
-                // Convert a bool return type to Task<bool> by passing it to Task.FromResult
-                body = Expression.Call(TaskFromResultMethod, body);
+                // Convert void to Task by evaluating Task.CompletedTask
+                body = Expression.Block(typeof(Task), body, Expression.Constant(Task.CompletedTask));
             }
 
-            var handler = Expression.Lambda<RouteHandler<IHttpContext>>(body, parameters).Compile();
+            var handler = Expression.Lambda<RouteHandlerCallback<IHttpContext>>(body, parameters).Compile();
             foreach (var attribute in attributes)
             {
                 Add(attribute.Verb, attribute.Route, handler);

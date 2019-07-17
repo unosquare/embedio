@@ -244,11 +244,12 @@ namespace EmbedIO
                     try
                     {
                         // Return a 404 (Not Found) response if no module handled the response.
-                        if (await _modules.DispatchRequestAsync(context, cancellationToken).ConfigureAwait(false))
-                            return;
-
-                        $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(LogSource);
-                        throw HttpException.NotFound("No module was able to serve the requested path.");
+                        await _modules.DispatchRequestAsync(context, cancellationToken).ConfigureAwait(false);
+                        if (!context.Handled)
+                        {
+                            $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(LogSource);
+                            throw HttpException.NotFound("No module was able to serve the requested path.");
+                        }
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                     {

@@ -11,6 +11,6 @@ namespace EmbedIO.Files
     /// <param name="info">If <paramref name="path"/> has been successfully mapped to a resource (file or directory), the result of the mapping;
     /// otherwise, <see langword="null"/>.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
-    /// <returns>A <see cref="Task"/> representing the ongoing operation, whose result will tell whether the request has been handled.</returns>
-    public delegate Task<bool> FileRequestHandlerCallback(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken);
+    /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+    public delegate Task FileRequestHandlerCallback(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken);
 }

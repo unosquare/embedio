@@ -23,6 +23,7 @@ namespace EmbedIO.Net.Internal
 
         private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
+        private bool _handled;
         private bool _closed;
 
         internal HttpListenerContext(HttpConnection cnc)
@@ -55,6 +56,18 @@ namespace EmbedIO.Net.Internal
         public bool SupportCompressedRequests { get; set; }
 
         public IDictionary<object, object> Items => _items.Value;
+
+        public bool Handled
+        {
+            get => _handled;
+            set
+            {
+                if (_handled && !value)
+                    throw new InvalidOperationException($"Cannot set {nameof(IHttpContext)}.{nameof(IHttpContext.Handled)} back to false.");
+
+                _handled = value;
+            }
+        }
 
         public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
 

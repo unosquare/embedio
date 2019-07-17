@@ -30,8 +30,8 @@ namespace EmbedIO.Files
         private string _defaultDocument = DefaultDocumentName;
         private string _defaultExtension;
         private IDirectoryLister _directoryLister;
-        private FileRequestHandlerCallback _onMappingFailed = FileRequestHandler.PassThrough;
-        private FileRequestHandlerCallback _onDirectoryNotListable = FileRequestHandler.PassThrough;
+        private FileRequestHandlerCallback _onMappingFailed = FileRequestHandler.ThrowNotFound;
+        private FileRequestHandlerCallback _onDirectoryNotListable = FileRequestHandler.ThrowUnauthorized;
         private FileRequestHandlerCallback _onMethodNotAllowed = FileRequestHandler.ThrowMethodNotAllowed;
 
         private FileCache.Section _cacheSection;
@@ -285,7 +285,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        protected override Task<bool> OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             MappedResourceInfo info;
 
@@ -303,24 +303,30 @@ namespace EmbedIO.Files
                     _mappingCache.AddOrUpdate(path, info, (_, __) => info);
             }
 
-            // If mapping failed, send a "404 Not Found" response, or whatever OnMappingFailed chooses to do.
-            // For example, it may return a default resource (think a folder of images and an imageNotFound.jpg),
-            // or redirect the request.
             if (info == null)
-                return OnMappingFailed(context, path, null, cancellationToken);
-
-            // If there is a mapped resource, check that the HTTP method is either GET or HEAD.
-            // Otherwise, send a "405 Method Not Allowed" response, or whatever OnMethodNotAllowed chooses to do.
-            if (!IsHttpMethodAllowed(context.Request, out var sendResponseBody))
-                return OnMethodNotAllowed(context, path, info, cancellationToken);
-
-            // If a directory listing was requested, but there is no DirectoryLister,
-            // send a "403 Unauthorized" response, or whatever OnDirectoryNotListable chooses to do.
-            // For example, one could prefer to send "404 Not Found" instead.
-            if (info.IsDirectory && DirectoryLister == null)
-                return OnDirectoryNotListable(context, path, info, cancellationToken);
-
-            return HandleResource(context, info, sendResponseBody, cancellationToken);
+            {
+                // If mapping failed, send a "404 Not Found" response, or whatever OnMappingFailed chooses to do.
+                // For example, it may return a default resource (think a folder of images and an imageNotFound.jpg),
+                // or redirect the request.
+                await OnMappingFailed(context, path, null, cancellationToken).ConfigureAwait(false);
+            }
+            else if (!IsHttpMethodAllowed(context.Request, out var sendResponseBody))
+            {
+                // If there is a mapped resource, check that the HTTP method is either GET or HEAD.
+                // Otherwise, send a "405 Method Not Allowed" response, or whatever OnMethodNotAllowed chooses to do.
+                await OnMethodNotAllowed(context, path, info, cancellationToken).ConfigureAwait(false);
+            }
+            else if (info.IsDirectory && DirectoryLister == null)
+            {
+                // If a directory listing was requested, but there is no DirectoryLister,
+                // send a "403 Unauthorized" response, or whatever OnDirectoryNotListable chooses to do.
+                // For example, one could prefer to send "404 Not Found" instead.
+                await OnDirectoryNotListable(context, path, info, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                await HandleResource(context, info, sendResponseBody, cancellationToken).ConfigureAwait(false);
+            }
         }
 
         // Tells whether a request's HTTP method is suitable for processing by FileModule
@@ -339,6 +345,18 @@ namespace EmbedIO.Files
                     sendResponseBody = default;
                     return false;
             }
+        }
+
+        // Prepares response headers for a "200 OK" or "304 Not Modified" response.
+        // RFC7232, Section 4.1
+        private static void PreparePositiveResponse(IHttpResponse response, MappedResourceInfo info, string contentType, string entityTag, Action<IHttpResponse> setCompression)
+        {
+            setCompression(response);
+            response.ContentType = contentType;
+            response.Headers.Set(HttpHeaderNames.ETag, entityTag);
+            response.Headers.Set(HttpHeaderNames.LastModified, HttpDate.Format(info.LastModifiedUtc));
+            response.Headers.Set(HttpHeaderNames.CacheControl, "max-age=0, must-revalidate");
+            response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
         }
 
         // Attempts to map a module-relative URL path to a mapped resource,
@@ -377,7 +395,7 @@ namespace EmbedIO.Files
             return result;
         }
 
-        private async Task<bool> HandleResource(IHttpContext context, MappedResourceInfo info, bool sendResponseBody, CancellationToken cancellationToken)
+        private async Task HandleResource(IHttpContext context, MappedResourceInfo info, bool sendResponseBody, CancellationToken cancellationToken)
         {
             // Try to extract resource information from cache.
             var cachingThreshold = 1024L * Cache.MaxFileSizeKb;
@@ -428,7 +446,7 @@ namespace EmbedIO.Files
             {
                 // If negotiation failed, the returned callback will do the right thing.
                 setCompressionInResponse(context.Response);
-                return true;
+                return;
             }
 
             var entityTag = info.GetEntityTag(compressionMethod);
@@ -442,7 +460,7 @@ namespace EmbedIO.Files
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotModified;
                 PreparePositiveResponse(context.Response, info, contentType, entityTag, setCompressionInResponse);
-                return true;
+                return;
             }
 
             /*
@@ -496,7 +514,7 @@ namespace EmbedIO.Files
 
             // If it's a HEAD request, we're done.
             if (!sendResponseBody)
-                return true;
+                return;
 
             // If content must be sent AND cached, first read it and store it.
             // If the requested resource is a directory, we have already listed it by now,
@@ -534,7 +552,7 @@ namespace EmbedIO.Files
                         .ConfigureAwait(false);
                 }
 
-                return true;
+                return;
             }
 
             // Read and transfer content without caching.
@@ -591,8 +609,6 @@ namespace EmbedIO.Files
                     }
                 }
             }
-
-            return true;
         }
 
         // Uses DirectoryLister to generate a directory listing asynchronously.
@@ -621,18 +637,6 @@ namespace EmbedIO.Files
 
                 return (memoryStream.ToArray(), uncompressedLength);
             }
-        }
-
-        // Prepares response headers for a "200 OK" or "304 Not Modified" response.
-        // RFC7232, Section 4.1
-        private static void PreparePositiveResponse(IHttpResponse response, MappedResourceInfo info, string contentType, string entityTag, Action<IHttpResponse> setCompression)
-        {
-            setCompression(response);
-            response.ContentType = contentType;
-            response.Headers.Set(HttpHeaderNames.ETag, entityTag);
-            response.Headers.Set(HttpHeaderNames.LastModified, HttpDate.Format(info.LastModifiedUtc));
-            response.Headers.Set(HttpHeaderNames.CacheControl, "max-age=0, must-revalidate");
-            response.Headers.Set(HttpHeaderNames.AcceptRanges, "bytes");
         }
     }
 }

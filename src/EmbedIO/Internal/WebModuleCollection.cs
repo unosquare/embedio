@@ -26,30 +26,41 @@ namespace EmbedIO.Internal
             }
         }
 
-        internal async Task<bool> DispatchRequestAsync(IHttpContext context, CancellationToken cancellationToken)
+        internal async Task DispatchRequestAsync(IHttpContext context, CancellationToken cancellationToken)
         {
+            if (context.Handled)
+                return;
+
             var requestedPath = UrlPath.UnsafeStripPrefix(UrlPath.UnsafeNormalize(context.Request.Url.AbsolutePath, false), _baseUrlPath);
             if (requestedPath == null)
-                return false;
+                return;
 
             requestedPath = "/" + requestedPath;
 
             var contextImpl = context as IHttpContextImpl;
             foreach (var (name, module) in WithSafeNames)
             {
+                var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
+                if (path == null)
+                    continue;
+
                 var mimeTypeProvider = module as IMimeTypeProvider;
                 if (mimeTypeProvider != null)
                     contextImpl?.MimeTypeProviders.Push(mimeTypeProvider);
 
                 try
                 {
-                    var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
-                    if (path == null)
-                        continue;
-
                     $"[{context.Id}] Processing with {name}.".Debug(_logSource);
-                    if (await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false))
-                        return true;
+                    await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false);
+                    if (module.IsFinalHandler)
+                    {
+                        context.Handled = true;
+                        break;
+                    }
+                }
+                catch (RequestHandlerPassThroughException)
+                {
+                    continue;
                 }
                 finally
                 {
@@ -57,8 +68,6 @@ namespace EmbedIO.Internal
                         contextImpl?.MimeTypeProviders.Pop();
                 }
             }
-
-            return false;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace EmbedIO
         /// will break the request handling control flow and send a <c>401 Unauthorized</c>
         /// response to the client.
         /// </summary>
-        /// <param name="message">A message to include in the response as plain text.</param>
+        /// <param name="message">A message to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
         public static HttpException Unauthorized(string message = null)
             => new HttpException(HttpStatusCode.Unauthorized, message);
@@ -20,7 +20,7 @@ namespace EmbedIO
         /// will break the request handling control flow and send a <c>403 Forbidden</c>
         /// response to the client.
         /// </summary>
-        /// <param name="message">A message to include in the response as plain text.</param>
+        /// <param name="message">A message to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
         public static HttpException Forbidden(string message = null)
             => new HttpException(HttpStatusCode.Forbidden, message);
@@ -30,7 +30,7 @@ namespace EmbedIO
         /// will break the request handling control flow and send a <c>400 Bad Request</c>
         /// response to the client.
         /// </summary>
-        /// <param name="message">A message to include in the response as plain text.</param>
+        /// <param name="message">A message to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
         public static HttpException BadRequest(string message = null)
             => new HttpException(HttpStatusCode.BadRequest, message);
@@ -40,7 +40,7 @@ namespace EmbedIO
         /// will break the request handling control flow and send a <c>404 Not Found</c>
         /// response to the client.
         /// </summary>
-        /// <param name="message">A message to include in the response as plain text.</param>
+        /// <param name="message">A message to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
         public static HttpException NotFound(string message = null)
             => new HttpException(HttpStatusCode.NotFound, message);
@@ -50,7 +50,7 @@ namespace EmbedIO
         /// will break the request handling control flow and send a <c>405 Method Not Allowed</c>
         /// response to the client.
         /// </summary>
-        /// <param name="message">A message to include in the response as plain text.</param>
+        /// <param name="message">A message to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
         public static HttpException MethodNotAllowed(string message = null)
             => new HttpException(HttpStatusCode.MethodNotAllowed, message);
