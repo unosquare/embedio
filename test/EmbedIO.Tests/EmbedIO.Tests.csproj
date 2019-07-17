@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Issues\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\EmbedIO.Testing\EmbedIO.Testing.csproj" />
   </ItemGroup>
 

@@ -190,11 +190,11 @@ namespace EmbedIO
         /// <exception cref="OperationCanceledException">Cancellation was requested.</exception>
         public async Task RunAsync(CancellationToken cancellationToken = default)
         {
-            State = WebServerState.Loading;
-            Prepare(cancellationToken);
-
             try
             {
+                State = WebServerState.Loading;
+                Prepare(cancellationToken);
+
                 _sessionManager?.Start(cancellationToken);
                 _modules.StartAll(cancellationToken);
 
