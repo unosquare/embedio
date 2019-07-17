@@ -259,11 +259,14 @@ namespace EmbedIO.Files
             if (!disposing)
                 return;
 
-            Provider.ResourceChanged -= _cacheSection.Remove;
+            if (_cacheSection != null)
+                Provider.ResourceChanged -= _cacheSection.Remove;
+
             if (Provider is IDisposable disposableProvider)
                 disposableProvider.Dispose();
 
-            Cache.RemoveSection(_cacheSectionName);
+            if (_cacheSection != null)
+                Cache.RemoveSection(_cacheSectionName);
         }
 
         /// <inheritdoc />
