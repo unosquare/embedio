@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace EmbedIO.Utilities
@@ -239,6 +240,62 @@ namespace EmbedIO.Utilities
             return urlPath.Length < baseUrlPath.Length
                 ? string.Empty
                 : urlPath.Substring(baseUrlPath.Length);
+        }
+
+        /// <summary>
+        /// Splits the specified URL path into segments.
+        /// </summary>
+        /// <param name="urlPath">The URL path.</param>
+        /// <returns>An enumeration of path segments.</returns>
+        /// <exception cref="ArgumentException"><paramref name="urlPath"/> is not a valid URL path.</exception>
+        /// <remarks>
+        /// <para>A root URL path (<c>/</c>) will result in an empty enumeration.</para>
+        /// <para>The returned enumeration will be the same whether <paramref name="urlPath"/> is a base URL path or not.</para>
+        /// <para>If you are sure that <paramref name="urlPath"/> is valid and normalized,
+        /// for example because you have called <see cref="Validate.UrlPath"/>,
+        /// then you may call <see cref="UnsafeSplit"/> instead of this method. <see cref="UnsafeSplit"/>
+        /// is slightly faster because it skips validity checks.</para>
+        /// </remarks>
+        /// <seealso cref="UnsafeSplit"/>
+        /// <seealso cref="Normalize"/>
+        /// <seealso cref="Validate.UrlPath"/>
+        public static IEnumerable<string> Split(string urlPath)
+            => UnsafeSplit(Validate.UrlPath(nameof(urlPath), urlPath, false));
+
+        /// <summary>
+        /// Splits the specified URL path into segments, assuming it is valid and normalized.
+        /// </summary>
+        /// <param name="urlPath">The URL path.</param>
+        /// <returns>An enumeration of path segments.</returns>
+        /// <remarks>
+        /// <para>Unless <paramref name="urlPath"/> is a valid, normalized URL path,
+        /// the behavior of this method is unspecified. You should call this method
+        /// only after calling either <see cref="Normalize"/> or <see cref="Validate.UrlPath"/>
+        /// to check and normalize both parameters.</para>
+        /// <para>If you are not sure about the validity and/or normalization of <paramref name="urlPath"/>,
+        /// call <see cref="StripPrefix"/> instead of this method.</para>
+        /// <para>A root URL path (<c>/</c>) will result in an empty enumeration.</para>
+        /// <para>The returned enumeration will be the same whether <paramref name="urlPath"/> is a base URL path or not.</para>
+        /// </remarks>
+        /// <seealso cref="Split"/>
+        /// <seealso cref="Normalize"/>
+        /// <seealso cref="Validate.UrlPath"/>
+        public static IEnumerable<string> UnsafeSplit(string urlPath)
+        {
+            var length = urlPath.Length;
+            var position = 1; // Skip initial slash
+            while (position < length)
+            {
+                var slashPosition = urlPath.IndexOf('/', position);
+                if (slashPosition < 0)
+                {
+                    yield return urlPath.Substring(position);
+                    break;
+                }
+
+                yield return urlPath.Substring(position, slashPosition - position);
+                position = slashPosition + 1;
+            }
         }
 
         internal static Exception ValidateInternal(string argumentName, string value)
