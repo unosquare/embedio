@@ -8,7 +8,7 @@
     <title>Running EmbedIO | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Running EmbedIO | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.43.2.0">
+    <meta name="generator" content="docfx 2.43.3.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Samples/html/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -70,13 +70,15 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="running-embedio">Running EmbedIO</h1>
 
-<p>First, create the self-signed certified Powershell (as Admin):</p>
-<pre><code class="lang-powershell">$date_now = Get-Date
+<p>First, create the self-signed certified Powershell:</p>
+<pre><code class="lang-powershell"># Run the following script as Administrator
+$date_now = Get-Date
 $extended_date = $date_now.AddYears(3)
 
 $cert = New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname unosquare.io -notafter $extended_date
-</code></pre><p>Add the certified to the desire port (as Admin):</p>
-<pre><code class="lang-cmd">netsh http add sslcert ipport=0.0.0.0:7876 certhash=767b9a3ad23a0cfc597df8be23d58984503c7ad8 appid={adaa04bb-8b63-4073-a12f-d6f8c0b4383f}
+</code></pre><p>Add the certified to the desire port:</p>
+<pre><code class="lang-powershell"># Run the following script as Administrator
+netsh http add sslcert ipport=0.0.0.0:7876 certhash=767b9a3ad23a0cfc597df8be23d58984503c7ad8 appid={adaa04bb-8b63-4073-a12f-d6f8c0b4383f}
 </code></pre></article>
           </div>
           

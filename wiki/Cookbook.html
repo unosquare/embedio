@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>How to receive a Multi-part request | Unosquare EmbedIO </title>
+    <title>Cookbook | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="How to receive a Multi-part request | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.43.2.0">
+    <meta name="title" content="Cookbook | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.43.3.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Samples/html/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -68,41 +68,75 @@
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="how-to-receive-a-multi-part-request">How to receive a Multi-part request</h1>
+<h1 id="cookbook">Cookbook</h1>
 
-<p>You can receive multi-part request if you include this static method (from <a href="http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post">http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post</a>):</p>
-<pre><code class="lang-csharp">private static async Task ParseFiles(Stream data, string contentType, Action&lt;string, Stream&gt; fileProcessor)
-        {
-            var streamContent = new StreamContent(data);
-            streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
+<p>This cookbook includes common tasks and solutions for EmbedIOv3.</p>
+<ul>
+<li><a href="#reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a dictionary (application/x-www-form-urlencoded)</a></li>
+<li><a href="#reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</a><ul>
+<li><a href="#reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</a></li>
+<li><a href="#writing-a-binary-stream">Writing a binary stream</a></li>
+</ul>
+</li>
+<li><a href="#how-to-turn-off-logging">How to turn off logging</a></li>
+</ul>
+<h2 id="reading-from-a-post-body-as-a-dictionary-applicationx-www-form-urlencoded">Reading from a POST body as a dictionary (application/x-www-form-urlencoded)</h2>
+<p>For reading a dictionary from an HTTP Request body inside a WebAPI method you can add an argument to your method with the attribute <code>FormData</code>.</p>
+<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
+    public async Task PostData([FormData] NameValueCollection data) 
+    {
+        // Perform an operation with the data
+        await SaveData(data);
+    }
+</code></pre><p>Or you can use <a href="#">GetRequestFormDataAsync</a> extension method if you are working in a custom Web Module. This method works directly from <code>IHttpContext</code> and returns the key-value pairs sent by using the Content-Type &#39;application/x-www-form-urlencoded&#39;.</p>
+<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
+    public async Task PostData() 
+    {
+        var data = HttpContext.GetRequestFormDataAsync(CancellationToken);
 
-            var provider = await streamContent.ReadAsMultipartAsync();
+        // Perform an operation with the data
+        await SaveData(data);
+    }
+</code></pre><h1 id="reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</h1>
+<p>For reading a JSON payload and deserialize it to an object from an HTTP Request body you can use <a href="#">GetRequestDataAsync<t></t></a>. This method works directly from <code>IHttpContext</code> and returns an object of the type specified in the generic type.</p>
+<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
+    public async Task PostJsonData() 
+    {
+        var data = HttpContext.GetRequestDataAsync&lt;MyData&gt;(CancellationToken);
 
-            foreach (var httpContent in provider.Contents)
-            {
-                var fileName = httpContent.Headers.ContentDisposition.FileName;
+        // Perform an operation with the data
+        await SaveData(data);
+    }
+</code></pre><p>An alternative is creating a custom Attribute implementing <code>IRequestDataAttribute</code> interface. This interface requires the implementation of a method receiving an instance of the WebAPI Controller and returning a <code>Task&lt;T&gt;</code>. For example, you can use the following attribute to deserialize the content of the POST body into a <code>GridDataRequest</code> object from <a href="https://github.com/unosquare/tubular-dotnet">Tubular</a>:</p>
+<pre><code class="lang-csharp">    [AttributeUsage(AttributeTargets.Parameter)]
+    public class JsonGridDataRequestAttribute : Attribute, IRequestDataAttribute&lt;WebApiController, GridDataRequest&gt;
+    {
+        public Task&lt;GridDataRequest&gt; GetRequestDataAsync(WebApiController controller)
+            =&gt; controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json&lt;GridDataRequest&gt;, controller.CancellationToken);
+    }
+</code></pre><p>This attribute can be used in the argument of a Controller method:</p>
+<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/people&quot;)]
+    public async Task&lt;object&gt; PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
+        =&gt; gridDataRequest.CreateGridDataResponse((await _dbContext.People.SelectAllAsync()).AsQueryable());
+</code></pre><p>This way is effective if you are using the same type in multiple methods.</p>
+<h1 id="reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</h1>
+<p>EmbedIO doesn&#39;t provide the functionality to read from a Multipart FormData stream. But you can check the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser Nuget</a> and connect the Request input directly to the HttpMultipartParser, very helpful and small library.</p>
+<p>There is <a href="http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post">another solution</a> but it requires this <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client">Microsoft Nuget</a>.</p>
+<h1 id="writing-a-binary-stream">Writing a binary stream</h1>
+<p>You can open the Response Output Stream with the extension <a href="">OpenResponseStream</a>.</p>
+<pre><code class="lang-csharp">    [Route(HttpVerbs.Get, &quot;/binary&quot;)]
+    public async Task&lt;true&gt; GetBinary() 
+    {
+    // Call a fictional external source
+    using (var stream = HttpContext.OpenResponseStream())
+                await stream.WriteAsync(dataBuffer, 0, 0, CancellationToken);
 
-                if (string.IsNullOrWhiteSpace(fileName))
-                {
-                    continue;
-                }
-
-                using (var fileContents = await httpContent.ReadAsStreamAsync())
-                {
-                    fileProcessor(fileName.Replace(&quot;\&quot;&quot;, &quot;&quot;), fileContents);
-                }
-            }
-        }
-</code></pre><p>You need to include <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client">WebApi Client Nuget</a>.</p>
-<p>Also, you can check the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser Nuget</a> and connect the Request input directly to the HttpMultipartParser, very helpful and small.</p>
-<h1 id="how-to-turn-off-logging">How to turn off logging</h1>
+    return true;
+    }
+</code></pre><h2 id="how-to-turn-off-logging">How to turn off logging</h2>
 <p>EmbedIO uses <a href="https://github.com/unosquare/swan">SWAN</a>&#39;s <code>Terminal</code> to display all messages. You can disable them or change the verbosity by modifying the <code>Terminal</code> settings.</p>
 <pre><code class="lang-csharp">Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
-</code></pre><h1 id="samples-and-gists">Samples and Gists</h1>
-<ul>
-<li><a href="https://gist.github.com/itodorovic/745f44fde4ca4619c96a">itodorovic&#39;s Windows Forms minimal threading example</a></li>
-</ul>
-</article>
+</code></pre></article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">

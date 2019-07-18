@@ -5,11 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Unosquare.Labs.EmbedIO.Constants
-   | Unosquare EmbedIO </title>
+    <title>Upgrade guide for v2 users | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Unosquare.Labs.EmbedIO.Constants
-   | Unosquare EmbedIO ">
+    <meta name="title" content="Upgrade guide for v2 users | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.43.3.0">
     
     <link rel="shortcut icon" href="../src/Unosquare.Labs.EmbedIO.Samples/html/favicon.ico">
@@ -18,7 +16,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/bootstrap.min.css">
     <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -67,67 +65,18 @@
         </div>
       </div>
       <div role="main" class="container-fluid body-content hide-when-search">
-        
-        <div class="sidenav hide-when-search">
-          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
-          <div class="sidetoggle collapse" id="sidetoggle">
-            <div id="sidetoc"></div>
-          </div>
-        </div>
-        <div class="article row grid-right">
+        <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Unosquare.Labs.EmbedIO.Constants">
-  
-  <h1 id="Unosquare_Labs_EmbedIO_Constants" data-uid="Unosquare.Labs.EmbedIO.Constants" class="text-break">Namespace Unosquare.Labs.EmbedIO.Constants
-  </h1>
-  <div class="markdown level0 summary"></div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpHeaders.html">HttpHeaders</a></h4>
-      <section><p>HTTP Header Constants.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.MimeTypes.html">MimeTypes</a></h4>
-      <section><p>Provides constants for commonly-used MIME types and association between file extensions and MIME types.</p>
-</section>
-    <h3 id="enums">Enums
-  </h3>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.CompressionMethod.html">CompressionMethod</a></h4>
-      <section><p>Specifies the compression method used to compress a message on
-the WebSocket connection.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.HttpVerbs.html">HttpVerbs</a></h4>
-      <section><p>Enumerates the different HTTP Verbs.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.RoutingStrategy.html">RoutingStrategy</a></h4>
-      <section><p>Defines the routing strategy for URL matching
-This is especially useful for REST service implementations
-in the WebApi module.</p>
-</section>
-      <h4><a class="xref" href="Unosquare.Labs.EmbedIO.Constants.WebServerState.html">WebServerState</a></h4>
-      <section><p>Enums the web server state.</p>
-</section>
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="upgrade-guide-for-v2-users">Upgrade guide for v2 users</h1>
 
-<h3 id="disqus_thread">Comments</h3>
-<script>
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://unolabs.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<h2 id="upgrading-your-webserver-initialization">Upgrading your webserver initialization</h2>
+<h2 id="breaking-changes">Breaking changes</h2>
+<ul>
+<li>New Assembly name <code>EmbedIO.dll</code>.</li>
+<li>New Assembly with unit Testing support classes and <code>TestWebServer</code>: <code>EmbedIO.Testing.dll</code>.</li>
+<li>Remove Routing Strategy: everything is using Regex resolution of routes.</li>
+</ul>
 </article>
           </div>
           
@@ -140,6 +89,9 @@ s.setAttribute('data-timestamp', +new Date());
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li class="top-sep">
+                    <a href="https://github.com/unosquare/embedio.wiki/blob/master/Upgrade-from-v2.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
