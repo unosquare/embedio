@@ -250,14 +250,14 @@ namespace EmbedIO.Tests.Utilities
         public void Keys_ContainsAllKeys()
         {
             var dict = new ConcurrentDataDictionary<string, string>(InitialData);
-            CollectionAssert.AreEqual(InitialKeys.OrderBy(x => x), dict.Keys.OrderBy(x => x), StringComparer.Ordinal);
+            CollectionAssert.AreEquivalent(InitialKeys, dict.Keys);
         }
 
         [Test]
         public void Values_ContainsAllValues()
         {
             var dict = new ConcurrentDataDictionary<string, string>(InitialData);
-            CollectionAssert.AreEqual(InitialValues.OrderBy(x => x), dict.Values.OrderBy(x => x), StringComparer.Ordinal);
+            CollectionAssert.AreEquivalent(InitialValues, dict.Values);
         }
 
         [Test]
@@ -838,7 +838,7 @@ namespace EmbedIO.Tests.Utilities
                     list.Add(enumerator.Current);
             }
 
-            CollectionAssert.AreEqual(InitialImportedData.OrderBy(p => p.Key), list.OrderBy(p => p.Key));
+            CollectionAssert.AreEquivalent(InitialImportedData, list);
         }
 
         [Test]
@@ -855,7 +855,7 @@ namespace EmbedIO.Tests.Utilities
             while (enumerator.MoveNext())
                 list.Add(enumerator.Current);
 
-            CollectionAssert.AreEqual(InitialImportedData.OrderBy(p => p.Key), list.Cast<KeyValuePair<string, string>>().OrderBy(p => p.Key));
+            CollectionAssert.AreEquivalent(InitialImportedData, list);
         }
     }
 }

@@ -243,14 +243,14 @@ namespace EmbedIO.Tests.Utilities
         public void Keys_ContainsAllKeys()
         {
             var dict = new DataDictionary<string, string>(InitialData);
-            CollectionAssert.AreEqual(InitialKeys, dict.Keys, StringComparer.Ordinal);
+            CollectionAssert.AreEquivalent(InitialKeys, dict.Keys);
         }
 
         [Test]
         public void Values_ContainsAllValues()
         {
             var dict = new DataDictionary<string, string>(InitialData);
-            CollectionAssert.AreEqual(InitialValues, dict.Values, StringComparer.Ordinal);
+            CollectionAssert.AreEquivalent(InitialValues, dict.Values);
         }
 
         [Test]
@@ -828,7 +828,7 @@ namespace EmbedIO.Tests.Utilities
                     list.Add(enumerator.Current);
             }
 
-            CollectionAssert.AreEqual(InitialImportedData, list);
+            CollectionAssert.AreEquivalent(InitialImportedData, list);
         }
 
         [Test]
@@ -846,7 +846,7 @@ namespace EmbedIO.Tests.Utilities
             while (enumerator.MoveNext())
                 list.Add(enumerator.Current);
 
-            CollectionAssert.AreEqual(InitialImportedData, list);
+            CollectionAssert.AreEquivalent(InitialImportedData, list);
         }
     }
 }
