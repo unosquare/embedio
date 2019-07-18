@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
@@ -73,7 +71,7 @@ namespace EmbedIO.Cors
             {
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin, All);
                 if (isOptions)
-                    ValidateHttpOptions(_methods, context, _validMethods);
+                    ValidateHttpOptions(context);
 
                 return Task.CompletedTask;
             }
@@ -90,16 +88,13 @@ namespace EmbedIO.Cors
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
 
                 if (isOptions)
-                    ValidateHttpOptions(_methods, context, _validMethods);
+                    ValidateHttpOptions(context);
             }
 
             return Task.CompletedTask;
         }
 
-        private static void ValidateHttpOptions(
-            string option, 
-            IHttpContext context,
-            IEnumerable<string> options)
+        private void ValidateHttpOptions(IHttpContext context)
         {
             var requestHeadersHeader = context.Request.Headers[HttpHeaderNames.AccessControlRequestHeaders];
             if (!string.IsNullOrWhiteSpace(requestHeadersHeader))
@@ -116,7 +111,7 @@ namespace EmbedIO.Cors
                 .SplitByComma(StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim());
 
-            if (option != All && !currentMethods.Any(options.Contains))
+            if (_methods != All && !currentMethods.Any(_validMethods.Contains))
                 throw HttpException.BadRequest();
 
             context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowMethods, requestMethodHeader);

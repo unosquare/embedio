@@ -46,7 +46,7 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RouteHandlerCallbackCallback{TContext}"/>
+        /// <seealso cref="RouteHandlerCallback{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
@@ -69,7 +69,7 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RouteHandlerCallbackCallback{TContext}"/>
+        /// <seealso cref="RouteHandlerCallback{TContext}"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>

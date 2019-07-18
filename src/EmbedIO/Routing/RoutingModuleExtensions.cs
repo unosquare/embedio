@@ -24,7 +24,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        /// <seealso cref="RoutingModule.Add(HttpVerbs,string,RouteHandlerCallback{TContext})"/>
+        /// <seealso cref="RoutingModule.Add(HttpVerbs,string,RouteHandlerCallback{IHttpContext})"/>
         public static RoutingModule Handle(this RoutingModule @this, HttpVerbs verb, string route, RouteHandlerCallback<IHttpContext> handler)
         {
             @this.Add(verb, route, handler);
@@ -48,7 +48,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        /// <seealso cref="RoutingModule.Add(HttpVerbs,string,SyncRouteHandlerCallback{TContext})"/>
+        /// <seealso cref="RoutingModule.Add(HttpVerbs,string,SyncRouteHandlerCallback{IHttpContext})"/>
         public static RoutingModule Handle(this RoutingModule @this, HttpVerbs verb, string route, SyncRouteHandlerCallback<IHttpContext> handler)
         {
             @this.Add(verb, route, handler);
