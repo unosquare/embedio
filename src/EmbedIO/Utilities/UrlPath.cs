@@ -158,7 +158,7 @@ namespace EmbedIO.Utilities
         /// <remarks>
         /// <para>Unless both <paramref name="urlPath"/> and <paramref name="baseUrlPath"/> are valid,
         /// normalized URL paths, the behavior of this method is unspecified. You should call this method
-        /// only after calling either <seealso cref="Normalize"/> or <seealso cref="Validate.UrlPath"/>
+        /// only after calling either <see cref="Normalize"/> or <see cref="Validate.UrlPath"/>
         /// to check and normalize both parameters.</para>
         /// <para>If you are not sure about the validity and/or normalization of parameters,
         /// call <see cref="HasPrefix"/> instead of this method.</para>
@@ -216,7 +216,7 @@ namespace EmbedIO.Utilities
         /// <remarks>
         /// <para>Unless both <paramref name="urlPath"/> and <paramref name="baseUrlPath"/> are valid,
         /// normalized URL paths, the behavior of this method is unspecified. You should call this method
-        /// only after calling either <seealso cref="Normalize"/> or <seealso cref="Validate.UrlPath"/>
+        /// only after calling either <see cref="Normalize"/> or <see cref="Validate.UrlPath"/>
         /// to check and normalize both parameters.</para>
         /// <para>If you are not sure about the validity and/or normalization of parameters,
         /// call <see cref="StripPrefix"/> instead of this method.</para>
