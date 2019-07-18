@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -63,21 +62,5 @@ namespace EmbedIO.Samples
         public async Task<Person> GetPeopleByName(string name)
             => await _dbContext.People.FirstOrDefaultAsync(nameof(Person.Name), name).ConfigureAwait(false)
             ?? throw HttpException.NotFound();
-
-        // Session handler
-        [Route(HttpVerbs.Get, "/session")]
-        public object GetSession()
-        {
-            var isEmpty = HttpContext.Session.IsEmpty;
-
-            HttpContext.Session["Id"] = HttpContext.Session.Count == 0 ? Guid.Empty : Guid.NewGuid();
-
-            return new
-            {
-                isEmpty,
-                Guid = HttpContext.Session["Id"],
-                HttpContext.Session.Id,
-            };
-        }
     }
 }

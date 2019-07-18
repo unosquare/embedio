@@ -34,22 +34,12 @@ namespace EmbedIO.Internal
 
         public long UncompressedLength { get; private set; }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && !_leaveOpen)
-            {
-                _target.Dispose();
-            }
-
-            base.Dispose(disposing);
-        }
-
         public override bool CanRead => false;
 
         public override bool CanSeek => false;
 
         public override bool CanWrite => true;
-
+        
         public override void Flush() => _target.Flush();
 
         public override Task FlushAsync(CancellationToken cancellationToken) => _target.FlushAsync(cancellationToken);
@@ -109,6 +99,16 @@ namespace EmbedIO.Internal
         {
             await _target.WriteAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
             UncompressedLength += count;
+        }
+        
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_leaveOpen)
+            {
+                _target.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         private static Exception ReadingNotSupported() => new NotSupportedException("This stream does not support reading.");
