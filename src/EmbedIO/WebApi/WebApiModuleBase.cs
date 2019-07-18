@@ -25,7 +25,7 @@ namespace EmbedIO.WebApi
         private static readonly MethodInfo AwaitResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo AwaitAndCastResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitAndCastResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
-        private static readonly MethodInfo SerializeResultAsyncMethod = typeof(WebApiModuleBase).GetMethod(nameof(SerializeResultAsyncMethod), BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly MethodInfo SerializeResultAsyncMethod = typeof(WebApiModuleBase).GetMethod(nameof(SerializeResultAsync), BindingFlags.Instance | BindingFlags.NonPublic);
 
         private readonly HashSet<Type> _controllerTypes = new HashSet<Type>();
 
