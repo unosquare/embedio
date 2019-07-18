@@ -4,7 +4,7 @@
     <Description>A tiny, cross-platform, module based, MIT-licensed web server. Supporting NET Framework, Net Core, and Mono.</Description>
     <Copyright>Copyright © Unosquare 2013-2019</Copyright>
     <AssemblyTitle>EmbedIO Web Server</AssemblyTitle>
-    <Authors>Unosquare</Authors>
+    <Authors>Unosquare, and Contributors to EmbedIO</Authors>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>EmbedIO</AssemblyName>

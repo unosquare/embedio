@@ -62,6 +62,9 @@ namespace EmbedIO.Cors
         }
 
         /// <inheritdoc />
+        public override bool IsFinalHandler => false;
+
+        /// <inheritdoc />
         protected override Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             var isOptions = context.Request.HttpVerb == HttpVerbs.Options;
@@ -70,8 +73,12 @@ namespace EmbedIO.Cors
             if (_origins == All && _headers == All && _methods == All)
             {
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin, All);
+
                 if (isOptions)
+                {
                     ValidateHttpOptions(context);
+                    context.Handled = true;
+                }
 
                 return Task.CompletedTask;
             }
