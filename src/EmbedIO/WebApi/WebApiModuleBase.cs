@@ -447,7 +447,7 @@ namespace EmbedIO.WebApi
                 // Convert void to Task by evaluating Task.CompletedTask
                 callMethod = Expression.Block(typeof(Task), callMethod, Expression.Constant(Task.CompletedTask));
             }
-            else if (methodReturnType.IsGenericTaskType(out var resultType))
+            else if (IsGenericTaskType(methodReturnType, out var resultType))
             {
                 // Return a Task that serializes the result of a Task<TResult>
                 callMethod = Expression.Call(
@@ -525,7 +525,18 @@ namespace EmbedIO.WebApi
                     throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".");
             }
         }
-        
+
+        private async Task SerializeResultAsync<TResult>(
+            IHttpContext context,
+            Task<TResult> task,
+            CancellationToken cancellationToken)
+        {
+            await Serializer(
+                context,
+                await task.ConfigureAwait(false),
+                cancellationToken).ConfigureAwait(false);
+        }
+
         private Type ValidateControllerType(string argumentName, Type value, bool canBeAbstract)
         {
             value = Validate.NotNull(argumentName, value);
@@ -570,5 +581,20 @@ namespace EmbedIO.WebApi
 
             _controllerTypes.Add(controllerType);
         }
+
+        private bool IsGenericTaskType(Type type, out Type resultType)
+        {
+            resultType = null;
+
+            if (!type.IsConstructedGenericType)
+                return false;
+
+            if (type.GetGenericTypeDefinition() != typeof(Task<>))
+                return false;
+
+            resultType = type.GetGenericArguments()[0];
+            return true;
+        }
+
     }
 }
