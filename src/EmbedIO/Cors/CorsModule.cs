@@ -84,6 +84,7 @@ namespace EmbedIO.Cors
             }
 
             var currentOrigin = context.Request.Headers[HttpHeaderNames.Origin];
+
             if (string.IsNullOrWhiteSpace(currentOrigin) && context.Request.IsLocal)
                 return Task.CompletedTask;
 
@@ -95,7 +96,10 @@ namespace EmbedIO.Cors
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
 
                 if (isOptions)
+                {
                     ValidateHttpOptions(context);
+                    context.Handled = true;
+                }
             }
 
             return Task.CompletedTask;
