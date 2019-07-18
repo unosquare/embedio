@@ -1,34 +1,37 @@
-<div ng-controller="ChatController as me">
-    <h1>Welcome to the chat room {{me.nickName}}</h1>
-    <form name="sendForm" ng-submit="sendForm.$valid && me.submit()" novalidate>
-        <div class="form-group">
-            <label>Nick:</label>
-            <label class="sr-only">Nick</label>
-            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                <div class="input-group-addon"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i></div>
-                <input class="form-control" type="text" ng-model="me.nickName" required />
-            </div>
+<div ng-controller="ChatController as me" class="container d-flex flex-column">
+    <h1 class="col-12 mb-5">Welcome to the chat room {{me.nickName}}</h1>
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column col-3">
+            <form name="sendForm" ng-submit="sendForm.$valid && me.submit()" novalidate>
+                <div class="form-group">
+                    <label>Nick:</label>
+                    <label class="sr-only">Nick</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon"><i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i></div>
+                        <input class="form-control" type="text" ng-model="me.nickName" required />
+                    </div>
 
+                </div>
+
+                <div class="form-group">
+                    <label>Message: </label>
+                    <label class="sr-only">Nick</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon"><i class="fa fa-commenting fa-lg" aria-hidden="true"></i></div>
+                        <input class="form-control" type="text" placeholder="Enter your message here." ng-model="me.message" required />
+                    </div>
+                </div>
+
+                <button class="btn btn-primary offset-6 col-6" type="submit">Send Message</button>
+            </form>
         </div>
-
-        <div class="form-group">
-            <label>Message: </label>
-            <label class="sr-only">Nick</label>
-            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                <div class="input-group-addon"><i class="fa fa-commenting fa-lg" aria-hidden="true"></i></div>
-                <input class="form-control" type="text" placeholder="Enter your message here." ng-model="me.message" required />
+        <div class="col-9" style="height: 400px; overflow: auto; border-width: 1px; border-style: solid; border-color: #ccc;">
+            <div ng-repeat="message in me.messages | orderBy : 'time' : true" ng-class="{ 'ws-control': message.type === 'C', 'ws-receive': message.type === 'R', 'ws-transmit': message.type === 'T', 'ws-error': message.type === 'E' }">
+                <blockquote style="margin: 0;">
+                    <p style="font-size: 14px;"><label style="color: #8A2BE2;">{{message.nick}}</label> - {{message.content}}</p>
+                    <footer style="font-size: 11px; background: #fff">{{message.time | date: 'medium'}}</footer>
+                </blockquote>
             </div>
-        </div>
-
-        <button class="btn btn-sm btn-primary" type="submit">Send Message</button>
-    </form>
-    <hr />
-    <div style="height: 400px; overflow: auto; border-width: 1px; border-style: solid; border-color: #ccc;">
-        <div ng-repeat="message in me.messages | orderBy : 'time' : true" ng-class="{ 'ws-control': message.type === 'C', 'ws-receive': message.type === 'R', 'ws-transmit': message.type === 'T', 'ws-error': message.type === 'E' }">
-            <blockquote style="margin: 0;">
-                <p style="font-size: 14px;"><label style="color: #8A2BE2;">{{message.nick}}</label> - {{message.content}}</p>
-                <footer style="font-size: 11px;">{{message.time | date: 'medium'}}</footer>
-            </blockquote>
         </div>
     </div>
 </div>
