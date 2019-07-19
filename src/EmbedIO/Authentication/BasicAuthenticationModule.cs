@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace EmbedIO.Authentication
 {
     /// <summary>
-    /// Simple HTTP basic authorization module that stores credentials
+    /// Simple HTTP basic authentication module that stores credentials
     /// in a <seealso cref="ConcurrentDictionary{TKey,TValue}"/>.
     /// </summary>
     public class BasicAuthenticationModule : BasicAuthenticationModuleBase

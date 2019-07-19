@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 namespace EmbedIO.Authentication
 {
     /// <summary>
-    /// Basic HTTP authorization module that will return 401 + WWW-Authenticate header
-    /// if a request contains invalid or no credentials.
+    /// Implements <see href="https://tools.ietf.org/html/rfc7617">HTTP basic authentication</see>.
     /// </summary>
     public abstract class BasicAuthenticationModuleBase : WebModuleBase
     {
