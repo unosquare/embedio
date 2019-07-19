@@ -166,7 +166,7 @@ namespace EmbedIO.Files
         /// <summary>
         /// <para>Gets or sets a <see cref="FileRequestHandlerCallback"/> that is called whenever
         /// the requested URL path could not be mapped to any file or directory.</para>
-        /// <para>The default is <see cref="FileRequestHandler.PassThrough"/>.</para>
+        /// <para>The default is <see cref="FileRequestHandler.ThrowNotFound"/>.</para>
         /// </summary>
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
         /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
@@ -185,7 +185,7 @@ namespace EmbedIO.Files
         /// <para>Gets or sets a <see cref="FileRequestHandlerCallback"/> that is called whenever
         /// the requested URL path has been mapped to a directory, but directory listing has been
         /// disabled by setting <see cref="DirectoryLister"/> to <see langword="null"/>.</para>
-        /// <para>The default is <see cref="FileRequestHandler.PassThrough"/>.</para>
+        /// <para>The default is <see cref="FileRequestHandler.ThrowUnauthorized"/>.</para>
         /// </summary>
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
         /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
