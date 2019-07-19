@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title ng-controller="TitleController as title">EmbedIO - {{title.content}} - Unosquare Labs</title>
 
+    <link rel="stylesheet" href="//cdn.unosquare.com/v2/components.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css">
     <link rel="stylesheet" href="//npmcdn.com/angular-toastr/dist/angular-toastr.css" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -14,15 +15,54 @@
 
 <body>
     <app-menu></app-menu>
-    <div class="container" role="main" ng-view></div>
-    <div class="container">
-        <hr />
-        <footer>
-            <div class="alert alert-info" role="alert">Location: {{menu.whereAmI() | json}}</div>
-            ©
-            <script type="text/javascript">document.write(new Date().getFullYear());</script> unosquare
-        </footer>
-    </div>
+    <div role="main" ng-view></div>
+    <footer class="main-footer d-flex">
+        <div class="container-fluid mb-3">
+            <div class="d-flex justify-content-center social-footer-icons" style="color:white">
+                <div class=" flex-container">
+                    <a href="https://www.facebook.com/unosquare/" target="_blank">
+                        <svg class="svg" viewBox="0 0 40 40">
+                            <g id="facebook" class="icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                <g id="Facebook" stroke="#FFFFFF">
+                                    <g id="Group-17" transform="translate(8.000000, 8.000000)">
+                                        <path d="M23.5,0 L1.5,0 C0.671,0 0,0.671 0,1.5 L0,23.5 C0,24.329 0.671,25 1.5,25 L13,25 L13,17 L10,17 L10,13 L13,13 L13,10 C13,7.239 15.239,5 18,5 L21,5 L21,9 L19,9 C17.896,9 17,9.896 17,11 L17,13 L21,13 L20.5,17 L17,17 L17,25 L23.5,25 C24.329,25 25,24.329 25,23.5 L25,1.5 C25,0.671 24.329,0 23.5,0 Z" id="Stroke-2050"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                    <a href="https://twitter.com/unosquare" target="_blank">
+                        <svg class="svg" viewBox="0 0 40 40">
+                            <g id="twitter" class="icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                <g id="Twitter" stroke="#FFFFFF">
+                                    <g id="Group-16" transform="translate(5.000000, 9.000000)">
+                                        <path d="M1.891,1.21 C4.319,4.169 8.666,6.962 14.5,7.263 C14.178,5.978 14.147,2.489 16.691,1.04 C17.829,0.391 18.906,0 20.174,0 C21.768,0 23.077,0.524 24.469,1.801 C25.601,1.643 27.718,0.77 28.22,0.426 C27.893,1.63 26.585,3.175 25.64,3.542 C26.508,3.54 28.415,3.042 29,2.748 C28.189,4 26.773,5.198 25.998,5.695 C26.895,13.406 19.737,22.99 9.456,23 C6.52,23.003 3.33,22.404 0,20.579 C3.285,20.948 6.805,19.926 8.826,18.158 C6.277,18.103 3.696,16.453 2.521,13.921 C3.799,14.303 4.976,14.496 5.674,13.921 C4.484,13.793 0.63,11.766 0.63,7.841 C1.516,8.545 2.791,9.272 3.783,9.079 C2.161,8.156 -0.197,4.645 1.891,1.21 Z" id="Stroke-2052"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/company/293703/" target="_blank">
+                        <svg class="svg" viewBox="0 0 40 40">
+                            <g id="linkedin-white" class="icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                <g id="LinkedIn" stroke="#FFFFFF">
+                                    <g id="Group-15" transform="translate(7.000000, 8.000000)">
+                                        <path d="M8,6 C8,7.104 7.104,8 6,8 C4.896,8 4,7.104 4,6 C4,4.896 4.896,4 6,4 C7.104,4 8,4.896 8,6 Z" id="Stroke-2173"></path>
+                                        <polygon id="Stroke-2175" points="4 22 8 22 8 10 4 10"></polygon>
+                                        <path d="M23.5,0 L1.5,0 C0.671,0 0,0.671 0,1.5 L0,23.5 C0,24.329 0.671,25 1.5,25 L23.5,25 C24.329,25 25,24.329 25,23.5 L25,1.5 C25,0.671 24.329,0 23.5,0 Z" id="Stroke-2177"></path>
+                                        <path d="M17.5,10 C16.078,10 14.825,10.673 14,11.704 L14,10 L10,10 L10,22 L13,22 L14,22 L14,15 C14,13.896 14.896,13 16,13 C17.104,13 18,13.896 18,15 L18,22 L22,22 L22,14.5 C22,12.015 19.985,10 17.5,10 Z" id="Stroke-2178"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+                <div class="flex-container flex-column">
+                    <small class="copyright-sign">Copyright &copy; Unosquare, LLC</small>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="/scripts/bundle.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-local-storage/0.1.5/angular-local-storage.min.js"></script>
