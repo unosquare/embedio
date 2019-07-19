@@ -31,7 +31,7 @@ namespace EmbedIO.Authentication
         }
 
         /// <inheritdoc />
-        public override bool IsFinalHandler => false;
+        public sealed override bool IsFinalHandler => false;
 
         /// <summary>
         /// Gets the authentication realm.
@@ -39,7 +39,7 @@ namespace EmbedIO.Authentication
         public string Realm { get; }
 
         /// <inheritdoc />
-        protected override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected sealed override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
             async Task<bool> IsAuthenticatedAsync()
             {

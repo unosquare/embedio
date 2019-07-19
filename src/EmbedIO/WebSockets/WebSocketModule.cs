@@ -65,7 +65,7 @@ namespace EmbedIO.WebSockets
         }
 
         /// <inheritdoc />
-        public sealed override bool IsFinalHandler => false;
+        public sealed override bool IsFinalHandler => true;
 
         /// <summary>
         /// <para>Gets or sets the maximum size of a received message.
@@ -177,8 +177,9 @@ namespace EmbedIO.WebSockets
                 foreach (var protocol in _protocols)
                     context.Response.Headers.Add(HttpHeaderNames.SecWebSocketProtocol, protocol);
 
+                // Not throwing a HTTP exception here because a WebSocket client
+                // does not care about nice, formatted messages.
                 context.Response.SetEmptyResponse((int)HttpStatusCode.BadRequest);
-                context.Handled = true;
                 return;
             }
 
@@ -222,8 +223,6 @@ namespace EmbedIO.WebSockets
                 // once the loop is completed or connection aborted, remove the WebSocket
                 RemoveWebSocket(webSocketContext);
             }
-
-            context.Handled = true;
         }
 
         /// <inheritdoc />

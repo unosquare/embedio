@@ -61,6 +61,9 @@ namespace EmbedIO.Files
             Dispose(false);
         }
 
+        /// <inheritdoc />
+        public override bool IsFinalHandler => true;
+
         /// <summary>
         /// Gets the <see cref="IFileProvider"/>interface that provides access
         /// to actual files and directories served by this module.

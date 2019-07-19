@@ -69,7 +69,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public virtual bool IsFinalHandler => true;
+        public abstract bool IsFinalHandler { get; }
 
         /// <inheritdoc />
         /// <remarks>

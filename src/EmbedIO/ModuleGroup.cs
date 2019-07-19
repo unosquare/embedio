@@ -30,9 +30,10 @@ namespace EmbedIO
         /// </summary>
         /// <param name="baseUrlPath">The base URL path served by this module.</param>
         /// <seealso cref="IWebModule.BaseUrlPath" />
-        public ModuleGroup(string baseUrlPath)
+        public ModuleGroup(string baseUrlPath, bool isFinalHandler)
             : base(baseUrlPath)
         {
+            IsFinalHandler = isFinalHandler;
             _modules = new WebModuleCollection(nameof(ModuleGroup), BaseUrlPath);
         }
 
@@ -43,6 +44,9 @@ namespace EmbedIO
         {
             Dispose(false);
         }
+
+        /// <inheritdoc />
+        public sealed override bool IsFinalHandler { get; }
 
         /// <inheritdoc />
         public IComponentCollection<IWebModule> Modules => _modules;
