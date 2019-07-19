@@ -36,37 +36,16 @@ namespace EmbedIO.Internal
                 return;
 
             requestedPath = "/" + requestedPath;
-
-            var contextImpl = context as IHttpContextImpl;
             foreach (var (name, module) in WithSafeNames)
             {
                 var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
                 if (path == null)
                     continue;
 
-                var mimeTypeProvider = module as IMimeTypeProvider;
-                if (mimeTypeProvider != null)
-                    contextImpl?.MimeTypeProviders.Push(mimeTypeProvider);
-
-                try
-                {
-                    $"[{context.Id}] Processing with {name}.".Debug(_logSource);
-                    await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false);
-                    if (module.IsFinalHandler)
-                    {
-                        context.Handled = true;
-                        break;
-                    }
-                }
-                catch (RequestHandlerPassThroughException)
-                {
-                    continue;
-                }
-                finally
-                {
-                    if (mimeTypeProvider != null)
-                        contextImpl?.MimeTypeProviders.Pop();
-                }
+                $"[{context.Id}] Processing with {name}.".Debug(_logSource);
+                await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false);
+                if (context.Handled)
+                    break;
             }
         }
     }

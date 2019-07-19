@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Internal;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
@@ -83,9 +84,20 @@ namespace EmbedIO
         /// <inheritdoc />
         public async Task HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
         {
+            var contextImpl = context as IHttpContextImpl;
+            var mimeTypeProvider = this as IMimeTypeProvider;
+            if (mimeTypeProvider != null)
+                contextImpl?.MimeTypeProviders.Push(mimeTypeProvider);
+
             try
             {
                 await OnRequestAsync(context, path, cancellationToken).ConfigureAwait(false);
+                if (IsFinalHandler)
+                    context.Handled = true;
+            }
+            catch (RequestHandlerPassThroughException)
+            {
+                return;
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -105,6 +117,11 @@ namespace EmbedIO
                 await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, cancellationToken)
                     .ConfigureAwait(false);
 
+            }
+            finally
+            {
+                if (mimeTypeProvider != null)
+                    contextImpl?.MimeTypeProviders.Pop();
             }
         }
 
