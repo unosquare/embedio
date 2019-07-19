@@ -44,10 +44,19 @@ body {
 .active {
     text-transform: none !important;
     letter-spacing: 0px !important;
+    border-bottom: 2px solid white;
 }
 
 blockquote {
     border-left: 5px solid #165FFB;
+}
+
+input, label, button, a, select {
+    font-family: Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+}
+
+a {
+    font-weight: 600;
 }
 
 /*TWBS Color permalink http://work.smarchal.com/twbscolor/css/504a5278707cffffffcecece0 */
