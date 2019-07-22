@@ -32,11 +32,9 @@ namespace EmbedIO
         new bool SupportCompressedRequests { get; set; }
 
         /// <summary>
-        /// Gets the MIME type providers.
+        /// <para>Gets the MIME type providers.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
-        /// <value>
-        /// The MIME type providers.
-        /// </value>
         MimeTypeProviderStack MimeTypeProviders { get; }
 
         /// <summary>
