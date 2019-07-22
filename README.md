@@ -179,13 +179,11 @@ You can open the Response Output Stream with the extension [OpenResponseStream](
 
 ```csharp
     [Route(HttpVerbs.Get, "/binary")]
-    public async Task<true> GetBinary() 
+    public async Task GetBinary() 
     {
 	// Call a fictional external source
 	using (var stream = HttpContext.OpenResponseStream())
                 await stream.WriteAsync(dataBuffer, 0, 0, CancellationToken);
-		
-	return true;
     }
 ```
 
