@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace EmbedIO
 {
@@ -15,9 +14,7 @@ namespace EmbedIO
         /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <param name="context">The HTTP context.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/>
-        /// used to cancel the  operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken);
+        Task HandleContextAsync(IHttpContextImpl context);
     }
 }

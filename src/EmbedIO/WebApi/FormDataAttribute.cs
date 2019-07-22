@@ -18,6 +18,6 @@ namespace EmbedIO.WebApi
     {
         /// <inheritdoc />
         public Task<NameValueCollection> GetRequestDataAsync(WebApiController controller, string parameterName)
-            => controller.HttpContext.GetRequestFormDataAsync(controller.CancellationToken);
+            => controller.HttpContext.GetRequestFormDataAsync();
     }
 }

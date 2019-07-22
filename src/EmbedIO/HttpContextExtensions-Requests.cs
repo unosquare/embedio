@@ -2,7 +2,6 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Runtime.ExceptionServices;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
@@ -18,18 +17,15 @@ namespace EmbedIO
         /// Asynchronously retrieves the request body as an array of <see langword="byte"/>s.
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
         /// whose result will be an array of <see cref="byte"/>s containing the request body.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static async Task<byte[]> GetRequestBodyAsByteArrayAsync(
-            this IHttpContext @this,
-            CancellationToken cancellationToken)
+        public static async Task<byte[]> GetRequestBodyAsByteArrayAsync(this IHttpContext @this)
         {
             using (var buffer = new MemoryStream())
             using (var stream = @this.OpenRequestStream())
             {
-                await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, cancellationToken).ConfigureAwait(false);
+                await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, @this.CancellationToken).ConfigureAwait(false);
                 return buffer.ToArray();
             }
         }
@@ -38,15 +34,12 @@ namespace EmbedIO
         /// Asynchronously buffers the request body into a read-only <see cref="MemoryStream"/>.
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
         /// whose result will be a read-only <see cref="MemoryStream"/> containing the request body.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static async Task<MemoryStream> GetRequestBodyAsMemoryStreamAsync(
-            this IHttpContext @this,
-            CancellationToken cancellationToken)
+        public static async Task<MemoryStream> GetRequestBodyAsMemoryStreamAsync(this IHttpContext @this)
             => new MemoryStream(
-                await GetRequestBodyAsByteArrayAsync(@this, cancellationToken).ConfigureAwait(false),
+                await GetRequestBodyAsByteArrayAsync(@this).ConfigureAwait(false),
                 false);
 
         /// <summary>
@@ -71,14 +64,11 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TData">The expected type of the deserialized data.</typeparam>
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
         /// whose result will be the deserialized data.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static Task<TData> GetRequestDataAsync<TData>(
-            this IHttpContext @this,
-            CancellationToken cancellationToken)
-            => RequestDeserializer.Default<TData>(@this, cancellationToken);
+        public static Task<TData> GetRequestDataAsync<TData>(this IHttpContext @this)
+            => RequestDeserializer.Default<TData>(@this);
 
         /// <summary>
         /// Asynchronously deserializes a request body, using the specified request deserializer.
@@ -86,22 +76,17 @@ namespace EmbedIO
         /// <typeparam name="TData">The expected type of the deserialized data.</typeparam>
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
         /// <param name="deserializer">A <see cref="RequestDeserializerCallback{TData}"/> used to deserialize the request body.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
         /// whose result will be the deserialized data.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="deserializer"/> is <see langword="null"/>.</exception>
-        public static Task<TData> GetRequestDataAsync<TData>(
-            this IHttpContext @this,
-            RequestDeserializerCallback<TData> deserializer,
-            CancellationToken cancellationToken)
-            => Validate.NotNull(nameof(deserializer), deserializer)(@this, cancellationToken);
+        public static Task<TData> GetRequestDataAsync<TData>(this IHttpContext @this,RequestDeserializerCallback<TData> deserializer)
+            => Validate.NotNull(nameof(deserializer), deserializer)(@this);
 
         /// <summary>
         /// Asynchronously parses a request body in <c>application/x-www-form-urlencoded</c> format.
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext"/> on which this method is called.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
         /// whose result will be a read-only <see cref="NameValueCollection"/>of form field names and values.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
@@ -109,9 +94,7 @@ namespace EmbedIO
         /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
         /// it will return the same collection instead of trying to parse the request body again.</para>
         /// </remarks>
-        public static async Task<NameValueCollection> GetRequestFormDataAsync(
-            this IHttpContext @this,
-            CancellationToken cancellationToken)
+        public static async Task<NameValueCollection> GetRequestFormDataAsync(this IHttpContext @this)
         {
             if (!@this.Items.TryGetValue(FormDataKey, out var previousResult))
             {

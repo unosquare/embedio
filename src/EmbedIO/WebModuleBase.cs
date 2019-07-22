@@ -82,7 +82,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public async Task HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        public async Task HandleRequestAsync(IHttpContext context)
         {
             var contextImpl = context as IHttpContextImpl;
             var mimeTypeProvider = this as IMimeTypeProvider;
@@ -91,7 +91,7 @@ namespace EmbedIO
 
             try
             {
-                await OnRequestAsync(context, path, cancellationToken).ConfigureAwait(false);
+                await OnRequestAsync(context).ConfigureAwait(false);
                 if (IsFinalHandler)
                     context.SetHandled();
             }
@@ -99,7 +99,7 @@ namespace EmbedIO
             {
                 return;
             }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
             {
                 throw; // Let the web server handle it
             }
@@ -109,12 +109,12 @@ namespace EmbedIO
             }
             catch (Exception exception) when (exception is IHttpException)
             {
-                await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException, cancellationToken)
+                await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException)
                     .ConfigureAwait(false);
             }
             catch (Exception exception)
             {
-                await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, cancellationToken)
+                await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException)
                     .ConfigureAwait(false);
 
             }
@@ -134,16 +134,8 @@ namespace EmbedIO
         /// Called to handle a request from a client.
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>. See the Remarks section for more information.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        /// <remarks>
-        /// <para>The path specified in the requested URL is stripped of the <see cref="BaseUrlPath"/>
-        /// and passed in the <paramref name="path"/> parameter.</para>
-        /// <para>The <paramref name="path"/> parameter is in itself a valid URL path, including an initial
-        /// slash (<c>/</c>) character.</para>
-        /// </remarks>
-        protected abstract Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
+        protected abstract Task OnRequestAsync(IHttpContext context);
 
         /// <summary>
         /// Called when a module is started, immediately before locking the module's configuration.

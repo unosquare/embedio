@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 
@@ -26,17 +25,17 @@ namespace EmbedIO.Routing
         public override bool IsFinalHandler => true;
 
         /// <inheritdoc />
-        protected override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task OnRequestAsync(IHttpContext context)
         {
-            var result = await _resolvers.ResolveAsync(context, path, cancellationToken).ConfigureAwait(false);
+            var result = await _resolvers.ResolveAsync(context).ConfigureAwait(false);
             switch (result)
             {
                 case RouteResolutionResult.RouteNotMatched:
                 case RouteResolutionResult.NoHandlerSuccessful:
-                    await OnPathNotFoundAsync(context, path, cancellationToken).ConfigureAwait(false);
+                    await OnPathNotFoundAsync(context).ConfigureAwait(false);
                     break;
                 case RouteResolutionResult.NoHandlerSelected:
-                    await OnMethodNotAllowedAsync(context, path, cancellationToken).ConfigureAwait(false);
+                    await OnMethodNotAllowedAsync(context).ConfigureAwait(false);
                     break;
                 case RouteResolutionResult.Success:
                     return;
@@ -60,7 +59,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void AddHandler(HttpVerbs verb, string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void AddHandler(HttpVerbs verb, string route, RouteHandlerCallback handler)
             => _resolvers.Add(verb, route, handler);
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void AddHandler(HttpVerbs verb, string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void AddHandler(HttpVerbs verb, string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(verb, route, handler);
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnAny(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnAny(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Any, route, handler);
 
         /// <summary>
@@ -116,7 +115,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnAny(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnAny(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Any, route, handler);
 
         /// <summary>
@@ -130,7 +129,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnDelete(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnDelete(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Delete, route, handler);
 
         /// <summary>
@@ -144,7 +143,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnDelete(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnDelete(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Delete, route, handler);
 
         /// <summary>
@@ -158,7 +157,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnGet(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnGet(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Get, route, handler);
 
         /// <summary>
@@ -172,7 +171,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnGet(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnGet(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Get, route, handler);
 
         /// <summary>
@@ -186,7 +185,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnHead(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnHead(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Head, route, handler);
 
         /// <summary>
@@ -200,7 +199,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnHead(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnHead(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Head, route, handler);
 
         /// <summary>
@@ -214,7 +213,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnOptions(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnOptions(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Options, route, handler);
 
         /// <summary>
@@ -228,7 +227,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnOptions(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnOptions(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Options, route, handler);
 
         /// <summary>
@@ -242,7 +241,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnPatch(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnPatch(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Patch, route, handler);
 
         /// <summary>
@@ -256,7 +255,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnPatch(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnPatch(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Patch, route, handler);
 
         /// <summary>
@@ -270,7 +269,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnPost(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnPost(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Post, route, handler);
 
         /// <summary>
@@ -284,7 +283,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnPost(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnPost(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Post, route, handler);
 
         /// <summary>
@@ -298,7 +297,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnPut(string route, RouteHandlerCallback<IHttpContext> handler)
+        protected void OnPut(string route, RouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Put, route, handler);
 
         /// <summary>
@@ -312,7 +311,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        protected void OnPut(string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        protected void OnPut(string route, SyncRouteHandlerCallback handler)
             => _resolvers.Add(HttpVerbs.Put, route, handler);
 
         /// <summary>
@@ -320,10 +319,8 @@ namespace EmbedIO.Routing
         /// <para>The default behavior is to send an empty <c>404 Not Found</c> response.</para>
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected virtual Task OnPathNotFoundAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected virtual Task OnPathNotFoundAsync(IHttpContext context)
             => throw HttpException.NotFound();
 
         /// <summary>
@@ -332,10 +329,8 @@ namespace EmbedIO.Routing
         /// <para>The default behavior is to send an empty <c>405 Method Not Allowed</c> response.</para>
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected virtual Task OnMethodNotAllowedAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected virtual Task OnMethodNotAllowedAsync(IHttpContext context)
             => throw HttpException.MethodNotAllowed();
     }
 }

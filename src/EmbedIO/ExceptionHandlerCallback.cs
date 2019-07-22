@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO
@@ -10,7 +9,6 @@ namespace EmbedIO
     /// </summary>
     /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
     /// <param name="exception">The unhandled exception.</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
     /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
     /// <remarks>
     /// <para>When this delegate is called, the response's status code has already been set to
@@ -20,5 +18,5 @@ namespace EmbedIO
     /// In other words, it is not a good ides to <c>throw HttpException.NotFound()</c> (or similar)
     /// from a handler.</para>
     /// </remarks>
-    public delegate Task ExceptionHandlerCallback(IHttpContext context, Exception exception, CancellationToken cancellationToken);
+    public delegate Task ExceptionHandlerCallback(IHttpContext context, Exception exception);
 }

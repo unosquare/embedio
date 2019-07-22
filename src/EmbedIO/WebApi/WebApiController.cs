@@ -31,10 +31,9 @@ namespace EmbedIO.WebApi
         public RouteMatch Route { get; internal set; }
 
         /// <summary>
-        /// <para>Gets the cancellation token used to cancel processing of the request.</para>
-        /// <para>This property is automatically initialized upon controller creation.</para>
+        /// Gets the <see cref="CancellationToken" /> used to cancel processing of the request.
         /// </summary>
-        public CancellationToken CancellationToken { get; internal set; }
+        public CancellationToken CancellationToken => HttpContext.CancellationToken;
 
         /// <summary>
         /// Gets the HTTP request.

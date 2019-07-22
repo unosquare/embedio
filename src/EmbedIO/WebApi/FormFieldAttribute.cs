@@ -111,7 +111,7 @@ namespace EmbedIO.WebApi
             WebApiController controller,
             string parameterName)
         {
-            var data = await controller.HttpContext.GetRequestFormDataAsync(controller.CancellationToken)
+            var data = await controller.HttpContext.GetRequestFormDataAsync()
                 .ConfigureAwait(false);
 
             var fieldName = FieldName ?? parameterName;
@@ -125,7 +125,7 @@ namespace EmbedIO.WebApi
             WebApiController controller,
             string parameterName)
         {
-            var data = await controller.HttpContext.GetRequestFormDataAsync(controller.CancellationToken)
+            var data = await controller.HttpContext.GetRequestFormDataAsync()
                 .ConfigureAwait(false);
 
             var fieldName = FieldName ?? parameterName;
@@ -140,7 +140,7 @@ namespace EmbedIO.WebApi
             Type type,
             string parameterName)
         {
-            var data = await controller.HttpContext.GetRequestFormDataAsync(controller.CancellationToken)
+            var data = await controller.HttpContext.GetRequestFormDataAsync()
                 .ConfigureAwait(false);
 
             var fieldName = FieldName ?? parameterName;

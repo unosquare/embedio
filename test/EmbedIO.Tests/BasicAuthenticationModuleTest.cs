@@ -23,7 +23,7 @@ namespace EmbedIO.Tests
         {
             Server
                 .WithModule(new BasicAuthenticationModule("/").WithAccount(UserName, Password))
-                .OnAny((ctx, path, ct) =>
+                .OnAny(ctx =>
                 {
                     ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);
                     return Task.FromResult(true);

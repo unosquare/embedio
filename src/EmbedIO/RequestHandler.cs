@@ -9,8 +9,6 @@ namespace EmbedIO
     /// <seealso cref="RequestHandlerCallback"/>
     public static class RequestHandler
     {
-#pragma warning disable CA1801 // Unused parameters
-
         /// <summary>
         /// <para>Returns an exception object that, when thrown from a module's
         /// <see cref="IWebModule.HandleRequestAsync">HandleRequestAsync</see> method, will cause the HTTP context
@@ -26,7 +24,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
         public static RequestHandlerCallback ThrowUnauthorized(string message = null)
-            => (ctx, path, ct) => throw HttpException.Unauthorized(message);
+            => _ => throw HttpException.Unauthorized(message);
 
         /// <summary>
         /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>403 Forbidden</c> response.</para>
@@ -34,7 +32,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
         public static RequestHandlerCallback ThrowForbidden(string message = null)
-            => (ctx, path, ct) => throw HttpException.Forbidden(message);
+            => _ => throw HttpException.Forbidden(message);
 
         /// <summary>
         /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>400 Bad Request</c> response.</para>
@@ -42,7 +40,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
         public static RequestHandlerCallback ThrowBadRequest(string message = null)
-            => (ctx, path, ct) => throw HttpException.BadRequest(message);
+            => _ => throw HttpException.BadRequest(message);
 
         /// <summary>
         /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>404 Not Found</c> response.</para>
@@ -50,7 +48,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
         public static RequestHandlerCallback ThrowNotFound(string message = null)
-            => (ctx, path, ct) => throw HttpException.NotFound(message);
+            => _ => throw HttpException.NotFound(message);
 
         /// <summary>
         /// <para>Returns a <see cref="RequestHandlerCallback" /> that unconditionally sends a <c>405 Method Not Allowed</c> response.</para>
@@ -58,8 +56,6 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <returns>A <see cref="RequestHandlerCallback" />.</returns>
         public static RequestHandlerCallback ThrowMethodNotAllowed(string message = null)
-            => (ctx, path, ct) => throw HttpException.MethodNotAllowed();
-
-#pragma warning disable CA1801 // Unused parameters
+            => _ => throw HttpException.MethodNotAllowed();
     }
 }

@@ -26,7 +26,9 @@ namespace EmbedIO.Testing.Internal
                 serverRequest.Headers.Add(HttpHeaderNames.Cookie, cookiesFromContainer);
 
             var context = new TestContext(serverRequest);
-            await _handler.HandleContextAsync(context, cancellationToken).ConfigureAwait(false);
+            context.CancellationToken = cancellationToken;
+            context.RequestedPath = UrlPath.Normalize(serverRequest.Url.AbsolutePath, false);
+            await _handler.HandleContextAsync(context).ConfigureAwait(false);
             var serverResponse = context.TestResponse;
             var responseCookies = serverResponse.Headers.Get(HttpHeaderNames.SetCookie);
             if (!string.IsNullOrEmpty(responseCookies))

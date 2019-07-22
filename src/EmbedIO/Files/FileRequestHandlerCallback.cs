@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace EmbedIO.Files
 {
@@ -7,10 +6,8 @@ namespace EmbedIO.Files
     /// A callback used to handle a request in <see cref="FileModule"/>.
     /// </summary>
     /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
-    /// <param name="path">The requested path, relative to the innermost containing module's <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</param>
-    /// <param name="info">If <paramref name="path"/> has been successfully mapped to a resource (file or directory), the result of the mapping;
+    /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
     /// otherwise, <see langword="null"/>.</param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
     /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-    public delegate Task FileRequestHandlerCallback(IHttpContext context, string path, MappedResourceInfo info, CancellationToken cancellationToken);
+    public delegate Task FileRequestHandlerCallback(IHttpContext context, MappedResourceInfo info);
 }

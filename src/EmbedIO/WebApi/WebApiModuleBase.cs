@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.Utilities;
@@ -21,7 +20,6 @@ namespace EmbedIO.WebApi
         private static readonly MethodInfo PreProcessRequestMethod = typeof(WebApiController).GetMethod(nameof(WebApiController.PreProcessRequest));
         private static readonly MethodInfo HttpContextSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.HttpContext)).GetSetMethod(true);
         private static readonly MethodInfo RouteSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.Route)).GetSetMethod(true);
-        private static readonly MethodInfo CancellationTokenSetter = typeof(WebApiController).GetProperty(nameof(WebApiController.CancellationToken)).GetSetMethod(true);
         private static readonly MethodInfo AwaitResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo AwaitAndCastResultMethod = typeof(WebApiModuleBase).GetMethod(nameof(AwaitAndCastResult), BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo DisposeMethod = typeof(IDisposable).GetMethod(nameof(IDisposable.Dispose));
@@ -288,7 +286,7 @@ namespace EmbedIO.WebApi
         // - serializes the returned object (or the result of the returned task),
         //   unless the return type of the controller method is void or Task;
         // - if the controller implements IDisposable, disposes it.
-        private RouteHandlerCallback<IHttpContext> CompileHandler(Expression factoryExpression, MethodInfo method, string route)
+        private RouteHandlerCallback CompileHandler(Expression factoryExpression, MethodInfo method, string route)
         {
             // Parse the route
             var matcher = RouteMatcher.Parse(route);
@@ -296,7 +294,6 @@ namespace EmbedIO.WebApi
             // Lambda parameters
             var contextInLambda = Expression.Parameter(typeof(IHttpContext), "context");
             var routeInLambda = Expression.Parameter(typeof(RouteMatch), "route");
-            var cancellationTokenInLambda = Expression.Parameter(typeof(CancellationToken), "cancellationToken");
 
             // Local variables
             var locals = new List<ParameterExpression>();
@@ -433,7 +430,6 @@ namespace EmbedIO.WebApi
             bodyContents.Add(Expression.Assign(controller,factoryExpression));
             bodyContents.Add(Expression.Call(controller, HttpContextSetter, contextInLambda));
             bodyContents.Add(Expression.Call(controller, RouteSetter, routeInLambda));
-            bodyContents.Add(Expression.Call(controller, CancellationTokenSetter, cancellationTokenInLambda));
 
             // Build the handler method call
             Expression callMethod = Expression.Call(controller, method, handlerArguments);
@@ -454,8 +450,7 @@ namespace EmbedIO.WebApi
                     Expression.Constant(this),
                     SerializeResultAsyncMethod.MakeGenericMethod(resultType),
                     contextInLambda,
-                    callMethod,
-                    cancellationTokenInLambda);
+                    callMethod);
             }
             else
             {
@@ -464,8 +459,7 @@ namespace EmbedIO.WebApi
                     Serializer.Target == null ? null : Expression.Constant(Serializer.Target),
                     Serializer.Method,
                     contextInLambda,
-                    Expression.Convert(callMethod, typeof(object)),
-                    cancellationTokenInLambda);
+                    Expression.Convert(callMethod, typeof(object)));
             }
 
             // Operations to perform on the controller.
@@ -500,11 +494,10 @@ namespace EmbedIO.WebApi
             bodyContents.Add(Expression.Label(returnTarget, Expression.Constant(Task.FromResult(false))));
 
             // Build and compile the lambda.
-            return Expression.Lambda<RouteHandlerCallback<IHttpContext>>(
+            return Expression.Lambda<RouteHandlerCallback>(
                 Expression.Block(locals, bodyContents),
                 contextInLambda,
-                routeInLambda,
-                cancellationTokenInLambda)
+                routeInLambda)
                 .Compile();
         }
 
@@ -526,15 +519,11 @@ namespace EmbedIO.WebApi
             }
         }
 
-        private async Task SerializeResultAsync<TResult>(
-            IHttpContext context,
-            Task<TResult> task,
-            CancellationToken cancellationToken)
+        private async Task SerializeResultAsync<TResult>(IHttpContext context, Task<TResult> task)
         {
             await Serializer(
                 context,
-                await task.ConfigureAwait(false),
-                cancellationToken).ConfigureAwait(false);
+                await task.ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         private Type ValidateControllerType(string argumentName, Type value, bool canBeAbstract)

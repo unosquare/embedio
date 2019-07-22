@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
@@ -13,9 +12,9 @@ namespace EmbedIO.Routing
     /// Handles a HTTP request by matching it against a list of routes,
     /// possibly handling different HTTP methods via different handlers.
     /// </summary>
-    /// <seealso cref="RouteResolverBase{TContext,TData}"/>
+    /// <seealso cref="RouteResolverBase{TData}"/>
     /// <seealso cref="RouteVerbResolver"/>
-    public sealed class RouteVerbResolverCollection : RouteResolverCollectionBase<IHttpContext, HttpVerbs, RouteVerbResolver>
+    public sealed class RouteVerbResolverCollection : RouteResolverCollectionBase<HttpVerbs, RouteVerbResolver>
     {
         private readonly string _logSource;
 
@@ -27,12 +26,11 @@ namespace EmbedIO.Routing
         /// <summary>
         /// <para>Adds handlers, associating them with HTTP method / route pairs by means
         /// of <see cref="RouteAttribute">Route</see> attributes.</para>
-        /// <para>A compatible handler is a static or instance method that takes 3
+        /// <para>A compatible handler is a static or instance method that takes 2
         /// parameters having the following types, in order:</para>
         /// <list type="number">
         /// <item><description><see cref="IHttpContext"/></description></item>
         /// <item><description><see cref="RouteMatch"/></description></item>
-        /// <item><description><see cref="CancellationToken"/></description></item>
         /// </list>
         /// <para>The return type of a compatible handler may be either <see langword="void"/>
         /// or <see cref="Task"/>.</para>
@@ -103,12 +101,9 @@ namespace EmbedIO.Routing
             }
 
             var parameters = method.GetParameters();
-            if (parameters.Length != 3)
-                return false;
-
-            return parameters[0].ParameterType.IsAssignableFrom(typeof(IHttpContext))
-                && parameters[1].ParameterType.IsAssignableFrom(typeof(RouteMatch))
-                && parameters[2].ParameterType.IsAssignableFrom(typeof(CancellationToken));
+            return parameters.Length == 2
+                && parameters[0].ParameterType.IsAssignableFrom(typeof(IHttpContext))
+                && parameters[1].ParameterType.IsAssignableFrom(typeof(RouteMatch));
         }
 
         // Call Add with all suitable methods of a Type, return sum of results.
@@ -133,7 +128,6 @@ namespace EmbedIO.Routing
             var parameters = new[] {
                 Expression.Parameter(typeof(IHttpContext), "context"),
                 Expression.Parameter(typeof(RouteMatch), "route"),
-                Expression.Parameter(typeof(CancellationToken), "cancellationToken"),
             };
 
             Expression body = Expression.Call(Expression.Constant(target), method, parameters.Cast<Expression>());
@@ -143,7 +137,7 @@ namespace EmbedIO.Routing
                 body = Expression.Block(typeof(Task), body, Expression.Constant(Task.CompletedTask));
             }
 
-            var handler = Expression.Lambda<RouteHandlerCallback<IHttpContext>>(body, parameters).Compile();
+            var handler = Expression.Lambda<RouteHandlerCallback>(body, parameters).Compile();
             foreach (var attribute in attributes)
             {
                 Add(attribute.Verb, attribute.Route, handler);

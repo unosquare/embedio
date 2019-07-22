@@ -16,7 +16,7 @@ namespace EmbedIO
     /// <typeparam name="TOptions">The type of the options object used to configure an instance.</typeparam>
     /// <seealso cref="ConfiguredObject" />
     /// <seealso cref="IWebServer" />
-    public abstract class WebServerBase<TOptions> : ConfiguredObject, IWebServer, IHttpContextHandler, IDisposable
+    public abstract class WebServerBase<TOptions> : ConfiguredObject, IWebServer, IHttpContextHandler
         where TOptions : WebServerOptionsBase, new()
     {
         private readonly WebModuleCollection _modules;
@@ -155,7 +155,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public Task HandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
+        public Task HandleContextAsync(IHttpContextImpl context)
         {
             if (State > WebServerState.Listening)
                 throw new InvalidOperationException("The web server has already been stopped.");
@@ -163,7 +163,7 @@ namespace EmbedIO
             if (State < WebServerState.Listening)
                 throw new InvalidOperationException("The web server has not been started yet.");
 
-            return DoHandleContextAsync(context, cancellationToken);
+            return DoHandleContextAsync(context);
         }
 
         /// <summary>
@@ -223,9 +223,8 @@ namespace EmbedIO
         /// Asynchronously handles a received request.
         /// </summary>
         /// <param name="context">The context of the request.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected async Task DoHandleContextAsync(IHttpContextImpl context, CancellationToken cancellationToken)
+        protected async Task DoHandleContextAsync(IHttpContextImpl context)
         {
             context.SupportCompressedRequests = Options.SupportCompressedRequests;
             context.MimeTypeProviders.Push(this);
@@ -238,20 +237,20 @@ namespace EmbedIO
                 context.Session = new SessionProxy(context, SessionManager);
                 try
                 {
-                    if (cancellationToken.IsCancellationRequested)
+                    if (context.CancellationToken.IsCancellationRequested)
                         return;
 
                     try
                     {
                         // Return a 404 (Not Found) response if no module handled the response.
-                        await _modules.DispatchRequestAsync(context, cancellationToken).ConfigureAwait(false);
+                        await _modules.DispatchRequestAsync(context).ConfigureAwait(false);
                         if (!context.IsHandled)
                         {
                             $"[{context.Id}] No module generated a response. Sending 404 - Not Found".Error(LogSource);
                             throw HttpException.NotFound("No module was able to serve the requested path.");
                         }
                     }
-                    catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                    catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
                     {
                         throw; // Let outer catch block handle it
                     }
@@ -261,18 +260,19 @@ namespace EmbedIO
                     }
                     catch (Exception exception) when (exception is IHttpException)
                     {
-                        await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException, cancellationToken)
+                        await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException)
                             .ConfigureAwait(false);
                     }
                     catch (Exception exception)
                     {
-                        await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, cancellationToken)
+                        await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException)
                             .ConfigureAwait(false);
                     }
                 }
                 finally
                 {
-                    await context.Response.OutputStream.FlushAsync(cancellationToken).ConfigureAwait(false);
+                    await context.Response.OutputStream.FlushAsync(context.CancellationToken)
+                        .ConfigureAwait(false);
 
                     var statusCode = context.Response.StatusCode;
                     var statusDescription = context.Response.StatusDescription;
@@ -283,7 +283,7 @@ namespace EmbedIO
                         .Info(LogSource);
                 }
             }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
             {
                 $"[{context.Id}] Operation canceled.".Debug(LogSource);
             }

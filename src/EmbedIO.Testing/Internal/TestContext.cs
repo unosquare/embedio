@@ -33,6 +33,8 @@ namespace EmbedIO.Testing.Internal
 
         public string Id { get; }
 
+        public CancellationToken CancellationToken { get; set; }
+
         public long Age => _ageKeeper.ElapsedTime;
 
         public IPEndPoint LocalEndPoint { get; }
@@ -40,6 +42,8 @@ namespace EmbedIO.Testing.Internal
         public IPEndPoint RemoteEndPoint { get; }
 
         public IHttpRequest Request { get; }
+
+        public string RequestedPath { get; set; }
 
         public IHttpResponse Response => TestResponse;
 

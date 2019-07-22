@@ -19,14 +19,14 @@ namespace EmbedIO.Internal
 
         internal void StartAll(CancellationToken cancellationToken)
         {
-            foreach (var (name, module) in this.WithSafeNames)
+            foreach (var (name, module) in WithSafeNames)
             {
                 $"Starting module {name}...".Debug(_logSource);
                 module.Start(cancellationToken);
             }
         }
 
-        internal async Task DispatchRequestAsync(IHttpContext context, CancellationToken cancellationToken)
+        internal async Task DispatchRequestAsync(IHttpContext context)
         {
             if (context.IsHandled)
                 return;
@@ -43,7 +43,8 @@ namespace EmbedIO.Internal
                     continue;
 
                 $"[{context.Id}] Processing with {name}.".Debug(_logSource);
-                await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false);
+                (context as IHttpContextImpl).RequestedPath = "/" + path;
+                await module.HandleRequestAsync(context).ConfigureAwait(false);
                 if (context.IsHandled)
                     break;
             }

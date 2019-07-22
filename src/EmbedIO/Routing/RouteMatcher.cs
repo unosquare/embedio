@@ -11,8 +11,8 @@ namespace EmbedIO.Routing
     /// </summary>
     public sealed class RouteMatcher
     {
-        private static readonly object _syncRoot = new object();
-        private static readonly Dictionary<string, RouteMatcher> _cache = new Dictionary<string, RouteMatcher>(StringComparer.Ordinal);
+        private static readonly object SyncRoot = new object();
+        private static readonly Dictionary<string, RouteMatcher> Cache = new Dictionary<string, RouteMatcher>(StringComparer.Ordinal);
 
         private readonly Regex _regex;
 
@@ -76,9 +76,9 @@ namespace EmbedIO.Routing
         /// <seealso cref="TryParse"/>
         public static void ClearCache()
         {
-            lock (_syncRoot)
+            lock (SyncRoot)
             {
-                _cache.Clear();
+                Cache.Clear();
             }
         }
 
@@ -107,9 +107,9 @@ namespace EmbedIO.Routing
 
         private static Exception TryParseInternal(string route, out RouteMatcher result)
         {
-            lock (_syncRoot)
+            lock (SyncRoot)
             {
-                if (_cache.TryGetValue(route, out result))
+                if (Cache.TryGetValue(route, out result))
                     return null;
 
                 string pattern = null;
@@ -122,7 +122,7 @@ namespace EmbedIO.Routing
                     return exception;
 
                 result = new RouteMatcher(route, pattern, parameterNames);
-                _cache.Add(route, result);
+                Cache.Add(route, result);
                 return null;
             }
         }

@@ -146,11 +146,11 @@ namespace EmbedIO.WebSockets
         }
 
         /// <inheritdoc />
-        protected sealed override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected sealed override async Task OnRequestAsync(IHttpContext context)
         {
-            // The WebSocket endpoint must match exactly, giving a path of "/".
+            // The WebSocket endpoint must match exactly, giving a RequestedPath of "/".
             // In all other cases the path is longer, so there's no need to compare strings here.
-            if (path.Length > 1)
+            if (context.RequestedPath.Length > 1)
                 return;
 
             var requestedProtocols = context.Request.Headers.GetValues(HttpHeaderNames.SecWebSocketProtocol)
@@ -187,8 +187,12 @@ namespace EmbedIO.WebSockets
                 throw new InvalidOperationException($"HTTP context must implement {nameof(IHttpContextImpl)}.");
 
             $"{BaseUrlPath} - Accepting WebSocket connection with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
-            var webSocketContext = await contextImpl.AcceptWebSocketAsync(requestedProtocols, acceptedProtocol, ReceiveBufferSize, KeepAliveInterval, cancellationToken)
-                .ConfigureAwait(false);
+            var webSocketContext = await contextImpl.AcceptWebSocketAsync(
+                    requestedProtocols, 
+                    acceptedProtocol, 
+                    ReceiveBufferSize, 
+                    KeepAliveInterval, 
+                    context.CancellationToken).ConfigureAwait(false);
 
             PurgeDisconnectedContexts();
             _contexts.TryAdd(webSocketContext.Id, webSocketContext);
@@ -202,12 +206,15 @@ namespace EmbedIO.WebSockets
             {
                 if (webSocketContext.WebSocket is SystemWebSocket systemWebSocket)
                 {
-                    await ProcessSystemContext(webSocketContext, systemWebSocket.UnderlyingWebSocket, cancellationToken)
-                        .ConfigureAwait(false);
+                    await ProcessSystemContext(
+                            webSocketContext, 
+                            systemWebSocket.UnderlyingWebSocket,
+                            context.CancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    await ProcessEmbedIOContext(webSocketContext, cancellationToken).ConfigureAwait(false);
+                    await ProcessEmbedIOContext(webSocketContext, context.CancellationToken)
+                        .ConfigureAwait(false);
                 }
             }
             catch (TaskCanceledException)

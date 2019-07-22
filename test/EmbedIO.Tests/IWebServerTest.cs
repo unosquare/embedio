@@ -58,7 +58,7 @@ namespace EmbedIO.Tests
             using (var server = new TestWebServer())
             {
                 server
-                    .OnAny((ctx, path, ct) => ctx.SendDataAsync(new Person {Name = nameof(Person)}, ct))
+                    .OnAny(ctx => ctx.SendDataAsync(new Person {Name = nameof(Person)}))
                     .Start();
 
                 var data = await server.Client.GetStringAsync("/").ConfigureAwait(false);

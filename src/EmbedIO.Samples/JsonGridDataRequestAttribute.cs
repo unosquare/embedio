@@ -9,6 +9,6 @@ namespace EmbedIO.Samples
     public class JsonGridDataRequestAttribute : Attribute, IRequestDataAttribute<WebApiController, GridDataRequest>
     {
         public Task<GridDataRequest> GetRequestDataAsync(WebApiController controller, string parameterName)
-            => controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json<GridDataRequest>, controller.CancellationToken);
+            => controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json<GridDataRequest>);
     }
 }

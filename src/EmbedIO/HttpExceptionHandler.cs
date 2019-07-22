@@ -2,7 +2,6 @@
 using System.Net;
 using System.Runtime.ExceptionServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Unosquare.Swan;
@@ -33,9 +32,8 @@ namespace EmbedIO
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task EmptyResponse(IHttpContext context, IHttpException httpException, CancellationToken cancellationToken)
+        public static Task EmptyResponse(IHttpContext context, IHttpException httpException)
             => Task.CompletedTask;
 
         /// <summary>
@@ -44,10 +42,9 @@ namespace EmbedIO
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task PlainTextResponse(IHttpContext context, IHttpException httpException, CancellationToken cancellationToken)
-            => context.SendStringAsync(httpException.Message, MimeType.PlainText, Encoding.UTF8, cancellationToken);
+        public static Task PlainTextResponse(IHttpContext context, IHttpException httpException)
+            => context.SendStringAsync(httpException.Message, MimeType.PlainText, Encoding.UTF8);
 
         /// <summary>
         /// Sends a response with a HTML payload
@@ -57,9 +54,8 @@ namespace EmbedIO
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task HtmlResponse(IHttpContext context, IHttpException httpException, CancellationToken cancellationToken)
+        public static Task HtmlResponse(IHttpContext context, IHttpException httpException)
             => context.SendStandardHtmlAsync(
                 httpException.StatusCode,
                 text => {
@@ -81,10 +77,9 @@ namespace EmbedIO
                             "</p><p><strong>Stack trace:</strong></p><br><pre>{0}</pre>",
                             HttpUtility.HtmlEncode(httpException.StackTrace));
                     }
-                },
-                cancellationToken);
+                });
 
-        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, HttpExceptionHandlerCallback handler, CancellationToken cancellationToken)
+        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, HttpExceptionHandlerCallback handler)
         {
             if (handler == null || !(exception is IHttpException httpException))
             {
@@ -98,10 +93,10 @@ namespace EmbedIO
                 context.Response.SetEmptyResponse(httpException.StatusCode);
                 context.Response.DisableCaching();
                 httpException.PrepareResponse(context);
-                await handler(context, httpException, cancellationToken)
+                await handler(context, httpException)
                     .ConfigureAwait(false);
             }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
             {
                 throw;
             }

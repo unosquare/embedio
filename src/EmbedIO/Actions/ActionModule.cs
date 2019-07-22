@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
@@ -43,12 +42,12 @@ namespace EmbedIO.Actions
         public override bool IsFinalHandler => false;
 
         /// <inheritdoc />
-        protected override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task OnRequestAsync(IHttpContext context)
         {
             if (_verb != HttpVerbs.Any && context.Request.HttpVerb != _verb)
                 return;
 
-            await _handler(context, path, cancellationToken).ConfigureAwait(false);
+            await _handler(context).ConfigureAwait(false);
             context.SetHandled();
         }
     }

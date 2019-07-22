@@ -31,7 +31,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        public void Add(HttpVerbs verb, string route, RouteHandlerCallback<IHttpContext> handler)
+        public void Add(HttpVerbs verb, string route, RouteHandlerCallback handler)
             => AddHandler(verb, route, handler);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        public void Add(HttpVerbs verb, string route, SyncRouteHandlerCallback<IHttpContext> handler)
+        public void Add(HttpVerbs verb, string route, SyncRouteHandlerCallback handler)
             => AddHandler(verb, route, handler);
 
         /// <summary>

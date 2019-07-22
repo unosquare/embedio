@@ -4,8 +4,5 @@ namespace EmbedIO.Internal
 {
     internal class RequestHandlerPassThroughException : Exception
     {
-        public RequestHandlerPassThroughException()
-        {
-        }
     }
 }

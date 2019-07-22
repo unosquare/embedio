@@ -101,8 +101,7 @@ namespace EmbedIO.Tests
 
                     using (var instance = new WebServer(url))
                     {
-                        instance.Modules.Add(nameof(ActionModule), new ActionModule((ctx, path, ct) =>
-                            throw new InvalidOperationException("Error")));
+                        instance.Modules.Add(nameof(ActionModule), new ActionModule(_ => throw new InvalidOperationException("Error")));
 
                         var runTask = instance.RunAsync();
                         var request = new HttpClient();
@@ -136,7 +135,7 @@ namespace EmbedIO.Tests
 
                 using (var instance = new WebServer(url))
                 {
-                    instance.OnPost((ctx, path, ct) =>
+                    instance.OnPost(ctx =>
                     {
                         var encoding = Encoding.GetEncoding("UTF-8");
 
@@ -162,8 +161,7 @@ namespace EmbedIO.Tests
                         {
                             Encoding = encoding.EncodingName,
                             IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
-                        },
-                            ct);
+                        });
                     });
 
                     var runTask = instance.RunAsync();

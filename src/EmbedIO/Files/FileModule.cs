@@ -291,9 +291,11 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        protected override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override async Task OnRequestAsync(IHttpContext context)
         {
             MappedResourceInfo info;
+
+            var path = context.RequestedPath;
 
             // Map the URL path to a mapped resource.
             // DefaultDocument and DefaultExtension are handled here.
@@ -314,24 +316,24 @@ namespace EmbedIO.Files
                 // If mapping failed, send a "404 Not Found" response, or whatever OnMappingFailed chooses to do.
                 // For example, it may return a default resource (think a folder of images and an imageNotFound.jpg),
                 // or redirect the request.
-                await OnMappingFailed(context, path, null, cancellationToken).ConfigureAwait(false);
+                await OnMappingFailed(context, null).ConfigureAwait(false);
             }
             else if (!IsHttpMethodAllowed(context.Request, out var sendResponseBody))
             {
                 // If there is a mapped resource, check that the HTTP method is either GET or HEAD.
                 // Otherwise, send a "405 Method Not Allowed" response, or whatever OnMethodNotAllowed chooses to do.
-                await OnMethodNotAllowed(context, path, info, cancellationToken).ConfigureAwait(false);
+                await OnMethodNotAllowed(context, info).ConfigureAwait(false);
             }
             else if (info.IsDirectory && DirectoryLister == null)
             {
                 // If a directory listing was requested, but there is no DirectoryLister,
                 // send a "403 Unauthorized" response, or whatever OnDirectoryNotListable chooses to do.
                 // For example, one could prefer to send "404 Not Found" instead.
-                await OnDirectoryNotListable(context, path, info, cancellationToken).ConfigureAwait(false);
+                await OnDirectoryNotListable(context, info).ConfigureAwait(false);
             }
             else
             {
-                await HandleResource(context, info, sendResponseBody, cancellationToken).ConfigureAwait(false);
+                await HandleResource(context, info, sendResponseBody).ConfigureAwait(false);
             }
         }
 
@@ -401,7 +403,7 @@ namespace EmbedIO.Files
             return result;
         }
 
-        private async Task HandleResource(IHttpContext context, MappedResourceInfo info, bool sendResponseBody, CancellationToken cancellationToken)
+        private async Task HandleResource(IHttpContext context, MappedResourceInfo info, bool sendResponseBody)
         {
             // Try to extract resource information from cache.
             var cachingThreshold = 1024L * Cache.MaxFileSizeKb;
@@ -489,7 +491,7 @@ namespace EmbedIO.Files
             if (info.IsDirectory && content == null)
             {
                 long uncompressedLength;
-                (content, uncompressedLength) = await GenerateDirectoryListingAsync(context, info, compressionMethod, cancellationToken)
+                (content, uncompressedLength) = await GenerateDirectoryListingAsync(context, info, compressionMethod)
                     .ConfigureAwait(false);
                 if (ContentCaching && uncompressedLength <= cachingThreshold)
                     cacheItem.SetContent(compressionMethod, content);
@@ -532,7 +534,7 @@ namespace EmbedIO.Files
                     using (var compressor = new CompressionStream(memoryStream, compressionMethod))
                     using (var source = Provider.OpenFile(info.Path))
                     {
-                        await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, cancellationToken)
+                        await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
                             .ConfigureAwait(false);
                     }
 
@@ -548,13 +550,13 @@ namespace EmbedIO.Files
                 if (isPartial)
                 {
                     context.Response.ContentLength64 = partialLength;
-                    await context.Response.OutputStream.WriteAsync(content, (int)partialStart, (int)partialLength, cancellationToken)
+                    await context.Response.OutputStream.WriteAsync(content, (int)partialStart, (int)partialLength, context.CancellationToken)
                         .ConfigureAwait(false);
                 }
                 else
                 {
                     context.Response.ContentLength64 = content.Length;
-                    await context.Response.OutputStream.WriteAsync(content, 0, content.Length, cancellationToken)
+                    await context.Response.OutputStream.WriteAsync(content, 0, content.Length, context.CancellationToken)
                         .ConfigureAwait(false);
                 }
 
@@ -578,7 +580,7 @@ namespace EmbedIO.Files
                         var skipLength = (int)partialStart;
                         while (skipLength > 0)
                         {
-                            var read = await source.ReadAsync(buffer, 0, Math.Min(skipLength, buffer.Length), cancellationToken)
+                            var read = await source.ReadAsync(buffer, 0, Math.Min(skipLength, buffer.Length), context.CancellationToken)
                                 .ConfigureAwait(false);
 
                             skipLength -= read;
@@ -588,10 +590,10 @@ namespace EmbedIO.Files
                     var transferSize = partialLength;
                     while (transferSize >= WebServer.StreamCopyBufferSize)
                     {
-                        var read = await source.ReadAsync(buffer, 0, WebServer.StreamCopyBufferSize, cancellationToken)
+                        var read = await source.ReadAsync(buffer, 0, WebServer.StreamCopyBufferSize, context.CancellationToken)
                             .ConfigureAwait(false);
 
-                        await context.Response.OutputStream.WriteAsync(buffer, 0, read, cancellationToken)
+                        await context.Response.OutputStream.WriteAsync(buffer, 0, read, context.CancellationToken)
                             .ConfigureAwait(false);
 
                         transferSize -= read;
@@ -599,10 +601,10 @@ namespace EmbedIO.Files
 
                     if (transferSize > 0)
                     {
-                        var read = await source.ReadAsync(buffer, 0, (int)transferSize, cancellationToken)
+                        var read = await source.ReadAsync(buffer, 0, (int)transferSize, context.CancellationToken)
                             .ConfigureAwait(false);
 
-                        await context.Response.OutputStream.WriteAsync(buffer, 0, read, cancellationToken)
+                        await context.Response.OutputStream.WriteAsync(buffer, 0, read, context.CancellationToken)
                             .ConfigureAwait(false);
                     }
                 }
@@ -610,7 +612,7 @@ namespace EmbedIO.Files
                 {
                     using (var compressor = new CompressionStream(context.Response.OutputStream, compressionMethod))
                     {
-                        await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, cancellationToken)
+                        await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
                             .ConfigureAwait(false);
                     }
                 }
@@ -623,8 +625,7 @@ namespace EmbedIO.Files
         private async Task<(byte[], long)> GenerateDirectoryListingAsync(
             IHttpContext context,
             MappedResourceInfo info,
-            CompressionMethod compressionMethod,
-            CancellationToken cancellationToken)
+            CompressionMethod compressionMethod)
         {
             using (var memoryStream = new MemoryStream())
             {
@@ -636,7 +637,7 @@ namespace EmbedIO.Files
                         context.Request.Url.AbsolutePath,
                         Provider.GetDirectoryEntries(info.Path, context),
                         stream,
-                        cancellationToken).ConfigureAwait(false);
+                        context.CancellationToken).ConfigureAwait(false);
 
                     uncompressedLength = stream.UncompressedLength;
                 }

@@ -5,7 +5,7 @@ using System.Linq;
 namespace EmbedIO.Routing
 {
     /// <summary>
-    /// <para>Represents a route resolved by a <see cref="RouteResolverBase{TContext,TData}"/>.</para>
+    /// <para>Represents a route resolved by a <see cref="RouteResolverBase{TData}"/>.</para>
     /// <para>This class may be used both as a dictionary of route parameter names and values,
     /// and a list of the values.</para>
     /// <para>Because of its double nature, this class cannot be enumerated directly. However,
@@ -37,7 +37,7 @@ namespace EmbedIO.Routing
         /// </summary>
         public IReadOnlyList<string> Names { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IReadOnlyCollection{T}.Count"/>
         public int Count => _values.Count;
 
         /// <inheritdoc />

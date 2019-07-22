@@ -4,7 +4,7 @@
     /// Handles a HTTP request by matching it against a route,
     /// possibly handling different HTTP methods via different handlers.
     /// </summary>
-    public sealed class RouteVerbResolver : RouteResolverBase<IHttpContext, HttpVerbs>
+    public sealed class RouteVerbResolver : RouteResolverBase<HttpVerbs>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteVerbResolver"/> class.

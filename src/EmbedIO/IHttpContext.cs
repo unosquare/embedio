@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Sessions;
 
@@ -18,6 +19,11 @@ namespace EmbedIO
         string Id { get; }
 
         /// <summary>
+        /// Gets a <see cref="CancellationToken" /> used to stop processing of this context.
+        /// </summary>
+        CancellationToken CancellationToken { get; }
+
+        /// <summary>
         /// Gets the server IP address and port number to which the request is directed.
         /// </summary>
         IPEndPoint LocalEndPoint { get; }
@@ -31,6 +37,17 @@ namespace EmbedIO
         /// Gets the HTTP request.
         /// </summary>
         IHttpRequest Request { get; }
+
+        /// <summary>
+        /// Gets the requested path, relative to the innermost module's base path.
+        /// </summary>
+        /// <remarks>
+        /// <para>This property derives from the path specified in the requested URL, stripped of the
+        /// <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see> of the handling module.</para>
+        /// <para>This property is in itself a valid URL path, including an initial
+        /// slash (<c>/</c>) character.</para>
+        /// </remarks>
+        string RequestedPath { get; }
 
         /// <summary>
         /// Gets the HTTP response object.

@@ -24,7 +24,7 @@ namespace EmbedIO.Tests
             protected override void OnSetUp()
             {
                 Server
-                    .OnAny((ctx, path, ct) => throw new Exception(ExceptionMessage))
+                    .OnAny(_ => throw new Exception(ExceptionMessage))
                     .HandleUnhandledException(ExceptionHandler.EmptyResponseWithHeaders);
             }
 
@@ -50,8 +50,8 @@ namespace EmbedIO.Tests
             protected override void OnSetUp()
             {
                 Server
-                    .OnAny((ctx, path, ct) => throw new Exception(ExceptionMessage))
-                    .HandleUnhandledException((ctx, ex, ct) => throw new Exception(SecondLevelExceptionMessage));
+                    .OnAny(_ => throw new Exception(ExceptionMessage))
+                    .HandleUnhandledException((ctx, ex) => throw new Exception(SecondLevelExceptionMessage));
             }
 
             [Test]
@@ -68,7 +68,7 @@ namespace EmbedIO.Tests
             protected override void OnSetUp()
             {
                 Server
-                    .OnAny((ctx, path, ct) => throw new HttpException(HttpExceptionStatusCode, ExceptionMessage))
+                    .OnAny(_ => throw new HttpException(HttpExceptionStatusCode, ExceptionMessage))
                     .HandleHttpException(HttpExceptionHandler.PlainTextResponse);
             }
 
@@ -89,8 +89,8 @@ namespace EmbedIO.Tests
                 protected override void OnSetUp()
                 {
                     Server
-                        .OnAny((ctx, path, ct) => throw new HttpException(HttpExceptionStatusCode, ExceptionMessage))
-                        .HandleUnhandledException((ctx, ex, ct) => throw new Exception(SecondLevelExceptionMessage));
+                        .OnAny(_ => throw new HttpException(HttpExceptionStatusCode, ExceptionMessage))
+                        .HandleUnhandledException((ctx, ex) => throw new Exception(SecondLevelExceptionMessage));
                 }
 
                 [Test]

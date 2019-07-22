@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
@@ -65,7 +64,7 @@ namespace EmbedIO.Cors
         public override bool IsFinalHandler => false;
 
         /// <inheritdoc />
-        protected override Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task OnRequestAsync(IHttpContext context)
         {
             var isOptions = context.Request.HttpVerb == HttpVerbs.Options;
 

@@ -26,7 +26,7 @@ namespace EmbedIO.Tests
                 Assert.Ignore("Only Windows");
 
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://*:8877");
-            instance.OnAny((ctx, path, ct) => ctx.SendDataAsync(DateTime.Now, ct));
+            instance.OnAny(ctx => ctx.SendDataAsync(DateTime.Now));
 
             var dump = instance.RunAsync();
 
@@ -43,7 +43,7 @@ namespace EmbedIO.Tests
                 Assert.Ignore("Only Windows");
 
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://[::1]:8877");
-            instance.OnAny((ctx, path, ct) => ctx.SendDataAsync(DateTime.Now, ct));
+            instance.OnAny(ctx => ctx.SendDataAsync(DateTime.Now));
 
             var dump = instance.RunAsync();
 

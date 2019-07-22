@@ -24,7 +24,7 @@ namespace EmbedIO.Tests
                     SessionDuration = TimeSpan.FromSeconds(1),
                 })
                 .WithWebApi("/api", m => m.RegisterController<TestLocalSessionController>())
-                .OnGet((ctx, path, ct) =>
+                .OnGet(ctx =>
                 {
                     ctx.Session["data"] = true;
                     ctx.Response.SetEmptyResponse((int)HttpStatusCode.OK);

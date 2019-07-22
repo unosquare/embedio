@@ -20,16 +20,19 @@ namespace EmbedIO
     /// <seealso cref="WebModuleBase" />
     /// <seealso cref="IDisposable" />
     /// <seealso cref="IWebModuleContainer" />
-    public class ModuleGroup : WebModuleBase, IDisposable, IWebModuleContainer, IMimeTypeCustomizer
+    public class ModuleGroup : WebModuleBase, IWebModuleContainer, IMimeTypeCustomizer
     {
         private readonly WebModuleCollection _modules;
         private readonly MimeTypeCustomizer _mimeTypeCustomizer = new MimeTypeCustomizer();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleGroup"/> class.
+        /// Initializes a new instance of the <see cref="ModuleGroup" /> class.
         /// </summary>
         /// <param name="baseUrlPath">The base URL path served by this module.</param>
+        /// <param name="isFinalHandler">The value to set the <see cref="IWebModule.IsFinalHandler" /> property to.
+        /// See the help for the property for more information.</param>
         /// <seealso cref="IWebModule.BaseUrlPath" />
+        /// <seealso cref="IWebModule.IsFinalHandler" />
         public ModuleGroup(string baseUrlPath, bool isFinalHandler)
             : base(baseUrlPath)
         {
@@ -73,8 +76,8 @@ namespace EmbedIO
             => _mimeTypeCustomizer.PreferCompression(mimeType, preferCompression);
 
         /// <inheritdoc />
-        protected override Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
-            => _modules.DispatchRequestAsync(context, cancellationToken);
+        protected override Task OnRequestAsync(IHttpContext context)
+            => _modules.DispatchRequestAsync(context);
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.

@@ -16,6 +16,18 @@ namespace EmbedIO
     public interface IHttpContextImpl : IHttpContext
     {
         /// <summary>
+        /// <para>Gets or sets a <see cref="CancellationToken" /> used to stop processing of this context.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
+        /// </summary>
+        new CancellationToken CancellationToken { get; set; }
+
+        /// <summary>
+        /// <para>Gets or sets the requested path, relative to the innermost module's base path.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
+        /// </summary>
+        new string RequestedPath { get; set; }
+
+        /// <summary>
         /// <para>Gets or sets the session proxy associated with this context.</para>
         /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>

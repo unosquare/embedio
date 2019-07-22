@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 
@@ -12,7 +11,7 @@ namespace EmbedIO.Actions
     /// <seealso cref="WebModuleBase" />
     public class RedirectModule : WebModuleBase
     {
-        private readonly Func<IHttpContext, string, bool> _shouldRedirect;
+        private readonly Func<IHttpContext, bool> _shouldRedirect;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedirectModule"/> class
@@ -54,12 +53,12 @@ namespace EmbedIO.Actions
         /// <para><paramref name="statusCode"/> is not a redirection (3xx) status code.</para>
         /// </exception>
         /// <seealso cref="WebModuleBase(string)"/>
-        public RedirectModule(string baseUrlPath, string redirectUrl, Func<IHttpContext, string, bool> shouldRedirect, HttpStatusCode statusCode = HttpStatusCode.Found)
+        public RedirectModule(string baseUrlPath, string redirectUrl, Func<IHttpContext, bool> shouldRedirect, HttpStatusCode statusCode = HttpStatusCode.Found)
             : this(baseUrlPath, redirectUrl, shouldRedirect, statusCode, true)
         {
         }
 
-        private RedirectModule(string baseUrlPath, string redirectUrl, Func<IHttpContext, string, bool> shouldRedirect, HttpStatusCode statusCode, bool useCallback)
+        private RedirectModule(string baseUrlPath, string redirectUrl, Func<IHttpContext, bool> shouldRedirect, HttpStatusCode statusCode, bool useCallback)
             : base(baseUrlPath)
         {
             RedirectUrl = Validate.Url(nameof(redirectUrl), redirectUrl);
@@ -86,9 +85,9 @@ namespace EmbedIO.Actions
         public HttpStatusCode StatusCode { get; }
 
         /// <inheritdoc />
-        protected override Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected override Task OnRequestAsync(IHttpContext context)
         {
-            if (_shouldRedirect?.Invoke(context, path) ?? true)
+            if (_shouldRedirect?.Invoke(context) ?? true)
             {
                 context.Redirect(RedirectUrl, (int)StatusCode);
                 context.SetHandled();

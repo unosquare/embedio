@@ -39,14 +39,15 @@ namespace EmbedIO.Authentication
         public string Realm { get; }
 
         /// <inheritdoc />
-        protected sealed override async Task OnRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken)
+        protected sealed override async Task OnRequestAsync(IHttpContext context)
         {
             async Task<bool> IsAuthenticatedAsync()
             {
                 try
                 {
                     var (userName, password) = GetCredentials(context.Request);
-                    return await VerifyCredentialsAsync(path, userName, password, cancellationToken).ConfigureAwait(false);
+                    return await VerifyCredentialsAsync(context.RequestedPath, userName, password, context.CancellationToken)
+                        .ConfigureAwait(false);
                 }
                 catch (FormatException)
                 {

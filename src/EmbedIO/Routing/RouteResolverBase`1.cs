@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
@@ -8,21 +7,20 @@ using EmbedIO.Utilities;
 namespace EmbedIO.Routing
 {
     /// <summary>
-    /// Implements the logic for resolving a context and a URL path against a route,
+    /// Implements the logic for resolving the requested path of a HTTP context against a route,
     /// possibly handling different contexts via different handlers.
     /// </summary>
-    /// <typeparam name="TContext">The type of the context.</typeparam>
     /// <typeparam name="TData">The type of the data used to select a suitable handler
-    /// for a context.</typeparam>
+    /// for the context.</typeparam>
     /// <seealso cref="ConfiguredObject" />
-    public abstract class RouteResolverBase<TContext, TData> : ConfiguredObject
+    public abstract class RouteResolverBase<TData> : ConfiguredObject
     {
         private readonly RouteMatcher _matcher;
-        private readonly List<(TData data, RouteHandlerCallback<TContext> handler)> _dataHandlerPairs
-            = new List<(TData data, RouteHandlerCallback<TContext> handler)>();
+        private readonly List<(TData data, RouteHandlerCallback handler)> _dataHandlerPairs
+            = new List<(TData data, RouteHandlerCallback handler)>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RouteResolverBase{TContext,TData}"/> class.
+        /// Initializes a new instance of the <see cref="RouteResolverBase{TData}"/> class.
         /// </summary>
         /// <param name="route">The route to match URL paths against.</param>
         protected RouteResolverBase(string route)
@@ -46,11 +44,11 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RouteHandlerCallback{TContext}"/>
+        /// <seealso cref="RouteHandlerCallback"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public void Add(TData data, RouteHandlerCallback<TContext> handler)
+        public void Add(TData data, RouteHandlerCallback handler)
         {
             EnsureConfigurationNotLocked();
 
@@ -69,17 +67,17 @@ namespace EmbedIO.Routing
         /// suitable to be handled by <paramref name="handler"/>.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="RouteHandlerCallback{TContext}"/>
+        /// <seealso cref="RouteHandlerCallback"/>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public void Add(TData data, SyncRouteHandlerCallback<TContext> handler)
+        public void Add(TData data, SyncRouteHandlerCallback handler)
         {
             EnsureConfigurationNotLocked();
 
             handler = Validate.NotNull(nameof(handler), handler);
-            _dataHandlerPairs.Add((data, (ctx, route, ct) => {
-                handler(ctx, route, ct);
+            _dataHandlerPairs.Add((data, (ctx, route) => {
+                handler(ctx, route);
                 return Task.CompletedTask;
             }));
         }
@@ -96,19 +94,17 @@ namespace EmbedIO.Routing
         /// <para>Registered data / handler pairs are tried in the same order they were added.</para>
         /// </summary>
         /// <param name="context">The context to handle.</param>
-        /// <param name="path">The URL path to match against <see cref="Route"/>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> use to cancel the operation.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
-        /// <seealso cref="Add(TData,RouteHandlerCallback{TContext})"/>
-        /// <seealso cref="Add(TData,SyncRouteHandlerCallback{TContext})"/>
+        /// <seealso cref="Add(TData,RouteHandlerCallback)"/>
+        /// <seealso cref="Add(TData,SyncRouteHandlerCallback)"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public async Task<RouteResolutionResult> ResolveAsync(TContext context, string path, CancellationToken cancellationToken)
+        public async Task<RouteResolutionResult> ResolveAsync(IHttpContext context)
         {
             LockConfiguration();
 
-            var match = _matcher.Match(path);
+            var match = _matcher.Match(context.RequestedPath);
             if (match == null)
                 return RouteResolutionResult.RouteNotMatched;
 
@@ -121,7 +117,7 @@ namespace EmbedIO.Routing
 
                 try
                 {
-                    await handler(context, match, cancellationToken).ConfigureAwait(false);
+                    await handler(context, match).ConfigureAwait(false);
                     return RouteResolutionResult.Success;
                 }
                 catch (RequestHandlerPassThroughException)
@@ -138,11 +134,11 @@ namespace EmbedIO.Routing
         /// <para>The extracted data are then used to select which handlers are suitable
         /// to handle the context.</para>
         /// </summary>
-        /// <param name="context">The context to extract data from.</param>
+        /// <param name="context">The HTTP context to extract data from.</param>
         /// <returns>The extracted data.</returns>
         /// <seealso cref="ResolveAsync"/>
         /// <seealso cref="MatchContextData"/>
-        protected abstract TData GetContextData(TContext context);
+        protected abstract TData GetContextData(IHttpContext context);
 
         /// <summary>
         /// Called by <see cref="ResolveAsync"/> to match data extracted from a context

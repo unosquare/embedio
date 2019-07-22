@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Runtime.ExceptionServices;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Unosquare.Swan;
@@ -49,9 +48,8 @@ namespace EmbedIO
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task EmptyResponse(IHttpContext context, Exception exception, CancellationToken cancellationToken)
+        public static Task EmptyResponse(IHttpContext context, Exception exception)
         {
             context.Response.SetEmptyResponse((int) HttpStatusCode.InternalServerError);
             return Task.CompletedTask;
@@ -79,9 +77,8 @@ namespace EmbedIO
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task EmptyResponseWithHeaders(IHttpContext context, Exception exception, CancellationToken cancellationToken)
+        public static Task EmptyResponseWithHeaders(IHttpContext context, Exception exception)
         {
             context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
             context.Response.Headers[ExceptionTypeHeaderName] = Uri.EscapeDataString(exception.GetType().Name);
@@ -97,9 +94,8 @@ namespace EmbedIO
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken" /> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task HtmlResponse(IHttpContext context, Exception exception, CancellationToken cancellationToken)
+        public static Task HtmlResponse(IHttpContext context, Exception exception)
             => context.SendStandardHtmlAsync(
                 (int)HttpStatusCode.InternalServerError,
                 text => {
@@ -122,10 +118,9 @@ namespace EmbedIO
                             "</p><p><strong>Stack trace:</strong></p><br><pre>{0}</pre>",
                             HttpUtility.HtmlEncode(exception.StackTrace));
                     }
-                },
-                cancellationToken);
+                });
 
-        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, ExceptionHandlerCallback handler, CancellationToken cancellationToken)
+        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, ExceptionHandlerCallback handler)
         {
             if (handler == null)
             {
@@ -138,10 +133,10 @@ namespace EmbedIO
             {
                 context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
                 context.Response.DisableCaching();
-                await handler(context, exception, cancellationToken)
+                await handler(context, exception)
                     .ConfigureAwait(false);
             }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
             {
                 throw;
             }

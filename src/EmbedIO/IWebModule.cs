@@ -65,15 +65,7 @@ namespace EmbedIO
         /// Handles a request from a client.
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <param name="path">The requested path, relative to <see cref="BaseUrlPath"/>. See the Remarks section for more information.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        /// <remarks>
-        /// <para>The path specified in the requested URL is stripped of the <see cref="BaseUrlPath"/>
-        /// and passed in the <paramref name="path"/> parameter.</para>
-        /// <para>The <paramref name="path"/> parameter is in itself a valid URL path, including an initial
-        /// slash (<c>/</c>) character.</para>
-        /// </remarks>
-        Task HandleRequestAsync(IHttpContext context, string path, CancellationToken cancellationToken);
+        Task HandleRequestAsync(IHttpContext context);
     }
 }
