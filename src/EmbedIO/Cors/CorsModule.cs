@@ -77,7 +77,7 @@ namespace EmbedIO.Cors
                 if (isOptions)
                 {
                     ValidateHttpOptions(context);
-                    context.Handled = true;
+                    context.SetHandled();
                 }
 
                 return Task.CompletedTask;
@@ -98,7 +98,7 @@ namespace EmbedIO.Cors
                 if (isOptions)
                 {
                     ValidateHttpOptions(context);
-                    context.Handled = true;
+                    context.SetHandled();
                 }
             }
 

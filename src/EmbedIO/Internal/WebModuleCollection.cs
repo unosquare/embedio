@@ -28,7 +28,7 @@ namespace EmbedIO.Internal
 
         internal async Task DispatchRequestAsync(IHttpContext context, CancellationToken cancellationToken)
         {
-            if (context.Handled)
+            if (context.IsHandled)
                 return;
 
             var requestedPath = UrlPath.UnsafeStripPrefix(UrlPath.UnsafeNormalize(context.Request.Url.AbsolutePath, false), _baseUrlPath);
@@ -44,7 +44,7 @@ namespace EmbedIO.Internal
 
                 $"[{context.Id}] Processing with {name}.".Debug(_logSource);
                 await module.HandleRequestAsync(context, "/" + path, cancellationToken).ConfigureAwait(false);
-                if (context.Handled)
+                if (context.IsHandled)
                     break;
             }
         }

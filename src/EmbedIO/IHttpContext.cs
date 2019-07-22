@@ -64,24 +64,37 @@ namespace EmbedIO
         long Age { get; }
 
         /// <summary>
-        /// <para>Gets or sets a value indicating whether this <see cref="IHttpContext"/>
+        /// <para>Gets a value indicating whether this <see cref="IHttpContext"/>
         /// has been completely handled, so that no further processing is required.</para>
         /// <para>When a HTTP context is created, this property is <see langword="false" />;
         /// as soon as it is set to <see langword="true" />, the context is not
         /// passed to any further module's handler for processing.</para>
-        /// <para>Once set to <see langword="true" />, this property cannot be set
-        /// back to <see langword="false" />.</para>
+        /// <para>Once it becomes <see langword="true" />, this property is guaranteed
+        /// to never become <see langword="false" /> again.</para>
         /// </summary>
         /// <remarks>
-        /// <para>When a module's <see cref="IWebModule.IsFinalHandler">PassThrough</see> property is
-        /// <see langword="true" />, this property is automatically set to <see langword="true" />
-        /// after the <see cref="Task" /> returned by the module's
-        /// <see cref="IWebModule.HandleRequestAsync">HandleRequestAsync</see> method
+        /// <para>When a module's <see cref="IWebModule.IsFinalHandler">IsFinalHandler</see> property is
+        /// <see langword="true" />, this property is set to <see langword="true" /> after the <see cref="Task" />
+        /// returned by the module's <see cref="IWebModule.HandleRequestAsync">HandleRequestAsync</see> method
         /// is completed.</para>
         /// </remarks>
-        /// <exception cref="InvalidOperationException">This property is being set to
-        /// <see langword="true" /> when its value is <see langword="false" />.</exception>
-        bool Handled { get; set; }
+        /// <seealso cref="SetHandled" />
+        /// <seealso cref="IWebModule.IsFinalHandler"/>
+        bool IsHandled { get; }
+
+        /// <summary>
+        /// <para>Marks this context as handled, so that it will not be
+        /// processed by any further module.</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>Calling this method from the <see cref="IWebModule.HandleRequestAsync" />
+        /// or <see cref="WebModuleBase.OnRequestAsync" /> of a module whose
+        /// <see cref="IWebModule.IsFinalHandler" /> property is <see langword="true" />
+        /// is redundant and has no effect.</para>
+        /// </remarks>
+        /// <seealso cref="IsHandled"/>
+        /// <seealso cref="IWebModule.IsFinalHandler"/>
+        void SetHandled();
 
         /// <summary>
         /// Registers a callback to be called when processing is finished on a context.

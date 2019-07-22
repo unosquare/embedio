@@ -24,7 +24,16 @@ namespace EmbedIO
         /// Gets a value indicating whether processing of a request should stop
         /// after a module has handled it.
         /// </summary>
-        bool IsFinalHandler{ get; }
+        /// <remarks>
+        /// <para>If this property is <see langword="true" />, a HTTP context's
+        /// <see cref="IHttpContext.SetHandled" /> method will be automatically called
+        /// immediately after after the <see cref="Task" /> returned by
+        /// <see cref="HandleRequestAsync" /> is completed. This will prevent
+        /// the context from being passed further along to other modules.</para>
+        /// </remarks>
+        /// <seealso cref="IHttpContext.IsHandled" />
+        /// <seealso cref="IHttpContext.SetHandled" />
+        bool IsFinalHandler { get; }
 
         /// <summary>
         /// <para>Gets or sets a callback that is called every time an unhandled exception

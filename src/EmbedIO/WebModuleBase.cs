@@ -93,7 +93,7 @@ namespace EmbedIO
             {
                 await OnRequestAsync(context, path, cancellationToken).ConfigureAwait(false);
                 if (IsFinalHandler)
-                    context.Handled = true;
+                    context.SetHandled();
             }
             catch (RequestHandlerPassThroughException)
             {

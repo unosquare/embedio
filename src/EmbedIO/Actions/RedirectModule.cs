@@ -91,7 +91,7 @@ namespace EmbedIO.Actions
             if (_shouldRedirect?.Invoke(context, path) ?? true)
             {
                 context.Redirect(RedirectUrl, (int)StatusCode);
-                context.Handled = true;
+                context.SetHandled();
             }
 
             return Task.CompletedTask;

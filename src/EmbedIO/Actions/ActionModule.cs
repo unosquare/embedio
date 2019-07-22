@@ -49,7 +49,7 @@ namespace EmbedIO.Actions
                 return;
 
             await _handler(context, path, cancellationToken).ConfigureAwait(false);
-            context.Handled = true;
+            context.SetHandled();
         }
     }
 }
