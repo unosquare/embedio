@@ -317,6 +317,7 @@ namespace EmbedIO.WebApi
             {
                 var parameter = parameters[i];
                 var parameterType = parameter.ParameterType;
+                var failedToUseRequestDataAttributes = false;
 
                 // First, check for generic request data interfaces in attributes
                 var requestDataInterfaces = parameter.GetCustomAttributes<Attribute>()
@@ -337,26 +338,28 @@ namespace EmbedIO.WebApi
                         x => x.Intf.GenericTypeArguments[0].IsAssignableFrom(controllerType)
                           && parameterType.IsAssignableFrom(x.Intf.GenericTypeArguments[1]));
 
-                    // Throw if there are none, as the user expects data to be injected
+                    if (attr != null)
+                    {
+                        // Use the request data interface to get a value for the parameter.
+                        Expression useRequestDataInterface = Expression.Call(
+                            Expression.Constant(attr),
+                            intf.GetMethod(GetRequestDataAsyncMethodName),
+                            controller,
+                            Expression.Constant(parameter.Name));
+
+                        // We should await the call to GetRequestDataAsync.
+                        // For lack of a better way, call AwaitResult with an appropriate type argument.
+                        useRequestDataInterface = Expression.Call(
+                            AwaitResultMethod.MakeGenericMethod(intf.GenericTypeArguments[1]),
+                            useRequestDataInterface);
+
+                        handlerArguments.Add(useRequestDataInterface);
+                        continue;
+                    }
+
+                    // If there is no interface to use, the user expects data to be injected
                     // but provided no way of injecting the right data type.
-                    if (attr == null)
-                        throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
-
-                    // Use the request data interface to get a value for the parameter.
-                    Expression useRequestDataInterface = Expression.Call(
-                        Expression.Constant(attr),
-                        intf.GetMethod(GetRequestDataAsyncMethodName),
-                        controller,
-                        Expression.Constant(parameter.Name));
-
-                    // We should await the call to GetRequestDataAsync.
-                    // For lack of a better way, call AwaitResult with an appropriate type argument.
-                    useRequestDataInterface = Expression.Call(
-                        AwaitResultMethod.MakeGenericMethod(intf.GenericTypeArguments[1]),
-                        useRequestDataInterface);
-
-                    handlerArguments.Add(useRequestDataInterface);
-                    continue;
+                    failedToUseRequestDataAttributes = true;
                 }
 
                 // Check for non-generic request data interfaces in attributes
@@ -377,32 +380,39 @@ namespace EmbedIO.WebApi
                     var (attr, intf) = requestDataInterfaces.FirstOrDefault(
                         x => x.Intf.GenericTypeArguments[0].IsAssignableFrom(controllerType));
 
-                    // Throw if there are none, as the user expects data to be injected
+                    if (attr != null)
+                    {
+                        // Use the request data interface to get a value for the parameter.
+                        Expression useRequestDataInterface = Expression.Call(
+                            Expression.Constant(attr),
+                            intf.GetMethod(GetRequestDataAsyncMethodName),
+                            controller,
+                            Expression.Constant(parameterType),
+                            Expression.Constant(parameter.Name));
+
+                        // We should await the call to GetRequestDataAsync,
+                        // then cast the result to the parameter type.
+                        // For lack of a better way to do the former,
+                        // and to save one function call,
+                        // just call AwaitAndCastResult with an appropriate type argument.
+                        useRequestDataInterface = Expression.Call(
+                            AwaitAndCastResultMethod.MakeGenericMethod(parameterType),
+                            Expression.Constant(parameter.Name),
+                            useRequestDataInterface);
+
+                        handlerArguments.Add(useRequestDataInterface);
+                        continue;
+                    }
+
+                    // If there is no interface to use, the user expects data to be injected
                     // but provided no way of injecting the right data type.
-                    if (attr == null)
-                        throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
-
-                    // Use the request data interface to get a value for the parameter.
-                    Expression useRequestDataInterface = Expression.Call(
-                        Expression.Constant(attr),
-                        intf.GetMethod(GetRequestDataAsyncMethodName),
-                        controller,
-                        Expression.Constant(parameterType),
-                        Expression.Constant(parameter.Name));
-
-                    // We should await the call to GetRequestDataAsync,
-                    // then cast the result to the parameter type.
-                    // For lack of a better way to do the former,
-                    // and to save one function call,
-                    // just call AwaitAndCastResult with an appropriate type argument.
-                    useRequestDataInterface = Expression.Call(
-                        AwaitAndCastResultMethod.MakeGenericMethod(parameterType),
-                        Expression.Constant(parameter.Name),
-                        useRequestDataInterface);
-
-                    handlerArguments.Add(useRequestDataInterface);
-                    continue;
+                    failedToUseRequestDataAttributes = true;
                 }
+
+                // There are request data attributes, but none is suitable
+                // for the type of the parameter.
+                if (failedToUseRequestDataAttributes)
+                    throw new InvalidOperationException($"No request data attribute for parameter {parameter.Name} of method {controllerType.Name}.{method.Name} can provide the expected data type.");
 
                 // Check whether the name of the handler parameter matches the name of a route parameter.
                 var index = IndexOfRouteParameter(matcher, parameter.Name);
