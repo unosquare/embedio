@@ -154,6 +154,11 @@ namespace EmbedIO
             }
         }
 
+        /// <summary>
+        /// Gets a string to use as a source for log messages.
+        /// </summary>
+        protected string LogSource { get; }
+
         /// <inheritdoc />
         public Task HandleContextAsync(IHttpContextImpl context)
         {
@@ -165,11 +170,6 @@ namespace EmbedIO
 
             return DoHandleContextAsync(context);
         }
-
-        /// <summary>
-        /// Gets a string to use as a source for log messages.
-        /// </summary>
-        protected string LogSource { get; }
 
         string IMimeTypeProvider.GetMimeType(string extension)
             => _mimeTypeCustomizer.GetMimeType(extension);
