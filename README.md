@@ -105,22 +105,8 @@ namespace Unosquare
                 url = args[0];
 
             // Our web server is disposable.
-            using (var server = new WebServer(url))
+            using (var server = CreateWebServer(url))
             {
-                // First, we will configure our web server by adding Modules.
-                // Please note that order DOES matter.
-                // ================================================================================================
-                // If we want to enable sessions, we simply register the LocalSessionModule
-                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
-                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
-                // You could potentially implement a distributed session module using something like Redis
-                server.WithLocalSession();
-
-                // Here we setup serving of static files
-                server.RegisterModule(new StaticFilesModule("c:/web"));
-                // The static files module will cache small files in ram until it detects they have been modified.
-                server.Module<StaticFilesModule>().UseRamCache = true;
-
                 // Once we've registered our modules and configured them, we call the RunAsync() method.
                 server.RunAsync();
 
@@ -134,6 +120,28 @@ namespace Unosquare
                 // something like a BackgroundWorker or a ManualResetEvent.
                 Console.ReadKey(true);
             }
+        }
+	
+	// Create and configure our web server.
+        private static WebServer CreateWebServer(string url)
+        {
+            var server = new WebServer(o => o
+                    .WithUrlPrefix(url)
+                    .WithMode(HttpListenerMode.EmbedIO))
+		 // First, we will configure our web server by adding Modules.
+                .WithLocalSessionManager()
+                .WithWebApi("/api", m => m
+                    .WithController<PeopleController>())
+                .WithModule(new WebSocketChatModule("/chat"))
+                .WithModule(new WebSocketTerminalModule("/terminal"))
+                .WithStaticFolder("/", HtmlRootPath, true, m => m
+                    .WithContentCaching(UseFileCache)) // Add static files after other modules to avoid conflicts
+                .WithModule(new ActionModule("/", HttpVerbs.Any, ctx => ctx.SendDataAsync(new { Message = "Error" })));
+
+            // Listen for state changes.
+            server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
+
+            return server;
         }
     }
 }
@@ -160,7 +168,7 @@ For reading a JSON payload and deserialize it to an object from an HTTP Request 
     [Route(HttpVerbs.Post, "/data")]
     public async Task PostJsonData() 
     {
-        var data = HttpContext.GetRequestDataAsync<MyData>(CancellationToken);
+        var data = HttpContext.GetRequestDataAsync<MyData>();
 	
         // Perform an operation with the data
         await SaveData(data);
@@ -183,7 +191,7 @@ You can open the Response Output Stream with the extension [OpenResponseStream](
     {
 	// Call a fictional external source
 	using (var stream = HttpContext.OpenResponseStream())
-                await stream.WriteAsync(dataBuffer, 0, 0, CancellationToken);
+                await stream.WriteAsync(dataBuffer, 0, 0);
     }
 ```
 
