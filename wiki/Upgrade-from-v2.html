@@ -76,7 +76,11 @@
 <li>New Assembly name <code>EmbedIO.dll</code>.</li>
 <li>New Assembly with unit Testing support classes and <code>TestWebServer</code>: <code>EmbedIO.Testing.dll</code>.</li>
 <li>Remove Routing Strategy: everything is using Regex resolution of routes.</li>
+<li>Remove <code>return bool</code> for WebModule, a new pipeline is available</li>
+<li>Remove <code>return bool</code> or <code>return Task&lt;bool&gt;</code>  for WebAPI Methods, you can return anything and the serializer will take control.</li>
 </ul>
+<h3 id="webapi-upgrade-details">WebAPI upgrade details.</h3>
+<p>1 - It&#39;s important to remove all your <code>return bool</code> or <code>return Task&lt;bool&gt;</code> because they may be serialized and, if you already write a stream to the Response output, will throw an exception.</p>
 </article>
           </div>
           

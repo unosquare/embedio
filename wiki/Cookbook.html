@@ -92,7 +92,7 @@
 <pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
     public async Task PostData() 
     {
-        var data = HttpContext.GetRequestFormDataAsync(CancellationToken);
+        var data = HttpContext.GetRequestFormDataAsync();
 
         // Perform an operation with the data
         await SaveData(data);
@@ -102,7 +102,7 @@
 <pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
     public async Task PostJsonData() 
     {
-        var data = HttpContext.GetRequestDataAsync&lt;MyData&gt;(CancellationToken);
+        var data = HttpContext.GetRequestDataAsync&lt;MyData&gt;();
 
         // Perform an operation with the data
         await SaveData(data);
@@ -112,7 +112,7 @@
     public class JsonGridDataRequestAttribute : Attribute, IRequestDataAttribute&lt;WebApiController, GridDataRequest&gt;
     {
         public Task&lt;GridDataRequest&gt; GetRequestDataAsync(WebApiController controller)
-            =&gt; controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json&lt;GridDataRequest&gt;, controller.CancellationToken);
+            =&gt; controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json&lt;GridDataRequest&gt;);
     }
 </code></pre><p>This attribute can be used in the argument of a Controller method:</p>
 <pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/people&quot;)]
@@ -125,13 +125,11 @@
 <h1 id="writing-a-binary-stream">Writing a binary stream</h1>
 <p>You can open the Response Output Stream with the extension <a href="">OpenResponseStream</a>.</p>
 <pre><code class="lang-csharp">    [Route(HttpVerbs.Get, &quot;/binary&quot;)]
-    public async Task&lt;true&gt; GetBinary() 
+    public async Task GetBinary() 
     {
     // Call a fictional external source
     using (var stream = HttpContext.OpenResponseStream())
-                await stream.WriteAsync(dataBuffer, 0, 0, CancellationToken);
-
-    return true;
+                await stream.WriteAsync(dataBuffer, 0, 0);
     }
 </code></pre><h2 id="how-to-turn-off-logging">How to turn off logging</h2>
 <p>EmbedIO uses <a href="https://github.com/unosquare/swan">SWAN</a>&#39;s <code>Terminal</code> to display all messages. You can disable them or change the verbosity by modifying the <code>Terminal</code> settings.</p>

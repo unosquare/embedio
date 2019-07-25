@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "CODE_OF_CONDUCT.html",
-          "hash": "5tECIh+R38oTL2Q9qeN4Ng=="
+          "hash": "+JlJ6pUBT9oZ5gk47VwWTw=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "3ifaNpI5qLdLosWiGzuBzw=="
+          "hash": "d8JbU812bU3iNx1ecIuwVQ=="
         }
       },
       "is_incremental": false,
@@ -984,7 +984,7 @@
       "output": {
         ".html": {
           "relative_path": "wiki/Cookbook.html",
-          "hash": "qT8d+jxLYas1eBM6qVuYBQ=="
+          "hash": "3F+5BnKAlU4ZEZQomUnvXQ=="
         }
       },
       "is_incremental": false,
@@ -1020,7 +1020,7 @@
       "output": {
         ".html": {
           "relative_path": "wiki/Upgrade-from-v2.html",
-          "hash": "aiBfGSfXr7lmDwP+xLnxTQ=="
+          "hash": "/A0kiptaRO3IAeb+PMUNBQ=="
         }
       },
       "is_incremental": false,
@@ -1057,11 +1057,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 71,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -1070,10 +1069,11 @@
           "total_file_count": 7,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 71,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
