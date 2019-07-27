@@ -36,6 +36,19 @@
                 return true;
             }
 
+            // https://tools.ietf.org/html/rfc7231#section-5.3.4
+            // RFC7231, Section 5.3.4, rule #2:
+            // If the representation has no content-coding, then it is
+            // acceptable by default unless specifically excluded by the
+            // Accept - Encoding field stating either "identity;q=0" or "*;q=0"
+            // without a more specific entry for "identity".
+            if (!preferCompression && (!@this.TryGetWeight(CompressionMethodNames.None, out var weight) || weight > 0))
+            {
+                compressionMethod = CompressionMethod.None;
+                compressionMethodName = CompressionMethodNames.None;
+                return true;
+            }
+
             var acceptableMethods = preferCompression
                 ? new[] { CompressionMethod.Gzip, CompressionMethod.Deflate, CompressionMethod.None }
                 : new[] { CompressionMethod.None, CompressionMethod.Gzip, CompressionMethod.Deflate };
