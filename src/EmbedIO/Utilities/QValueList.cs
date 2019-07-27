@@ -113,6 +113,21 @@ namespace EmbedIO.Utilities
             => TryGetCandidateValue(Validate.NotNull(nameof(value), value), out var candidate) && candidate.Weight > 0;
 
         /// <summary>
+        /// Attempts to determine whether the weight of a possible candidate.
+        /// </summary>
+        /// <param name="value">The value whose weight is to be determined.</param>
+        /// <param name="weight">When this method returns <see langword="true"/>,
+        /// the weight of the candidate.</param>
+        /// <returns><see langword="true"/> if <paramref name="value"/> is a candidate;
+        /// otherwise, <see langword="false"/>.</returns>
+        public bool TryGetWeight(string value, out int weight)
+        {
+            var result = TryGetCandidateValue(Validate.NotNull(nameof(value), value), out var candidate);
+            weight = candidate.Weight;
+            return result;
+        }
+
+        /// <summary>
         /// Finds the value preferred by the client among an enumeration of values.
         /// </summary>
         /// <param name="values">The values.</param>
