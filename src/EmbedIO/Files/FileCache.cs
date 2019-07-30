@@ -6,8 +6,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
-using EmbedIO.Utilities;
 using Unosquare.Swan;
+using Unosquare.Swan.Lite.Components;
 
 namespace EmbedIO.Files
 {

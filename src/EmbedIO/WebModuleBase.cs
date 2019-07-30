@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
+using Unosquare.Swan.Abstractions;
 
 namespace EmbedIO
 {
@@ -116,7 +117,6 @@ namespace EmbedIO
             {
                 await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException)
                     .ConfigureAwait(false);
-
             }
             finally
             {

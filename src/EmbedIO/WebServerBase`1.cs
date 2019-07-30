@@ -7,6 +7,7 @@ using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using Unosquare.Swan;
+using Unosquare.Swan.Abstractions;
 
 namespace EmbedIO
 {
@@ -14,7 +15,7 @@ namespace EmbedIO
     /// Base class for <see cref="IWebServer" /> implementations.
     /// </summary>
     /// <typeparam name="TOptions">The type of the options object used to configure an instance.</typeparam>
-    /// <seealso cref="ConfiguredObject" />
+    /// <seealso cref="IHttpContextHandler" />
     /// <seealso cref="IWebServer" />
     public abstract class WebServerBase<TOptions> : ConfiguredObject, IWebServer, IHttpContextHandler
         where TOptions : WebServerOptionsBase, new()

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets.Internal;
 using Unosquare.Swan;
+using Unosquare.Swan.Lite.Components;
 
 namespace EmbedIO.WebSockets
 {

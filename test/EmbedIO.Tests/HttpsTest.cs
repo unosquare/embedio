@@ -19,7 +19,7 @@ namespace EmbedIO.Tests
         [Test]
         public async Task OpenWebServerHttps_RetrievesIndex()
         {
-            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             ServicePointManager.ServerCertificateValidationCallback = ValidateCertificate;
@@ -49,7 +49,7 @@ namespace EmbedIO.Tests
         [Test]
         public void OpenWebServerHttpsWithLinuxOrMac_ThrowsInvalidOperation()
         {
-            if (Runtime.OS == Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS == Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Ignore Windows");
             
             Assert.Throws<PlatformNotSupportedException>(() => {
@@ -64,7 +64,7 @@ namespace EmbedIO.Tests
         [Test]
         public void OpenWebServerHttpsWithoutCert_ThrowsInvalidOperation()
         {
-            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions()
@@ -77,7 +77,7 @@ namespace EmbedIO.Tests
         [Test]
         public void OpenWebServerHttpsWithInvalidStore_ThrowsInvalidOperation()
         {
-            if (Runtime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
+using Unosquare.Swan.Abstractions;
 
 namespace EmbedIO.Routing
 {

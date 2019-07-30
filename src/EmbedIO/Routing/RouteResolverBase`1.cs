@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
+using Unosquare.Swan.Abstractions;
 
 namespace EmbedIO.Routing
 {

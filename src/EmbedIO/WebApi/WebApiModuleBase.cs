@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.Utilities;
+using Unosquare.Swan.Lite;
 
 namespace EmbedIO.WebApi
 {
@@ -581,7 +582,7 @@ namespace EmbedIO.WebApi
             _controllerTypes.Add(controllerType);
         }
 
-        private bool IsGenericTaskType(Type type, out Type resultType)
+        private static bool IsGenericTaskType(Type type, out Type resultType)
         {
             resultType = null;
 
@@ -594,6 +595,5 @@ namespace EmbedIO.WebApi
             resultType = type.GetGenericArguments()[0];
             return true;
         }
-
     }
 }
