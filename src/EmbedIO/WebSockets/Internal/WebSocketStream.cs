@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.WebSockets.Internal
 {

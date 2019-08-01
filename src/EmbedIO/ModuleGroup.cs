@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
-using EmbedIO.Utilities;
+using Swan.Abstractions;
 
 namespace EmbedIO
 {

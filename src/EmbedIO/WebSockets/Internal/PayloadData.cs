@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Unosquare.Swan;
+using Swan;
 using EmbedIO.Net.Internal;
 
 namespace EmbedIO.WebSockets.Internal

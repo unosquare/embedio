@@ -8,8 +8,8 @@ using EmbedIO.Actions;
 using EmbedIO.Tests.TestObjects;
 using EmbedIO.WebApi;
 using NUnit.Framework;
-using Unosquare.Swan;
-using Unosquare.Swan.Formatters;
+using Swan;
+using Swan.Formatters;
 
 namespace EmbedIO.Tests
 {

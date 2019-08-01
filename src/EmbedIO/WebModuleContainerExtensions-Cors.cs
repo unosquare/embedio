@@ -1,6 +1,7 @@
 ﻿using System;
 using EmbedIO.Cors;
 using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO
 {

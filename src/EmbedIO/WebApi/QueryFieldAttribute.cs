@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
-using Unosquare.Swan.Lite;
+using Swan;
 
 namespace EmbedIO.WebApi
 {

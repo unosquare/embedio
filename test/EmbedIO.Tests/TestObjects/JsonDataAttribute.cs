@@ -17,7 +17,7 @@ namespace EmbedIO.Tests.TestObjects
 
             try
             {
-                return Unosquare.Swan.Formatters.Json.Deserialize(body, type);
+                return Swan.Formatters.Json.Deserialize(body, type);
             }
             catch (FormatException)
             {

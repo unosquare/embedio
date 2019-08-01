@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using EmbedIO.WebApi;
+using Swan;
+using Swan.Abstractions;
 
 namespace EmbedIO
 {

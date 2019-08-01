@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using EmbedIO.Net;
 using EmbedIO.Utilities;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Testing.Internal
 {

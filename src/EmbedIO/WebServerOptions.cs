@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using EmbedIO.Utilities;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO
 {
@@ -115,7 +115,7 @@ namespace EmbedIO
             set
             {
                 EnsureConfigurationNotLocked();
-                if (value && SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+                if (value && SwanRuntime.OS != Swan.OperatingSystem.Windows)
                     throw new PlatformNotSupportedException("AutoLoadCertificate functionality is only available under Windows.");
 
                 _autoLoadCertificate = value;
@@ -136,7 +136,7 @@ namespace EmbedIO
             set
             {
                 EnsureConfigurationNotLocked();
-                if (value && SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+                if (value && SwanRuntime.OS != Swan.OperatingSystem.Windows)
                     throw new PlatformNotSupportedException("AutoRegisterCertificate functionality is only available under Windows.");
 
                 _autoRegisterCertificate = value;
@@ -199,7 +199,7 @@ namespace EmbedIO
 
         private X509Certificate2 LoadCertificate()
         {
-            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 return null;
 
             if (!string.IsNullOrWhiteSpace(_certificateThumbprint)) return GetCertificate(_certificateThumbprint);
@@ -271,7 +271,7 @@ namespace EmbedIO
 
         private bool TryRegisterCertificate()
         {
-            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 return false;
 
             if (_certificate == null)

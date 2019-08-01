@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using EmbedIO.Net;
 using NUnit.Framework;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Tests
 {
@@ -22,7 +22,7 @@ namespace EmbedIO.Tests
         [TestCase("http://127.0.0.1:8877")]
         public async Task WithUseIpv6_ReturnsValid(string urlTest)
         {
-            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://*:8877");
@@ -39,7 +39,7 @@ namespace EmbedIO.Tests
         [Test]
         public async Task WithIpv6Loopback_ReturnsValid()
         {
-            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://[::1]:8877");

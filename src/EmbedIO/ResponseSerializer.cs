@@ -17,7 +17,7 @@ namespace EmbedIO
 
         /// <summary>
         /// Serializes data in JSON format to a HTTP response,
-        /// using the <see cref="Unosquare.Swan.Formatters.Json"/> utility class.
+        /// using the <see cref="Swan.Formatters.Json"/> utility class.
         /// </summary>
         /// <param name="context">The HTTP context of the request.</param>
         /// <param name="data">The data to serialize.</param>
@@ -27,7 +27,7 @@ namespace EmbedIO
             context.Response.ContentType = MimeType.Json;
             using (var text = context.OpenResponseText(Encoding.UTF8))
             {
-                await text.WriteAsync(Unosquare.Swan.Formatters.Json.Serialize(data)).ConfigureAwait(false);
+                await text.WriteAsync(Swan.Formatters.Json.Serialize(data)).ConfigureAwait(false);
             }
         }
     }

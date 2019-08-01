@@ -5,8 +5,9 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Tests
 {
@@ -19,7 +20,7 @@ namespace EmbedIO.Tests
         [Test]
         public async Task OpenWebServerHttps_RetrievesIndex()
         {
-            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             ServicePointManager.ServerCertificateValidationCallback = ValidateCertificate;
@@ -49,7 +50,7 @@ namespace EmbedIO.Tests
         [Test]
         public void OpenWebServerHttpsWithLinuxOrMac_ThrowsInvalidOperation()
         {
-            if (SwanRuntime.OS == Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS == Swan.OperatingSystem.Windows)
                 Assert.Ignore("Ignore Windows");
             
             Assert.Throws<PlatformNotSupportedException>(() => {
@@ -57,27 +58,27 @@ namespace EmbedIO.Tests
                     .WithUrlPrefix(HttpsUrl)
                     .WithAutoLoadCertificate();
                 
-                var server = new WebServer(options);
+                new WebServer(options).Void();
             });
         }
 
         [Test]
         public void OpenWebServerHttpsWithoutCert_ThrowsInvalidOperation()
         {
-            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions()
                 .WithUrlPrefix(HttpsUrl)
                 .WithAutoRegisterCertificate();
 
-            Assert.Throws<InvalidOperationException>(() => new WebServer(options));
+            Assert.Throws<InvalidOperationException>(() => new WebServer(options).Void());
         }
 
         [Test]
         public void OpenWebServerHttpsWithInvalidStore_ThrowsInvalidOperation()
         {
-            if (SwanRuntime.OS != Unosquare.Swan.OperatingSystem.Windows)
+            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var options = new WebServerOptions()

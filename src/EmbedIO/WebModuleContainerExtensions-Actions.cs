@@ -1,6 +1,8 @@
 ﻿using System;
 using EmbedIO.Actions;
 using EmbedIO.Utilities;
+using Swan;
+using Swan.Abstractions;
 
 namespace EmbedIO
 {

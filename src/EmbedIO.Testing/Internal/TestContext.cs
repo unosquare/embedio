@@ -8,7 +8,7 @@ using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Testing.Internal
 {

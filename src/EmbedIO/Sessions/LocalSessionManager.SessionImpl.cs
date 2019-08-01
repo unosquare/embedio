@@ -1,5 +1,6 @@
 ﻿using System;
 using EmbedIO.Utilities;
+using Swan.Components;
 
 namespace EmbedIO.Sessions
 {

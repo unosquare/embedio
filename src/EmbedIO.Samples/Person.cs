@@ -1,5 +1,5 @@
 ﻿using Unosquare.Labs.LiteLib;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Samples
 {

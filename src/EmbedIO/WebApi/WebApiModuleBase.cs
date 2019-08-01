@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.Utilities;
-using Unosquare.Swan.Lite;
+using Swan;
 
 namespace EmbedIO.WebApi
 {

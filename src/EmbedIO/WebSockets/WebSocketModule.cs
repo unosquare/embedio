@@ -9,8 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets.Internal;
-using Unosquare.Swan;
-using Unosquare.Swan.Lite.Components;
+using Swan;
+using Swan.Components;
 
 namespace EmbedIO.WebSockets
 {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EmbedIO.WebSockets;
-using Unosquare.Swan.Formatters;
+using Swan.Formatters;
 
 namespace EmbedIO.Tests.TestObjects
 {

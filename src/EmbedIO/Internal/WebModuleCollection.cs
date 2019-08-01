@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
-using Unosquare.Swan;
+using Swan;
+using Swan.Components;
 
 namespace EmbedIO.Internal
 {

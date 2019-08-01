@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
 using EmbedIO.Utilities;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO
 {

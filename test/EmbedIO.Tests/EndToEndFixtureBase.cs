@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using EmbedIO.Testing;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Tests
 {

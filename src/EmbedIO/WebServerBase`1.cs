@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
-using Unosquare.Swan;
-using Unosquare.Swan.Abstractions;
+using Swan;
+using Swan.Abstractions;
 
 namespace EmbedIO
 {

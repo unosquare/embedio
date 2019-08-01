@@ -3,7 +3,7 @@ using System.Net;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Web;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO
 {

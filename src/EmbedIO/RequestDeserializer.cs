@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO
 {
@@ -36,7 +36,7 @@ namespace EmbedIO
 
             try
             {
-                return Unosquare.Swan.Formatters.Json.Deserialize<TData>(body);
+                return Swan.Formatters.Json.Deserialize<TData>(body);
             }
             catch (FormatException)
             {

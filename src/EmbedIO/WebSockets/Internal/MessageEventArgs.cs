@@ -1,5 +1,5 @@
 ﻿using System;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.WebSockets.Internal
 {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
-using Unosquare.Swan.Formatters;
+using Swan.Formatters;
 
 namespace EmbedIO.Tests
 {

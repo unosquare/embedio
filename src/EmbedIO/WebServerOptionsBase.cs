@@ -1,5 +1,5 @@
 ﻿using System;
-using Unosquare.Swan.Abstractions;
+using Swan.Abstractions;
 
 namespace EmbedIO
 {

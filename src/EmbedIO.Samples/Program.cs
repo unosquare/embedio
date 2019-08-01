@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EmbedIO.Actions;
 using EmbedIO.Files;
 using EmbedIO.WebApi;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Samples
 {

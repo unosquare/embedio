@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using EmbedIO.Net.Internal;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.WebSockets.Internal
 {

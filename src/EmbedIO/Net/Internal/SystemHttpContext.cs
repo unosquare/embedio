@@ -9,7 +9,7 @@ using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
 using EmbedIO.WebSockets.Internal;
-using Unosquare.Swan;
+using Swan;
 
 namespace EmbedIO.Net.Internal
 {

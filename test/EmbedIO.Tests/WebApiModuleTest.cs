@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using EmbedIO.Tests.TestObjects;
 using EmbedIO.WebApi;
 using NUnit.Framework;
-using Unosquare.Swan.Formatters;
+using Swan.Formatters;
 
 namespace EmbedIO.Tests
 {
