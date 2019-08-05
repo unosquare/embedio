@@ -4,6 +4,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Web;
 using Swan;
+using Swan.Logging;
 
 namespace EmbedIO
 {
@@ -129,6 +130,7 @@ namespace EmbedIO
             }
 
             exception.Log(logSource, $"[{context.Id}] Unhandled exception.");
+
             try
             {
                 context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);

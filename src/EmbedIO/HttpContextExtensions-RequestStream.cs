@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 using System.Text;
-using Swan;
+using Swan.Logging;
 
 namespace EmbedIO
 {

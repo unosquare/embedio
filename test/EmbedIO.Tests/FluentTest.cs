@@ -17,7 +17,7 @@ namespace EmbedIO.Tests
         [SetUp]
         public void Init()
         {
-            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
+            // Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
 
             _webServerUrl = Resources.GetServerAddress();
             _rootPath = StaticFolder.RootPathOf(nameof(FluentTest));

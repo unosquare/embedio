@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Swan;
 using EmbedIO.Net.Internal;
@@ -36,7 +37,7 @@ namespace EmbedIO.WebSockets.Internal
                 if (!_code.HasValue)
                 {
                     _code = _data.Length > 1
-                            ? BitConverter.ToUInt16(_data.SubArray(0, 2).ToHostOrder(Endianness.Big), 0)
+                            ? BitConverter.ToUInt16(_data.Take(2).ToArray().ToHostOrder(Endianness.Big), 0)
                             : (ushort)1005;
                 }
 

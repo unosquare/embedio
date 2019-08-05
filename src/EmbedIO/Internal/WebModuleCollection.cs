@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
-using Swan;
-using Swan.Components;
+using Swan.Collections;
+using Swan.Logging;
 
 namespace EmbedIO.Internal
 {

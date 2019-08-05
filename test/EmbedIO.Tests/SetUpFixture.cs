@@ -9,7 +9,7 @@ namespace EmbedIO.Tests
         [OneTimeSetUp]
         public void OnBeforeAnyTests()
         {
-            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
+            // Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
         }
     }
 }

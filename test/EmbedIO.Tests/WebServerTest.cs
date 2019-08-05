@@ -25,7 +25,8 @@ namespace EmbedIO.Tests
         [SetUp]
         public void Setup()
         {
-            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
+            // TODO: Unregister console logger
+            // Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
         }
 
         public class Constructors : WebServerTest

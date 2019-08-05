@@ -4,7 +4,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Swan;
+using Swan.Logging;
 
 namespace EmbedIO
 {
@@ -88,6 +88,7 @@ namespace EmbedIO
             }
 
             exception.Log(logSource, $"[{context.Id}] HTTP exception {httpException.StatusCode}");
+
             try
             {
                 context.Response.SetEmptyResponse(httpException.StatusCode);

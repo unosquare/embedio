@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets.Internal;
 using Swan;
-using Swan.Components;
+using Swan.Logging;
+using Swan.Threading;
 
 namespace EmbedIO.WebSockets
 {

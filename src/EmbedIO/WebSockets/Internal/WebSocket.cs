@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
 using Swan;
+using Swan.Logging;
 
 namespace EmbedIO.WebSockets.Internal
 {

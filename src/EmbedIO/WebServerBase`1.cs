@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
-using Swan;
+using Swan.Collections;
 using Swan.Abstractions;
+using Swan.Logging;
 
 namespace EmbedIO
 {

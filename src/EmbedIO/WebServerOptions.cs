@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using EmbedIO.Utilities;
 using Swan;
+using Swan.Logging;
 
 namespace EmbedIO
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Swan.Abstractions;
+using Swan.Collections;
 
 namespace EmbedIO.Sessions
 {

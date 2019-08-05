@@ -6,8 +6,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
-using Swan;
-using Swan.Components;
+using Swan.Threading;
+using Swan.Logging;
 
 namespace EmbedIO.Files
 {

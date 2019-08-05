@@ -15,7 +15,7 @@ namespace EmbedIO.Tests
         {
             EndPointManager.UseIpv6 = true;
 
-            Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
+            // Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
         }
 
         [TestCase("http://[::1]:8877")]

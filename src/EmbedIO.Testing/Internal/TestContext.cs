@@ -8,7 +8,7 @@ using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
-using Swan;
+using Swan.Logging;
 
 namespace EmbedIO.Testing.Internal
 {
@@ -18,7 +18,6 @@ namespace EmbedIO.Testing.Internal
 
         private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
-        private bool _isHandled;
         private bool _closed;
 
         internal TestContext(IHttpRequest request)
@@ -57,11 +56,11 @@ namespace EmbedIO.Testing.Internal
 
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
-        public bool IsHandled => _isHandled;
+        public bool IsHandled { get; set; }
 
         public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
 
-        public void SetHandled() => _isHandled = true;
+        public void SetHandled() => IsHandled = true;
 
         public void OnClose(Action<IHttpContext> callback)
         {

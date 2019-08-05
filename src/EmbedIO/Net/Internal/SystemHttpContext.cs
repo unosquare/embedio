@@ -9,7 +9,7 @@ using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
 using EmbedIO.WebSockets.Internal;
-using Swan;
+using Swan.Logging;
 
 namespace EmbedIO.Net.Internal
 {

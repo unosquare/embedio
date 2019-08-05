@@ -7,6 +7,7 @@ using EmbedIO.Actions;
 using EmbedIO.Files;
 using EmbedIO.WebApi;
 using Swan;
+using Swan.Logging;
 
 namespace EmbedIO.Samples
 {
