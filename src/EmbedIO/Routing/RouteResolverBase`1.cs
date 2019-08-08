@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
-using Swan.Abstractions;
+using Swan.Configuration;
 
 namespace EmbedIO.Routing
 {

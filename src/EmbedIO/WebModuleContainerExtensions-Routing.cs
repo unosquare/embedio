@@ -1,7 +1,7 @@
 ﻿using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using Swan;
-using Swan.Abstractions;
+using Swan.Collections;
 using System;
 
 namespace EmbedIO

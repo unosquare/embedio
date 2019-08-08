@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using EmbedIO.Files;
 using Swan;
-using Swan.Abstractions;
+using Swan.Collections;
 
 namespace EmbedIO
 {

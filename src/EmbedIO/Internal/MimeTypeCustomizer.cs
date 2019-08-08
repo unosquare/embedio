@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using EmbedIO.Utilities;
-using Swan.Abstractions;
+using Swan.Configuration;
 
 namespace EmbedIO.Internal
 {

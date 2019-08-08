@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
-using Swan.Abstractions;
+using Swan.Configuration;
 
 namespace EmbedIO
 {
@@ -97,9 +97,7 @@ namespace EmbedIO
                     context.SetHandled();
             }
             catch (RequestHandlerPassThroughException)
-            {
-                return;
-            }
+            { }
             catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
             {
                 throw; // Let the web server handle it

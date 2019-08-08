@@ -4,7 +4,7 @@ using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using EmbedIO.WebApi;
 using Swan;
-using Swan.Abstractions;
+using Swan.Collections;
 
 namespace EmbedIO
 {

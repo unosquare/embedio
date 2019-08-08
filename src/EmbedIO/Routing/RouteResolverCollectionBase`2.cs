@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
-using Swan.Abstractions;
+using Swan.Collections;
+using Swan.Configuration;
 
 namespace EmbedIO.Routing
 {

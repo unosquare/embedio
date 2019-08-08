@@ -7,7 +7,7 @@ using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using Swan.Collections;
-using Swan.Abstractions;
+using Swan.Configuration;
 using Swan.Logging;
 
 namespace EmbedIO
