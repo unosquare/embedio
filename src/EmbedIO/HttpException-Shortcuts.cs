@@ -6,14 +6,17 @@ namespace EmbedIO
     partial class HttpException
     {
         /// <summary>
-        /// Returns a new instance of <see cref="HttpException"/> that, when thrown,
+        /// Returns a new instance of <see cref="HttpException" /> that, when thrown,
         /// will break the request handling control flow and send a <c>401 Unauthorized</c>
         /// response to the client.
         /// </summary>
         /// <param name="message">A message to include in the response.</param>
-        /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException Unauthorized(string message = null)
-            => new HttpException(HttpStatusCode.Unauthorized, message);
+        /// <param name="data">The data object to include in the response.</param>
+        /// <returns>
+        /// A newly-created <see cref="HttpException" />.
+        /// </returns>
+        public static HttpException Unauthorized(string message = null, object data = null)
+            => new HttpException(HttpStatusCode.Unauthorized, message, data);
 
         /// <summary>
         /// Returns a new instance of <see cref="HttpException"/> that, when thrown,
@@ -21,9 +24,10 @@ namespace EmbedIO
         /// response to the client.
         /// </summary>
         /// <param name="message">A message to include in the response.</param>
+        /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException Forbidden(string message = null)
-            => new HttpException(HttpStatusCode.Forbidden, message);
+        public static HttpException Forbidden(string message = null, object data = null)
+            => new HttpException(HttpStatusCode.Forbidden, message, data);
 
         /// <summary>
         /// Returns a new instance of <see cref="HttpException"/> that, when thrown,
@@ -31,9 +35,10 @@ namespace EmbedIO
         /// response to the client.
         /// </summary>
         /// <param name="message">A message to include in the response.</param>
+        /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException BadRequest(string message = null)
-            => new HttpException(HttpStatusCode.BadRequest, message);
+        public static HttpException BadRequest(string message = null, object data = null)
+            => new HttpException(HttpStatusCode.BadRequest, message, data);
 
         /// <summary>
         /// Returns a new instance of <see cref="HttpException"/> that, when thrown,
@@ -41,9 +46,10 @@ namespace EmbedIO
         /// response to the client.
         /// </summary>
         /// <param name="message">A message to include in the response.</param>
+        /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException NotFound(string message = null)
-            => new HttpException(HttpStatusCode.NotFound, message);
+        public static HttpException NotFound(string message = null, object data = null)
+            => new HttpException(HttpStatusCode.NotFound, message, data);
 
         /// <summary>
         /// Returns a new instance of <see cref="HttpException"/> that, when thrown,
@@ -51,9 +57,10 @@ namespace EmbedIO
         /// response to the client.
         /// </summary>
         /// <param name="message">A message to include in the response.</param>
+        /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException MethodNotAllowed(string message = null)
-            => new HttpException(HttpStatusCode.MethodNotAllowed, message);
+        public static HttpException MethodNotAllowed(string message = null, object data = null)
+            => new HttpException(HttpStatusCode.MethodNotAllowed, message, data);
 
         /// <summary>
         /// Returns a new instance of <see cref="HttpNotAcceptableException"/> that, when thrown,

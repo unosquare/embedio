@@ -53,11 +53,37 @@ namespace EmbedIO
             : this((int)statusCode, message)
         {
         }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpException" /> class,
+        /// with a message and a data object to include in the response.
+        /// </summary>
+        /// <param name="statusCode">The status code to set on the response.</param>
+        /// <param name="message">A message to include in the response as plain text.</param>
+        /// <param name="data">The data object to include in the response.</param>
+        public HttpException(int statusCode, string message, object data)
+            : this(statusCode, message)
+        {
+            DataObject = data;
+        }
 
         /// <summary>
-        /// The status code to set on the response when this exception is thrown.
+        /// Initializes a new instance of the <see cref="HttpException" /> class,
+        /// with a message and a data object to include in the response.
         /// </summary>
+        /// <param name="statusCode">The status code to set on the response.</param>
+        /// <param name="message">A message to include in the response as plain text.</param>
+        /// <param name="data">The data object to include in the response.</param>
+        public HttpException(HttpStatusCode statusCode, string message, object data)
+            : this((int)statusCode, message, data)
+        {
+        }
+
+        /// <inheritdoc />
         public int StatusCode { get; }
+
+        /// <inheritdoc />
+        public object DataObject { get; set; }
 
         /// <inheritdoc />
         /// <remarks>

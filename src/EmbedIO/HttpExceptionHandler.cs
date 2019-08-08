@@ -78,6 +78,18 @@ namespace EmbedIO
                             HttpUtility.HtmlEncode(httpException.StackTrace));
                     }
                 });
+        
+        /// <summary>
+        /// Sends a HTTP exception's <see cref="IHttpException.DataObject">DataObject</see> property
+        /// as a json/application response.
+        ///
+        /// If the DataObject is null, the <see cref="IHttpException.Message">Message</see> property will be send.
+        /// </summary>
+        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="httpException">The HTTP exception.</param>
+        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        public static Task JsonDataResponse(IHttpContext context, IHttpException httpException)
+            => context.SendDataAsync(httpException.DataObject ?? httpException.Message);
 
         internal static async Task Handle(string logSource, IHttpContext context, Exception exception, HttpExceptionHandlerCallback handler)
         {

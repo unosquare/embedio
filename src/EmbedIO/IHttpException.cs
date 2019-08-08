@@ -26,6 +26,11 @@ namespace EmbedIO
         string StackTrace { get; }
 
         /// <summary>
+        /// Gets a data object that can be included in the response.
+        /// </summary>
+        object DataObject { get; }
+
+        /// <summary>
         /// Sets necessary headers, as required by the nature
         /// of the HTTP exception (e.g. <c>Location</c> for
         /// <see cref="HttpRedirectException" />).
