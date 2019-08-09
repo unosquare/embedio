@@ -263,8 +263,6 @@ namespace EmbedIO.Sessions
 
         private bool IsSessionCookie(Cookie cookie)
             => cookie.Name.Equals(CookieName, StringComparison.OrdinalIgnoreCase)
-             && cookie.Path.Equals(CookiePath, StringComparison.Ordinal)
-             && string.IsNullOrEmpty(cookie.Domain)
              && !cookie.Expired;
 
         private Cookie BuildSessionCookie(string id)
