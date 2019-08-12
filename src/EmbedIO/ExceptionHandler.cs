@@ -111,7 +111,7 @@ namespace EmbedIO
                     text.Write(
                         "<p><strong>Exception type:</strong> {0}<p><strong>Message:</strong> {1}",
                         HttpUtility.HtmlEncode(exception.GetType().FullName ?? "<unknown>"),
-                        HttpUtility.HtmlEncode(exception.ExceptionMessage()));
+                        HttpUtility.HtmlEncode(exception.Message));
 
                     if (IncludeStackTraces)
                     {
