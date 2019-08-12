@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using EmbedIO.Utilities;
 using Swan.Collections;
 
@@ -87,6 +89,14 @@ namespace EmbedIO.Sessions
                 lock (_data)
                 {
                     return _data.TryRemove(key, out value);
+                }
+            }
+
+            public IReadOnlyList<KeyValuePair<string, object>> TakeSnapshot()
+            {
+                lock (_data)
+                {
+                    return _data.ToArray();
                 }
             }
 

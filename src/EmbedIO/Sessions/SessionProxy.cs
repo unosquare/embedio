@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace EmbedIO.Sessions
 {
@@ -123,6 +124,13 @@ namespace EmbedIO.Sessions
         {
             EnsureSessionExists();
             return _session.TryRemove(key, out value);
+        }
+
+        /// <inheritdoc/>
+        public IReadOnlyList<KeyValuePair<string, object>> TakeSnapshot()
+        {
+            EnsureSessionExists();
+            return _session.TakeSnapshot();
         }
 
         private void EnsureSessionManagerExists()
