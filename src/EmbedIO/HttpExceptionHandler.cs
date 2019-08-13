@@ -4,6 +4,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using EmbedIO.Utilities;
 using Swan.Logging;
 
 namespace EmbedIO
@@ -80,18 +81,25 @@ namespace EmbedIO
                             HttpUtility.HtmlEncode(httpException.StackTrace));
                     }
                 });
-        
+
         /// <summary>
-        /// Sends a HTTP exception's <see cref="IHttpException.DataObject">DataObject</see> property
-        /// as a json/application response.
-        ///
-        /// If the DataObject is null, the <see cref="IHttpException.Message">Message</see> property will be send.
+        /// <para>Gets a <see cref="HttpExceptionHandlerCallback" /> that will serialize a HTTP exception's
+        /// <see cref="IHttpException.Message">Message</see> and <see cref="IHttpException.DataObject">DataObject</see> properties
+        /// and send them as a JSON response.</para>
+        /// <para>The response will be a JSON object with a <c>message</c> property and a <c>data</c> property.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
-        /// <param name="httpException">The HTTP exception.</param>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-        public static Task JsonDataResponse(IHttpContext context, IHttpException httpException)
-            => context.SendDataAsync(httpException.DataObject ?? httpException.Message);
+        /// <param name="serializerCallback">A <see cref="ResponseSerializerCallback" /> used to serialize data and send it to the client.</param>
+        /// <returns>A <see cref="HttpExceptionHandlerCallback" />.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="serializerCallback"/> is <see langword="null"/>.</exception>
+        public static HttpExceptionHandlerCallback DataResponse(ResponseSerializerCallback serializerCallback)
+        {
+            Validate.NotNull(nameof(serializerCallback), serializerCallback);
+
+            return (context, httpException) => serializerCallback(context, new {
+                message = httpException.Message,
+                data = httpException.DataObject,
+            });
+        }
 
         internal static async Task Handle(string logSource, IHttpContext context, Exception exception, HttpExceptionHandlerCallback handler)
         {
