@@ -37,8 +37,9 @@ namespace EmbedIO
             => Task.CompletedTask;
 
         /// <summary>
-        /// Sends a HTTP exception's <see cref="IHttpException.Message">Message</see> property
-        /// as a plain text response.
+        /// <para>Sends a HTTP exception's <see cref="IHttpException.Message">Message</see> property
+        /// as a plain text response.</para>
+        /// <para>This handler does not use the <see cref="IHttpException.DataObject">DataObject</see> property.</para>
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
@@ -47,10 +48,11 @@ namespace EmbedIO
             => context.SendStringAsync(httpException.Message, MimeType.PlainText, Encoding.UTF8);
 
         /// <summary>
-        /// Sends a response with a HTML payload
+        /// <para>Sends a response with a HTML payload
         /// briefly describing the error, including contact information and/or a stack trace
         /// if specified via the <see cref="ExceptionHandler.ContactInformation"/>
-        /// and <see cref="ExceptionHandler.IncludeStackTraces"/> properties, respectively.
+        /// and <see cref="ExceptionHandler.IncludeStackTraces"/> properties, respectively.</para>
+        /// <para>This handler does not use the <see cref="IHttpException.DataObject">DataObject</see> property.</para>
         /// </summary>
         /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
