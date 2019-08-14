@@ -41,6 +41,7 @@ namespace EmbedIO
             : base(message)
         {
             StatusCode = statusCode;
+            HttpExceptionMessage = message;
         }
 
         /// <summary>
@@ -81,9 +82,16 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public int StatusCode { get; }
+ 
+        /// <inheritdoc />
+        public object DataObject { get; }
 
         /// <inheritdoc />
-        public object DataObject { get; set; }
+        string IHttpException.Message => HttpExceptionMessage;
+
+        // This property is necessary because when an exception with a null Message is thrown
+        // the CLR provides a standard message. We want null to remain null in IHttpException.
+        private string HttpExceptionMessage { get; }
 
         /// <inheritdoc />
         /// <remarks>
