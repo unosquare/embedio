@@ -84,9 +84,7 @@ namespace EmbedIO
 
         /// <summary>
         /// <para>Gets a <see cref="HttpExceptionHandlerCallback" /> that will serialize a HTTP exception's
-        /// <see cref="IHttpException.Message">Message</see> and <see cref="IHttpException.DataObject">DataObject</see> properties
-        /// and send them as a JSON response.</para>
-        /// <para>The response will be a JSON object with a <c>message</c> property and a <c>data</c> property.</para>
+        /// <see cref="IHttpException.DataObject">DataObject</see> property and send it as a JSON response.</para>
         /// </summary>
         /// <param name="serializerCallback">A <see cref="ResponseSerializerCallback" /> used to serialize data and send it to the client.</param>
         /// <returns>A <see cref="HttpExceptionHandlerCallback" />.</returns>
@@ -95,7 +93,24 @@ namespace EmbedIO
         {
             Validate.NotNull(nameof(serializerCallback), serializerCallback);
 
-            return (context, httpException) => serializerCallback(context, new {
+            return (context, httpException) => serializerCallback(context, httpException.DataObject);
+        }
+
+        /// <summary>
+        /// <para>Gets a <see cref="HttpExceptionHandlerCallback" /> that will serialize a HTTP exception's
+        /// <see cref="IHttpException.Message">Message</see> and <see cref="IHttpException.DataObject">DataObject</see> properties
+        /// and send them as a JSON response.</para>
+        /// <para>The response will be a JSON object with a <c>message</c> property and a <c>data</c> property.</para>
+        /// </summary>
+        /// <param name="serializerCallback">A <see cref="ResponseSerializerCallback" /> used to serialize data and send it to the client.</param>
+        /// <returns>A <see cref="HttpExceptionHandlerCallback" />.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="serializerCallback"/> is <see langword="null"/>.</exception>
+        public static HttpExceptionHandlerCallback FullDataResponse(ResponseSerializerCallback serializerCallback)
+        {
+            Validate.NotNull(nameof(serializerCallback), serializerCallback);
+
+            return (context, httpException) => serializerCallback(context, new
+            {
                 message = httpException.Message,
                 data = httpException.DataObject,
             });
