@@ -16,12 +16,19 @@ namespace EmbedIO.Routing
 
         private readonly Regex _regex;
 
-        private RouteMatcher(string route, string pattern, IReadOnlyList<string> parameterNames)
+        private RouteMatcher(bool isBaseRoute, string route, string pattern, IReadOnlyList<string> parameterNames)
         {
+            IsBaseRoute = isBaseRoute;
             Route = route;
             ParameterNames = parameterNames;
             _regex = new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant);
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="Route"/> property
+        /// is a base route.
+        /// </summary>
+        public bool IsBaseRoute { get; }
 
         /// <summary>
         /// Gets the route this instance matches URL paths against.
@@ -39,15 +46,17 @@ namespace EmbedIO.Routing
         /// this method obtains an instance from a static cache.</para>
         /// </summary>
         /// <param name="route">The route to parse.</param>
+        /// <param name="isBaseRoute"><see langword="true"/> if the route to parse
+        /// is a base route; otherwise, <see langword="false"/>.</param>
         /// <returns>A newly-constructed instance of <see cref="RouteMatcher"/>
         /// that will match URL paths against <paramref name="route"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="route"/> is <see langword="null"/>.</exception>
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
         /// <seealso cref="TryParse"/>
         /// <seealso cref="ClearCache"/>
-        public static RouteMatcher Parse(string route)
+        public static RouteMatcher Parse(string route, bool isBaseRoute)
         {
-            var exception = TryParseInternal(route, out var result);
+            var exception = TryParseInternal(route, isBaseRoute, out var result);
             if (exception != null)
                 throw exception;
 
@@ -60,14 +69,16 @@ namespace EmbedIO.Routing
         /// this method obtains an instance from a static cache.</para>
         /// </summary>
         /// <param name="route">The route to parse.</param>
+        /// <param name="isBaseRoute"><see langword="true"/> if the route to parse
+        /// is a base route; otherwise, <see langword="false"/>.</param>
         /// <param name="result">When this method returns <see langword="true"/>, a newly-constructed instance of <see cref="RouteMatcher" />
         /// that will match URL paths against <paramref name="route"/>; otherwise, <see langword="null"/>.
         /// This parameter is passed uninitialized.</param>
         /// <returns><see langword="true"/> if parsing was successful; otherwise, <see langword="false"/>.</returns>
         /// <seealso cref="Parse"/>
         /// <seealso cref="ClearCache"/>
-        public static bool TryParse(string route, out RouteMatcher result)
-            => TryParseInternal(route, out result) == null;
+        public static bool TryParse(string route, bool isBaseRoute, out RouteMatcher result)
+            => TryParseInternal(route, isBaseRoute, out result) == null;
 
         /// <summary>
         /// Clears <see cref="RouteMatcher"/>'s internal instance cache.
@@ -95,17 +106,17 @@ namespace EmbedIO.Routing
                 return null;
 
             var match = _regex.Match(path);
+            if (!match.Success)
+                return null;
 
-            // Skip the first match group, representing the whole string.
-            return match.Success 
-                ? new RouteMatch(
-                    path,
-                    ParameterNames,
-                    match.Groups.Cast<Group>().Skip(1).Select(g => WebUtility.UrlDecode(g.Value)).ToArray())
-                : null;
+            return new RouteMatch(
+                path,
+                ParameterNames,
+                match.Groups.Cast<Group>().Skip(1).Select(g => WebUtility.UrlDecode(g.Value)).ToArray(),
+                IsBaseRoute ? "/" + path.Substring(match.Groups[0].Length) : null);
         }
 
-        private static Exception TryParseInternal(string route, out RouteMatcher result)
+        private static Exception TryParseInternal(string route, bool isBaseRoute, out RouteMatcher result)
         {
             lock (SyncRoot)
             {
@@ -114,14 +125,14 @@ namespace EmbedIO.Routing
 
                 string pattern = null;
                 var parameterNames = new List<string>();
-                var exception = Routing.Route.ParseInternal(route, (n, p) => {
+                var exception = Routing.Route.ParseInternal(route, isBaseRoute, (_, n, p) => {
                     parameterNames.AddRange(n);
                     pattern = p;
                 });
                 if (exception != null)
                     return exception;
 
-                result = new RouteMatcher(route, pattern, parameterNames);
+                result = new RouteMatcher(isBaseRoute, route, pattern, parameterNames);
                 Cache.Add(route, result);
                 return null;
             }

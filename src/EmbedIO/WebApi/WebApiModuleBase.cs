@@ -290,7 +290,7 @@ namespace EmbedIO.WebApi
         private RouteHandlerCallback CompileHandler(Expression factoryExpression, MethodInfo method, string route)
         {
             // Parse the route
-            var matcher = RouteMatcher.Parse(route);
+            var matcher = RouteMatcher.Parse(false, route);
 
             // Lambda parameters
             var contextInLambda = Expression.Parameter(typeof(IHttpContext), "context");

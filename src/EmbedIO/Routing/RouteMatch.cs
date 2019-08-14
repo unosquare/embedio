@@ -20,17 +20,24 @@ namespace EmbedIO.Routing
     {
         private readonly IReadOnlyList<string> _values;
 
-        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values)
+        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values, string subPath)
         {
             Path = path;
             Names = names;
             _values = values;
+            SubPath = subPath;
         }
 
         /// <summary>
         /// Gets the URL path that was successfully matched against the route.
         /// </summary>
         public string Path { get; }
+
+        /// <summary>
+        /// <para>For a base route, gets the part of <see cref="Path"/> that follows the matched route;
+        /// for a non-base route, this property is always <see langword="null"/>.</para>
+        /// </summary>
+        public string SubPath { get; }
 
         /// <summary>
         /// Gets a list of the names of the route's parameters.

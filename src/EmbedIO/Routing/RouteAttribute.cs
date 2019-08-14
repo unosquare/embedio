@@ -24,7 +24,7 @@ namespace EmbedIO.Routing
         public RouteAttribute(HttpVerbs verb, string route)
         {
             Verb = verb;
-            Route = Validate.Route(nameof(route), route);
+            Route = Validate.Route(nameof(route), route, false);
         }
 
         /// <summary>

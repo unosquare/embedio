@@ -26,7 +26,7 @@ namespace EmbedIO.Routing
         /// <param name="route">The route to match URL paths against.</param>
         protected RouteResolverBase(string route)
         {
-            _matcher = RouteMatcher.Parse(route);
+            _matcher = RouteMatcher.Parse(route, false);
         }
 
         /// <summary>
