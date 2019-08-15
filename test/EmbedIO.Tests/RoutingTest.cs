@@ -10,8 +10,6 @@ namespace EmbedIO.Tests
     {
         [TestCase("")] // Route is empty.
         [TestCase("abc")] // Route does not start with a slash.
-        [TestCase("/abc/")] // Non-base route must not end with a slash unless it is "/".
-        [TestCase("/abc//def")] // Route must not contain consecutive slashes.
         [TestCase("/abc/{id")] // Route syntax error: unclosed parameter specification.
         [TestCase("/abc/{}")] // Route syntax error: empty parameter specification.
         [TestCase("/abc/{?}")] // Route syntax error: missing parameter name.
@@ -29,8 +27,6 @@ namespace EmbedIO.Tests
 
         [TestCase("")] // Route is empty.
         [TestCase("abc/")] // Route does not start with a slash.
-        [TestCase("/abc")] // Base route must end with a slash.
-        [TestCase("/abc//def/")] // Route must not contain consecutive slashes.
         [TestCase("/abc/{id/")] // Route syntax error: unclosed parameter specification.
         [TestCase("/abc/{}/")] // Route syntax error: empty parameter specification.
         [TestCase("/abc/{myp@rameter}/")] // Route syntax error: parameter name contains one or more invalid characters.

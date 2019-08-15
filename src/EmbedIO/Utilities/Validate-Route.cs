@@ -26,7 +26,7 @@ namespace EmbedIO.Utilities
             if (exception != null)
                 throw exception;
 
-            return value;
+            return Utilities.UrlPath.UnsafeNormalize(value, isBaseRoute);
         }
     }
 }

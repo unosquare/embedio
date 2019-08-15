@@ -106,15 +106,6 @@ namespace EmbedIO.Routing
             if (route[0] != '/')
                 return new FormatException("Route does not start with a slash.");
 
-            if (isBaseRoute && route[route.Length - 1] != '/')
-                return new FormatException("Base route must end with a slash.");
-
-            if (!isBaseRoute && route.Length > 1 && route[route.Length - 1] == '/')
-                return new FormatException("Non-base route must not end with a slash unless it is \"/\".");
-
-            if (route.Length > 1 && route.IndexOf("//", StringComparison.Ordinal) >= 0)
-                return new FormatException("Route must not contain consecutive slashes.");
-
             /*
              * Regex options set at start of pattern:
              * IgnoreCase              : no
@@ -140,10 +131,8 @@ namespace EmbedIO.Routing
             {
                 // First of all divide the route in segments.
                 // Segments are separated by slashes.
-                // Given the syntax rules checked above, the route will be a sequence of (slash + segment).
-                // String.Split does the job fine, but it will find an empty entry at the beginning (before the initial slash),
-                // and an additional empty entry at the end for base routes, as they always end in a slash.
                 var segments = route.Split(SlashSeparator, StringSplitOptions.RemoveEmptyEntries);
+                // The route is not necessarily normalized, so there could be runs of consecutive slashes.
                 var optionalSegmentCount = 0;
                 foreach (var segment in segments)
                 {

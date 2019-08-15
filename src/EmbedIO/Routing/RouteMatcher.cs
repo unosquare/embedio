@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Routing
 {
@@ -130,9 +131,6 @@ namespace EmbedIO.Routing
         {
             lock (SyncRoot)
             {
-                if (Cache.TryGetValue(route, out result))
-                    return null;
-
                 string pattern = null;
                 var parameterNames = new List<string>();
                 var exception = Routing.Route.ParseInternal(route, isBaseRoute, (_, n, p) => {
@@ -140,7 +138,14 @@ namespace EmbedIO.Routing
                     pattern = p;
                 });
                 if (exception != null)
+                {
+                    result = null;
                     return exception;
+                }
+
+                route = UrlPath.UnsafeNormalize(route, isBaseRoute);
+                if (Cache.TryGetValue(route, out result))
+                    return null;
 
                 result = new RouteMatcher(isBaseRoute, route, pattern, parameterNames);
                 Cache.Add(route, result);
