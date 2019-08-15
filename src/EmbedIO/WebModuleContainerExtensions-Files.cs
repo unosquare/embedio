@@ -70,9 +70,7 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseUrlPath, new FileSystemProvider(fileSystemPath, isImmutable));
-            configure?.Invoke(module);
-            @this.Modules.Add(name, module);
-            return @this;
+            return WithModule(@this, name, module, configure);
         }
 
         /// <summary>
@@ -132,9 +130,7 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseUrlPath, new ResourceFileProvider(assembly, pathPrefix));
-            configure?.Invoke(module);
-            @this.Modules.Add(name, module);
-            return @this;
+            return WithModule(@this, name, module, configure);
         }
         
         /// <summary>
@@ -186,9 +182,7 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFilePath));
-            configure?.Invoke(module);
-            @this.Modules.Add(name, module);
-            return @this;
+            return WithModule(@this, name, module, configure);
         }
 
         /// <summary>
@@ -240,9 +234,7 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFileStream));
-            configure?.Invoke(module);
-            @this.Modules.Add(name, module);
-            return @this;
+            return WithModule(@this, name, module, configure);
         }
     }
 }

@@ -46,12 +46,8 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             configure = Validate.NotNull(nameof(configure), configure);
-
             var module = new RoutingModule(baseUrlPath);
-            configure(module);
-            @this.Modules.Add(name, module);
-
-            return @this;
+            return WithModule(@this, name, module, configure);
         }
     }
 }

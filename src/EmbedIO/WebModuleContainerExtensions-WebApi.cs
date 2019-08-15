@@ -84,12 +84,8 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             configure = Validate.NotNull(nameof(configure), configure);
-
             var module = new WebApiModule(baseUrlPath);
-            configure(module);
-            @this.Modules.Add(name, module);
-
-            return @this;
+            return WithModule(@this, name, module, configure);
         }
 
         /// <summary>
@@ -125,12 +121,8 @@ namespace EmbedIO
             where TContainer : class, IWebModuleContainer
         {
             configure = Validate.NotNull(nameof(configure), configure);
-
             var module = new WebApiModule(baseUrlPath, serializer);
-            configure(module);
-            @this.Modules.Add(name, module);
-
-            return @this;
+            return WithModule(@this, name, module, configure);
         }
     }
 }
