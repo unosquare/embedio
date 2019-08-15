@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
+using EmbedIO.Routing;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using Swan.Collections;
@@ -66,7 +67,7 @@ namespace EmbedIO
         {
             Options = options;
             LogSource = GetType().Name;
-            _modules = new WebModuleCollection(LogSource, "/");
+            _modules = new WebModuleCollection(LogSource);
 
             configure?.Invoke(Options);
             Options.Lock();

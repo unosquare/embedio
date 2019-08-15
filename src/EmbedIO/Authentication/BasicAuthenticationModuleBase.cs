@@ -15,17 +15,17 @@ namespace EmbedIO.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicAuthenticationModuleBase"/> class.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="baseRoute">The base URL path.</param>
         /// <param name="realm">The authentication realm.</param>
         /// <remarks>
         /// <para>If <paramref name="realm"/> is <see langword="null"/> or the empty string,
         /// the <see cref="Realm"/> property will be set equal to
-        /// <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</para>
+        /// <see cref="IWebModule.BaseRoute">BaseRoute</see>.</para>
         /// </remarks>
-        protected BasicAuthenticationModuleBase(string baseUrlPath, string realm)
-            : base(baseUrlPath)
+        protected BasicAuthenticationModuleBase(string baseRoute, string realm)
+            : base(baseRoute)
         {
-            Realm = string.IsNullOrEmpty(realm) ? BaseUrlPath : realm;
+            Realm = string.IsNullOrEmpty(realm) ? BaseRoute : realm;
 
             _wwwAuthenticateHeaderValue = $"Basic realm=\"{Realm}\" charset=UTF-8";
         }
@@ -66,7 +66,7 @@ namespace EmbedIO.Authentication
         /// Verifies the credentials given in the <c>Authentication</c> request header.
         /// </summary>
         /// <param name="path">The URL path requested by the client. Note that this is relative
-        /// to the module's <see cref="WebModuleBase.BaseUrlPath">BaseUrlPath</see>.</param>
+        /// to the module's <see cref="WebModuleBase.BaseRoute">BaseRoute</see>.</param>
         /// <param name="userName">The user name, or <see langword="null" /> if none has been given.</param>
         /// <param name="password">The password, or <see langword="null" /> if none has been given.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken" /> use to cancel the operation.</param>

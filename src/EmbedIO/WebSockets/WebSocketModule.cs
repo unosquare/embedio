@@ -175,7 +175,7 @@ namespace EmbedIO.WebSockets
 
             if (!acceptConnection)
             {
-                $"{BaseUrlPath} - Rejecting WebSocket connection: no subprotocol was accepted.".Debug(nameof(WebSocketModule));
+                $"{BaseRoute} - Rejecting WebSocket connection: no subprotocol was accepted.".Debug(nameof(WebSocketModule));
                 foreach (var protocol in _protocols)
                     context.Response.Headers.Add(HttpHeaderNames.SecWebSocketProtocol, protocol);
 
@@ -188,7 +188,7 @@ namespace EmbedIO.WebSockets
             if (!(context is IHttpContextImpl contextImpl))
                 throw new InvalidOperationException($"HTTP context must implement {nameof(IHttpContextImpl)}.");
 
-            $"{BaseUrlPath} - Accepting WebSocket connection with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
+            $"{BaseRoute} - Accepting WebSocket connection with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
             var webSocketContext = await contextImpl.AcceptWebSocketAsync(
                     requestedProtocols, 
                     acceptedProtocol, 
@@ -199,7 +199,7 @@ namespace EmbedIO.WebSockets
             PurgeDisconnectedContexts();
             _contexts.TryAdd(webSocketContext.Id, webSocketContext);
 
-            $"{BaseUrlPath} - WebSocket connection accepted - There are now {_contexts.Count} sockets connected."
+            $"{BaseRoute} - WebSocket connection accepted - There are now {_contexts.Count} sockets connected."
                 .Debug(nameof(WebSocketModule));
 
             await OnClientConnectedAsync(webSocketContext).ConfigureAwait(false);
@@ -552,7 +552,7 @@ namespace EmbedIO.WebSockets
                 purgedCount++;
             }
 
-            $"{BaseUrlPath} - Purged {purgedCount} of {totalCount} sockets."
+            $"{BaseRoute} - Purged {purgedCount} of {totalCount} sockets."
                 .Debug(nameof(WebSocketModule));
         }
 

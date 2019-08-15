@@ -15,7 +15,7 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
-        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="baseRoute">The base route of the module.</param>
         /// <param name="fileSystemPath">The path of the directory to serve.</param>
         /// <param name="isImmutable"><see langword="true"/> if files and directories in
         /// <paramref name="fileSystemPath"/> are not expected to change during a web server's
@@ -31,13 +31,13 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithStaticFolder<TContainer>(
             this TContainer @this,
-            string baseUrlPath,
+            string baseRoute,
             string fileSystemPath,
             bool isImmutable,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
         {
-            var module = new FileModule(baseUrlPath, new FileSystemProvider(fileSystemPath, isImmutable));
+            var module = new FileModule(baseRoute, new FileSystemProvider(fileSystemPath, isImmutable));
             configure?.Invoke(module);
             @this.Modules.Add(module);
             return @this;
@@ -49,7 +49,7 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
-        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="baseRoute">The base route of the module.</param>
         /// <param name="assembly">The assembly where served files are contained as embedded resources.</param>
         /// <param name="pathPrefix">A string to prepend to provider-specific paths
         /// to form the name of a manifest resource in <paramref name="assembly"/>.</param>
@@ -63,13 +63,13 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithEmbeddedResources<TContainer>(
             this TContainer @this,
-            string baseUrlPath,
+            string baseRoute,
             Assembly assembly,
             string pathPrefix,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
         {
-            var module = new FileModule(baseUrlPath, new ResourceFileProvider(assembly, pathPrefix));
+            var module = new FileModule(baseRoute, new ResourceFileProvider(assembly, pathPrefix));
             configure?.Invoke(module);
             @this.Modules.Add(module);
             return @this;
@@ -81,8 +81,8 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
-        /// <param name="baseUrlPath">The base URL path of the module.</param>
-        /// <param name="zipFilePath">The zip file-system path.</param>
+        /// <param name="baseRoute">The base route of the module.</param>
+        /// <param name="zipFilePath">The local path of the Zip file.</param>
         /// <param name="configure">A callback used to configure the module.</param>
         /// <returns><paramref name="this"/> with a <see cref="FileModule"/> added.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
@@ -92,12 +92,12 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithZipFile<TContainer>(
             this TContainer @this,
-            string baseUrlPath,
+            string baseRoute,
             string zipFilePath,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
         {
-            var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFilePath));
+            var module = new FileModule(baseRoute, new ZipFileProvider(zipFilePath));
             configure?.Invoke(module);
             @this.Modules.Add(module);
             return @this;
@@ -109,7 +109,7 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
-        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="baseRoute">The base route of the module.</param>
         /// <param name="zipFileStream">The zip file as stream.</param>
         /// <param name="configure">A callback used to configure the module.</param>
         /// <returns><paramref name="this"/> with a <see cref="FileModule"/> added.</returns>
@@ -120,12 +120,12 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithZipFileStream<TContainer>(
             this TContainer @this,
-            string baseUrlPath,
+            string baseRoute,
             Stream zipFileStream,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
         {
-            var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFileStream));
+            var module = new FileModule(baseRoute, new ZipFileProvider(zipFileStream));
             configure?.Invoke(module);
             @this.Modules.Add(module);
             return @this;

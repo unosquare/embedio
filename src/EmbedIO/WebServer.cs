@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Net.Internal;
+using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using Swan.Logging;
 
@@ -150,7 +151,7 @@ namespace EmbedIO
             {
                 var context = await Listener.GetContextAsync(cancellationToken).ConfigureAwait(false);
                 context.CancellationToken = cancellationToken;
-                context.RequestedPath = UrlPath.UnsafeNormalize(context.Request.Url.AbsolutePath, false);
+                context.Route = RouteMatch.UnsafeFromRoot(UrlPath.Normalize(context.Request.Url.AbsolutePath, false));
 
 #pragma warning disable CS4014 // Call is not awaited - of course, it has to run in parallel.
                 Task.Run(() => DoHandleContextAsync(context), cancellationToken);

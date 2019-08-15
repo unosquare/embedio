@@ -16,8 +16,8 @@ namespace EmbedIO.Routing
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutingModuleBase"/> class.
         /// </summary>
-        protected RoutingModuleBase(string baseUrlPath)
-            : base(baseUrlPath)
+        protected RoutingModuleBase(string baseRoute)
+            : base(baseRoute)
         {
         }
 

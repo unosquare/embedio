@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Routing;
 
 namespace EmbedIO
 {
@@ -9,16 +10,16 @@ namespace EmbedIO
     public interface IWebModule
     {
         /// <summary>
-        /// Gets base URL path that a module handles.
+        /// Gets the base route of a module.
         /// </summary>
         /// <value>
-        /// The base URL path.
+        /// The base route.
         /// </value>
         /// <remarks>
-        /// <para>A base URL path is either "/" (the root path),
+        /// <para>A base route is either "/" (the root path),
         /// or a prefix starting and ending with a '/' character.</para>
         /// </remarks>
-        string BaseUrlPath { get; }
+        string BaseRoute { get; }
 
         /// <summary>
         /// Gets a value indicating whether processing of a request should stop
@@ -60,6 +61,15 @@ namespace EmbedIO
         /// </summary>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the web server.</param>
         void Start(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Matches the specified URL path against a module's <see cref="BaseRoute"/>,
+        /// extracting values for the route's parameters and a sub-path.
+        /// </summary>
+        /// <param name="urlPath">The URL path to match.</param>
+        /// <returns>If the match is successful, a <see cref="RouteMatch"/> object;
+        /// otherwise, <see langword="null"/>.</returns>
+        RouteMatch MatchUrlPath(string urlPath);
 
         /// <summary>
         /// Handles a request from a client.

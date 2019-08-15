@@ -40,12 +40,12 @@ namespace EmbedIO.Files
         /// Initializes a new instance of the <see cref="FileModule"/> class,
         /// using the specified cache.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="baseRoute">The base route.</param>
         /// <param name="provider">An <see cref="IFileProvider"/> interface that provides access
         /// to actual files and directories.</param>
         /// <exception cref="ArgumentNullException"><paramref name="provider"/> is <see langword="null"/>.</exception>
-        public FileModule(string baseUrlPath, IFileProvider provider)
-            : base(baseUrlPath)
+        public FileModule(string baseRoute, IFileProvider provider)
+            : base(baseRoute)
         {
             Provider = Validate.NotNull(nameof(provider), provider);
             _mappingCache = Provider.IsImmutable

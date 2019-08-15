@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
+using EmbedIO.Routing;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
@@ -49,7 +50,9 @@ namespace EmbedIO.Net.Internal
 
         public IHttpRequest Request { get; }
 
-        public string RequestedPath { get; set; }
+        public RouteMatch Route { get; set; }
+
+        public string RequestedPath => Route.SubPath;
 
         public IHttpResponse Response { get; }
 

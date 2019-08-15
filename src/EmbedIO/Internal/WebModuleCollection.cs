@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Utilities;
 using Swan.Collections;
 using Swan.Logging;
 
@@ -10,12 +9,9 @@ namespace EmbedIO.Internal
     {
         private readonly string _logSource;
 
-        private readonly string _baseUrlPath;
-
-        internal WebModuleCollection(string logSource, string baseUrlPath)
+        internal WebModuleCollection(string logSource)
         {
             _logSource = logSource;
-            _baseUrlPath = baseUrlPath;
         }
 
         internal void StartAll(CancellationToken cancellationToken)
@@ -32,19 +28,15 @@ namespace EmbedIO.Internal
             if (context.IsHandled)
                 return;
 
-            var requestedPath = UrlPath.UnsafeStripPrefix(UrlPath.UnsafeNormalize(context.Request.Url.AbsolutePath, false), _baseUrlPath);
-            if (requestedPath == null)
-                return;
-
-            requestedPath = "/" + requestedPath;
+            var requestedPath = context.RequestedPath;
             foreach (var (name, module) in WithSafeNames)
             {
-                var path = UrlPath.UnsafeStripPrefix(requestedPath, module.BaseUrlPath);
-                if (path == null)
+                var routeMatch = module.MatchUrlPath(requestedPath);
+                if (routeMatch == null)
                     continue;
 
                 $"[{context.Id}] Processing with {name}.".Debug(_logSource);
-                (context as IHttpContextImpl).RequestedPath = "/" + path;
+                (context as IHttpContextImpl).Route = routeMatch;
                 await module.HandleRequestAsync(context).ConfigureAwait(false);
                 if (context.IsHandled)
                     break;

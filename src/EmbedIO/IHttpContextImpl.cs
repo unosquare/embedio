@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Routing;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using EmbedIO.WebSockets;
@@ -22,10 +23,9 @@ namespace EmbedIO
         new CancellationToken CancellationToken { get; set; }
 
         /// <summary>
-        /// <para>Gets or sets the requested path, relative to the innermost module's base path.</para>
-        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
+        /// Gets or sets the route matched by the requested URL path.
         /// </summary>
-        new string RequestedPath { get; set; }
+        RouteMatch Route { get; set; }
 
         /// <summary>
         /// <para>Gets or sets the session proxy associated with this context.</para>

@@ -16,7 +16,7 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
-        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="baseRoute">The base route of the module.</param>
         /// <param name="configure">A callback used to configure the newly-created <see cref="WebApiModule"/>.</param>
         /// <returns><paramref name="this"/> with a <see cref="RoutingModule"/> added.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
@@ -25,12 +25,12 @@ namespace EmbedIO
         /// <seealso cref="WebApiModuleExtensions"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithWebApi<TContainer>(this TContainer @this, string baseUrlPath, Action<WebApiModule> configure)
+        public static TContainer WithWebApi<TContainer>(this TContainer @this, string baseRoute, Action<WebApiModule> configure)
             where TContainer : class, IWebModuleContainer
         {
             configure = Validate.NotNull(nameof(configure), configure);
 
-            var module = new WebApiModule(baseUrlPath);
+            var module = new WebApiModule(baseRoute);
             configure(module);
             @this.Modules.Add(module);
 
@@ -43,7 +43,7 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
-        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="baseRoute">The base route of the module.</param>
         /// <param name="serializer">A <see cref="ResponseSerializerCallback"/> used to serialize
         /// the result of controller methods returning <see langword="object"/>
         /// or <see cref="Task{TResult}">Task&lt;object&gt;</see>.</param>
@@ -61,14 +61,14 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithWebApi<TContainer>(
             this TContainer @this,
-            string baseUrlPath,
+            string baseRoute,
             ResponseSerializerCallback serializer,
             Action<WebApiModule> configure)
             where TContainer : class, IWebModuleContainer
         {
             configure = Validate.NotNull(nameof(configure), configure);
 
-            var module = new WebApiModule(baseUrlPath, serializer);
+            var module = new WebApiModule(baseRoute, serializer);
             configure(module);
             @this.Modules.Add(module);
 
