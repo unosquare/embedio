@@ -27,15 +27,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithWebApi<TContainer>(this TContainer @this, string baseUrlPath, Action<WebApiModule> configure)
             where TContainer : class, IWebModuleContainer
-        {
-            configure = Validate.NotNull(nameof(configure), configure);
-
-            var module = new WebApiModule(baseUrlPath);
-            configure(module);
-            @this.Modules.Add(module);
-
-            return @this;
-        }
+            => WithWebApi(@this, null, baseUrlPath, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="WebApiModule"/> using the specified response serializer
@@ -65,15 +57,7 @@ namespace EmbedIO
             ResponseSerializerCallback serializer,
             Action<WebApiModule> configure)
             where TContainer : class, IWebModuleContainer
-        {
-            configure = Validate.NotNull(nameof(configure), configure);
-
-            var module = new WebApiModule(baseUrlPath, serializer);
-            configure(module);
-            @this.Modules.Add(module);
-
-            return @this;
-        }
+            => WithWebApi(@this, null, baseUrlPath, serializer, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="WebApiModule"/> using the default response serializer
