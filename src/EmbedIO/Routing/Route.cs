@@ -131,11 +131,13 @@ namespace EmbedIO.Routing
             {
                 // First of all divide the route in segments.
                 // Segments are separated by slashes.
-                var segments = route.Split(SlashSeparator, StringSplitOptions.RemoveEmptyEntries);
                 // The route is not necessarily normalized, so there could be runs of consecutive slashes.
+                var segmentCount = 0;
                 var optionalSegmentCount = 0;
-                foreach (var segment in segments)
+                foreach (var segment in GetSegments(route))
                 {
+                    segmentCount++;
+
                     // Parse the segment, looking alternately for a '{', that opens a parameter specification,
                     // then for a '}', that closes it.
                     // Characters outside parameter specifications are Regex-escaped and added to the pattern.
@@ -279,7 +281,7 @@ namespace EmbedIO.Routing
                 sb?.Append(isBaseRoute ? "(/|$)" : "$");
 
                 // If all segments are optional segments, "/" must match too.
-                if (optionalSegmentCount == segments.Length)
+                if (optionalSegmentCount == segmentCount)
                     sb?.Insert(0, "(/$)|(").Append(')');
             }
 
@@ -288,6 +290,35 @@ namespace EmbedIO.Routing
 
             // Everything's fine, thus no exception.
             return null;
+        }
+
+        // Enumerate the segments of a route, ignoring consecutive slashes.
+        private static IEnumerable<string> GetSegments(string route)
+        {
+            var length = route.Length;
+            var position = 0;
+            for (; ; )
+            {
+                while (route[position] == '/')
+                {
+                    position++;
+                    if (position >= length)
+                        break;
+                }
+
+                if (position >= length)
+                    break;
+
+                var slashPosition = route.IndexOf('/', position);
+                if (slashPosition < 0)
+                {
+                    yield return route.Substring(position);
+                    break;
+                }
+
+                yield return route.Substring(position, slashPosition - position);
+                position = slashPosition;
+            }
         }
     }
 }
