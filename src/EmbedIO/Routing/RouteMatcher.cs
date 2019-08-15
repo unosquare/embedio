@@ -105,6 +105,16 @@ namespace EmbedIO.Routing
             if (path == null)
                 return null;
 
+            // Optimize for parameterless base routes
+            if (IsBaseRoute)
+            {
+                if (Route.Length == 1)
+                    return RouteMatch.UnsafeFromRoot(path);
+
+                if (ParameterNames.Count == 0)
+                    return RouteMatch.UnsafeFromBasePath(Route, path);
+            }
+
             var match = _regex.Match(path);
             if (!match.Success)
                 return null;
