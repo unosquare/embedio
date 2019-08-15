@@ -36,12 +36,7 @@ namespace EmbedIO
             bool isImmutable,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
-        {
-            var module = new FileModule(baseUrlPath, new FileSystemProvider(fileSystemPath, isImmutable));
-            configure?.Invoke(module);
-            @this.Modules.Add(module);
-            return @this;
-        }
+            => WithStaticFolder(@this, null, baseUrlPath, fileSystemPath, isImmutable, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="FileSystemProvider"/>, uses it to initialize
@@ -105,12 +100,7 @@ namespace EmbedIO
             string pathPrefix,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
-        {
-            var module = new FileModule(baseUrlPath, new ResourceFileProvider(assembly, pathPrefix));
-            configure?.Invoke(module);
-            @this.Modules.Add(module);
-            return @this;
-        }
+            => WithEmbeddedResources(@this, null, baseUrlPath, assembly, pathPrefix, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="ResourceFileProvider"/>, uses it to initialize
@@ -168,12 +158,7 @@ namespace EmbedIO
             string zipFilePath,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
-        {
-            var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFilePath));
-            configure?.Invoke(module);
-            @this.Modules.Add(module);
-            return @this;
-        }
+            => WithZipFile(@this, null, baseUrlPath, zipFilePath, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="ZipFileProvider"/> using a file-system path, uses it to initialize
@@ -227,12 +212,7 @@ namespace EmbedIO
             Stream zipFileStream,
             Action<FileModule> configure = null)
             where TContainer : class, IWebModuleContainer
-        {
-            var module = new FileModule(baseUrlPath, new ZipFileProvider(zipFileStream));
-            configure?.Invoke(module);
-            @this.Modules.Add(module);
-            return @this;
-        }
+            => WithZipFileStream(@this, null, baseUrlPath, zipFileStream, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="ZipFileProvider"/> using a zip file as stream, uses it to initialize
