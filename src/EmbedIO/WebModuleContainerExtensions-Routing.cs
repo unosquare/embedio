@@ -24,15 +24,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithRouting<TContainer>(this TContainer @this, string baseUrlPath, Action<RoutingModule> configure)
             where TContainer : class, IWebModuleContainer
-        {
-            configure = Validate.NotNull(nameof(configure), configure);
-
-            var module = new RoutingModule(baseUrlPath);
-            configure(module);
-            @this.Modules.Add(module);
-
-            return @this;
-        }
+            => WithRouting(@this, null, baseUrlPath, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="RoutingModule"/> and adds it to a module container,
