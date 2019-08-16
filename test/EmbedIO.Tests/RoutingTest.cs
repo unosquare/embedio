@@ -10,8 +10,6 @@ namespace EmbedIO.Tests
     {
         [TestCase("")] // Route is empty.
         [TestCase("abc")] // Route does not start with a slash.
-        [TestCase("/abc/")] // Route must not end with a slash unless it is "/".
-        [TestCase("/abc//def")] // Route must not contain consecutive slashes.
         [TestCase("/abc/{id")] // Route syntax error: unclosed parameter specification.
         [TestCase("/abc/{}")] // Route syntax error: empty parameter specification.
         [TestCase("/abc/{?}")] // Route syntax error: missing parameter name.
@@ -22,9 +20,26 @@ namespace EmbedIO.Tests
         {
             RouteMatcher.ClearCache();
 
-            Assert.IsFalse(Route.IsValid(route));
-            Assert.Throws<FormatException>(() => RouteMatcher.Parse(route));
-            Assert.IsFalse(RouteMatcher.TryParse(route, out _));
+            Assert.IsFalse(Route.IsValid(route, false));
+            Assert.Throws<FormatException>(() => RouteMatcher.Parse(route, false));
+            Assert.IsFalse(RouteMatcher.TryParse(route, false, out _));
+        }
+
+        [TestCase("")] // Route is empty.
+        [TestCase("abc/")] // Route does not start with a slash.
+        [TestCase("/abc/{id/")] // Route syntax error: unclosed parameter specification.
+        [TestCase("/abc/{}/")] // Route syntax error: empty parameter specification.
+        [TestCase("/abc/{myp@rameter}/")] // Route syntax error: parameter name contains one or more invalid characters.
+        [TestCase("/abc/{id}/def/{id}/")] // Route syntax error: duplicate parameter name.
+        [TestCase("/abc/{id}{name}/")] // Route syntax error: parameters must be separated by literal text.
+        [TestCase("/abc/{id}/{name?}/")] // No segment of a base route can be optional.
+        public void InvalidBaseRoute_IsNotValid(string route)
+        {
+            RouteMatcher.ClearCache();
+
+            Assert.IsFalse(Route.IsValid(route, true));
+            Assert.Throws<FormatException>(() => RouteMatcher.Parse(route, true));
+            Assert.IsFalse(RouteMatcher.TryParse(route, true, out _));
         }
 
         [TestCase("/")] // Root.
@@ -41,9 +56,26 @@ namespace EmbedIO.Tests
         {
             RouteMatcher.ClearCache();
 
-            Assert.IsTrue(Route.IsValid(route));
-            Assert.DoesNotThrow(() => RouteMatcher.Parse(route));
-            Assert.IsTrue(RouteMatcher.TryParse(route, out _));
+            Assert.IsTrue(Route.IsValid(route, false));
+            Assert.DoesNotThrow(() => RouteMatcher.Parse(route, false));
+            Assert.IsTrue(RouteMatcher.TryParse(route, false, out _));
+        }
+
+        [TestCase("/")] // Root.
+        [TestCase("/abc/def/")] // No parameters.
+        [TestCase("/abc/{id}/")] // 1 parameter, takes a whole segment.
+        [TestCase("/a{id}/")] // 1 parameter, at start of segment.
+        [TestCase("/{id}b/")] // 1 parameter, at end of segment.
+        [TestCase("/a{id}b/")] // 1 parameter, mid-segment.
+        [TestCase("/abc/{width}x{height}/")] // 2 parameters, same segment.
+        [TestCase("/abc/{width}/{height}/")] // 2 parameters, different segments.
+        public void ValidBaseRoute_IsValid(string route)
+        {
+            RouteMatcher.ClearCache();
+
+            Assert.IsTrue(Route.IsValid(route, true));
+            Assert.DoesNotThrow(() => RouteMatcher.Parse(route, true));
+            Assert.IsTrue(RouteMatcher.TryParse(route, true, out _));
         }
 
         [TestCase("/")] // Root.
@@ -60,7 +92,7 @@ namespace EmbedIO.Tests
         {
             RouteMatcher.ClearCache();
 
-            Assert.IsTrue(RouteMatcher.TryParse(route, out var matcher));
+            Assert.IsTrue(RouteMatcher.TryParse(route, false, out var matcher));
             Assert.AreEqual(parameterNames.Length, matcher.ParameterNames.Count);
             for (var i = 0; i < parameterNames.Length; i++)
                 Assert.AreEqual(parameterNames[i], matcher.ParameterNames[i]);
@@ -81,7 +113,7 @@ namespace EmbedIO.Tests
             RouteMatcher.ClearCache();
 
             var parameterCount = parameters.Length / 2;
-            Assert.IsTrue(RouteMatcher.TryParse(route, out var matcher));
+            Assert.IsTrue(RouteMatcher.TryParse(route, false, out var matcher));
             Assert.AreEqual(parameterCount, matcher.ParameterNames.Count);
             for (var i = 0; i < parameterCount; i++)
                 Assert.AreEqual(parameters[2 * i], matcher.ParameterNames[i]);
@@ -97,6 +129,27 @@ namespace EmbedIO.Tests
                 Assert.AreEqual(parameters[2 * i], keys[i]);
                 Assert.AreEqual(parameters[(2 * i) + 1], values[i]);
             }
+        }
+
+        [TestCase("/", "/", "/")]
+        [TestCase("/", "/SUBPATH", "/SUBPATH")]
+        [TestCase("/abc/def/", "/abc/def", "/")]
+        [TestCase("/abc/def/", "/abc/def/SUBPATH", "/SUBPATH")]
+        [TestCase("/abc/{id}/", "/abc/123", "/")]
+        [TestCase("/abc/{id}/", "/abc/123/SUBPATH", "/SUBPATH")]
+        [TestCase("/abc/{width}x{height}/", "/abc/123x456", "/")]
+        [TestCase("/abc/{width}x{height}/", "/abc/123x456/SUBPATH", "/SUBPATH")]
+        [TestCase("/abc/{id}/{date}/", "/abc/123/20190223", "/")]
+        [TestCase("/abc/{id}/{date}/", "/abc/123/20190223/SUBPATH", "/SUBPATH")]
+        public void MatchedBaseRoute_HasCorrectSubPath(string route, string path, string subPath)
+        {
+            RouteMatcher.ClearCache();
+
+            Assert.IsTrue(RouteMatcher.TryParse(route, true, out var matcher));
+
+            var match = matcher.Match(path);
+            Assert.IsNotNull(match);
+            Assert.AreEqual(subPath, match.SubPath);
         }
     }
 }

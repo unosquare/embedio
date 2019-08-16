@@ -4,6 +4,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Routing;
 using EmbedIO.Sessions;
 
 namespace EmbedIO
@@ -39,11 +40,16 @@ namespace EmbedIO
         IHttpRequest Request { get; }
 
         /// <summary>
+        /// Gets the route matched by the requested URL path.
+        /// </summary>
+        RouteMatch Route { get; }
+
+        /// <summary>
         /// Gets the requested path, relative to the innermost module's base path.
         /// </summary>
         /// <remarks>
         /// <para>This property derives from the path specified in the requested URL, stripped of the
-        /// <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see> of the handling module.</para>
+        /// <see cref="IWebModule.BaseRoute">BaseRoute</see> of the handling module.</para>
         /// <para>This property is in itself a valid URL path, including an initial
         /// slash (<c>/</c>) character.</para>
         /// </remarks>

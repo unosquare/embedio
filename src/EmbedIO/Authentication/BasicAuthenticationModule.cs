@@ -14,15 +14,15 @@ namespace EmbedIO.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicAuthenticationModule"/> class.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="baseRoute">The base route.</param>
         /// <param name="realm">The authentication realm.</param>
         /// <remarks>
         /// <para>If <paramref name="realm"/> is <see langword="null"/> or the empty string,
         /// the <see cref="BasicAuthenticationModuleBase.Realm">Realm</see> property will be set equal to
-        /// <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see>.</para>
+        /// <see cref="IWebModule.BaseRoute">BaseRoute</see>.</para>
         /// </remarks>
-        public BasicAuthenticationModule(string baseUrlPath, string realm = null)
-            : base(baseUrlPath, realm)
+        public BasicAuthenticationModule(string baseRoute, string realm = null)
+            : base(baseRoute, realm)
         {
         }
 

@@ -26,7 +26,7 @@ namespace EmbedIO.Cors
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsModule" /> class.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path.</param>
+        /// <param name="baseRoute">The base route.</param>
         /// <param name="origins">The valid origins. The default is <see cref="All"/> (<c>*</c>).</param>
         /// <param name="headers">The valid headers. The default is <see cref="All"/> (<c>*</c>).</param>
         /// <param name="methods">The valid methods. The default is <see cref="All"/> (<c>*</c>).</param>
@@ -38,11 +38,11 @@ namespace EmbedIO.Cors
         /// methods
         /// </exception>
         public CorsModule(
-            string baseUrlPath,
+            string baseRoute,
             string origins = All,
             string headers = All,
             string methods = All)
-         : base(baseUrlPath)
+         : base(baseRoute)
         {
             _origins = origins ?? throw new ArgumentNullException(nameof(origins));
             _headers = headers ?? throw new ArgumentNullException(nameof(headers));

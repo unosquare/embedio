@@ -12,7 +12,7 @@ namespace EmbedIO
         /// </summary>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
-        /// <param name="baseUrlPath">The base URL path of the module.</param>
+        /// <param name="baseRoute">The base route of the module.</param>
         /// <param name="origins">The valid origins. Default is <c>"*"</c>, meaning all origins.</param>
         /// <param name="headers">The valid headers. Default is <c>"*"</c>, meaning all headers.</param>
         /// <param name="methods">The valid method. Default is <c>"*"</c>, meaning all methods.</param>
@@ -21,13 +21,13 @@ namespace EmbedIO
         /// <seealso cref="CorsModule"/>
         public static TContainer WithCors<TContainer>(
             this TContainer @this,
-            string baseUrlPath,
+            string baseRoute,
             string origins,
             string headers,
             string methods)
             where TContainer : class, IWebModuleContainer
         {
-            @this.Modules.Add(new CorsModule(baseUrlPath, origins, headers, methods));
+            @this.Modules.Add(new CorsModule(baseRoute, origins, headers, methods));
             return @this;
         }
 

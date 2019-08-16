@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
+using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using Swan.Configuration;
 
@@ -13,7 +14,7 @@ namespace EmbedIO
     /// <para>Although it is not required that a module inherits from this class,
     /// it provides some useful features:</para>
     /// <list type="bullet">
-    /// <item><description>validation and immutability of the <see cref="BaseUrlPath"/> property,
+    /// <item><description>validation and immutability of the <see cref="BaseRoute"/> property,
     /// which are of paramount importance for the correct functioning of a web server;</description></item>
     /// <item><description>support for configuration locking upon web server startup
     /// (see the <see cref="ConfiguredObject.ConfigurationLocked"/> property
@@ -27,23 +28,25 @@ namespace EmbedIO
     {
         private ExceptionHandlerCallback _onUnhandledException;
         private HttpExceptionHandlerCallback _onHttpException;
+        private RouteMatcher _routeMatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path served by this module.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="baseUrlPath"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="baseUrlPath"/> is not a valid base URL path.</exception>
-        /// <seealso cref="IWebModule.BaseUrlPath"/>
-        /// <seealso cref="Validate.UrlPath"/>
-        protected WebModuleBase(string baseUrlPath)
+        /// <param name="baseRoute">The base route served by this module.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="baseRoute"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="baseRoute"/> is not a valid base route.</exception>
+        /// <seealso cref="IWebModule.BaseRoute"/>
+        /// <seealso cref="Validate.Route"/>
+        protected WebModuleBase(string baseRoute)
         {
-            BaseUrlPath = Validate.UrlPath(nameof(baseUrlPath), baseUrlPath, true);
+            BaseRoute = Validate.Route(nameof(baseRoute), baseRoute, true);
+            _routeMatcher = RouteMatcher.Parse(baseRoute, true);
             LogSource = GetType().Name;
         }
 
         /// <inheritdoc />
-        public string BaseUrlPath { get; }
+        public string BaseRoute { get; }
 
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
@@ -81,6 +84,9 @@ namespace EmbedIO
             OnStart(cancellationToken);
             LockConfiguration();
         }
+
+        /// <inheritdoc />
+        public RouteMatch MatchUrlPath(string urlPath) => _routeMatcher.Match(urlPath);
 
         /// <inheritdoc />
         public async Task HandleRequestAsync(IHttpContext context)

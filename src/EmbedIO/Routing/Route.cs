@@ -48,10 +48,12 @@ namespace EmbedIO.Routing
         /// <item><description>must not be <see langword="null"/>;</description></item>
         /// <item><description>must not be the empty string;</description></item>
         /// <item><description>must start with a slash (<c>'/'</c>) character;</description></item>
-        /// <item><description>must not end with a slash (<c>'/'</c>) character,
+        /// <item><description>if a base route, must end with a slash (<c>'/'</c>) character;</description></item>
+        /// <item><description>if not a base route, must not end with a slash (<c>'/'</c>) character,
         /// unless it is the only character in the string;</description></item>
         /// <item><description>must not contain consecutive runs of two or more slash (<c>'/'</c>) characters;</description></item>
         /// <item><description>may contain one or more parameter specifications.</description></item>
+        /// </list>
         /// <para>Each parameter specification must be enclosed in curly brackets (<c>'{'</c>
         /// and <c>'}'</c>. No whitespace is allowed inside a parameter specification.</para>
         /// <para>Two parameter specifications must be separated by literal text.</para>
@@ -61,18 +63,20 @@ namespace EmbedIO.Routing
         /// <para>See <see cref="IsValidParameterName"/> for the definition of a valid parameter name.</para>
         /// <para>To include a literal open curly bracket in the route, it must be doubled (<c>"{{"</c>).</para>
         /// <para>A literal closed curly bracket (<c>'}'</c>) may be included in the route as-is.</para>
-        /// </list>
+        /// <para>A segment of a base route cannot consist only of an optional parameter.</para>
         /// </summary>
-        /// <param name="route">The route.</param>
+        /// <param name="route">The route to check.</param>
+        /// <param name="isBaseRoute"><see langword="true"/> if checking for a base route;
+        /// otherwise, <see langword="false"/>.</param>
         /// <returns><see langword="true"/> if <paramref name="route"/> is a valid route;
         /// otherwise, <see langword="false"/>.</returns>
-        public static bool IsValid(string route) => ValidateInternal(nameof(route), route) == null;
+        public static bool IsValid(string route, bool isBaseRoute) => ValidateInternal(nameof(route), route, isBaseRoute) == null;
 
         // Check the validity of a route by parsing it without storing the results.
         // Returns: ArgumentNullException, ArgumentException, null if OK
-        internal static Exception ValidateInternal(string argumentName, string value)
+        internal static Exception ValidateInternal(string argumentName, string value, bool isBaseRoute)
         {
-            switch (ParseInternal(value, null))
+            switch (ParseInternal(value, isBaseRoute, null))
             {
                 case ArgumentNullException _:
                     return new ArgumentNullException(argumentName);
@@ -89,9 +93,9 @@ namespace EmbedIO.Routing
         }
 
         // Validate and parse a route, constructing a Regex pattern.
-        // setResult will be called at the end with the parameter names and the constructed pattern.
+        // setResult will be called at the end with the isBaseRoute flag, parameter names and the constructed pattern.
         // Returns: ArgumentNullException, FormatException, null if OK
-        internal static Exception ParseInternal(string route, Action<IEnumerable<string>, string> setResult)
+        internal static Exception ParseInternal(string route, bool isBaseRoute, Action<bool, IEnumerable<string>, string> setResult)
         {
             if (route == null)
                 return new ArgumentNullException(nameof(route));
@@ -101,12 +105,6 @@ namespace EmbedIO.Routing
 
             if (route[0] != '/')
                 return new FormatException("Route does not start with a slash.");
-
-            if (route.Length > 1 && route[route.Length - 1] == '/')
-                return new FormatException("Route must not end with a slash unless it is \"/\".");
-
-            if (route.Length > 1 && route.IndexOf("//", StringComparison.Ordinal) >= 0)
-                return new FormatException("Route must not contain consecutive slashes.");
 
             /*
              * Regex options set at start of pattern:
@@ -118,26 +116,28 @@ namespace EmbedIO.Routing
              * See https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-options
              * See https://docs.microsoft.com/en-us/dotnet/standard/base-types/grouping-constructs-in-regular-expressions#group_options
              */
+            const string InitialRegexOptions = "(?sn-imx)";
 
             // If setResult is null we don't need the StringBuilder.
-            var sb = setResult == null ? null : new StringBuilder("(?sn-imx)^");
+            var sb = setResult == null ? null : new StringBuilder("^");
 
             var parameterNames = new List<string>();
             if (route.Length == 1)
             {
                 // If the route consists of a single slash, only a single slash will match.
-                sb?.Append("/$");
+                sb?.Append(isBaseRoute ? "/" : "/$");
             }
             else
             {
                 // First of all divide the route in segments.
                 // Segments are separated by slashes.
-                // Given the syntax rules checked above, the route will be a sequence of (slash + segment).
-                // String.Split does the job fine, but it will find an empty entry at the beginning (before the initial slash).
-                var segments = route.Split(SlashSeparator, StringSplitOptions.RemoveEmptyEntries);
+                // The route is not necessarily normalized, so there could be runs of consecutive slashes.
+                var segmentCount = 0;
                 var optionalSegmentCount = 0;
-                foreach (var segment in segments)
+                foreach (var segment in GetSegments(route))
                 {
+                    segmentCount++;
+
                     // Parse the segment, looking alternately for a '{', that opens a parameter specification,
                     // then for a '}', that closes it.
                     // Characters outside parameter specifications are Regex-escaped and added to the pattern.
@@ -198,6 +198,9 @@ namespace EmbedIO.Routing
                             // Position will be 1 at the start, not 0, because we've skipped the opening '{'.
                             if (allowEmpty && position == 1 && closePosition == segment.Length - 1)
                             {
+                                if (isBaseRoute)
+                                    return new FormatException("No segment of a base route can be optional.");
+
                                 // If the segment consists only of an optional parameter,
                                 // then the slash preceding the segment is optional as well.
                                 // In this case the parameter must match only is not empty,
@@ -275,18 +278,47 @@ namespace EmbedIO.Routing
                 }
 
                 // Close the pattern
-                sb?.Append('$');
+                sb?.Append(isBaseRoute ? "(/|$)" : "$");
 
                 // If all segments are optional segments, "/" must match too.
-                if (optionalSegmentCount == segments.Length)
-                    sb?.Insert(0, "/$|");
+                if (optionalSegmentCount == segmentCount)
+                    sb?.Insert(0, "(/$)|(").Append(')');
             }
 
             // Pass the results to the callback if needed.
-            setResult?.Invoke(parameterNames, sb.ToString());
+            setResult?.Invoke(isBaseRoute, parameterNames, InitialRegexOptions + sb);
 
             // Everything's fine, thus no exception.
             return null;
+        }
+
+        // Enumerate the segments of a route, ignoring consecutive slashes.
+        private static IEnumerable<string> GetSegments(string route)
+        {
+            var length = route.Length;
+            var position = 0;
+            for (; ; )
+            {
+                while (route[position] == '/')
+                {
+                    position++;
+                    if (position >= length)
+                        break;
+                }
+
+                if (position >= length)
+                    break;
+
+                var slashPosition = route.IndexOf('/', position);
+                if (slashPosition < 0)
+                {
+                    yield return route.Substring(position);
+                    break;
+                }
+
+                yield return route.Substring(position, slashPosition - position);
+                position = slashPosition;
+            }
         }
     }
 }

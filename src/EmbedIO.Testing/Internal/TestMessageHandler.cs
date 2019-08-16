@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Routing;
 using EmbedIO.Utilities;
 
 namespace EmbedIO.Testing.Internal
@@ -27,7 +28,7 @@ namespace EmbedIO.Testing.Internal
 
             var context = new TestContext(serverRequest);
             context.CancellationToken = cancellationToken;
-            context.RequestedPath = UrlPath.Normalize(serverRequest.Url.AbsolutePath, false);
+            context.Route = RouteMatch.UnsafeFromRoot(UrlPath.Normalize(serverRequest.Url.AbsolutePath, false));
             await _handler.HandleContextAsync(context).ConfigureAwait(false);
             var serverResponse = context.TestResponse;
             var responseCookies = serverResponse.Headers.Get(HttpHeaderNames.SetCookie);

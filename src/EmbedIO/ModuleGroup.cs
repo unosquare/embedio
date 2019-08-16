@@ -8,9 +8,9 @@ namespace EmbedIO
 {
     /// <summary>
     /// <para>Groups modules under a common base URL path.</para>
-    /// <para>The <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see> property
+    /// <para>The <see cref="IWebModule.BaseRoute">BaseRoute</see> property
     /// of modules contained in a <c>ModuleGroup</c> is relative to the
-    /// <c>ModuleGroup</c>'s <see cref="IWebModule.BaseUrlPath">BaseUrlPath</see> property.
+    /// <c>ModuleGroup</c>'s <see cref="IWebModule.BaseRoute">BaseRoute</see> property.
     /// For example, given the following code:</para>
     /// <para><code>new ModuleGroup("/download")
     ///     .WithStaticFilesAt("/docs", "/var/my/documents");</code></para>
@@ -28,16 +28,16 @@ namespace EmbedIO
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleGroup" /> class.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path served by this module.</param>
+        /// <param name="baseRoute">The base route served by this module.</param>
         /// <param name="isFinalHandler">The value to set the <see cref="IWebModule.IsFinalHandler" /> property to.
         /// See the help for the property for more information.</param>
-        /// <seealso cref="IWebModule.BaseUrlPath" />
+        /// <seealso cref="IWebModule.BaseRoute" />
         /// <seealso cref="IWebModule.IsFinalHandler" />
-        public ModuleGroup(string baseUrlPath, bool isFinalHandler)
-            : base(baseUrlPath)
+        public ModuleGroup(string baseRoute, bool isFinalHandler)
+            : base(baseRoute)
         {
             IsFinalHandler = isFinalHandler;
-            _modules = new WebModuleCollection(nameof(ModuleGroup), BaseUrlPath);
+            _modules = new WebModuleCollection(nameof(ModuleGroup));
         }
 
         /// <summary>

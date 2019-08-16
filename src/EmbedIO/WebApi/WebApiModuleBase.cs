@@ -32,11 +32,11 @@ namespace EmbedIO.WebApi
         /// Initializes a new instance of the <see cref="WebApiModuleBase" /> class,
         /// using the default response serializer.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path served by this module.</param>
-        /// <seealso cref="IWebModule.BaseUrlPath" />
+        /// <param name="baseRoute">The base route served by this module.</param>
+        /// <seealso cref="IWebModule.BaseRoute" />
         /// <seealso cref="Validate.UrlPath" />
-        protected WebApiModuleBase(string baseUrlPath)
-            : this(baseUrlPath, ResponseSerializer.Default)
+        protected WebApiModuleBase(string baseRoute)
+            : this(baseRoute, ResponseSerializer.Default)
         {
         }
 
@@ -44,15 +44,15 @@ namespace EmbedIO.WebApi
         /// Initializes a new instance of the <see cref="WebApiModuleBase" /> class,
         /// using the specified response serializer.
         /// </summary>
-        /// <param name="baseUrlPath">The base URL path served by this module.</param>
+        /// <param name="baseRoute">The base route served by this module.</param>
         /// <param name="serializer">A <see cref="ResponseSerializerCallback"/> used to serialize
         /// the result of controller methods returning <see langword="object"/>
         /// or <see cref="Task{TResult}">Task&lt;object&gt;</see>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="serializer"/> is <see langword="null"/>.</exception>
-        /// <seealso cref="IWebModule.BaseUrlPath" />
+        /// <seealso cref="IWebModule.BaseRoute" />
         /// <seealso cref="Validate.UrlPath" />
-        protected WebApiModuleBase(string baseUrlPath, ResponseSerializerCallback serializer)
-            : base(baseUrlPath)
+        protected WebApiModuleBase(string baseRoute, ResponseSerializerCallback serializer)
+            : base(baseRoute)
         {
             Serializer = Validate.NotNull(nameof(serializer), serializer);
         }
@@ -290,7 +290,7 @@ namespace EmbedIO.WebApi
         private RouteHandlerCallback CompileHandler(Expression factoryExpression, MethodInfo method, string route)
         {
             // Parse the route
-            var matcher = RouteMatcher.Parse(route);
+            var matcher = RouteMatcher.Parse(route, false);
 
             // Lambda parameters
             var contextInLambda = Expression.Parameter(typeof(IHttpContext), "context");
