@@ -1,4 +1,4 @@
-version: '1.13.{build}'
+version: '3.0.{build}'
 image: 
 - Visual Studio 2017
 - Ubuntu
@@ -42,7 +42,7 @@ build_script:
       msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
       cd ..
       cd ..
-- cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR Unosquare.Labs.EmbedIO.sln
+- cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR EmbedIO.sln
 - ps: |
       [xml]$xml = Get-Content inspectcode.xml
       if ($xml.Report.Issues.HasChildNodes)
