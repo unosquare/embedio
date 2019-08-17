@@ -1,20 +1,25 @@
-<div ng-init="orderProp = 'Key'">
-    <div class="form-group">
-        <label>Search people:</label>
-        <input type="text" class="form-control" ng-model="query" placeholder="Enter name">
-    </div>
-    <div class="form-group">
-        <label>Sort By:</label> 
-        <select class="form-control" ng-model="orderProp" size="1">
-            <option value="Name">Alphabetical</option>
-            <option value="Key">Key</option>
-        </select>
+<div class="container d-flex flex-column">
+    <h1 class="col-12 mb-5">Directory</h1>
+    <div class="d-flex flex-row">
+        <div class="col-3" ng-init="orderProp = 'Key'">
+            <div class="form-group">
+                <label>Search people:</label>
+                <input type="text" class="form-control" ng-model="query" placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label>Sort By:</label>
+                <select class="form-control" ng-model="orderProp" size="1">
+                    <option value="Name">Alphabetical</option>
+                    <option value="Key">Key</option>
+                </select>
+            </div>
+            <div class="btn-group d-flex flex-column">
+                <a class="btn btn-primary mb-5" href="/api/people/" target="_blank">Get all people</a>
+                <a class="btn btn-primary" href="/api/people/first" target="_blank">Get the first person here</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <app-person></app-person>
+        </div>
     </div>
 </div>
-<br />
-<div class="btn-group btn-group-justified">
-    <a class="btn btn-sm btn-primary " href="/api/people/" target="_blank">Get all people</a>
-    <a class="btn btn-sm btn-primary " href="/api/people/first" target="_blank">Get the first person here</a>
-</div>
-<br /><br />
-<app-person></app-person>

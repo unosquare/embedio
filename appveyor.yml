@@ -23,6 +23,7 @@ before_build:
             git checkout $env:APPVEYOR_REPO_BRANCH -q
             cinst docfx -y --no-progress
         }
+- ps: cinst resharper-clt.portable -y --no-progress
 - dotnet restore --verbosity q
 - cmd: mkdir tools
 - cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
@@ -41,6 +42,14 @@ build_script:
       msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
       cd ..
       cd ..
+- cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR Unosquare.Labs.EmbedIO.sln
+- ps: |
+      [xml]$xml = Get-Content inspectcode.xml
+      if ($xml.Report.Issues.HasChildNodes)
+      {
+            $xml.Report.Issues.ChildNodes  | foreach { Write-Output $_.InnerXml }
+            throw "inspectcode.exe found issues with severity level Error; see inspectcode.xml for details"
+      }
 test_script:
 - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
 - ps: |

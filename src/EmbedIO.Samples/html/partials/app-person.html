@@ -6,11 +6,11 @@
                     <div class="col-md-2">
                         <img class="img-circle img-responsive" ng-src="{{item.PhotoUrl}}" />
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-10">
                         <h4>{{item.Name}} </h4>
                         <div class="btn-group">
-                            <button class="btn btn-sm btn-warning" ng-click="person.showInfo(item)">Tell me about you.</button>
-                            <a class="btn btn-sm btn-info" href="mailto:{{item.Name}}<{{item.EmailAddress}}>">Email Me</a>
+                            <button class="btn btn-sm btn-warning mr-3" ng-click="person.showInfo(item)">Tell me about you</button>
+                            <a class="btn btn-sm btn-info mr-3" href="mailto:{{item.Name}}<{{item.EmailAddress}}>">Email Me</a>
                             <a class="btn btn-sm btn-primary " href="/api/people/{{item.RowId}}" target="_blank">Get person by Id</a>
                         </div>
                     </div>
