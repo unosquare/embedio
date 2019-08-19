@@ -2,8 +2,8 @@
  [![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/embedio/)](https://github.com/igrigorik/ga-beacon)
  [![Build status](https://ci.appveyor.com/api/projects/status/w59t7sct3a8ir96t?svg=true)](https://ci.appveyor.com/project/geoperez/embedio)
  [![Build Status](https://travis-ci.org/unosquare/embedio.svg?branch=master)](https://travis-ci.org/unosquare/embedio)
- [![NuGet version](https://badge.fury.io/nu/embedio.svg)](https://www.nuget.org/packages/Embedio)
- [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/Embedio)
+ [![NuGet version](https://badge.fury.io/nu/embedio.svg)](https://www.nuget.org/packages/EmbedIO)
+ [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/EmbedIO)
 [![Coverage Status](https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master)](https://coveralls.io/r/unosquare/embedio?branch=master)
 [![BuiltWithDotnet](https://builtwithdot.net/project/105/embedio/badge)](https://builtwithdot.net/project/105/embedio)
 [![Slack](https://img.shields.io/badge/chat-slack-blue.svg)](https://join.slack.com/t/embedio/shared_invite/enQtNjcwMjgyNDk4NzUzLWQ4YTE2MDQ2MWRhZGIyMTRmNTU0YmY4MmE3MTJmNTY4MmZiZDAzM2M4MTljMmVmNjRiZDljM2VjYjI5MjdlM2U)
@@ -12,22 +12,20 @@
 
 *:star: Please star this project if you find it useful!*
 
-**This README is for EmbedIO v2.x. Click [here](https://github.com/unosquare/embedio/tree/v1.X) if you are still using EmbedIO v1.x.**
+**This README is for EmbedIO v3.x. Click [here](https://github.com/unosquare/embedio/tree/v2.X) if you are still using EmbedIO v2.x.**
 
 - [Overview](#overview)
-    - [EmbedIO 2.0 - What's new](#embedio-20---whats-new)
+    - [EmbedIO 3.0 - What's new](#embedio-30---whats-new)
     - [Some usage scenarios](#some-usage-scenarios)
 - [Installation](#installation)
 - [Usage](#usage)
     - [WebServer Setup](#webserver-setup)
-    - [IHttpContext Extension Methods](#ihttpcontext-extension-methods)
-    - [Easy Routes](#easy-routes)
-    - [Serving Files from Assembly](#serving-files-from-assembly)
-- [Support for SSL](#support-for-ssl)
-- [Examples](#examples)
-    - [Basic Example](#basic-example)
-    - [REST API Example](#rest-api-example)
+    - [Reading from a POST body as a dictionary (application/x-www-form-urlencoded)](#reading-from-a-post-body-as-a-json-payload-applicationjson)
+    - [Reading from a POST body as a JSON payload (application/json)](#reading-from-a-post-body-as-a-json-payload-applicationjson)
+    - [Reading from a POST body as a FormData (multipart/form-data)](#reading-from-a-post-body-as-a-formdata-multipartform-data)
+    - [Writing a binary stream](#writing-a-binary-stream)
     - [WebSockets Example](#websockets-example)
+- [Support for SSL](#support-for-ssl)
 - [Related Projects and Nugets](#related-projects-and-nugets)
 - [Special Thanks](#special-thanks)
 
@@ -46,22 +44,13 @@ A tiny, cross-platform, module based, MIT-licensed web server for .NET Framework
 * Handle sessions with the built-in LocalSessionWebModule
 * WebSockets support
 * CORS support. Origin, Header and Method validation with OPTIONS preflight
-* Supports HTTP 206 Partial Content
+* HTTP 206 Partial Content support
 * Support [Xamarin Forms](https://github.com/unosquare/embedio/tree/master/src/EmbedIO.Forms.Sample)
 * And many more options in the same package
 
-### EmbedIO 2.0 - What's new
+### EmbedIO 3.0 - What's new
 
-#### Breaking changes
-* `WebApiController` is renewed. Reduce the methods overhead removing the WebServer and Context arguments. See examples below.
-* `RoutingStrategy.Regex` is the default routing scheme.
-
-#### Additional changes
-* `IHttpListener` is runtime/platform independent, you can choose Unosquare `HttpListener` implementation with NET472 or NETSTANDARD20. This separation of implementations brings new access to interfaces from common Http objects like `IHttpRequest`, `IHttpContext` and more.
-* `IWebServer` is a new interface to create custom web server implementation, like a Test Web Server where all the operations are in-memory to speed up unit testing. Similar to [TestServer from OWIN](https://msdn.microsoft.com/en-us/library/microsoft.owin.testing.testserver(v=vs.113).aspx)
-* General improvements in how the Unosquare `HttpListner` is working and code clean-up.
-
-*Note* - We encourage to upgrade to the newest EmbedIO version. Branch version 1.X will no longer be maintained, and issues will be tested against 2.X and resolved just there.
+The major version 3.0 includes a lot of changes in how the webserver process the incoming request and the pipeline of the Web Modules. You can check a complete list of changes and a upgrade guide for v2 users [here](https://github.com/unosquare/embedio/wiki/Upgrade-from-v2).
 
 ### Some usage scenarios:
 
@@ -90,88 +79,166 @@ PM> Install-Package EmbedIO
 
 ## Usage
 
+Working with EmbedIO is pretty simple, check the follow sections to start coding right away. You can find more useful recipes and implementation details in the [Cookbook](https://github.com/unosquare/embedio/wiki/Cookbook).
+
 ### WebServer Setup
 
-### IHttpContext Extension Methods
-
-By adding the namespace `Unosquare.Labs.EmbedIO` to your class, you can use some helpful extension methods for `IHttpContext`, `IHttpResponse` and `IHttpRequest`. These methods can be used in any Web module (like [Fallback Module](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.FallbackModule.html)) or inside a [WebAPI Controller](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Modules.WebApiController.html) method.
-
-Below, some common scenarios using a WebAPI Controller method as body function:
-
-#### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
-
-For reading a dictionary from a HTTP Request body you can use [RequestFormDataDictionaryAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_RequestFormDataDictionaryAsync_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns the key-value pairs sent by using the Contet-Type 'application/x-www-form-urlencoded'.
+Please note the comments are the important part here. More info is available in the samples.
 
 ```csharp
-    [WebApiHandler(HttpVerbs.Post, "/api/data")]
-    public async Task<bool> PostData() 
+namespace Unosquare
+{
+    using System;
+    using EmbedIO;
+    using EmbedIO.Modules;
+
+    class Program
     {
-        var data = await HttpContext.RequestFormDataDictionaryAsync();
-	// Perform an operation with the data
-	await SaveData(data);
+        /// <summary>
+        /// Defines the entry point of the application.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        static void Main(string[] args)
+        {
+            var url = "http://localhost:9696/";
+            if (args.Length > 0)
+                url = args[0];
+
+            // Our web server is disposable.
+            using (var server = CreateWebServer(url))
+            {
+                // Once we've registered our modules and configured them, we call the RunAsync() method.
+                server.RunAsync();
+
+                var browser = new System.Diagnostics.Process()
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }
+                };
+                browser.Start();
+                // Wait for any key to be pressed before disposing of our web server.
+                // In a service, we'd manage the lifecycle of our web server using
+                // something like a BackgroundWorker or a ManualResetEvent.
+                Console.ReadKey(true);
+            }
+        }
 	
-	return true;
+	// Create and configure our web server.
+        private static WebServer CreateWebServer(string url)
+        {
+            var server = new WebServer(o => o
+                    .WithUrlPrefix(url)
+                    .WithMode(HttpListenerMode.EmbedIO))
+		 // First, we will configure our web server by adding Modules.
+                .WithLocalSessionManager()
+                .WithWebApi("/api", m => m
+                    .WithController<PeopleController>())
+                .WithModule(new WebSocketChatModule("/chat"))
+                .WithModule(new WebSocketTerminalModule("/terminal"))
+                .WithStaticFolder("/", HtmlRootPath, true, m => m
+                    .WithContentCaching(UseFileCache)) // Add static files after other modules to avoid conflicts
+                .WithModule(new ActionModule("/", HttpVerbs.Any, ctx => ctx.SendDataAsync(new { Message = "Error" })));
+
+            // Listen for state changes.
+            server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}".Info();
+
+            return server;
+        }
+    }
+}
+```
+
+### Reading from a POST body as a dictionary (application/x-www-form-urlencoded)
+
+For reading a dictionary from an HTTP Request body inside a WebAPI method you can add an argument to your method with the attribute `FormData`.
+
+```csharp
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostData([FormData] NameValueCollection data) 
+    {
+        // Perform an operation with the data
+        await SaveData(data);
     }
 ```
 
-#### Reading from a POST body as a JSON payload (application/json)
+### Reading from a POST body as a JSON payload (application/json)
 
-For reading a JSON payload and deserialize it to an object from a HTTP Request body you can use [ParseJson<T>](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_ParseJsonAsync__1_Unosquare_Labs_EmbedIO_IHttpContext_). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
+For reading a JSON payload and deserialize it to an object from an HTTP Request body you can use [GetRequestDataAsync<T>](#). This method works directly from `IHttpContext` and returns an object of the type specified in the generic type.
 
 ```csharp
-    [WebApiHandler(HttpVerbs.Post, "/api/data")]
-    public async Task<bool> PostJsonData() 
+    [Route(HttpVerbs.Post, "/data")]
+    public async Task PostJsonData() 
     {
-        var data = HttpContext.ParseJson<MyData>();
-	// Perform an operation with the data
-	await SaveData(data);
+        var data = HttpContext.GetRequestDataAsync<MyData>();
 	
-	return true;
+        // Perform an operation with the data
+        await SaveData(data);
     }
 ```
 
-#### Reading from a POST body as a FormData (multipart/form-data)
+### Reading from a POST body as a FormData (multipart/form-data)
 
 EmbedIO doesn't provide the functionality to read from a Multipart FormData stream. But you can check the [HttpMultipartParser Nuget](https://www.nuget.org/packages/HttpMultipartParser/) and connect the Request input directly to the HttpMultipartParser, very helpful and small library.
 
 There is [another solution](http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post) but it requires this [Microsoft Nuget](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client).
 
-#### Writing a binary stream
+### Writing a binary stream
 
-For writing a binary stream directly to the Response Output Stream you can use [BinaryResponseAsync](https://unosquare.github.io/embedio/api/Unosquare.Labs.EmbedIO.Extensions.html#Unosquare_Labs_EmbedIO_Extensions_BinaryResponseAsync_Unosquare_Labs_EmbedIO_IHttpContext_System_IO_Stream_System_Boolean_System_Threading_CancellationToken_). This method has an overload to use `IHttpContext` and you need to set the Content-Type beforehand.
+You can open the Response Output Stream with the extension [OpenResponseStream]().
 
 ```csharp
-    [WebApiHandler(HttpVerbs.Get, "/api/binary")]
-    public async Task<bool> GetBinary() 
+    [Route(HttpVerbs.Get, "/binary")]
+    public async Task GetBinary() 
     {
-        var stream = new MemoryStream();
-	
 	// Call a fictional external source
-	await GetExternalStream(stream);
-	
-	return await HttpContext.BinaryResponseAsync(stream);
+	using (var stream = HttpContext.OpenResponseStream())
+                await stream.WriteAsync(dataBuffer, 0, 0);
     }
 ```
 
-### Easy Routes
+### WebSockets Example
 
-### Serving Files from Assembly
-
-You can use files from Assembly Resources directly with EmbedIO. They will be served as local files. This is a good practice when you want to provide a web server solution in a single file. 
-
-First, you need to add the `ResourceFilesModule` module to your `IWebServer`. The `ResourceFilesModule` constructor takes two arguments, the Assembly reference where the Resources are located and the path to the Resources (Usually this path is the Assembly name plus the word "Resources").
+Working with WebSocket is pretty simple, you just need to implement the abstract class `WebSocketModule` and register the module to your Web server as follow:
 
 ```csharp
-using (var server = new WebServer(url)) 
-{
-	server.RegisterModule(new ResourceFilesModule(typeof(MyProgram).Assembly,
-                        "Unosquare.MyProgram.Resources"));
-	
-	// Continue with the server set up and initialization
-}
+server..WithModule(new WebSocketChatModule("/chat"));
 ```
 
-And that's all. The module will read the files in the Assembly using the second argument as the base path. For example, if you have a folder containing an image, the resource path can be `Unosquare.MyProgram.Resources.MyFolder.Image.jpg` and the relative URL is `/MyFolder/Image.jpg`.
+And our web sockets server class looks like:
+
+```csharp
+
+/// <summary>
+/// Defines a very simple chat server
+/// </summary>
+public class WebSocketsChatServer : WebSocketModule
+{
+    public WebSocketsChatServer(string urlPath)
+        : base(urlPath, true)
+    {
+        // placeholder
+    }
+
+    /// <inheritdoc />
+    protected override Task OnMessageReceivedAsync(
+        IWebSocketContext context,
+        byte[] rxBuffer,
+        IWebSocketReceiveResult rxResult)
+        => SendToOthersAsync(context, Encoding.GetString(rxBuffer));
+
+    /// <inheritdoc />
+    protected override Task OnClientConnectedAsync(IWebSocketContext context)
+        => Task.WhenAll(
+            SendAsync(context, "Welcome to the chat room!"),
+            SendToOthersAsync(context, "Someone joined the chat room."));
+        
+    /// <inheritdoc />
+    protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
+        => SendToOthersAsync(context, "Someone left the chat room.");
+
+    private Task SendToOthersAsync(IWebSocketContext context, string payload)
+        => BroadcastAsync(payload, c => c != context);
+}
+```
 
 ## Support for SSL
 
@@ -188,233 +255,6 @@ The more practical case to use EmbedIO with SSL is the `AutoRegister` option. Yo
 ### Using AutoLoad option
 
 If you already have a certificate on the default certificate store and the binding is also registered in `netsh`, you can use `Autoload` flag and optionally provide a certificate thumbprint. If the certificate thumbprint is not provided, EmbedIO will read the data from `netsh`. After getting successfully the certificate from the store, the raw data is passed to the WebServer.
-
-## Examples
-
-### Basic Example
-
-Please note the comments are the important part here. More info is available in the samples.
-
-```csharp
-namespace Unosquare
-{
-    using System;
-    using Unosquare.Labs.EmbedIO;
-    using Unosquare.Labs.EmbedIO.Modules;
-
-    class Program
-    {
-        /// <summary>
-        /// Defines the entry point of the application.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        static void Main(string[] args)
-        {
-            var url = "http://localhost:9696/";
-            if (args.Length > 0)
-                url = args[0];
-
-            // Our web server is disposable.
-            using (var server = new WebServer(url))
-            {
-                // First, we will configure our web server by adding Modules.
-                // Please note that order DOES matter.
-                // ================================================================================================
-                // If we want to enable sessions, we simply register the LocalSessionModule
-                // Beware that this is an in-memory session storage mechanism so, avoid storing very large objects.
-                // You can use the server.GetSession() method to get the SessionInfo object and manupulate it.
-                // You could potentially implement a distributed session module using something like Redis
-                server.WithLocalSession();
-
-                // Here we setup serving of static files
-                server.RegisterModule(new StaticFilesModule("c:/web"));
-                // The static files module will cache small files in ram until it detects they have been modified.
-                server.Module<StaticFilesModule>().UseRamCache = true;
-
-                // Once we've registered our modules and configured them, we call the RunAsync() method.
-                server.RunAsync();
-
-                // Fire up the browser to show the content if we are debugging!
-#if DEBUG
-                var browser = new System.Diagnostics.Process()
-                {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }
-                };
-                browser.Start();
-#endif
-                // Wait for any key to be pressed before disposing of our web server.
-                // In a service, we'd manage the lifecycle of our web server using
-                // something like a BackgroundWorker or a ManualResetEvent.
-                Console.ReadKey(true);
-            }
-        }
-    }
-}
-```
-
-### REST API Example
-
-The WebApi module supports two routing strategies: Wildcard and Regex. By default, the WebApi module will use the **Regex Routing Strategy** trying to match and resolve the values from a route template, in a similar fashion to Microsoft's Web API. 
-
-**Note** - Wilcard routing will be dropped in the next major version of EmbedIO. We advise to use Regex only.
-
-A method with the following route `/api/people/{id}` is going to match any request URL with three segments: the first two `api` and `people` and the last 
-one is going to be parsed or converted to the type in the `id` argument of the handling method signature. Please read on if this was confusing as it is 
-much simpler than it sounds. Additionally, you can put multiple values to match, for example `/api/people/{mainSkill}/{age}`, and receive the 
-parsed values from the URL straight into the arguments of your handler method.
-
-During server setup:
-
-```csharp
-var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
-
-server.RegisterModule(new WebApiModule());
-server.Module<WebApiModule>().RegisterController<PeopleController>();
-```
-
-And our controller class (using default Regex Strategy) looks like:
-
-```csharp
-// A controller is a class where the WebApi module will find available
-// endpoints. The class must extend WebApiController.
-public class PeopleController : WebApiController
-{
-    // You need to add a default constructor where the first argument
-    // is an IHttpContext
-    public PeopleController(IHttpContext context)
-        : base(context)
-    {
-    }
-
-    // You need to include the WebApiHandler attribute to each method
-    // where you want to export an endpoint. The method should return
-    // bool or Task<bool>.
-    [WebApiHandler(HttpVerbs.Get, "/api/people/{id}")]
-    public async Task<bool> GetPersonById(int id)
-    {
-        try
-        {
-            // This is fake call to a Repository
-            var person = await PeopleRepository.GetById(id);
-            return await Ok(person);
-        }
-        catch (Exception ex)
-        {
-            return await InternalServerError(ex);
-        }
-    }
-    
-    // You can override the default headers and add custom headers to each API Response.
-    public override void SetDefaultHeaders() => HttpContext.NoCache();
-}
-```
-
-The `SetDefaultHeaders` method will add a no-cache policy to all Web API responses. If you plan to handle a differente policy or even custom headers to each different Web API method we recommend you override this method as you need.
-
-The previous default strategy (Wildcard) matches routes using the asterisk `*` character in the route. **For example:** 
-
-- The route `/api/people/*` will match any request with a URL starting with the two first URL segments `api` and 
-`people` and ending with anything. The route `/api/people/hello` will be matched.
-- You can also use wildcards in the middle of the route. The route `/api/people/*/details` will match requests 
-starting with the two first URL segments `api` and `people`, and end with a `details` segment. The route `/api/people/hello/details` will be matched. 
-
-During server setup:
-
-```csharp
-var server =  new WebServer("http://localhost:9696/", RoutingStrategy.Regex);
-
-server.RegisterModule(new WebApiModule());
-server.Module<WebApiModule>().RegisterController<PeopleController>();
-```
-
-```csharp
-public class PeopleController : WebApiController
-{
-    public PeopleController(IHttpContext context)
-    : base(context)
-    {
-    }
-
-    [WebApiHandler(HttpVerbs.Get, "/api/people/*")]
-    public async Task<bool> GetPeopleOrPersonById()
-    {
-        var lastSegment = Request.Url.Segments.Last();
-
-        // If the last segment is a backslash, return all
-        // the collection. This endpoint call a fake Repository.
-        if (lastSegment.EndsWith("/"))
-            return await Ok(await PeopleRepository.GetAll());
-                
-        if (int.TryParse(lastSegment, out var id))
-        {
-            return await Ok(await PeopleRepository.GetById(id));
-        }
-
-        throw new KeyNotFoundException("Key Not Found: " + lastSegment);
-    }
-}
-```
-
-### WebSockets Example
-
-*During server setup:*
-
-```csharp
-server.RegisterModule(new WebSocketsModule());
-server.Module<WebSocketsModule>().RegisterWebSocketsServer<WebSocketsChatServer>("/chat");
-```
-
-*And our web sockets server class looks like:*
-
-```csharp
-
-/// <summary>
-/// Defines a very simple chat server
-/// </summary>
-public class WebSocketsChatServer : WebSocketsServer
-{
-    public WebSocketsChatServer()
-        : base(true)
-    {
-        // placeholder
-    }
-
-    public override string ServerName => "Chat Server";
-
-    protected override void OnMessageReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
-    {
-        foreach (var ws in WebSockets)
-        {
-            if (ws != context)
-                Send(ws, rxBuffer.ToText());
-        }
-    }
-
-    protected override void OnClientConnected(
-        IWebSocketContext context,
-        System.Net.IPEndPoint localEndPoint,
-        System.Net.IPEndPoint remoteEndPoint)
-    {
-        Send(context, "Welcome to the chat room!");
-        
-        foreach (var ws in WebSockets)
-        {
-            if (ws != context)
-                Send(ws, "Someone joined the chat room.");
-        }
-    }
-
-    protected override void OnFrameReceived(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
-    {
-        // placeholder
-    }
-
-    protected override void OnClientDisconnected(IWebSocketContext context)
-    {
-        Broadcast("Someone left the chat room.");
-    }
-}
-```
 
 ## Related Projects and Nugets
 

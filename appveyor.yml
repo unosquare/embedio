@@ -1,4 +1,4 @@
-version: '1.13.{build}'
+version: '3.0.{build}'
 image: 
 - Visual Studio 2017
 - Ubuntu
@@ -26,7 +26,6 @@ before_build:
 - ps: cinst resharper-clt.portable -y --no-progress
 - dotnet restore --verbosity q
 - cmd: mkdir tools
-- cmd: nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
 - cmd: nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 - ps: | 
         $date_now = Get-Date
@@ -36,14 +35,14 @@ before_build:
         $command = "http add sslcert ipport=0.0.0.0:5555 certhash=$certThumb appid={$guid}"
         $command | netsh
 build_script:
-- cmd: msbuild /verbosity:quiet /p:Configuration=Release Unosquare.Labs.EmbedIO.sln
+- cmd: msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.sln
 - cmd: | 
       cd src/EmbedIO.Forms.Sample/
       msbuild /t:restore EmbedIO.Forms.Sample.sln
       msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
       cd ..
       cd ..
-- cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR Unosquare.Labs.EmbedIO.sln
+- cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR EmbedIO.sln
 - ps: |
       [xml]$xml = Get-Content inspectcode.xml
       if ($xml.Report.Issues.HasChildNodes)
@@ -52,16 +51,15 @@ build_script:
             throw "inspectcode.exe found issues with severity level Error; see inspectcode.xml for details"
       }
 test_script:
-- dotnet test test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
-- cmd: tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test test\Unosquare.Labs.EmbedIO.Tests\Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f net472" -output:coverage.xml -filter:"+[Unosquare.Labs.EmbedIO*]* -[Unosquare.Labs.EmbedIO.Test*]*" -register:userdotnet
+- dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
 - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
         {
-            tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
+            tools\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i C:\projects\embedio\test\EmbedIO.Tests\coverage.opencover.xml --serviceName appveyor --jobId $Env:APPVEYOR_BUILD_NUMBER
         }
 after_build:
 - ps: |
-        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE)
+        if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE -And $env:APPVEYOR_REPO_BRANCH -eq "master")
         {
             git config --global credential.helper store
             Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"

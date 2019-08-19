@@ -1,5 +1,5 @@
 language: csharp
-solution: Unosquare.Labs.EmbedIO.Lib.sln
+solution: EmbedIO.Lib.sln
 notifications:
   email: false
   slack: unolabs:cbusXPH6pBwZ35rVDzi4k4ve
@@ -13,6 +13,6 @@ matrix:
     - os: osx
       osx_image: xcode9.1
 install:
-  - dotnet restore Unosquare.Labs.EmbedIO.sln
+  - dotnet restore EmbedIO.sln
 script:
-  - dotnet test ./test/Unosquare.Labs.EmbedIO.Tests/Unosquare.Labs.EmbedIO.Tests.csproj -c Release -f netcoreapp2.2
+  - dotnet test ./test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release

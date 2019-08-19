@@ -1,0 +1,172 @@
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using EmbedIO.Utilities;
+using Swan;
+
+namespace EmbedIO.WebApi
+{
+    /// <summary>
+    /// <para>Specifies that a parameter of a controller method will receive the value(s) of a field in a HTML form,
+    /// obtained by deserializing a request body with a content type of <c>application/x-www-form-urlencoded</c>.</para>
+    /// <para>The parameter carrying this attribute can be either a simple type or a one-dimension array.</para>
+    /// <para>If multiple values are present for the field, a non-array parameter will receive the last specified value,
+    /// while an array parameter will receive an array of field values converted to the element type of the
+    /// parameter.</para>
+    /// <para>If a single value is present for the field, a non-array parameter will receive the value converted
+    /// to the type of the parameter, while an array parameter will receive an array of length 1, containing
+    /// the value converted to the element type of the parameter</para>
+    /// <para>If no values are present for the field and the <see cref="BadRequestIfMissing"/> property is
+    /// <see langword="true" />, a <c>400 Bad Request</c> response will be sent to the client, with a message
+    /// specifying the name of the missing field.</para>
+    /// <para>If no values are present for the field and the <see cref="BadRequestIfMissing"/> property is
+    /// <see langword="false" />, a non-array parameter will receive the default value for its type, while
+    /// an array parameter will receive an array of length 0.</para>
+    /// <para>This class cannot be inherited.</para>
+    /// </summary>
+    /// <seealso cref="Attribute" />
+    /// <seealso cref="IRequestDataAttribute{TController,TData}" />
+    /// <seealso cref="IRequestDataAttribute{TController}" />
+    [AttributeUsage(AttributeTargets.Parameter)]
+    public sealed class FormFieldAttribute : 
+        Attribute,
+        IRequestDataAttribute<WebApiController, string>,
+        IRequestDataAttribute<WebApiController, string[]>,
+        IRequestDataAttribute<WebApiController>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormFieldAttribute"/> class.
+        /// The name of the form field to extract will be equal to the name of the parameter
+        /// carrying this attribute.
+        /// </summary>
+        public FormFieldAttribute()
+            : this(false, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormFieldAttribute"/> class.
+        /// </summary>
+        /// <param name="fieldName">The name of the form field to extract.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="fieldName"/> is the empty string (<c>""</c>).</exception>
+        public FormFieldAttribute(string fieldName)
+            : this(false, Validate.NotNullOrEmpty(nameof(fieldName), fieldName))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormFieldAttribute" /> class.
+        /// The name of the form field to extract will be equal to the name of the parameter
+        /// carrying this attribute.
+        /// </summary>
+        /// <param name="badRequestIfMissing">If set to <see langword="true" />, a <c>400 Bad Request</c>
+        /// response will be sent to the client if no values are found for the field; if set to
+        /// <see langword="false" />, a default value will be assumed.</param>
+        public FormFieldAttribute(bool badRequestIfMissing)
+            : this(badRequestIfMissing, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormFieldAttribute"/> class.
+        /// </summary>
+        /// <param name="fieldName">The name of the form field to extract.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="fieldName"/> is the empty string (<c>""</c>).</exception>
+        /// <param name="badRequestIfMissing">If set to <see langword="true" />, a <c>400 Bad Request</c>
+        /// response will be sent to the client if no values are found for the field; if set to
+        /// <see langword="false" />, a default value will be assumed.</param>
+        public FormFieldAttribute(string fieldName, bool badRequestIfMissing)
+            : this(badRequestIfMissing, Validate.NotNullOrEmpty(nameof(fieldName), fieldName))
+        {
+        }
+
+        private FormFieldAttribute(bool badRequestIfMissing, string fieldName)
+        {
+            BadRequestIfMissing = badRequestIfMissing;
+            FieldName = fieldName;
+        }
+
+        /// <summary>
+        /// Gets the name of the form field that this attribute will extract,
+        /// or <see langword="null" /> if the name of the parameter carrying this
+        /// attribute is to be used as field name.
+        /// </summary>
+        public string FieldName { get; }
+
+        /// <summary>
+        /// <para>Gets or sets a value indicating whether to send a <c>400 Bad Request</c> response
+        /// to the client if the submitted form contains no values for the field.</para>
+        /// <para>If this property is <see langword="true"/> and the submitted form
+        /// contains no values for the field, the <c>400 Bad Request</c> response sent
+        /// to the client will contain a reference to the missing field.</para>
+        /// <para>If this property is <see langword="false"/> and the submitted form
+        /// contains no values for the field, the default value for the parameter
+        /// (or a zero-length array if the parameter is of an array type)
+        /// will be passed to the controller method.</para>
+        /// </summary>
+        public bool BadRequestIfMissing { get; }
+
+        async Task<string> IRequestDataAttribute<WebApiController, string>.GetRequestDataAsync(
+            WebApiController controller,
+            string parameterName)
+        {
+            var data = await controller.HttpContext.GetRequestFormDataAsync()
+                .ConfigureAwait(false);
+
+            var fieldName = FieldName ?? parameterName;
+            if (!data.ContainsKey(fieldName) && BadRequestIfMissing)
+                throw HttpException.BadRequest($"Missing form field {fieldName}.");
+
+            return data.GetValues(fieldName)?.LastOrDefault();
+        }
+
+        async Task<string[]> IRequestDataAttribute<WebApiController, string[]>.GetRequestDataAsync(
+            WebApiController controller,
+            string parameterName)
+        {
+            var data = await controller.HttpContext.GetRequestFormDataAsync()
+                .ConfigureAwait(false);
+
+            var fieldName = FieldName ?? parameterName;
+            if (!data.ContainsKey(fieldName) && BadRequestIfMissing)
+                throw HttpException.BadRequest($"Missing form field {fieldName}.");
+
+            return data.GetValues(fieldName) ?? Array.Empty<string>();
+        }
+
+        async Task<object> IRequestDataAttribute<WebApiController>.GetRequestDataAsync(
+            WebApiController controller,
+            Type type,
+            string parameterName)
+        {
+            var data = await controller.HttpContext.GetRequestFormDataAsync()
+                .ConfigureAwait(false);
+
+            var fieldName = FieldName ?? parameterName;
+            if (!data.ContainsKey(fieldName) && BadRequestIfMissing)
+                throw HttpException.BadRequest($"Missing form field {fieldName}.");
+
+            if (type.IsArray)
+            {
+                var fieldValues = data.GetValues(fieldName) ?? Array.Empty<string>();
+                if (!FromString.TryConvertTo(type, fieldValues, out var result))
+                    throw HttpException.BadRequest($"Cannot convert field {fieldName} to an array of {type.GetElementType().Name}.");
+
+                return result;
+            }
+            else
+            {
+                var fieldValue = data.GetValues(fieldName)?.LastOrDefault();
+                if (fieldValue == null)
+                    return type.IsValueType ? Activator.CreateInstance(type) : null;
+
+                if (!FromString.TryConvertTo(type, fieldValue, out var result))
+                    throw HttpException.BadRequest($"Cannot convert field {fieldName} to {type.Name}.");
+
+                return result;
+            }
+        }
+    }
+}
