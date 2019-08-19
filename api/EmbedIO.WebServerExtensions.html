@@ -1,0 +1,520 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WebServerExtensions
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WebServerExtensions
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.WebServerExtensions">
+  
+  
+  <h1 id="EmbedIO_WebServerExtensions" data-uid="EmbedIO.WebServerExtensions" class="text-break">Class WebServerExtensions
+  </h1>
+  <div class="markdown level0 summary"><p>Provides extension methods for types implementing <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">WebServerExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
+  <h5 id="EmbedIO_WebServerExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class WebServerExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_WebServerExtensions_HandleHttpException_" data-uid="EmbedIO.WebServerExtensions.HandleHttpException*"></a>
+  <h4 id="EmbedIO_WebServerExtensions_HandleHttpException__1___0_EmbedIO_HttpExceptionHandlerCallback_" data-uid="EmbedIO.WebServerExtensions.HandleHttpException``1(``0,EmbedIO.HttpExceptionHandlerCallback)">HandleHttpException&lt;TWebServer&gt;(TWebServer, HttpExceptionHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Sets the HTTP exception handler on a <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TWebServer HandleHttpException&lt;TWebServer&gt;(this TWebServer this, HttpExceptionHandlerCallback handler)
+    where TWebServer : IWebServer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TWebServer</code> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpExceptionHandlerCallback.html">HttpExceptionHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>The HTTP exception handler.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the <a class="xref" href="EmbedIO.IWebServer.html#EmbedIO_IWebServer_OnHttpException">OnHttpException</a>
+    property set to <code data-dev-comment-type="paramref" class="paramref">handler</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TWebServer</span></td>
+        <td><p>The type of the web server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebServerExtensions_HandleHttpException__1___0_EmbedIO_HttpExceptionHandlerCallback__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IWebServer.html#EmbedIO_IWebServer_OnHttpException">OnHttpException</a></div>
+      <div><a class="xref" href="EmbedIO.HttpExceptionHandler.html">HttpExceptionHandler</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebServerExtensions_HandleUnhandledException_" data-uid="EmbedIO.WebServerExtensions.HandleUnhandledException*"></a>
+  <h4 id="EmbedIO_WebServerExtensions_HandleUnhandledException__1___0_EmbedIO_ExceptionHandlerCallback_" data-uid="EmbedIO.WebServerExtensions.HandleUnhandledException``1(``0,EmbedIO.ExceptionHandlerCallback)">HandleUnhandledException&lt;TWebServer&gt;(TWebServer, ExceptionHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Sets the unhandled exception handler on a <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TWebServer HandleUnhandledException&lt;TWebServer&gt;(this TWebServer this, ExceptionHandlerCallback handler)
+    where TWebServer : IWebServer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TWebServer</code> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.ExceptionHandlerCallback.html">ExceptionHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>The unhandled exception handler.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the <a class="xref" href="EmbedIO.IWebServer.html#EmbedIO_IWebServer_OnUnhandledException">OnUnhandledException</a>
+    property set to <code data-dev-comment-type="paramref" class="paramref">handler</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TWebServer</span></td>
+        <td><p>The type of the web server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebServerExtensions_HandleUnhandledException__1___0_EmbedIO_ExceptionHandlerCallback__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IWebServer.html#EmbedIO_IWebServer_OnUnhandledException">OnUnhandledException</a></div>
+      <div><a class="xref" href="EmbedIO.ExceptionHandler.html">ExceptionHandler</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebServerExtensions_Start_" data-uid="EmbedIO.WebServerExtensions.Start*"></a>
+  <h4 id="EmbedIO_WebServerExtensions_Start_EmbedIO_IWebServer_CancellationToken_" data-uid="EmbedIO.WebServerExtensions.Start(EmbedIO.IWebServer,CancellationToken)">Start(IWebServer, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts a web server by calling <a class="xref" href="EmbedIO.IWebServer.html#EmbedIO_IWebServer_RunAsync_CancellationToken_">RunAsync(CancellationToken)</a>
+in another thread.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Start(this IWebServer this, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A <see cref="!:CancellationToken"></see> used to stop the web server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServerExtensions_WithLocalSessionManager_" data-uid="EmbedIO.WebServerExtensions.WithLocalSessionManager*"></a>
+  <h4 id="EmbedIO_WebServerExtensions_WithLocalSessionManager__1___0_Action_LocalSessionManager__" data-uid="EmbedIO.WebServerExtensions.WithLocalSessionManager``1(``0,Action{LocalSessionManager})">WithLocalSessionManager&lt;TWebServer&gt;(TWebServer, Action&lt;LocalSessionManager&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a <see cref="!:LocalSessionManager"></see> with all properties set to their default values
+and sets it as session manager on a <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TWebServer WithLocalSessionManager&lt;TWebServer&gt;(this TWebServer this, Action&lt;LocalSessionManager&gt; configure = null)
+    where TWebServer : IWebServer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Action</span>&lt;<span class="xref">LocalSessionManager</span>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td><p>A callback used to configure the session manager.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the session manager set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TWebServer</span></td>
+        <td><p>The type of the web server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServerExtensions_WithSessionManager_" data-uid="EmbedIO.WebServerExtensions.WithSessionManager*"></a>
+  <h4 id="EmbedIO_WebServerExtensions_WithSessionManager__1___0_ISessionManager_" data-uid="EmbedIO.WebServerExtensions.WithSessionManager``1(``0,ISessionManager)">WithSessionManager&lt;TWebServer&gt;(TWebServer, ISessionManager)</h4>
+  <div class="markdown level1 summary"><p>Sets the session manager on a <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TWebServer WithSessionManager&lt;TWebServer&gt;(this TWebServer this, ISessionManager sessionManager)
+    where TWebServer : IWebServer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ISessionManager</span></td>
+        <td><span class="parametername">sessionManager</span></td>
+        <td><p>The session manager.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TWebServer</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the session manager set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TWebServer</span></td>
+        <td><p>The type of the web server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

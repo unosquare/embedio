@@ -1,0 +1,671 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class QValueList
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class QValueList
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Utilities.QValueList">
+  
+  
+  <h1 id="EmbedIO_Utilities_QValueList" data-uid="EmbedIO.Utilities.QValueList" class="text-break">Class QValueList
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a list of names with associated quality values extracted from an HTTP header,
+e.g. <code>gzip; q=0.9, deflate</code>.</p>
+<p>See <a href="https://tools.ietf.org/html/rfc7231#section-5.3">RFC7231, section 5.3</a>.</p>
+<p>This class ignores and discards extensions (<code>accept-ext</code> in RFC7231 terminology).</p>
+<p>If a name has one or more parameters (e.g. <code>text/html;level=1</code>) it is not
+further parsed: parameters will appear as part of the name.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">QValueList</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Utilities.html">EmbedIO.Utilities</a></h6>
+  <h5 id="EmbedIO_Utilities_QValueList_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class QValueList</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList__ctor_" data-uid="EmbedIO.Utilities.QValueList.#ctor*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList__ctor_System_Boolean_IEnumerable_System_String__" data-uid="EmbedIO.Utilities.QValueList.#ctor(System.Boolean,IEnumerable{System.String})">QValueList(Boolean, IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Utilities.QValueList.html">QValueList</a> class
+by parsing comma-separated request header values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public QValueList(bool useWildcard, IEnumerable&lt;string&gt; headerValues)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useWildcard</span></td>
+        <td><p>If set to <span class="xref">true</span>, a value of <code>*</code>
+will be treated as signifying &quot;anything&quot;.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">headerValues</span></td>
+        <td><p>An enumeration of header values.
+Note that each element of the enumeration may in turn be
+a comma-separated list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Utilities_QValueList__ctor_System_Boolean_IEnumerable_System_String___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_UseWildcard">UseWildcard</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList__ctor_" data-uid="EmbedIO.Utilities.QValueList.#ctor*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList__ctor_System_Boolean_System_String_" data-uid="EmbedIO.Utilities.QValueList.#ctor(System.Boolean,System.String)">QValueList(Boolean, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Utilities.QValueList.html">QValueList</a> class
+by parsing comma-separated request header values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public QValueList(bool useWildcard, string headerValues)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useWildcard</span></td>
+        <td><p>If set to <span class="xref">true</span>, a value of <code>*</code>
+will be treated as signifying &quot;anything&quot;.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">headerValues</span></td>
+        <td><p>A list of comma-separated header values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Utilities_QValueList__ctor_System_Boolean_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_UseWildcard">UseWildcard</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList__ctor_" data-uid="EmbedIO.Utilities.QValueList.#ctor*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList__ctor_System_Boolean_System_String___" data-uid="EmbedIO.Utilities.QValueList.#ctor(System.Boolean,System.String[])">QValueList(Boolean, String[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Utilities.QValueList.html">QValueList</a> class
+by parsing comma-separated request header values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public QValueList(bool useWildcard, params string[] headerValues)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useWildcard</span></td>
+        <td><p>If set to <span class="xref">true</span>, a value of <code>*</code>
+will be treated as signifying &quot;anything&quot;.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">headerValues</span></td>
+        <td><p>An array of header values.
+Note that each element of the array may in turn be
+a comma-separated list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Utilities_QValueList__ctor_System_Boolean_System_String____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_UseWildcard">UseWildcard</a></div>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="EmbedIO_Utilities_QValueList_Wildcard" data-uid="EmbedIO.Utilities.QValueList.Wildcard">Wildcard</h4>
+  <div class="markdown level1 summary"><p>A value signifying &quot;anything will do&quot; in request headers.</p>
+<p>For example, a request header of
+<code>Accept-Encoding: *;q=0.8, gzip</code> means &quot;I prefer GZip compression;
+if it is not available, any other compression (including no compression at all)
+is OK for me&quot;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string Wildcard = &quot;*&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList_QValues_" data-uid="EmbedIO.Utilities.QValueList.QValues*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList_QValues" data-uid="EmbedIO.Utilities.QValueList.QValues">QValues</h4>
+  <div class="markdown level1 summary"><p>Gets a dictionary associating values with their relative weight
+(an integer ranging from 0 to 1000) and their position in the
+list of header values from which this instance has been constructed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyDictionary&lt;string, (int Weight, int Ordinal)&gt; QValues { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-2">ValueTuple</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Utilities_QValueList_QValues_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This property does not usually need to be used directly;
+use the <a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_IsCandidate_System_String_">IsCandidate(String)</a>, <a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_FindPreferred_IEnumerable_System_String__">FindPreferred(IEnumerable&lt;String&gt;)</a>,
+<a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_FindPreferredIndex_IEnumerable_System_String__">FindPreferredIndex(IEnumerable&lt;String&gt;)</a>, and
+<a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_FindPreferredIndex_System_String___">FindPreferredIndex(String[])</a> methods instead.</p>
+</div>
+  <h5 id="EmbedIO_Utilities_QValueList_QValues_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_IsCandidate_System_String_">IsCandidate(String)</a></div>
+      <div><a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_FindPreferred_IEnumerable_System_String__">FindPreferred(IEnumerable&lt;String&gt;)</a></div>
+      <div><a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_FindPreferredIndex_IEnumerable_System_String__">FindPreferredIndex(IEnumerable&lt;String&gt;)</a></div>
+      <div><a class="xref" href="EmbedIO.Utilities.QValueList.html#EmbedIO_Utilities_QValueList_FindPreferredIndex_System_String___">FindPreferredIndex(String[])</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList_UseWildcard_" data-uid="EmbedIO.Utilities.QValueList.UseWildcard*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList_UseWildcard" data-uid="EmbedIO.Utilities.QValueList.UseWildcard">UseWildcard</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether <code>*</code> is treated as a special value
+with the meaning of &quot;anything&quot;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseWildcard { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList_FindPreferred_" data-uid="EmbedIO.Utilities.QValueList.FindPreferred*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList_FindPreferred_IEnumerable_System_String__" data-uid="EmbedIO.Utilities.QValueList.FindPreferred(IEnumerable{System.String})">FindPreferred(IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds the value preferred by the client among an enumeration of values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string FindPreferred(IEnumerable&lt;string&gt; values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The value preferred by the client, or <span class="xref">null</span>
+if none of the provided <code data-dev-comment-type="paramref" class="paramref">values</code> is accepted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList_FindPreferredIndex_" data-uid="EmbedIO.Utilities.QValueList.FindPreferredIndex*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList_FindPreferredIndex_IEnumerable_System_String__" data-uid="EmbedIO.Utilities.QValueList.FindPreferredIndex(IEnumerable{System.String})">FindPreferredIndex(IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds the index of the value preferred by the client in a list of values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FindPreferredIndex(IEnumerable&lt;string&gt; values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The index of the value preferred by the client, or -1
+if none of the values in <code data-dev-comment-type="paramref" class="paramref">values</code> is accepted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList_FindPreferredIndex_" data-uid="EmbedIO.Utilities.QValueList.FindPreferredIndex*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList_FindPreferredIndex_System_String___" data-uid="EmbedIO.Utilities.QValueList.FindPreferredIndex(System.String[])">FindPreferredIndex(String[])</h4>
+  <div class="markdown level1 summary"><p>Finds the index of the value preferred by the client in an array of values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FindPreferredIndex(params string[] values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The index of the value preferred by the client, or -1
+if none of the values in <code data-dev-comment-type="paramref" class="paramref">values</code> is accepted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList_IsCandidate_" data-uid="EmbedIO.Utilities.QValueList.IsCandidate*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList_IsCandidate_System_String_" data-uid="EmbedIO.Utilities.QValueList.IsCandidate(System.String)">IsCandidate(String)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the specified value is a possible candidate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCandidate(string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span>if <code data-dev-comment-type="paramref" class="paramref">value</code> is a candidate;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Utilities_QValueList_TryGetWeight_" data-uid="EmbedIO.Utilities.QValueList.TryGetWeight*"></a>
+  <h4 id="EmbedIO_Utilities_QValueList_TryGetWeight_System_String_System_Int32__" data-uid="EmbedIO.Utilities.QValueList.TryGetWeight(System.String,System.Int32@)">TryGetWeight(String, out Int32)</h4>
+  <div class="markdown level1 summary"><p>Attempts to determine whether the weight of a possible candidate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetWeight(string value, out int weight)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value whose weight is to be determined.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">weight</span></td>
+        <td><p>When this method returns <span class="xref">true</span>,
+the weight of the candidate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">value</code> is a candidate;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

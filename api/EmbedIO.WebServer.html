@@ -1,0 +1,640 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WebServer
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WebServer
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.WebServer">
+  
+  
+  <h1 id="EmbedIO_WebServer" data-uid="EmbedIO.WebServer" class="text-break">Class WebServer
+  </h1>
+  <div class="markdown level0 summary"><p>EmbedIO&apos;s web server. This is the default implementation of <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>.</p>
+<p>This class also contains some useful constants related to EmbedIO&apos;s internal working.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="EmbedIO.WebServerBase-1.html">WebServerBase</a>&lt;<a class="xref" href="EmbedIO.WebServerOptions.html">WebServerOptions</a>&gt;</div>
+    <div class="level2"><span class="xref">WebServer</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a></div>
+    <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>
+    <div><span class="xref">IDisposable</span></div>
+    <div><a class="xref" href="EmbedIO.IMimeTypeCustomizer.html">IMimeTypeCustomizer</a></div>
+    <div><a class="xref" href="EmbedIO.IMimeTypeProvider.html">IMimeTypeProvider</a></div>
+    <div><a class="xref" href="EmbedIO.IHttpContextHandler.html">IHttpContextHandler</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_StateChanged">WebServerBase&lt;WebServerOptions&gt;.StateChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_Modules">WebServerBase&lt;WebServerOptions&gt;.Modules</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_Options">WebServerBase&lt;WebServerOptions&gt;.Options</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_OnUnhandledException">WebServerBase&lt;WebServerOptions&gt;.OnUnhandledException</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_OnHttpException">WebServerBase&lt;WebServerOptions&gt;.OnHttpException</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_SessionManager">WebServerBase&lt;WebServerOptions&gt;.SessionManager</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_State">WebServerBase&lt;WebServerOptions&gt;.State</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_LogSource">WebServerBase&lt;WebServerOptions&gt;.LogSource</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_HandleContextAsync_EmbedIO_IHttpContextImpl_">WebServerBase&lt;WebServerOptions&gt;.HandleContextAsync(IHttpContextImpl)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_GetMimeType_System_String_">WebServerBase&lt;WebServerOptions&gt;.IMimeTypeProvider.GetMimeType(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_TryDetermineCompression_System_String_System_Boolean__">WebServerBase&lt;WebServerOptions&gt;.IMimeTypeProvider.TryDetermineCompression(String, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_AddCustomMimeType_System_String_System_String_">WebServerBase&lt;WebServerOptions&gt;.AddCustomMimeType(String, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_PreferCompression_System_String_System_Boolean_">WebServerBase&lt;WebServerOptions&gt;.PreferCompression(String, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_RunAsync_CancellationToken_">WebServerBase&lt;WebServerOptions&gt;.RunAsync(CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_Dispose">WebServerBase&lt;WebServerOptions&gt;.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_DoHandleContextAsync_EmbedIO_IHttpContextImpl_">WebServerBase&lt;WebServerOptions&gt;.DoHandleContextAsync(IHttpContextImpl)</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_OnBeforeLockConfiguration">WebServerBase&lt;WebServerOptions&gt;.OnBeforeLockConfiguration()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
+  <h5 id="EmbedIO_WebServer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class WebServer : WebServerBase&lt;WebServerOptions&gt;, IWebServer, IWebModuleContainer, IDisposable, IMimeTypeCustomizer, IMimeTypeProvider, IHttpContextHandler</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="EmbedIO_WebServer__ctor_" data-uid="EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="EmbedIO_WebServer__ctor" data-uid="EmbedIO.WebServer.#ctor">WebServer()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebServer.html">WebServer</a> class,
+that will respond on HTTP port 80 on all network interfaces.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_WebServer__ctor_" data-uid="EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="EmbedIO_WebServer__ctor_Action_EmbedIO_WebServerOptions__" data-uid="EmbedIO.WebServer.#ctor(Action{EmbedIO.WebServerOptions})">WebServer(Action&lt;WebServerOptions&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebServer.html">WebServer</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(Action&lt;WebServerOptions&gt; configure)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Action</span>&lt;<a class="xref" href="EmbedIO.WebServerOptions.html">WebServerOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td><p>A callback that will be used to configure
+the server&apos;s options.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServer__ctor_" data-uid="EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="EmbedIO_WebServer__ctor_EmbedIO_HttpListenerMode_System_String___" data-uid="EmbedIO.WebServer.#ctor(EmbedIO.HttpListenerMode,System.String[])">WebServer(HttpListenerMode, String[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebServer.html">WebServer</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(HttpListenerMode mode, params string[] urlPrefixes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpListenerMode.html">HttpListenerMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>The type of HTTP listener to configure.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">urlPrefixes</span></td>
+        <td><p>The URL prefixes to configure.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServer__ctor_" data-uid="EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="EmbedIO_WebServer__ctor_EmbedIO_HttpListenerMode_X509Certificate2_System_String___" data-uid="EmbedIO.WebServer.#ctor(EmbedIO.HttpListenerMode,X509Certificate2,System.String[])">WebServer(HttpListenerMode, X509Certificate2, String[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebServer.html">WebServer</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(HttpListenerMode mode, X509Certificate2 certificate, params string[] urlPrefixes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpListenerMode.html">HttpListenerMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td><p>The type of HTTP listener to configure.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">X509Certificate2</span></td>
+        <td><span class="parametername">certificate</span></td>
+        <td><p>The X.509 certificate to use for SSL connections.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">urlPrefixes</span></td>
+        <td><p>The URL prefixes to configure.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServer__ctor_" data-uid="EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="EmbedIO_WebServer__ctor_EmbedIO_WebServerOptions_" data-uid="EmbedIO.WebServer.#ctor(EmbedIO.WebServerOptions)">WebServer(WebServerOptions)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebServer.html">WebServer</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(WebServerOptions options)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.WebServerOptions.html">WebServerOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>A <a class="xref" href="EmbedIO.WebServerOptions.html">WebServerOptions</a> object used to configure this instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServer__ctor_" data-uid="EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="EmbedIO_WebServer__ctor_System_Int32_" data-uid="EmbedIO.WebServer.#ctor(System.Int32)">WebServer(Int32)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebServer.html">WebServer</a> class,
+that will respond on the specified HTTP port on all network interfaces.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(int port)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">port</span></td>
+        <td><p>The port.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServer__ctor_" data-uid="EmbedIO.WebServer.#ctor*"></a>
+  <h4 id="EmbedIO_WebServer__ctor_System_String___" data-uid="EmbedIO.WebServer.#ctor(System.String[])">WebServer(String[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.WebServer.html">WebServer</a> class
+with the specified URL prefixes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WebServer(params string[] urlPrefixes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">urlPrefixes</span></td>
+        <td><p>The URL prefixes to configure.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="EmbedIO_WebServer_StreamCopyBufferSize" data-uid="EmbedIO.WebServer.StreamCopyBufferSize">StreamCopyBufferSize</h4>
+  <div class="markdown level1 summary"><p>The size, in bytes,of buffers used to transfer contents between streams.</p>
+<p>The value of this constant is the same as the default used by the
+<see cref="!:Stream.CopyToAsync(Stream)"></see> method. For the reasons why this value was chosen, see
+<a href="https://referencesource.microsoft.com/#mscorlib/system/io/stream.cs,50">.NET Framework reference source</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int StreamCopyBufferSize = 81920</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_WebServer_Listener_" data-uid="EmbedIO.WebServer.Listener*"></a>
+  <h4 id="EmbedIO_WebServer_Listener" data-uid="EmbedIO.WebServer.Listener">Listener</h4>
+  <div class="markdown level1 summary"><p>Gets the underlying HTTP listener.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IHttpListener Listener { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpListener.html">IHttpListener</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_WebServer_Dispose_" data-uid="EmbedIO.WebServer.Dispose*"></a>
+  <h4 id="EmbedIO_WebServer_Dispose_System_Boolean_" data-uid="EmbedIO.WebServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">EmbedIO.WebServerBase&lt;EmbedIO.WebServerOptions&gt;.Dispose(System.Boolean)</span></div>
+  
+  
+  <a id="EmbedIO_WebServer_OnFatalException_" data-uid="EmbedIO.WebServer.OnFatalException*"></a>
+  <h4 id="EmbedIO_WebServer_OnFatalException" data-uid="EmbedIO.WebServer.OnFatalException">OnFatalException()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnFatalException()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">EmbedIO.WebServerBase&lt;EmbedIO.WebServerOptions&gt;.OnFatalException()</span></div>
+  
+  
+  <a id="EmbedIO_WebServer_Prepare_" data-uid="EmbedIO.WebServer.Prepare*"></a>
+  <h4 id="EmbedIO_WebServer_Prepare_CancellationToken_" data-uid="EmbedIO.WebServer.Prepare(CancellationToken)">Prepare(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Prepare(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">EmbedIO.WebServerBase&lt;EmbedIO.WebServerOptions&gt;.Prepare(CancellationToken)</span></div>
+  
+  
+  <a id="EmbedIO_WebServer_ProcessRequestsAsync_" data-uid="EmbedIO.WebServer.ProcessRequestsAsync*"></a>
+  <h4 id="EmbedIO_WebServer_ProcessRequestsAsync_CancellationToken_" data-uid="EmbedIO.WebServer.ProcessRequestsAsync(CancellationToken)">ProcessRequestsAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Task ProcessRequestsAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">EmbedIO.WebServerBase&lt;EmbedIO.WebServerOptions&gt;.ProcessRequestsAsync(CancellationToken)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>
+  </div>
+  <div>
+      <a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
+  <div>
+      <a class="xref" href="EmbedIO.IMimeTypeCustomizer.html">IMimeTypeCustomizer</a>
+  </div>
+  <div>
+      <a class="xref" href="EmbedIO.IMimeTypeProvider.html">IMimeTypeProvider</a>
+  </div>
+  <div>
+      <a class="xref" href="EmbedIO.IHttpContextHandler.html">IHttpContextHandler</a>
+  </div>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

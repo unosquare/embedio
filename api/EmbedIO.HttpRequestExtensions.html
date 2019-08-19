@@ -1,0 +1,581 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class HttpRequestExtensions
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class HttpRequestExtensions
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.HttpRequestExtensions">
+  
+  
+  <h1 id="EmbedIO_HttpRequestExtensions" data-uid="EmbedIO.HttpRequestExtensions" class="text-break">Class HttpRequestExtensions
+  </h1>
+  <div class="markdown level0 summary"><p>Provides extension methods for types implementing <a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">HttpRequestExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
+  <h5 id="EmbedIO_HttpRequestExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class HttpRequestExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_HttpRequestExtensions_CheckIfModifiedSince_" data-uid="EmbedIO.HttpRequestExtensions.CheckIfModifiedSince*"></a>
+  <h4 id="EmbedIO_HttpRequestExtensions_CheckIfModifiedSince_EmbedIO_IHttpRequest_DateTime_System_Boolean__" data-uid="EmbedIO.HttpRequestExtensions.CheckIfModifiedSince(EmbedIO.IHttpRequest,DateTime,System.Boolean@)">CheckIfModifiedSince(IHttpRequest, DateTime, out Boolean)</h4>
+  <div class="markdown level1 summary"><p>Checks whether an <code>If-Modified-Since</code> header exists in a request
+and, if so, whether its value is a date and time more recent or equal to
+a given <see cref="!:DateTime"></see>.</p>
+<p>See <a href="https://tools.ietf.org/html/rfc7232#section-3.3">RFC7232, Section 3.3</a>
+for a normative reference.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool CheckIfModifiedSince(this IHttpRequest this, DateTime lastModifiedUtc, out bool headerExists)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTime</span></td>
+        <td><span class="parametername">lastModifiedUtc</span></td>
+        <td><p>A date and time value, in Coordinated Universal Time,
+expressing the last time a resource was modified.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">headerExists</span></td>
+        <td><p>When this method returns, a value that indicates whether an
+<code>If-Modified-Since</code> header is present in <code data-dev-comment-type="paramref" class="paramref">this</code>, regardless of the method&apos;s
+return value. This parameter is passed uninitialized.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if an <code>If-Modified-Since</code> header is present in
+<code data-dev-comment-type="paramref" class="paramref">this</code> and its value is a date and time more recent or equal to <code data-dev-comment-type="paramref" class="paramref">lastModifiedUtc</code>;
+<span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpRequestExtensions_CheckIfNoneMatch_" data-uid="EmbedIO.HttpRequestExtensions.CheckIfNoneMatch*"></a>
+  <h4 id="EmbedIO_HttpRequestExtensions_CheckIfNoneMatch_EmbedIO_IHttpRequest_System_String_System_Boolean__" data-uid="EmbedIO.HttpRequestExtensions.CheckIfNoneMatch(EmbedIO.IHttpRequest,System.String,System.Boolean@)">CheckIfNoneMatch(IHttpRequest, String, out Boolean)</h4>
+  <div class="markdown level1 summary"><p>Checks whether an <code>If-None-Match</code> header exists in a request
+and, if so, whether it contains a given entity tag.</p>
+<p>See <a href="https://tools.ietf.org/html/rfc7232#section-3.2">RFC7232, Section 3.2</a>
+for a normative reference; however, see the Remarks section for more information
+about the RFC compliance of this method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool CheckIfNoneMatch(this IHttpRequest this, string entityTag, out bool headerExists)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">entityTag</span></td>
+        <td><p>The entity tag.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">headerExists</span></td>
+        <td><p>When this method returns, a value that indicates whether an
+<code>If-None-Match</code> header is present in <code data-dev-comment-type="paramref" class="paramref">this</code>, regardless of the method&apos;s
+return value. This parameter is passed uninitialized.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if an <code>If-None-Match</code> header is present in
+<code data-dev-comment-type="paramref" class="paramref">this</code> and one of the entity tags listed in it is equal to <code data-dev-comment-type="paramref" class="paramref">entityTag</code>;
+<span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpRequestExtensions_CheckIfNoneMatch_EmbedIO_IHttpRequest_System_String_System_Boolean___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><a href="https://tools.ietf.org/html/rfc7232#section-3.2">RFC7232, Section 3.2</a>
+states that a weak comparison function (as defined in
+<a href="https://tools.ietf.org/html/rfc7232#section-2.3.2">RFC7232, Section 2.3.2</a>)
+must be used for <code>If-None-Match</code>. That would mean parsing every entity tag, at least minimally,
+to determine whether it is a &quot;weak&quot; or &quot;strong&quot; tag. Since EmbedIO currently generates only
+&quot;strong&quot; tags, this method uses the default string comparer instead.</p>
+<p>The behavior of this method is thus not, strictly speaking, RFC7232-compliant;
+it works, though, with entity tags generated by EmbedIO.</p>
+</div>
+  
+  
+  <a id="EmbedIO_HttpRequestExtensions_IsRangeRequest_" data-uid="EmbedIO.HttpRequestExtensions.IsRangeRequest*"></a>
+  <h4 id="EmbedIO_HttpRequestExtensions_IsRangeRequest_EmbedIO_IHttpRequest_System_Int64_System_String_DateTime_System_Int64__System_Int64__" data-uid="EmbedIO.HttpRequestExtensions.IsRangeRequest(EmbedIO.IHttpRequest,System.Int64,System.String,DateTime,System.Int64@,System.Int64@)">IsRangeRequest(IHttpRequest, Int64, String, DateTime, out Int64, out Int64)</h4>
+  <div class="markdown level1 summary"><p>Checks whether a <code>Range</code> header exists in a request
+and, if so, determines whether it is possible to send a <code>206 Partial Content</code> response.</p>
+<p>See <a href="https://tools.ietf.org/html/rfc7233">RFC7233</a>
+for a normative reference; however, see the Remarks section for more information
+about the RFC compliance of this method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsRangeRequest(this IHttpRequest this, long contentLength, string entityTag, DateTime lastModifiedUtc, out long start, out long upperBound)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">contentLength</span></td>
+        <td><p>The total length, in bytes, of the response entity, i.e.
+what would be sent in a <code>200 OK</code> response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">entityTag</span></td>
+        <td><p>An entity tag representing the response entity. This value is checked against
+the <code>If-Range</code> header, if it is present.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTime</span></td>
+        <td><span class="parametername">lastModifiedUtc</span></td>
+        <td><p>The date and time value, in Coordinated Universal Time,
+expressing the last modification time of the resource entity. This value is checked against
+the <code>If-Range</code> header, if it is present.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">start</span></td>
+        <td><p>When this method returns <span class="xref">true</span>, the start of the requested byte range.
+This parameter is passed uninitialized.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">upperBound</span></td>
+        <td><p>When this method returns <span class="xref">true</span>, the upper bound of the requested byte range.
+This parameter is passed uninitialized.</p>
+<p>Note that the upper bound of a range is NOT the sum of the range&apos;s start and length;
+for example, a range expressed as <code>bytes=0-99</code> has a start of 0, an upper bound of 99,
+and a length of 100 bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>This method returns <span class="xref">true</span> if the following conditions are satisfied:</p>
+<ul><li>&gt;the request&apos;s HTTP method is <code>GET</code>;</li><li>&gt;a <code>Range</code> header is present in the request;</li><li>&gt;either no <code>If-Range</code> header is present in the request, or it
+specifies an entity tag equal to <code data-dev-comment-type="paramref" class="paramref">entityTag</code>, or a UTC date and time
+equal to <code data-dev-comment-type="paramref" class="paramref">lastModifiedUtc</code>;</li><li>&gt;the <code>Range</code> header specifies exactly one range;</li><li>&gt;the specified range is entirely contained in the range from 0 to <code data-dev-comment-type="paramref" class="paramref">contentLength</code> - 1.</li></ul>
+<p>If the last condition is not satisfied, i.e. the specified range start and/or upper bound
+are out of the range from 0 to <code data-dev-comment-type="paramref" class="paramref">contentLength</code> - 1, this method does not return;
+it throws a <a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a> instead.</p>
+<p>If any of the other conditions are not satisfied, this method returns <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpRequestExtensions_IsRangeRequest_EmbedIO_IHttpRequest_System_Int64_System_String_DateTime_System_Int64__System_Int64___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>According to <a href="https://tools.ietf.org/html/rfc7233#section-3.1">RFC7233, Section 3.1</a>,
+there are several conditions under which a server may ignore or reject a range request; therefore,
+clients are (or should be) prepared to receive a <code>200 OK</code> response with the whole response
+entity instead of the requested range(s). For this reason, until the generation of
+<code>multipart/byteranges</code> responses is implemented in EmbedIO, this method will ignore
+range requests specifying more than one range, even if this behavior is not, strictly speaking,
+RFC7233-compliant.</p>
+<p>To make clients aware that range requests are accepted for a resource, every <code>200 OK</code>
+(or <code>304 Not Modified</code>) response for the same resource should include an <code>Accept-Ranges</code>
+header with the string <code>bytes</code> as value.</p>
+</div>
+  
+  
+  <a id="EmbedIO_HttpRequestExtensions_SafeGetRemoteEndpointStr_" data-uid="EmbedIO.HttpRequestExtensions.SafeGetRemoteEndpointStr*"></a>
+  <h4 id="EmbedIO_HttpRequestExtensions_SafeGetRemoteEndpointStr_EmbedIO_IHttpRequest_" data-uid="EmbedIO.HttpRequestExtensions.SafeGetRemoteEndpointStr(EmbedIO.IHttpRequest)">SafeGetRemoteEndpointStr(IHttpRequest)</h4>
+  <div class="markdown level1 summary"><p>Returns a string representing the remote IP address and port of an <a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a> interface.</p>
+<p>This method can be called even on a <span class="xref">null</span> interface, or one that has no
+remote end point, or no remote address; it will always return a non-<span class="xref">null</span>,
+non-empty string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string SafeGetRemoteEndpointStr(this IHttpRequest this)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a> on which this method is called.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>If <code data-dev-comment-type="paramref" class="paramref">this</code> is <span class="xref">null</span>, or its <a class="xref" href="EmbedIO.IHttpRequest.html#EmbedIO_IHttpRequest_RemoteEndPoint">RemoteEndPoint</a>
+is <span class="xref">null</span>, the string <code>&quot;&lt;null&gt;</code>; otherwise, the remote end point&apos;s
+<see cref="!:IPEndPoint.Address">Address</see> (or the string <code>&quot;&lt;???&gt;&quot;</code> if it is <span class="xref">null</span>)
+followed by a colon and the <see cref="!:IPEndPoint.Port">Port</see> number.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpRequestExtensions_TryNegotiateContentEncoding_" data-uid="EmbedIO.HttpRequestExtensions.TryNegotiateContentEncoding*"></a>
+  <h4 id="EmbedIO_HttpRequestExtensions_TryNegotiateContentEncoding_EmbedIO_IHttpRequest_System_Boolean_EmbedIO_CompressionMethod__Action_EmbedIO_IHttpResponse___" data-uid="EmbedIO.HttpRequestExtensions.TryNegotiateContentEncoding(EmbedIO.IHttpRequest,System.Boolean,EmbedIO.CompressionMethod@,Action{EmbedIO.IHttpResponse}@)">TryNegotiateContentEncoding(IHttpRequest, Boolean, out CompressionMethod, out Action&lt;IHttpResponse&gt;)</h4>
+  <div class="markdown level1 summary"><p>Attempts to proactively negotiate a compression method for a response,
+based on a request&apos;s <code>Accept-Encoding</code> header (or lack of it).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryNegotiateContentEncoding(this IHttpRequest this, bool preferCompression, out CompressionMethod compressionMethod, out Action&lt;IHttpResponse&gt; prepareResponse)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IHttpRequest.html">IHttpRequest</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">preferCompression</span></td>
+        <td><p><span class="xref">true</span> if sending compressed data is preferred over
+    sending non-compressed data; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.CompressionMethod.html">CompressionMethod</a></td>
+        <td><span class="parametername">compressionMethod</span></td>
+        <td><p>When this method returns, the compression method to use for the response,
+if content negotiation is successful. This parameter is passed uninitialized.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Action</span>&lt;<a class="xref" href="EmbedIO.IHttpResponse.html">IHttpResponse</a>&gt;</td>
+        <td><span class="parametername">prepareResponse</span></td>
+        <td><p>When this method returns, a callback that prepares data in a <a class="xref" href="EmbedIO.IHttpResponse.html">IHttpResponse</a>
+according to the result of content negotiation. This parameter is passed uninitialized.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if content negotiation is successful;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpRequestExtensions_TryNegotiateContentEncoding_EmbedIO_IHttpRequest_System_Boolean_EmbedIO_CompressionMethod__Action_EmbedIO_IHttpResponse____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If this method returns <span class="xref">true</span>, the <code data-dev-comment-type="paramref" class="paramref">prepareResponse</code> callback
+will set appropriate response headers to reflect the results of content negotiation.</p>
+<p>If this method returns <span class="xref">false</span>, the <code data-dev-comment-type="paramref" class="paramref">prepareResponse</code> callback
+will throw a <a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a> to send a <code>406 Not Acceptable</code> response
+with the <code>Vary</code> header set to <code>Accept-Encoding</code>,
+so that the client may know the reason why the request has been rejected.</p>
+<p>If <code data-dev-comment-type="paramref" class="paramref">this</code> has no<code>Accept-Encoding</code> header, this method
+always returns <span class="xref">true</span> and sets <code data-dev-comment-type="paramref" class="paramref">compressionMethod</code>
+to <a class="xref" href="EmbedIO.CompressionMethod.html#EmbedIO_CompressionMethod_None">None</a>.</p>
+</div>
+  <h5 id="EmbedIO_HttpRequestExtensions_TryNegotiateContentEncoding_EmbedIO_IHttpRequest_System_Boolean_EmbedIO_CompressionMethod__Action_EmbedIO_IHttpResponse____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.HttpNotAcceptableException.html#EmbedIO_HttpNotAcceptableException__ctor_System_String_">HttpNotAcceptableException(String)</a></div>
+  </div>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

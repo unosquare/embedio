@@ -1,0 +1,1121 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class HttpException
+   | Unosquare EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class HttpException
+   | Unosquare EmbedIO ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.HttpException">
+  
+  
+  <h1 id="EmbedIO_HttpException" data-uid="EmbedIO.HttpException" class="text-break">Class HttpException
+  </h1>
+  <div class="markdown level0 summary"><p>When thrown, breaks the request handling control flow
+and sends an error response to the client.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">HttpException</span></div>
+      <div class="level2"><a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a></div>
+      <div class="level2"><a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a></div>
+      <div class="level2"><a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="EmbedIO.IHttpException.html">IHttpException</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
+  <h5 id="EmbedIO_HttpException_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class HttpException : Exception, IHttpException</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="EmbedIO_HttpException__ctor_" data-uid="EmbedIO.HttpException.#ctor*"></a>
+  <h4 id="EmbedIO_HttpException__ctor_HttpStatusCode_" data-uid="EmbedIO.HttpException.#ctor(HttpStatusCode)">HttpException(HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> class,
+with no message to include in the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpException(HttpStatusCode statusCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code to set on the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException__ctor_" data-uid="EmbedIO.HttpException.#ctor*"></a>
+  <h4 id="EmbedIO_HttpException__ctor_HttpStatusCode_System_String_" data-uid="EmbedIO.HttpException.#ctor(HttpStatusCode,System.String)">HttpException(HttpStatusCode, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> class,
+with a message to include in the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpException(HttpStatusCode statusCode, string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code to set on the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response as plain text.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException__ctor_" data-uid="EmbedIO.HttpException.#ctor*"></a>
+  <h4 id="EmbedIO_HttpException__ctor_HttpStatusCode_System_String_System_Object_" data-uid="EmbedIO.HttpException.#ctor(HttpStatusCode,System.String,System.Object)">HttpException(HttpStatusCode, String, Object)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> class,
+with a message and a data object to include in the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpException(HttpStatusCode statusCode, string message, object data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code to set on the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response as plain text.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data object to include in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException__ctor_" data-uid="EmbedIO.HttpException.#ctor*"></a>
+  <h4 id="EmbedIO_HttpException__ctor_System_Int32_" data-uid="EmbedIO.HttpException.#ctor(System.Int32)">HttpException(Int32)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> class,
+with no message to include in the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpException(int statusCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code to set on the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException__ctor_" data-uid="EmbedIO.HttpException.#ctor*"></a>
+  <h4 id="EmbedIO_HttpException__ctor_System_Int32_System_String_" data-uid="EmbedIO.HttpException.#ctor(System.Int32,System.String)">HttpException(Int32, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> class,
+with a message to include in the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpException(int statusCode, string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code to set on the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response as plain text.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException__ctor_" data-uid="EmbedIO.HttpException.#ctor*"></a>
+  <h4 id="EmbedIO_HttpException__ctor_System_Int32_System_String_System_Object_" data-uid="EmbedIO.HttpException.#ctor(System.Int32,System.String,System.Object)">HttpException(Int32, String, Object)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> class,
+with a message and a data object to include in the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpException(int statusCode, string message, object data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code to set on the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response as plain text.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data object to include in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_HttpException_DataObject_" data-uid="EmbedIO.HttpException.DataObject*"></a>
+  <h4 id="EmbedIO_HttpException_DataObject" data-uid="EmbedIO.HttpException.DataObject">DataObject</h4>
+  <div class="markdown level1 summary"><p>Gets an object that can be serialized and included
+in the response triggered by a HTTP exception.</p>
+<p>Whether the object is actually sent to the client will depend
+upon the handler used to send the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object DataObject { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_StatusCode_" data-uid="EmbedIO.HttpException.StatusCode*"></a>
+  <h4 id="EmbedIO_HttpException_StatusCode" data-uid="EmbedIO.HttpException.StatusCode">StatusCode</h4>
+  <div class="markdown level1 summary"><p>Gets the response status code for a HTTP exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int StatusCode { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_HttpException_BadRequest_" data-uid="EmbedIO.HttpException.BadRequest*"></a>
+  <h4 id="EmbedIO_HttpException_BadRequest_System_String_System_Object_" data-uid="EmbedIO.HttpException.BadRequest(System.String,System.Object)">BadRequest(String, Object)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> that, when thrown,
+will break the request handling control flow and send a <code>400 Bad Request</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpException BadRequest(string message = null, object data = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data object to include in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpException.html">HttpException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpException.html">HttpException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_Forbidden_" data-uid="EmbedIO.HttpException.Forbidden*"></a>
+  <h4 id="EmbedIO_HttpException_Forbidden_System_String_System_Object_" data-uid="EmbedIO.HttpException.Forbidden(System.String,System.Object)">Forbidden(String, Object)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> that, when thrown,
+will break the request handling control flow and send a <code>403 Forbidden</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpException Forbidden(string message = null, object data = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data object to include in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpException.html">HttpException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpException.html">HttpException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_MethodNotAllowed_" data-uid="EmbedIO.HttpException.MethodNotAllowed*"></a>
+  <h4 id="EmbedIO_HttpException_MethodNotAllowed_System_String_System_Object_" data-uid="EmbedIO.HttpException.MethodNotAllowed(System.String,System.Object)">MethodNotAllowed(String, Object)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> that, when thrown,
+will break the request handling control flow and send a <code>405 Method Not Allowed</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpException MethodNotAllowed(string message = null, object data = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data object to include in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpException.html">HttpException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpException.html">HttpException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_NotAcceptable_" data-uid="EmbedIO.HttpException.NotAcceptable*"></a>
+  <h4 id="EmbedIO_HttpException_NotAcceptable" data-uid="EmbedIO.HttpException.NotAcceptable">NotAcceptable()</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a> that, when thrown,
+will break the request handling control flow and send a <code>406 Not Acceptable</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpNotAcceptableException NotAcceptable()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpException_NotAcceptable_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.HttpNotAcceptableException.html#EmbedIO_HttpNotAcceptableException__ctor">HttpNotAcceptableException()</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_HttpException_NotAcceptable_" data-uid="EmbedIO.HttpException.NotAcceptable*"></a>
+  <h4 id="EmbedIO_HttpException_NotAcceptable_System_String_" data-uid="EmbedIO.HttpException.NotAcceptable(System.String)">NotAcceptable(String)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a> that, when thrown,
+will break the request handling control flow and send a <code>406 Not Acceptable</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpNotAcceptableException NotAcceptable(string vary)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">vary</span></td>
+        <td><p>A value, or a comma-separated list of values, to set the response&apos;s <code>Vary</code> header to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpNotAcceptableException.html">HttpNotAcceptableException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpException_NotAcceptable_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.HttpNotAcceptableException.html#EmbedIO_HttpNotAcceptableException__ctor_System_String_">HttpNotAcceptableException(String)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_HttpException_NotFound_" data-uid="EmbedIO.HttpException.NotFound*"></a>
+  <h4 id="EmbedIO_HttpException_NotFound_System_String_System_Object_" data-uid="EmbedIO.HttpException.NotFound(System.String,System.Object)">NotFound(String, Object)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> that, when thrown,
+will break the request handling control flow and send a <code>404 Not Found</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpException NotFound(string message = null, object data = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data object to include in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpException.html">HttpException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpException.html">HttpException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_PrepareResponse_" data-uid="EmbedIO.HttpException.PrepareResponse*"></a>
+  <h4 id="EmbedIO_HttpException_PrepareResponse_EmbedIO_IHttpContext_" data-uid="EmbedIO.HttpException.PrepareResponse(EmbedIO.IHttpContext)">PrepareResponse(IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Sets necessary headers, as required by the nature
+of the HTTP exception (e.g. <code>Location</code> for
+<a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void PrepareResponse(IHttpContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The HTTP context of the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpException_PrepareResponse_EmbedIO_IHttpContext__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method does nothing; there is no need to call
+<code>base.PrepareResponse</code> in overrides of this method.</p>
+</div>
+  
+  
+  <a id="EmbedIO_HttpException_RangeNotSatisfiable_" data-uid="EmbedIO.HttpException.RangeNotSatisfiable*"></a>
+  <h4 id="EmbedIO_HttpException_RangeNotSatisfiable" data-uid="EmbedIO.HttpException.RangeNotSatisfiable">RangeNotSatisfiable()</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a> that, when thrown,
+will break the request handling control flow and send a <code>416 Range Not Satisfiable</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpRangeNotSatisfiableException RangeNotSatisfiable()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpException_RangeNotSatisfiable_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html#EmbedIO_HttpRangeNotSatisfiableException__ctor">HttpRangeNotSatisfiableException()</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_HttpException_RangeNotSatisfiable_" data-uid="EmbedIO.HttpException.RangeNotSatisfiable*"></a>
+  <h4 id="EmbedIO_HttpException_RangeNotSatisfiable_System_Nullable_System_Int64__" data-uid="EmbedIO.HttpException.RangeNotSatisfiable(System.Nullable{System.Int64})">RangeNotSatisfiable(Nullable&lt;Int64&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a> that, when thrown,
+will break the request handling control flow and send a <code>416 Range Not Satisfiable</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpRangeNotSatisfiableException RangeNotSatisfiable(long? contentLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="parametername">contentLength</span></td>
+        <td><p>The total length of the requested resource, expressed in bytes,
+or <span class="xref">null</span> to omit the <code>Content-Range</code> header in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html">HttpRangeNotSatisfiableException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpException_RangeNotSatisfiable_System_Nullable_System_Int64___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.HttpRangeNotSatisfiableException.html#EmbedIO_HttpRangeNotSatisfiableException__ctor">HttpRangeNotSatisfiableException()</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_HttpException_Redirect_" data-uid="EmbedIO.HttpException.Redirect*"></a>
+  <h4 id="EmbedIO_HttpException_Redirect_System_String_" data-uid="EmbedIO.HttpException.Redirect(System.String)">Redirect(String)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a> that, when thrown,
+will break the request handling control flow and redirect the client
+to the specified location, using response status code 302.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpRedirectException Redirect(string location)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">location</span></td>
+        <td><p>The redirection target.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_Redirect_" data-uid="EmbedIO.HttpException.Redirect*"></a>
+  <h4 id="EmbedIO_HttpException_Redirect_System_String_HttpStatusCode_" data-uid="EmbedIO.HttpException.Redirect(System.String,HttpStatusCode)">Redirect(String, HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a> that, when thrown,
+will break the request handling control flow and redirect the client
+to the specified location, using the specified response status code.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpRedirectException Redirect(string location, HttpStatusCode statusCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">location</span></td>
+        <td><p>The redirection target.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>One of the redirection status codes, to be set on the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_Redirect_" data-uid="EmbedIO.HttpException.Redirect*"></a>
+  <h4 id="EmbedIO_HttpException_Redirect_System_String_System_Int32_" data-uid="EmbedIO.HttpException.Redirect(System.String,System.Int32)">Redirect(String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a> that, when thrown,
+will break the request handling control flow and redirect the client
+to the specified location, using the specified response status code.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpRedirectException Redirect(string location, int statusCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">location</span></td>
+        <td><p>The redirection target.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The status code to set on the response, in the range from 300 to 399.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpRedirectException.html">HttpRedirectException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_HttpException_Unauthorized_" data-uid="EmbedIO.HttpException.Unauthorized*"></a>
+  <h4 id="EmbedIO_HttpException_Unauthorized_System_String_System_Object_" data-uid="EmbedIO.HttpException.Unauthorized(System.String,System.Object)">Unauthorized(String, Object)</h4>
+  <div class="markdown level1 summary"><p>Returns a new instance of <a class="xref" href="EmbedIO.HttpException.html">HttpException</a> that, when thrown,
+will break the request handling control flow and send a <code>401 Unauthorized</code>
+response to the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpException Unauthorized(string message = null, object data = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to include in the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The data object to include in the response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpException.html">HttpException</a></td>
+        <td><p>A newly-created <a class="xref" href="EmbedIO.HttpException.html">HttpException</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  
+  <a id="EmbedIO_HttpException_EmbedIO_IHttpException_Message_" data-uid="EmbedIO.HttpException.EmbedIO#IHttpException#Message*"></a>
+  <h4 id="EmbedIO_HttpException_EmbedIO_IHttpException_Message" data-uid="EmbedIO.HttpException.EmbedIO#IHttpException#Message">IHttpException.Message</h4>
+  <div class="markdown level1 summary"><p>Gets a message that can be included in the response triggered
+by a HTTP exception.</p>
+<p>Whether the message is actually sent to the client will depend
+upon the handler used to send the response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string IHttpException.Message { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpException_EmbedIO_IHttpException_Message_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Do not rely on <see cref="!:Exception.Message"></see> to implement
+this property if you want to support <span class="xref">null</span> messages,
+because a default message will be supplied by the CLR at throw time
+when <see cref="!:Exception.Message"></see> is <span class="xref">null</span>.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="EmbedIO.IHttpException.html">IHttpException</a>
+  </div>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>
