@@ -528,7 +528,7 @@ namespace EmbedIO.WebSockets
                 }
                 catch (OperationCanceledException)
                 {
-                    $"[{context.Id}] OnClientDisconnectedAsync was canceled.".Info(nameof(WebSocketModule));
+                    $"[{context.Id}] OnClientDisconnectedAsync was canceled.".Debug(nameof(WebSocketModule));
                 }
                 catch (Exception e)
                 {

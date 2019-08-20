@@ -116,9 +116,10 @@ namespace EmbedIO.Files
             var timeKeeper = new TimeKeeper();
             var maxSizeKb = _maxSizeKb;
             var initialSizeKb = ComputeTotalSize() / 1024L;
+
             if (initialSizeKb <= maxSizeKb)
             {
-                $"Total size = {initialSizeKb}/{_maxSizeKb}kb, not purging.".Info(nameof(FileCache));
+                $"Total size = {initialSizeKb}/{_maxSizeKb}kb, not purging.".Debug(nameof(FileCache));
                 return;
             }
 
@@ -146,7 +147,7 @@ namespace EmbedIO.Files
             }
 
             $"Purge completed in {timeKeeper.ElapsedTime}ms: removed {removedCount} items ({removedSize / 1024L}kb). Total size is now {totalSizeKb}kb."
-                .Info(nameof(FileCache));
+                .Debug(nameof(FileCache));
         }
 
         // Enumerate key / value pairs because the Keys and Values property
