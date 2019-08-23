@@ -13,7 +13,7 @@ namespace EmbedIO.Routing
     public sealed class RouteMatcher
     {
         private static readonly object SyncRoot = new object();
-        private static readonly Dictionary<string, RouteMatcher> Cache = new Dictionary<string, RouteMatcher>(StringComparer.Ordinal);
+        private static readonly Dictionary<(bool, string), RouteMatcher> Cache = new Dictionary<(bool, string), RouteMatcher>();
 
         private readonly Regex _regex;
 
@@ -144,11 +144,11 @@ namespace EmbedIO.Routing
                 }
 
                 route = UrlPath.UnsafeNormalize(route, isBaseRoute);
-                if (Cache.TryGetValue(route, out result))
+                if (Cache.TryGetValue((isBaseRoute, route), out result))
                     return null;
 
                 result = new RouteMatcher(isBaseRoute, route, pattern, parameterNames);
-                Cache.Add(route, result);
+                Cache.Add((isBaseRoute, route), result);
                 return null;
             }
         }
