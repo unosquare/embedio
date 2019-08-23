@@ -132,8 +132,8 @@
                 await stream.WriteAsync(dataBuffer, 0, 0);
     }
 </code></pre><h2 id="how-to-turn-off-logging">How to turn off logging</h2>
-<p>EmbedIO uses <a href="https://github.com/unosquare/swan">SWAN</a>&#39;s <code>Terminal</code> to display all messages. You can disable them or change the verbosity by modifying the <code>Terminal</code> settings.</p>
-<pre><code class="lang-csharp">Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
+<p>We moved the logging from SWAN to a new class <code>Logger</code>. You can Register or Unregister log targets, by default the <code>ConsoleLogger</code> is enabled in the startup. You can Unregister using:</p>
+<pre><code class="lang-csharp">Logger.UnregisterLogger&lt;ConsoleLogger&gt;();
 </code></pre></article>
           </div>
           
