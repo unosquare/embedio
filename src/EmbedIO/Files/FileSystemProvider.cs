@@ -83,7 +83,7 @@ namespace EmbedIO.Files
             try
             {
                 // Unescape the url before continue
-                urlPath = Uri.UnescapeDataString(urlPath)
+                urlPath = Uri.UnescapeDataString(urlPath);
                 
                 // Bail out early if the path is a rooted path,
                 // as Path.Combine would ignore our base path.
