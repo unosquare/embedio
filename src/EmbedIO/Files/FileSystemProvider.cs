@@ -82,6 +82,9 @@ namespace EmbedIO.Files
 #pragma warning disable CA1031
             try
             {
+                // Unescape the url before continue
+                urlPath = Uri.UnescapeDataString(urlPath);
+                
                 // Bail out early if the path is a rooted path,
                 // as Path.Combine would ignore our base path.
                 // See https://docs.microsoft.com/en-us/dotnet/api/system.io.path.combine
