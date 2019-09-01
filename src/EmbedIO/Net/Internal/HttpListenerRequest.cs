@@ -21,7 +21,6 @@ namespace EmbedIO.Net.Internal
 
         private readonly HttpListenerContext _context;
         private Encoding _contentEncoding;
-        private bool _clSet;
         private CookieList _cookies;
         private Stream _inputStream;
         private Uri _url;
@@ -85,14 +84,14 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public long ContentLength64 { get; private set; }
+        public long ContentLength64 => Headers.ContainsKey(HttpHeaderNames.ContentLength) && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var val) ? val : 0;
 
         /// <inheritdoc />
-        public string ContentType => Headers["content-type"];
+        public string ContentType => Headers[HttpHeaderNames.ContentType];
 
         /// <inheritdoc />
         public ICookieCollection Cookies => _cookies ?? (_cookies = new CookieList());
-        
+
         /// <inheritdoc />
         public bool HasEntityBody => ContentLength64 > 0;
 
@@ -152,7 +151,7 @@ namespace EmbedIO.Net.Internal
                 return _keepAlive;
             }
         }
-        
+
         /// <inheritdoc />
         public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
 
@@ -164,10 +163,10 @@ namespace EmbedIO.Net.Internal
 
         /// <inheritdoc />
         public string RawUrl { get; private set; }
-        
+
         /// <inheritdoc />
         public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
-        
+
         /// <inheritdoc />
         public Uri Url => _url;
 
@@ -182,12 +181,12 @@ namespace EmbedIO.Net.Internal
         public string UserHostName => Headers["host"];
 
         public string[] UserLanguages { get; private set; }
-        
+
         /// <inheritdoc />
-        public bool IsWebSocketRequest 
+        public bool IsWebSocketRequest
             => HttpVerb == HttpVerbs.Get
-            && ProtocolVersion >= HttpVersion.Version11 
-            && Headers.Contains("Upgrade", "websocket") 
+            && ProtocolVersion >= HttpVersion.Version11
+            && Headers.Contains("Upgrade", "websocket")
             && Headers.Contains("Connection", "Upgrade");
 
         /// <summary>
@@ -304,8 +303,8 @@ namespace EmbedIO.Net.Internal
             }
 
             CreateQueryString(_url.Query);
-
-            if (!_clSet && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
+            
+            if (ContentLength64 < 0 && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
                 return;
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
@@ -325,7 +324,7 @@ namespace EmbedIO.Net.Internal
 
             var name = header.Substring(0, colon).Trim();
             var val = header.Substring(colon + 1).Trim();
-            
+
             Headers.Set(name, val);
 
             switch (name.ToLowerInvariant())
@@ -337,19 +336,11 @@ namespace EmbedIO.Net.Internal
                     AcceptTypes = val.SplitByComma(); // yes, only split with a ','
                     break;
                 case "content-length":
-                    try
-                    {
-                        // TODO: max. content_length?
-                        ContentLength64 = long.Parse(val.Trim(), CultureInfo.InvariantCulture);
-                        if (ContentLength64 < 0)
-                            _context.ErrorMessage = "Invalid Content-Length.";
-                        _clSet = true;
-                    }
-                    catch
-                    {
+                    Headers[HttpHeaderNames.ContentLength] = val.Trim();
+                    
+                    if (ContentLength64 < 0)
                         _context.ErrorMessage = "Invalid Content-Length.";
-                    }
-
+                    
                     break;
                 case "referer":
                     try
@@ -459,7 +450,7 @@ namespace EmbedIO.Net.Internal
                 _cookies.Add(current);
             }
         }
-        
+
         private void CreateQueryString(string query)
         {
             if (string.IsNullOrEmpty(query))

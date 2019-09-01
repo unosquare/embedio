@@ -7,8 +7,9 @@ namespace EmbedIO.Tests.Issues
 {
     public class Issue355_ContentResponseLength
     {
-        [Test]
-        public async Task ActionModule_Handle_ContentLengthProperly()
+        [TestCase(true)]
+        [TestCase(false)]
+        public async Task ActionModule_Handle_ContentLengthProperly(bool useProperty)
         {
             var ok = Encoding.UTF8.GetBytes("content");
 
@@ -16,7 +17,11 @@ namespace EmbedIO.Tests.Issues
             {
                 server.WithAction("/", HttpVerbs.Get, async context =>
                 {
-                    context.Response.Headers[HttpHeaderNames.ContentLength] = ok.Length.ToString();
+                    if (useProperty)
+                        context.Response.ContentLength64 = ok.Length;
+                    else
+                        context.Response.Headers[HttpHeaderNames.ContentLength] = ok.Length.ToString();
+
                     await context.Response.OutputStream.WriteAsync(ok, 0, ok.Length);
                 });
 
