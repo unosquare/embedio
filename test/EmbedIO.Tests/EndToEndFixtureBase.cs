@@ -13,8 +13,6 @@ namespace EmbedIO.Tests
 
         protected EndToEndFixtureBase(bool useTestWebServer)
         {
-            // Terminal.Settings.GlobalLoggingMessageType = LogMessageType.None;
-
             _useTestWebServer = useTestWebServer;
         }
 
