@@ -212,6 +212,9 @@ namespace EmbedIO.Net.Internal
                 if (!clSet && closing)
                 {
                     clSet = true;
+
+                    if (!Headers.ContainsKey(HttpHeaderNames.ContentLength))
+                        Headers[HttpHeaderNames.ContentLength] = "0";
                 }
             }
 
