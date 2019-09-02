@@ -17,8 +17,6 @@ namespace EmbedIO.Net.Internal
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
         private readonly HttpListenerContext _context;
         private bool _disposed;
-        private long _contentLength;
-        private bool _clSet;
         private string _contentType;
         private CookieList _cookies;
         private bool _keepAlive = true;
@@ -37,7 +35,7 @@ namespace EmbedIO.Net.Internal
         /// <inheritdoc />
         public long ContentLength64
         {
-            get => _contentLength;
+            get => Headers.ContainsKey(HttpHeaderNames.ContentLength) && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var val) ? val : 0;
 
             set
             {
@@ -49,9 +47,8 @@ namespace EmbedIO.Net.Internal
 
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
-
-                _clSet = true;
-                _contentLength = value;
+                
+                Headers[HttpHeaderNames.ContentLength] = value.ToString();
             }
         }
 
@@ -208,20 +205,21 @@ namespace EmbedIO.Net.Internal
             if (Headers[HttpHeaderNames.Date] == null)
                 Headers.Add(HttpHeaderNames.Date, DateTime.UtcNow.ToString("r", inv));
 
+            var clSet = ContentLength64 > 0;
+
             if (!_chunked)
             {
-                if (!_clSet && closing)
+                if (!clSet && closing)
                 {
-                    _clSet = true;
-                    _contentLength = 0;
-                }
+                    clSet = true;
 
-                if (_clSet)
-                    Headers.Add(HttpHeaderNames.ContentLength, _contentLength.ToString(inv));
+                    if (!Headers.ContainsKey(HttpHeaderNames.ContentLength))
+                        Headers[HttpHeaderNames.ContentLength] = "0";
+                }
             }
 
             var v = _context.Request.ProtocolVersion;
-            if (!_clSet && !_chunked && v >= HttpVersion.Version11)
+            if (!clSet && !_chunked && v >= HttpVersion.Version11)
                 _chunked = true;
 
             //// Apache forces closing the connection for these status codes:
