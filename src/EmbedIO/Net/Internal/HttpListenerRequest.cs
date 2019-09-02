@@ -304,7 +304,7 @@ namespace EmbedIO.Net.Internal
 
             CreateQueryString(_url.Query);
             
-            if (ContentLength64 < 0 && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
+            if (ContentLength64 == 0 && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
                 return;
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
