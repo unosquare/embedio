@@ -22,7 +22,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Tubular.ServerSide" Version="1.5.1" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.0" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
