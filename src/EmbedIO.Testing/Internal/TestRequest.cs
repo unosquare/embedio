@@ -122,13 +122,10 @@ namespace EmbedIO.Testing.Internal
 
             if (method == System.Net.Http.HttpMethod.Options)
                 return HttpVerbs.Options;
-#if NETSTANDARD2_0
+            
             if (method == AdditionalHttpMethods.Patch)
                 return HttpVerbs.Patch;
-#else
-            if (method == System.Net.Http.HttpMethod.Patch)
-                return HttpVerbs.Patch;
-#endif
+
             if (method == System.Net.Http.HttpMethod.Post)
                 return HttpVerbs.Post;
 
