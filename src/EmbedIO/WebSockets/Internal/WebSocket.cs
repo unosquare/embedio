@@ -199,7 +199,7 @@ namespace EmbedIO.WebSockets.Internal
             if (webSocketVersion == null || webSocketVersion != SupportedVersion)
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketVersion} header, or it has an invalid value.");
             
-            var handshakeResponse = new HttpResponse(httpContext);
+            var handshakeResponse = new WebSocketHandshakeResponse(httpContext);
 
             handshakeResponse.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
 

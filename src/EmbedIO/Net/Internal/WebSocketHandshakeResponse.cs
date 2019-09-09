@@ -6,11 +6,11 @@ using System.Text;
 
 namespace EmbedIO.Net.Internal
 {
-    internal class HttpResponse
+    internal class WebSocketHandshakeResponse
     {
         private const int HandshakeStatusCode = (int)HttpStatusCode.SwitchingProtocols;
 
-        internal HttpResponse(IHttpContext context)
+        internal WebSocketHandshakeResponse(IHttpContext context)
         {
             ProtocolVersion = HttpVersion.Version11;
             Headers = context.Response.Headers;
