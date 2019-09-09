@@ -8,8 +8,6 @@ namespace EmbedIO.Net.Internal
 {
     internal class HttpResponse
     {
-        internal const string ServerVersion = "embedio/3.0";
-
         private const int HandshakeStatusCode = (int)HttpStatusCode.SwitchingProtocols;
 
         internal HttpResponse(IHttpContext context)

@@ -199,7 +199,7 @@ namespace EmbedIO.Net.Internal
             }
 
             if (Headers[HttpHeaderNames.Server] == null)
-                Headers.Add(HttpHeaderNames.Server, HttpResponse.ServerVersion);
+                Headers.Add(HttpHeaderNames.Server, WebServer.Signature);
 
             var inv = CultureInfo.InvariantCulture;
             if (Headers[HttpHeaderNames.Date] == null)
