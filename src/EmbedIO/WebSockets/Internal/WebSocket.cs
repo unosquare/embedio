@@ -199,18 +199,18 @@ namespace EmbedIO.WebSockets.Internal
             if (webSocketVersion == null || webSocketVersion != SupportedVersion)
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketVersion} header, or it has an invalid value.");
             
-            var ret = HttpResponse.CreateWebSocketResponse();
+            var handshakeResponse = new HttpResponse(httpContext);
 
-            ret.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
+            handshakeResponse.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
 
             if (acceptedProtocol != null)
-                ret.Headers[HttpHeaderNames.SecWebSocketProtocol] = acceptedProtocol;
+                handshakeResponse.Headers[HttpHeaderNames.SecWebSocketProtocol] = acceptedProtocol;
 
-            ret.SetCookies(httpContext.Request.Cookies);
-
-            var bytes = Encoding.UTF8.GetBytes(ret.ToString());
-
+            var bytes = Encoding.UTF8.GetBytes(handshakeResponse.ToString());
             await httpContext.Connection.Stream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+
+            // Signal the original response that headers have been sent.
+            httpContext.HttpListenerResponse.HeadersSent = true;
 
             var socket = new WebSocket(httpContext.Connection);
             socket.Open();
