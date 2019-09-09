@@ -6,7 +6,7 @@
                 <div class="panel panel-default panel-rounded">
                     <tb-grid-table class="table-bordered">
                         <tb-column-definitions>
-                            <tb-column name="RowId" sortable="true" sort-order="1"
+                            <tb-column name="Id" sortable="true" sort-order="1"
                                        sort-direction="Ascending" column-type="numeric">
                                 <tb-column-filter operator="Equals"></tb-column-filter>
                                 <tb-column-header>
@@ -35,7 +35,7 @@
                             <tb-row-template ng-repeat="cells in $component.rows"
                                              row-model="cells" selectable="false">
                                 <tb-cell-template>
-                                    {{cells.RowId}}
+                                    {{cells.Id}}
                                 </tb-cell-template>
                                 <tb-cell-template>
                                     {{cells.Name}}
@@ -52,13 +52,7 @@
                 </div>
             </div>
         </div>
-        <br />
-        <div class="row">
-            <tb-grid-pager class="col-md-6"></tb-grid-pager>
-            <tb-page-size-selector class="col-md-3" selectorcss="input-sm"></tb-page-size-selector>
-            <tb-grid-pager-info class="col-md-3"></tb-grid-pager-info>
-        </div>
     </tb-grid>
     <br />
-    If you want to know more about this Grid component, visit <a href="http://unosquare.github.io/tubular/#/">Tubular's Git Pages</a>.
+    If you want to know more about this Grid component, visit <a href="http://unosquare.github.io/tubular/#/">Tubular Git Pages</a>.
 </div>
