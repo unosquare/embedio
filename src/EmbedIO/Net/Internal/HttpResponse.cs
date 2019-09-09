@@ -51,20 +51,6 @@ namespace EmbedIO.Net.Internal
             
             return output.ToString();
         }
-        
-        internal static string GetValue(string nameAndValue)
-        {
-            var idx = nameAndValue.IndexOf('=');
-
-            return idx < 0 || idx == nameAndValue.Length - 1 ? null : nameAndValue.Substring(idx + 1).Trim().Unquote();
-        }
-
-        internal static Encoding GetEncoding(string contentType) => contentType
-            .Split(';')
-            .Select(p => p.Trim())
-            .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-            .Select(part => Encoding.GetEncoding(GetValue(part)))
-            .FirstOrDefault();
 
         internal static HttpResponse CreateWebSocketResponse()
         {

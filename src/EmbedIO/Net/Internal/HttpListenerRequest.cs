@@ -56,7 +56,7 @@ namespace EmbedIO.Net.Internal
 
                 if (!string.IsNullOrEmpty(contentType))
                 {
-                    _contentEncoding = HttpResponse.GetEncoding(contentType);
+                    _contentEncoding = GetEncoding(contentType);
 
                     if (_contentEncoding != null)
                         return _contentEncoding;
@@ -391,6 +391,20 @@ namespace EmbedIO.Net.Internal
                     return false;
                 }
             }
+        }
+
+        private static Encoding GetEncoding(string contentType) => contentType
+            .Split(';')
+            .Select(p => p.Trim())
+            .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+            .Select(part => Encoding.GetEncoding(GetValue(part)))
+            .FirstOrDefault();
+
+        private static string GetValue(string nameAndValue)
+        {
+            var idx = nameAndValue.IndexOf('=');
+
+            return idx < 0 || idx == nameAndValue.Length - 1 ? null : nameAndValue.Substring(idx + 1).Trim().Unquote();
         }
 
         private void ParseCookies(string val)
