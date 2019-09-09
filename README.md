@@ -1,7 +1,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e24c50205c4e486dbbe2b734a790b751)](https://app.codacy.com/app/UnosquareLabs/embedio?utm_source=github.com&utm_medium=referral&utm_content=unosquare/embedio&utm_campaign=Badge_Grade_Settings)
  [![Analytics](https://ga-beacon.appspot.com/UA-8535255-2/unosquare/embedio/)](https://github.com/igrigorik/ga-beacon)
  [![Build status](https://ci.appveyor.com/api/projects/status/w59t7sct3a8ir96t?svg=true)](https://ci.appveyor.com/project/geoperez/embedio)
- [![Build Status](https://travis-ci.org/unosquare/embedio.svg?branch=master)](https://travis-ci.org/unosquare/embedio)
+ ![Buils status](https://github.com/unosquare/embedio/workflows/.github/workflows/netcore.yml/badge.svg)
  [![NuGet version](https://badge.fury.io/nu/embedio.svg)](https://www.nuget.org/packages/embedio)
  [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/embedio)
 [![Coverage Status](https://coveralls.io/repos/unosquare/embedio/badge.svg?branch=master)](https://coveralls.io/r/unosquare/embedio?branch=master)
