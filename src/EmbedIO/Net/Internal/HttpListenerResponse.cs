@@ -156,7 +156,7 @@ namespace EmbedIO.Net.Internal
             set => _cookies = value;
         }
 
-        internal bool HeadersSent { get; private set; }
+        internal bool HeadersSent { get; set; }
         internal object HeadersLock { get; } = new object();
         internal bool ForceCloseChunked { get; private set; }
 
