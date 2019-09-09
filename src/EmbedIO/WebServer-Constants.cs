@@ -11,5 +11,11 @@ namespace EmbedIO
         /// <see href="https://referencesource.microsoft.com/#mscorlib/system/io/stream.cs,50">.NET Framework reference source</see>.</para>
         /// </summary>
         public const int StreamCopyBufferSize = 81920;
+
+        /// <summary>
+        /// The signature string included in <c>Server</c> response headers.
+        /// </summary>
+        // TODO: Make this constant public in EmbedIO 3.1
+        internal const string Signature = "embedio/3.0";
     }
 }
