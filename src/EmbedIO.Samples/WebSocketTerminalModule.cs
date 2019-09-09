@@ -86,13 +86,21 @@ namespace EmbedIO.Samples
 
         private Task SendBufferAsync(Process process, string buffer)
         {
-            if (process.HasExited)
-                return Task.CompletedTask;
+            try
+            {
+                if (process.HasExited)
+                    return Task.CompletedTask;
 
-            var context = FindContext(process);
-            return context?.WebSocket?.State == WebSocketState.Open
-                ? SendAsync(context, buffer)
-                : Task.CompletedTask;
+                var context = FindContext(process);
+                return context?.WebSocket?.State == WebSocketState.Open
+                    ? SendAsync(context, buffer)
+                    : Task.CompletedTask;
+            }
+            catch
+            {
+                // ignore process teermination
+                return Task.CompletedTask;
+            }
         }
     }
 }

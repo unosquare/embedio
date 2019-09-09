@@ -4,7 +4,7 @@
             <tr ng-repeat="item in people.items | filter:query | orderBy:orderProp">
                 <td>
                     <div class="col-md-2">
-                        <img class="img-circle img-responsive" ng-src="{{item.PhotoUrl}}" />
+                        <img class="img-circle img-responsive" ng-src="{{item.PhotoUrl}}" alt="Photo Profile" />
                     </div>
                     <div class="col-md-10">
                         <h4>{{item.Name}} </h4>

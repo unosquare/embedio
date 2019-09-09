@@ -20,8 +20,6 @@ namespace EmbedIO.Samples
         {
             var url = args.Length > 0 ? args[0] : "http://*:8877";
 
-            AppDbContext.InitDatabase();
-
             using (var ctSource = new CancellationTokenSource())
             {
                 Task.WaitAll(
