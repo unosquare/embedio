@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -11,20 +10,22 @@ namespace EmbedIO.Net.Internal
     {
         internal const string ServerVersion = "embedio/3.0";
 
-        internal HttpResponse(HttpStatusCode code)
-          : this((int) code, HttpListenerResponseHelper.GetStatusDescription((int)code), HttpVersion.Version11, new NameValueCollection())
+        private const int HandshakeStatusCode = (int)HttpStatusCode.SwitchingProtocols;
+
+        internal HttpResponse(IHttpContext context)
         {
+            ProtocolVersion = HttpVersion.Version11;
+            Headers = context.Response.Headers;
+            StatusCode = HandshakeStatusCode;
+            Reason = HttpListenerResponseHelper.GetStatusDescription(HandshakeStatusCode);
+
+            Headers[HttpHeaderNames.Upgrade] = "websocket";
+            Headers[HttpHeaderNames.Connection] = "Upgrade";
+
+            foreach (var cookie in context.Request.Cookies)
+                Headers.Add("Set-Cookie", cookie.ToString());
         }
-        
-        private HttpResponse(int code, string reason, Version version, NameValueCollection headers)
-        {
-            ProtocolVersion = version;
-            Headers = headers;
-            StatusCode = code;
-            Reason = reason;
-            Headers[HttpHeaderNames.Server] = ServerVersion;
-        }
-        
+
         public string Reason { get; }
 
         public int StatusCode { get; }
@@ -32,12 +33,6 @@ namespace EmbedIO.Net.Internal
         public NameValueCollection Headers { get; }
 
         public Version ProtocolVersion { get; }
-
-        public void SetCookies(ICookieCollection cookies)
-        {
-            foreach (var cookie in cookies)
-                Headers.Add("Set-Cookie", cookie.ToString());
-        }
 
         public override string ToString()
         {
@@ -50,17 +45,6 @@ namespace EmbedIO.Net.Internal
             output.Append("\r\n");
             
             return output.ToString();
-        }
-
-        internal static HttpResponse CreateWebSocketResponse()
-        {
-            var res = new HttpResponse(HttpStatusCode.SwitchingProtocols);
-
-            var headers = res.Headers;
-            headers[HttpHeaderNames.Upgrade] = "websocket";
-            headers[HttpHeaderNames.Connection] = "Upgrade";
-
-            return res;
         }
     }
 }
