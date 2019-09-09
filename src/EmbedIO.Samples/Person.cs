@@ -22,7 +22,7 @@ namespace EmbedIO.Samples
         internal static async Task<IEnumerable<Person>> GetDataAsync()
         {
             // Imagine this is a database call :)
-            await Task.Delay(0);
+            await Task.Delay(0).ConfigureAwait(false);
 
             return new List<Person> {
                 new Person {
