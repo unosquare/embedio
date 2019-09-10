@@ -48,7 +48,7 @@ build_script:
       if ($xml.Report.Issues.HasChildNodes)
       {
             $xml.Report.Issues.ChildNodes  | foreach { Write-Output $_.InnerXml }
-            # throw "inspectcode.exe found issues with severity level Error; see inspectcode.xml for details"
+            throw "inspectcode.exe found issues with severity level Error; see inspectcode.xml for details"
       }
 test_script:
 - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
