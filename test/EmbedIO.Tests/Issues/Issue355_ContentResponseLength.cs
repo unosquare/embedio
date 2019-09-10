@@ -7,15 +7,14 @@ namespace EmbedIO.Tests.Issues
 {
     public class Issue355_ContentResponseLength
     {
-        const string DefaultUrl = "http://localhost:1234/";
-
-        [TestCase(HttpListenerMode.EmbedIO)]
-        [TestCase(HttpListenerMode.EmbedIO)]
-        public async Task ActionModuleWithProperty_Handle_ContentLengthProperly(HttpListenerMode mode)
+        [Test]
+        public async Task ActionModuleWithProperty_Handle_ContentLengthProperly()
         {
+            const string DefaultUrl = "http://localhost:1234/";
+
             var ok = Encoding.UTF8.GetBytes("content");
 
-            using (var server = new WebServer(mode, DefaultUrl))
+            using (var server = new WebServer(HttpListenerMode.EmbedIO, DefaultUrl))
             {
                 server.WithAction("/", HttpVerbs.Get, async context =>
                 {
@@ -38,9 +37,8 @@ namespace EmbedIO.Tests.Issues
             }
         }
 
-        [TestCase(HttpListenerMode.EmbedIO)]
-        [TestCase(HttpListenerMode.EmbedIO)]
-        public async Task ActionModuleWithHeaderCollection_Handle_ContentLengthProperly(HttpListenerMode mode)
+        [Test]
+        public async Task ActionModuleWithHeaderCollection_Handle_ContentLengthProperly()
         {
             var ok = Encoding.UTF8.GetBytes("content");
 
