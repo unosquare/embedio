@@ -38,7 +38,8 @@
       "_enableSearch": true,
       "_appFaviconPath": "src/Command/favicon.ico",
       "_appLogoPath": "best-practices/resources/images/logo.png",
-      "_docLogo":  "embedio.png"
+      "_docLogo":  "embedio.png",
+      "_docfxVersion": "2.45.0.0"
     },
     "dest": "_site"
   }
