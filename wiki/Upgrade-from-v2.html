@@ -8,7 +8,7 @@
     <title>Upgrade guide for v2 users | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Upgrade guide for v2 users | Unosquare EmbedIO ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -70,28 +70,55 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="upgrade-guide-for-v2-users">Upgrade guide for v2 users</h1>
 
-<h3 id="general">General</h3>
+<h2 id="general">General</h2>
 <ul>
 <li>The assembly name is now <code>EmbedIO.dll</code> (instead of <code>Unosquare.Labs.EmbedIO.dll</code>).</li>
 <li>The root namespace is now <code>EmbedIO</code> (instead of <code>Unosquare.Labs.EmbedIO</code>).</li>
 <li>Namespaces have been reorganized: instead of a code-type-based approach (<code>Constants</code>, <code>Modules</code>, etc.) now they follow a more common feature-based approach. For example you will find class <code>WebApiModule</code>, together with its support types, in namespace <code>EmbedIO.WebApi</code> (previously it was in <code>Unosquare.Labs.EmbedIO.Modules</code>).</li>
 </ul>
-<h3 id="web-server-initialization">Web server initialization</h3>
-<p>Gone are <code>RegisterModule</code> and <code>Module&lt;T&gt;()</code>: the preferred method of initialization is via fluent extension methods. Although there are plenty of them, they have consistent syntax and semantics, so they can be grasped in a few minutes. While we prepare more extensive documentation, you can find them <a href="https://github.com/unosquare/embedio/search?q=Extensions">here</a>.</p>
-<h3 id="routing">Routing</h3>
+<h2 id="immutable-configuration">Immutable configuration</h2>
+<p>Previous versions of EmbedIO allowed you to register and unregister modules, web API controllers, and virtual paths for static files while a web server was running. This had a direct impact on both code complexity and run-time performance.</p>
+<p>Version 3 has <em>immutable configuration</em>: once a web server is started, its configuration (the set of properties that define the web server&#39;s behavior, as well as the list of registered modules) becomes read-only, and so does the configuration of all registered modules, lists of web API controllers, etc.</p>
+<p>Another consequence of immutable configuration is that it is no longer possible to unregister modules, controllers, and virtual paths: the <code>Unregister****</code> methods have simply been removed. </p>
+<p>Immutable configuration has allowed us to simplify code in several places, removing locking mechanisms that had a direct impact on run-time performance.</p>
+<h2 id="new-routing-rules">New routing rules</h2>
 <p>Wildcard routing strategy has been removed: routing is Regex-based everywhere.</p>
-<h3 id="http-context-handlers">HTTP context handlers</h3>
+<h3 id="base-routes">Base routes</h3>
+<p>In previous versions of EmbedIO, every single path or route (web API method routes, virtual paths for static files) was absolute. If you wanted a web API controller method to handle <code>/api/customer/{id}</code>, that&#39;s what you specified. If all your API method paths started with <code>/api/</code>, you had to specify it every time. For every request, the web server had to call into each module until it found one who could handle the requested path.</p>
+<p>EmbedIO v3.0 introduces the concept of <em>base route</em>. Every module has its own base route, which is tested against the beginning of the requested path; the <code>IHttpContext.RequestedPath</code> property that handlers see is relative to the module&#39;s base route. For example, if a <code>WebApiModule</code> has a base route of <code>/api/</code> (base routes always end with a slash) then a <code>WebApiController</code> method with a <code>[Route(&quot;/customer/{id}&quot;)]</code> attribute will handle a request for <code>/api/customer/12345</code>.</p>
+<p>Base routes enable a web server to more quickly find out which module is &quot;responsible&quot; for a given path. If a base path has parameters, you can find their values in the <code>IHttpContext.Route</code> property, which implements <code>IReadOnlyDictionary&lt;string,string&gt;</code>.</p>
+<h2 id="fluent-initialization">Fluent initialization</h2>
+<p>A lot of work has been devoted in the development of EmbedIO v3.0 to ensure that a web server can be initialized entirely using &quot;fluent&quot; extension methods. This futher reduces the boilerplate code in applications, leaving you with a bare minimum that usually fits in a screenful and lets you see the structure and options of your web server at a glance.</p>
+<p>You can obtain the most concise code by writing a private method to initialize a web server, using an expression body and lambdas, like this:</p>
+<pre><code class="lang-C#">private WebServer CreateWebServer(int port, Database database)
+    =&gt; new WebServer(port)
+        .WithCors()
+        .WithStaticFolder(&quot;/&quot;, &quot;C:\\www&quot;, true)
+        .WithWebApi(&quot;/api/&quot;, m =&gt; m
+            .WithController(() =&gt; new CustomerController(database))
+            .WithController(() =&gt; new InvoiceController(database))));
+</code></pre><p>Fluent extension methods always start with <code>With</code> (or <code>Handle</code> if their purpose is to set a callback method) so Intellisense is your friend. You may also take a look at EmbedIO&#39;s source code: all extension methods are in classes whose name ends in <code>Extensions</code>, so they are rather easy to find.</p>
+<h2 id="http-context-handlers">HTTP context handlers</h2>
 <p>HTTP context handlers do not return <code>bool</code> any longer; instead, they are void functions (<code>Sub</code>s, if you speak VB). Whether a HTTP context gets passed along to further modules is decided, by default, on a module-per-module basis, via the <code>IWebModule.IsFinalHandler</code> property; this default may be overridden by a handler, either by calling <code>context.SetHandled()</code> to stop futher processing, or with <code>throw RequestHandler.PassThrough();</code> to skip the currently executing handler and pass the context along to subsequent modules.</p>
-<h3 id="web-api">Web API</h3>
-<p>Web API controller methods can now be <code>void</code> (or return <code>Task</code>) too.</p>
+<h2 id="web-api">Web API</h2>
+<p>Web API is probably the area that has undergone the most changes in EmbedIO v3.0. Writing web API controllers is now easier, there is less boilerplate code to write (if any), but porting controllers from previous versions requires some work. Let&#39;s see what has changed.</p>
+<h3 id="relative-routes">Relative routes</h3>
+<p>First of all, due to base routes, web API controller method routes (which are now specified with a <code>RouteAttribute</code> instead of <code>WebApiHandlerAttribute</code>) are now <em>relative to the module&#39;s base route</em>, as we saw a couple paragraphs above.</p>
+<h3 id="no-construction-parameters-for-controllers">No construction parameters for controllers</h3>
+<p><code>WebApiController</code>&#39;s constructor is now parameterless, so there is no need for derived classes to take constructor parameters just to pass them to <code>base()</code>. Your controller constructors will have just the parameters <em>you</em> need (a reference to a database, for example) instead of being compelled to always take an <code>IHttpContext</code>.</p>
+<p>Of course the HTTP context is still available to controller methods as the <code>HttpContext</code> property, which now gets automatically injected post-construction.</p>
+<h3 id="no-need-to-return-bool">No need to return <code>bool</code></h3>
+<p>Another fundamental change is that <em>web API controller methods do <strong>NOT</strong> need a <code>bool</code> or <code>Task&lt;bool&gt;</code> return type</em>.</p>
+<p>When a <code>void</code> controller method returns (or the <code>Task</code> returned by a controller method completes) a default <code>200 OK</code> response is sent to the client - unless, of course, the method has crafted its own response.</p>
 <p>A response with a status code different from <code>200 OK</code> may be generated by throwing a HTTP exception (e.g. <code>throw HttpException.Unauthorized();</code>, <code>throw HttpException.Redirect(&quot;/&quot;);</code>, etc. - find them all <a href="https://github.com/unosquare/embedio/blob/master/src/EmbedIO/HttpException-Shortcuts.cs">here</a>).</p>
-<p>If a controller method returns a value or a <code>Task&lt;TResult&gt;</code>, the result is serialized and sent as response body.</p>
+<p>When a controller method generates a result, either by returning a value or when a returned <code>Task&lt;&gt;</code> completes, the result gets serialized and sent to the client. <em>You don&#39;t need to generate your JSON any longer</em>, just return the result and <code>WebApiModule</code> will take care of serialization. The default serialization callback used by <code>WebApiModule</code> leverages <code>Swan.Json</code>, but it&#39;s easy to write a serialization callback: it&#39;s just a method that takes an <code>IHttpContext</code> and an <code>object</code> and returns a <code>Task</code>. You can find the method signature defined as <code>ResponseSerializationCallback</code>.</p>
+<p>For an example of how a web API controller changes when ported from EmbedIO v2.x to v3.0, you can check the <code>PeopleController</code> class from the sample project: <a href="https://github.com/unosquare/embedio/blob/v2.X/src/Unosquare.Labs.EmbedIO.Samples/PeopleController.cs">here is the 2.x version</a> and <a href="https://github.com/unosquare/embedio/blob/master/src/EmbedIO.Samples/PeopleController.cs">here is the 3.0 version</a>.</p>
 <p><strong>BEWARE:</strong> Existing controller methods returning <code>bool</code> <em>will generate JSON responses</em> containing their serialized return value, as JSON is the default response serializer for web API modules.</p>
-<h3 id="serving-files">Serving files</h3>
+<h2 id="serving-files">Serving files</h2>
 <p>No more <code>StaticFilesModule</code> and <code>ResourceFilesModule</code>: the new <code>FileModule</code> (in namespace <code>EmbedIO.Files</code>, of course) uses an <code>IFileProvider</code> interface to abstract the file system and provides the same level of functionality (compression, caching, support for range requests) regardless of the underlying storage. File providers are available for static files, embedded resources, and <em>(new!)</em> ZIP files.</p>
-<h3 id="fallback-and-quick-actions">Fallback and &quot;quick&quot; actions</h3>
+<h2 id="fallback-and-quick-actions">Fallback and &quot;quick&quot; actions</h2>
 <p><code>FallbackModule</code> functionality has been split between <code>ActionModule</code> and <code>RedirectModule</code>. As you&#39;ve probably guessed, their namespace is <code>EmbedIO.Actions</code>.</p>
-<h3 id="unit-testing-support">Unit testing support</h3>
+<h2 id="unit-testing-support">Unit testing support</h2>
 <p>Support types for unit testing have been moved to their own assembly <code>EmbedIO.Testing.dll</code>.</p>
 </article>
           </div>
