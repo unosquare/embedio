@@ -6,7 +6,6 @@ using EmbedIO.Routing;
 using EmbedIO.Utilities;
 using EmbedIO.WebApi;
 using Unosquare.Tubular;
-using Unosquare.Tubular.ObjectModel;
 
 namespace EmbedIO.Samples
 {

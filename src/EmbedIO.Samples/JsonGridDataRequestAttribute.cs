@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbedIO.WebApi;
-using Unosquare.Tubular.ObjectModel;
+using Unosquare.Tubular;
 
 namespace EmbedIO.Samples
 {
