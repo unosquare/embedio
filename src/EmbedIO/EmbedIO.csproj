@@ -11,7 +11,7 @@
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
     <DebugType>Full</DebugType>
-    <Version>3.0.6</Version>
+    <Version>3.0.7</Version>
     <Product>EmbedIO</Product>
     <Company>Unosquare</Company>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -21,6 +21,13 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>webserver websocket webapi http</PackageTags>
     <LangVersion>7.3</LangVersion>
+    <Configurations>Debug;Release;Signed</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NugetSigning.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
