@@ -14,6 +14,7 @@ namespace EmbedIO.Net.Internal
         {
             ProtocolVersion = HttpVersion.Version11;
             Headers = context.Response.Headers;
+            Headers.Clear(); // Use only headers mentioned in RFC6455 - scrap all the rest.
             StatusCode = HandshakeStatusCode;
             Reason = HttpListenerResponseHelper.GetStatusDescription(HandshakeStatusCode);
 
