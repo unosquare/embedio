@@ -10,8 +10,7 @@
     <AssemblyName>EmbedIO</AssemblyName>
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
-    <DebugType>Full</DebugType>
-    <Version>3.0.6</Version>
+    <Version>3.0.8</Version>
     <Product>EmbedIO</Product>
     <Company>Unosquare</Company>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -42,7 +41,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Unosquare.Swan.Lite" Version="2.2.3" />
+    <PackageReference Include="Unosquare.Swan.Lite" Version="2.2.5" />
   </ItemGroup>
   
 </Project>
