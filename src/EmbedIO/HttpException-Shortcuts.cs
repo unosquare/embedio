@@ -7,6 +7,19 @@ namespace EmbedIO
     {
         /// <summary>
         /// Returns a new instance of <see cref="HttpException" /> that, when thrown,
+        /// will break the request handling control flow and send a <c>500 InternalServerError</c>
+        /// response to the client.
+        /// </summary>
+        /// <param name="message">A message to include in the response.</param>
+        /// <param name="data">The data object to include in the response.</param>
+        /// <returns>
+        /// A newly-created <see cref="HttpException" />.
+        /// </returns>
+        public static HttpException InternalServerError(string message = null, object data = null)
+            => new HttpException(HttpStatusCode.InternalServerError, message, data);
+        
+        /// <summary>
+        /// Returns a new instance of <see cref="HttpException" /> that, when thrown,
         /// will break the request handling control flow and send a <c>401 Unauthorized</c>
         /// response to the client.
         /// </summary>
