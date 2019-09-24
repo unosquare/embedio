@@ -90,7 +90,7 @@ namespace Unosquare
 {
     using System;
     using EmbedIO;
-    using EmbedIO.Modules;
+    using EmbedIO.WebApi;
 
     class Program
     {
