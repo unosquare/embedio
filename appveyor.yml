@@ -1,6 +1,6 @@
 version: '3.0.{build}'
 image: 
-- Visual Studio 2019
+- Visual Studio 2019 Preview
 - Ubuntu
 notifications:
 - provider: Slack
