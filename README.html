@@ -233,37 +233,41 @@
 <p>Working with WebSocket is pretty simple, you just need to implement the abstract class <code>WebSocketModule</code> and register the module to your Web server as follow:</p>
 <pre><code class="lang-csharp">server..WithModule(new WebSocketChatModule(&quot;/chat&quot;));
 </code></pre><p>And our web sockets server class looks like:</p>
-<pre><code class="lang-csharp">
-/// &lt;summary&gt;
-/// Defines a very simple chat server
-/// &lt;/summary&gt;
-public class WebSocketsChatServer : WebSocketModule
+<pre><code class="lang-csharp">namespace Unosquare
 {
-    public WebSocketsChatServer(string urlPath)
-        : base(urlPath, true)
+    using EmbedIO.WebSockets;
+
+    /// &lt;summary&gt;
+    /// Defines a very simple chat server.
+    /// &lt;/summary&gt;
+    public class WebSocketsChatServer : WebSocketModule
     {
-        // placeholder
+        public WebSocketsChatServer(string urlPath)
+            : base(urlPath, true)
+        {
+            // placeholder
+        }
+
+        /// &lt;inheritdoc /&gt;
+        protected override Task OnMessageReceivedAsync(
+            IWebSocketContext context,
+            byte[] rxBuffer,
+            IWebSocketReceiveResult rxResult)
+            =&gt; SendToOthersAsync(context, Encoding.GetString(rxBuffer));
+
+        /// &lt;inheritdoc /&gt;
+        protected override Task OnClientConnectedAsync(IWebSocketContext context)
+            =&gt; Task.WhenAll(
+                SendAsync(context, &quot;Welcome to the chat room!&quot;),
+                SendToOthersAsync(context, &quot;Someone joined the chat room.&quot;));
+
+        /// &lt;inheritdoc /&gt;
+        protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
+            =&gt; SendToOthersAsync(context, &quot;Someone left the chat room.&quot;);
+
+        private Task SendToOthersAsync(IWebSocketContext context, string payload)
+            =&gt; BroadcastAsync(payload, c =&gt; c != context);
     }
-
-    /// &lt;inheritdoc /&gt;
-    protected override Task OnMessageReceivedAsync(
-        IWebSocketContext context,
-        byte[] rxBuffer,
-        IWebSocketReceiveResult rxResult)
-        =&gt; SendToOthersAsync(context, Encoding.GetString(rxBuffer));
-
-    /// &lt;inheritdoc /&gt;
-    protected override Task OnClientConnectedAsync(IWebSocketContext context)
-        =&gt; Task.WhenAll(
-            SendAsync(context, &quot;Welcome to the chat room!&quot;),
-            SendToOthersAsync(context, &quot;Someone joined the chat room.&quot;));
-
-    /// &lt;inheritdoc /&gt;
-    protected override Task OnClientDisconnectedAsync(IWebSocketContext context)
-        =&gt; SendToOthersAsync(context, &quot;Someone left the chat room.&quot;);
-
-    private Task SendToOthersAsync(IWebSocketContext context, string payload)
-        =&gt; BroadcastAsync(payload, c =&gt; c != context);
 }
 </code></pre><h2 id="support-for-ssl">Support for SSL</h2>
 <p>Both HTTP listeners (Microsoft and Unosquare) can open a web server using SSL. This support is for Windows only (for now) and you need to manually register your certificate or use the <code>WebServerOptions</code> class to initialize a new <code>WebServer</code> instance. This section will provide some examples of how to use SSL but first a brief explanation of how SSL works on Windows.</p>
