@@ -433,7 +433,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.HttpException.html",
-          "hash": "zNKSI0BBUddZ3y07djx24g=="
+          "hash": "xVJwYiT3IIT3nPSXM5wncg=="
         }
       },
       "is_incremental": false,
@@ -493,7 +493,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.HttpNotAcceptableException.html",
-          "hash": "vzcgnFZU6HdJLe9kd2nbPQ=="
+          "hash": "UEyXRH/D0NyxKZOB2pasYg=="
         }
       },
       "is_incremental": false,
@@ -505,7 +505,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.HttpRangeNotSatisfiableException.html",
-          "hash": "rly7pQ0/K0AYMDgpNmyNRw=="
+          "hash": "ZDjbyNQOVJ50XiWoSg70kw=="
         }
       },
       "is_incremental": false,
@@ -517,7 +517,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.HttpRedirectException.html",
-          "hash": "aZYXilM0CN1XwQoKJozrbg=="
+          "hash": "fT1k+g9rQgm4vBIV3D4LyA=="
         }
       },
       "is_incremental": false,

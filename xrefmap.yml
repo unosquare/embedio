@@ -2148,6 +2148,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpException.Forbidden
   nameWithType: HttpException.Forbidden
+- uid: EmbedIO.HttpException.InternalServerError(System.String,System.Object)
+  name: InternalServerError(String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_InternalServerError_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.InternalServerError(System.String,System.Object)
+  fullName: EmbedIO.HttpException.InternalServerError(System.String, System.Object)
+  nameWithType: HttpException.InternalServerError(String, Object)
+- uid: EmbedIO.HttpException.InternalServerError*
+  name: InternalServerError
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_InternalServerError_
+  commentId: Overload:EmbedIO.HttpException.InternalServerError
+  isSpec: "True"
+  fullName: EmbedIO.HttpException.InternalServerError
+  nameWithType: HttpException.InternalServerError
 - uid: EmbedIO.HttpException.MethodNotAllowed(System.String,System.Object)
   name: MethodNotAllowed(String, Object)
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_MethodNotAllowed_System_String_System_Object_
