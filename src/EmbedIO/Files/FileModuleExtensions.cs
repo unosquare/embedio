@@ -45,7 +45,7 @@ namespace EmbedIO.Files
         {
             @this.ContentCaching = value;
             return @this;
-        }
+        }   
 
         /// <summary>
         /// Enables caching of file contents and directory listings on a module.
@@ -64,6 +64,27 @@ namespace EmbedIO.Files
             return @this;
         }
 
+        /// <summary>
+        /// Enables caching of file contents and directory listings on a module.
+        /// </summary>
+        /// <typeparam name="TModule">The type of the module on which this method is called.</typeparam>
+        /// <param name="this">The module on which this method is called.</param>
+        /// <param name="maxFileSizeKb"><see langword="true"/> sets the maximum size of a single cached file in kilobytes;
+        /// <param name="maxSizeKb"><see langword="true"/> sets the maximum total size of cached data in kilobytes;
+        /// <returns><paramref name="this"/> with its <see cref="FileModule.ContentCaching">ContentCaching</see> property
+        /// set to <see langword="true"/>.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
+        /// <seealso cref="FileModule.ContentCaching"/>
+        public static TModule WithContentCaching<TModule>(this TModule @this, int maxFileSizeKb, int maxSizeKb)
+            where TModule : FileModule
+        {
+            @this.ContentCaching = true;
+            @this.MaxFileSizeKb = maxFileSizeKb;
+            @this.MaxSizeKb = maxSizeKb;
+            return @this;
+        }    
+        
         /// <summary>
         /// Disables caching of file contents and directory listings on a module.
         /// </summary>
