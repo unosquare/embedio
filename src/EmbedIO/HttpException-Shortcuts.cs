@@ -7,7 +7,7 @@ namespace EmbedIO
     {
         /// <summary>
         /// Returns a new instance of <see cref="HttpException" /> that, when thrown,
-        /// will break the request handling control flow and send a <c>500 InternalServerError</c>
+        /// will break the request handling control flow and send a <c>500 Internal Server Error</c>
         /// response to the client.
         /// </summary>
         /// <param name="message">A message to include in the response.</param>
