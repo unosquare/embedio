@@ -69,8 +69,8 @@ namespace EmbedIO.Files
         /// </summary>
         /// <typeparam name="TModule">The type of the module on which this method is called.</typeparam>
         /// <param name="this">The module on which this method is called.</param>
-        /// <param name="maxFileSizeKb"><see langword="true"/> sets the maximum size of a single cached file in kilobytes;
-        /// <param name="maxSizeKb"><see langword="true"/> sets the maximum total size of cached data in kilobytes;
+        /// <param name="maxFileSizeKb"><see langword="true"/> sets the maximum size of a single cached file in kilobytes</param>
+        /// <param name="maxSizeKb"><see langword="true"/> sets the maximum total size of cached data in kilobytes</param>
         /// <returns><paramref name="this"/> with its <see cref="FileModule.ContentCaching">ContentCaching</see> property
         /// set to <see langword="true"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
