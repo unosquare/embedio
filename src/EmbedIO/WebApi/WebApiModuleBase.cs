@@ -434,11 +434,9 @@ namespace EmbedIO.WebApi
 
                 // No route parameter has the same name as a handler parameter.
                 // Pass the default for the parameter type.
-                handlerArguments.Add(Expression.Constant(parameter.HasDefaultValue
-                    ? parameter.DefaultValue
-                        : parameterType.IsValueType
-                        ? Activator.CreateInstance(parameterType)
-                        : null));
+                handlerArguments.Add(parameter.HasDefaultValue
+                    ? (Expression)Expression.Constant(parameter.DefaultValue)
+                    : Expression.Default(parameterType));
             }
 
             // Create the controller and initialize its properties
