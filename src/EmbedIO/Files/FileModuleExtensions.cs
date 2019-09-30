@@ -80,8 +80,8 @@ namespace EmbedIO.Files
             where TModule : FileModule
         {
             @this.ContentCaching = true;
-            @this.MaxFileSizeKb = maxFileSizeKb;
-            @this.MaxSizeKb = maxSizeKb;
+            @this.Cache.MaxFileSizeKb = maxFileSizeKb;
+            @this.Cache.MaxSizeKb = maxSizeKb;
             return @this;
         }    
         
