@@ -275,7 +275,7 @@ namespace EmbedIO.Net.Internal
                 if (_position >= len)
                     break;
 
-                string line;
+                string? line;
                 try
                 {
                     line = ReadLine(buffer, _position, len - _position, out used);

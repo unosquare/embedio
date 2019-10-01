@@ -95,7 +95,7 @@ namespace EmbedIO.Files.Internal
             }
 
             // Try to convert existing content, if any.
-            byte[] content;
+            byte[]? content;
             if (_uncompressedContent != null)
             {
                 content = CompressionUtility.ConvertCompression(_uncompressedContent, CompressionMethod.None, compressionMethod);
@@ -117,11 +117,11 @@ namespace EmbedIO.Files.Internal
             return SetContent(compressionMethod, content);
         }
 
-        public byte[] SetContent(CompressionMethod compressionMethod, byte[] content)
+        public byte[]? SetContent(CompressionMethod compressionMethod, byte[]? content)
         {
             // This is the bare minimum locking we need
             // to ensure we don't mess sizes up.
-            byte[] oldContent;
+            byte[]? oldContent;
             lock (this)
             {
                 switch (compressionMethod)
