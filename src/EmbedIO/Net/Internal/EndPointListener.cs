@@ -13,8 +13,8 @@ namespace EmbedIO.Net.Internal
         private readonly IPEndPoint _endpoint;
         private readonly Socket _sock;
         private Dictionary<ListenerPrefix, HttpListener> _prefixes;
-        private List<ListenerPrefix> _unhandled; // unhandled; host = '*'
-        private List<ListenerPrefix> _all; //  all;  host = '+       
+        private List<ListenerPrefix>? _unhandled; // unhandled; host = '*'
+        private List<ListenerPrefix>? _all; //  all;  host = '+       
 
         public EndPointListener(HttpListener listener, IPAddress address, int port, bool secure)
         {
@@ -30,7 +30,7 @@ namespace EmbedIO.Net.Internal
             _sock.Listen(500);
             var args = new SocketAsyncEventArgs { UserToken = this };
             args.Completed += OnAccept;
-            Socket dummy = null;
+            Socket? dummy = null;
             Accept(_sock, args, ref dummy);
             _prefixes = new Dictionary<ListenerPrefix, HttpListener>();
             _unregistered = new Dictionary<HttpConnection, HttpConnection>();
@@ -79,7 +79,7 @@ namespace EmbedIO.Net.Internal
 
         public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
         {
-            List<ListenerPrefix> current;
+            List<ListenerPrefix>? current;
             List<ListenerPrefix> future;
 
             if (prefix.Host == "*")
@@ -132,7 +132,7 @@ namespace EmbedIO.Net.Internal
 
         public void RemovePrefix(ListenerPrefix prefix, HttpListener listener)
         {
-            List<ListenerPrefix> current;
+            List<ListenerPrefix>? current;
             List<ListenerPrefix> future;
 
             if (prefix.Host == "*")
@@ -189,7 +189,7 @@ namespace EmbedIO.Net.Internal
             }
         }
 
-        private static void Accept(Socket socket, SocketAsyncEventArgs e, ref Socket accepted)
+        private static void Accept(Socket socket, SocketAsyncEventArgs e, ref Socket? accepted)
         {
             e.AcceptSocket = null;
             bool asyn;
@@ -222,7 +222,7 @@ namespace EmbedIO.Net.Internal
 
         private static void ProcessAccept(SocketAsyncEventArgs args)
         {
-            Socket accepted = null;
+            Socket? accepted = null;
             if (args.SocketError == SocketError.Success)
                 accepted = args.AcceptSocket;
 
@@ -253,18 +253,18 @@ namespace EmbedIO.Net.Internal
                 epl._unregistered[conn] = conn;
             }
 
-            var waitTask = conn.BeginReadRequest();
+            _ = conn.BeginReadRequest();
         }
 
         private static void OnAccept(object sender, SocketAsyncEventArgs e) => ProcessAccept(e);
 
-        private static HttpListener MatchFromList(string path, List<ListenerPrefix> list, out ListenerPrefix prefix)
+        private static HttpListener? MatchFromList(string path, List<ListenerPrefix>? list, out ListenerPrefix? prefix)
         {
             prefix = null;
             if (list == null)
                 return null;
 
-            HttpListener bestMatch = null;
+            HttpListener? bestMatch = null;
             var bestLength = -1;
 
             foreach (var p in list)
@@ -309,7 +309,7 @@ namespace EmbedIO.Net.Internal
             return false;
         }
 
-        private HttpListener SearchListener(Uri uri, out ListenerPrefix prefix)
+        private HttpListener? SearchListener(Uri uri, out ListenerPrefix? prefix)
         {
             prefix = null;
             if (uri == null)
@@ -320,7 +320,7 @@ namespace EmbedIO.Net.Internal
             var path = WebUtility.UrlDecode(uri.AbsolutePath);
             var pathSlash = path[path.Length - 1] == '/' ? path : path + "/";
 
-            HttpListener bestMatch = null;
+            HttpListener? bestMatch = null;
             var bestLength = -1;
 
             if (!string.IsNullOrEmpty(host))
