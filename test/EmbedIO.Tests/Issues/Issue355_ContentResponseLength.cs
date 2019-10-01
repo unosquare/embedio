@@ -22,7 +22,7 @@ namespace EmbedIO.Tests.Issues
                 await context.Response.OutputStream.WriteAsync(ok, 0, ok.Length);
             });
 
-            server.RunAsync();
+            _ = server.RunAsync();
 
             using var client = new HttpClient();
             using var response = await client.GetAsync(DefaultUrl).ConfigureAwait(false);
@@ -44,7 +44,7 @@ namespace EmbedIO.Tests.Issues
                 await context.Response.OutputStream.WriteAsync(ok, 0, ok.Length);
             });
 
-            server.RunAsync();
+            _ = server.RunAsync();
 
             using var client = new HttpClient();
             using var response = await client.GetAsync("http://localhost:1234/").ConfigureAwait(false);

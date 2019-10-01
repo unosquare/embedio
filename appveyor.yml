@@ -36,12 +36,12 @@ before_build:
         $command | netsh
 build_script:
 - cmd: msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.sln
-- cmd: | 
-      cd src/EmbedIO.Forms.Sample/
-      msbuild /t:restore EmbedIO.Forms.Sample.sln
-      msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
-      cd ..
-      cd ..
+# - cmd: | 
+#       cd src/EmbedIO.Forms.Sample/
+#       msbuild /t:restore EmbedIO.Forms.Sample.sln
+#       msbuild /verbosity:quiet /p:Configuration=Release EmbedIO.Forms.Sample.sln
+#       cd ..
+#       cd ..
 - cmd: InspectCode --swea -o=inspectcode.xml -s=Error --verbosity=ERROR EmbedIO.sln
 - ps: |
       [xml]$xml = Get-Content inspectcode.xml
