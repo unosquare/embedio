@@ -10,7 +10,7 @@ namespace EmbedIO.Tests
     [TestFixture]
     public class FluentTest
     {
-        private readonly WebServer _nullWebServer = null;
+        private readonly WebServer? _nullWebServer = null;
         private string _rootPath;
         private string _webServerUrl;
 

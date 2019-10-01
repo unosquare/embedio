@@ -193,11 +193,15 @@ namespace EmbedIO.Net.Internal
         /// <param name="requestCallback">The request callback.</param>
         /// <param name="state">The state.</param>
         /// <returns>An async result.</returns>
-        public IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state)
+        public IAsyncResult? BeginGetClientCertificate(AsyncCallback requestCallback, object state)
         {
             if (_gccDelegate == null)
                 _gccDelegate = GetClientCertificate;
-            return _gccDelegate.BeginInvoke(requestCallback, state);
+            
+            if (_gccDelegate == null)
+                throw new InvalidOperationException();
+
+            return _gccDelegate?.BeginInvoke(requestCallback, state);
         }
 
         /// <summary>
@@ -222,7 +226,7 @@ namespace EmbedIO.Net.Internal
         /// Gets the client certificate.
         /// </summary>
         /// <returns>The client certificate.</returns>
-        public X509Certificate2 GetClientCertificate() => _context.Connection.ClientCertificate;
+        public X509Certificate2? GetClientCertificate() => _context.Connection.ClientCertificate;
 
         internal void SetRequestLine(string req)
         {

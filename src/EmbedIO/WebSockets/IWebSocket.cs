@@ -49,6 +49,6 @@ namespace EmbedIO.WebSockets
         /// <returns>
         /// The task object representing the asynchronous operation.
         /// </returns>
-        Task CloseAsync(CloseStatusCode code, string comment = null, CancellationToken cancellationToken = default);
+        Task CloseAsync(CloseStatusCode code, string? comment = null, CancellationToken cancellationToken = default);
     }
 }

@@ -40,7 +40,7 @@ namespace EmbedIO.WebSockets.Internal
             UnderlyingWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, cancellationToken);
 
         /// <inheritdoc />
-        public Task CloseAsync(CloseStatusCode code, string comment = null, CancellationToken cancellationToken = default)=>
+        public Task CloseAsync(CloseStatusCode code, string? comment = null, CancellationToken cancellationToken = default)=>
             UnderlyingWebSocket.CloseAsync(MapCloseStatus(code), comment ?? string.Empty, cancellationToken);
 
         private void Dispose(bool disposing)
