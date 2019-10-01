@@ -54,7 +54,7 @@ namespace EmbedIO.Net
         /// <value>
         /// The certificate.
         /// </value>
-        internal X509Certificate Certificate { get; }
+        internal X509Certificate? Certificate { get; }
 
         /// <inheritdoc />
         public void Start()
