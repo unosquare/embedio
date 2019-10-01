@@ -124,16 +124,14 @@ namespace EmbedIO.Tests
                     WebServerUrl + TestLocalSessionController.GetCookie);
                 var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
 
-                using (var response = await Client.SendAsync(request))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status OK");
-                    var responseCookies = Client.CookieContainer.GetCookies(uri).Cast<Cookie>();
-                    Assert.IsNotNull(responseCookies, "Cookies are not null");
+                using var response = await Client.SendAsync(request);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status OK");
+                var responseCookies = Client.CookieContainer.GetCookies(uri).Cast<Cookie>();
+                Assert.IsNotNull(responseCookies, "Cookies are not null");
 
-                    Assert.Greater(responseCookies.Count(), 0, "Cookies are not empty");
-                    var cookieName = responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
-                    Assert.AreEqual(TestLocalSessionController.CookieName, cookieName?.Name);
-                }
+                Assert.Greater(responseCookies.Count(), 0, "Cookies are not empty");
+                var cookieName = responseCookies.FirstOrDefault(c => c.Name == TestLocalSessionController.CookieName);
+                Assert.AreEqual(TestLocalSessionController.CookieName, cookieName?.Name);
             }
 
             [Test]

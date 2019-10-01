@@ -100,14 +100,12 @@ namespace EmbedIO.Tests
                 {
                     var url = Resources.GetServerAddress();
 
-                    using (var instance = new WebServer(url))
-                    {
-                        instance.Modules.Add(nameof(ActionModule), new ActionModule(_ => throw new InvalidOperationException("Error")));
+                    using var instance = new WebServer(url);
+                    instance.Modules.Add(nameof(ActionModule), new ActionModule(_ => throw new InvalidOperationException("Error")));
 
-                        var runTask = instance.RunAsync();
-                        var request = new HttpClient();
-                        await request.GetStringAsync(url);
-                    }
+                    var runTask = instance.RunAsync();
+                    var request = new HttpClient();
+                    await request.GetStringAsync(url);
                 });
             }
 
@@ -118,12 +116,10 @@ namespace EmbedIO.Tests
                 {
                     var url = Resources.GetServerAddress();
 
-                    using (var instance = new WebServer(url))
-                    {
-                        var runTask = instance.RunAsync();
-                        var request = new HttpClient();
-                        await request.GetStringAsync(url);
-                    }
+                    using var instance = new WebServer(url);
+                    var runTask = instance.RunAsync();
+                    var request = new HttpClient();
+                    await request.GetStringAsync(url);
                 });
             }
 
@@ -134,63 +130,57 @@ namespace EmbedIO.Tests
             {
                 var url = Resources.GetServerAddress();
 
-                using (var instance = new WebServer(url))
+                using var instance = new WebServer(url);
+                instance.OnPost(ctx =>
                 {
-                    instance.OnPost(ctx =>
+                    var encoding = Encoding.GetEncoding("UTF-8");
+
+                    try
                     {
-                        var encoding = Encoding.GetEncoding("UTF-8");
-
-                        try
-                        {
-                            var encodeValue =
-                                ctx.Request.ContentType.Split(';')
-                                    .FirstOrDefault(x =>
-                                        x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-                                    ?
-                                    .Split('=')
-                                    .Skip(1)
-                                    .FirstOrDefault()?
-                                    .Trim();
-                            encoding = Encoding.GetEncoding(encodeValue ?? throw new InvalidOperationException());
-                        }
-                        catch
-                        {
-                            Assert.Inconclusive("Invalid encoding in system");
-                        }
-
-                        return ctx.SendDataAsync(new EncodeCheck
-                        {
-                            Encoding = encoding.EncodingName,
-                            IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
-                        });
-                    });
-
-                    var runTask = instance.RunAsync();
-
-                    using (var client = new HttpClient())
-                    {
-                        client.DefaultRequestHeaders.Accept
-                            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MimeType.Json));
-
-                        var request = new HttpRequestMessage(HttpMethod.Post, url)
-                        {
-                            Content = new StringContent(
-                                "POST DATA",
-                                Encoding.GetEncoding(encodeName),
-                                MimeType.Json),
-                        };
-
-                        using (var response = await client.SendAsync(request))
-                        {
-                            var data = await response.Content.ReadAsStringAsync();
-                            Assert.IsNotNull(data, "Data is not empty");
-                            var model = Json.Deserialize<EncodeCheck>(data);
-
-                            Assert.IsNotNull(model);
-                            Assert.IsTrue(model.IsValid);
-                        }
+                        var encodeValue =
+                            ctx.Request.ContentType.Split(';')
+                                .FirstOrDefault(x =>
+                                    x.Trim().StartsWith("charset", StringComparison.OrdinalIgnoreCase))
+                                ?
+                                .Split('=')
+                                .Skip(1)
+                                .FirstOrDefault()?
+                                .Trim();
+                        encoding = Encoding.GetEncoding(encodeValue ?? throw new InvalidOperationException());
                     }
-                }
+                    catch
+                    {
+                        Assert.Inconclusive("Invalid encoding in system");
+                    }
+
+                    return ctx.SendDataAsync(new EncodeCheck
+                    {
+                        Encoding = encoding.EncodingName,
+                        IsValid = ctx.Request.ContentEncoding.EncodingName == encoding.EncodingName,
+                    });
+                });
+
+                var runTask = instance.RunAsync();
+
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Accept
+                    .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MimeType.Json));
+
+                var request = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = new StringContent(
+                        "POST DATA",
+                        Encoding.GetEncoding(encodeName),
+                        MimeType.Json),
+                };
+
+                using var response = await client.SendAsync(request);
+                var data = await response.Content.ReadAsStringAsync();
+                Assert.IsNotNull(data, "Data is not empty");
+                var model = Json.Deserialize<EncodeCheck>(data);
+
+                Assert.IsNotNull(model);
+                Assert.IsTrue(model.IsValid);
             }
 
             internal class EncodeCheck

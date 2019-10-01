@@ -30,21 +30,15 @@ namespace EmbedIO.Tests
                 .WithAutoLoadCertificate()
                 .WithMode(HttpListenerMode.EmbedIO);
 
-            using (var webServer = new WebServer(options))
-            {
-                webServer.OnAny(ctx => ctx.SendStringAsync(DefaultMessage, MimeType.PlainText, Encoding.UTF8));
+            using var webServer = new WebServer(options);
+            webServer.OnAny(ctx => ctx.SendStringAsync(DefaultMessage, MimeType.PlainText, Encoding.UTF8));
 
-                var dump = webServer.RunAsync();
+            var dump = webServer.RunAsync();
 
-                using (var httpClientHandler = new HttpClientHandler())
-                {
-                    httpClientHandler.ServerCertificateCustomValidationCallback = ValidateCertificate;
-                    using (var httpClient = new HttpClient(httpClientHandler))
-                    {
-                        Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));
-                    }
-                }
-            }
+            using var httpClientHandler = new HttpClientHandler();
+            httpClientHandler.ServerCertificateCustomValidationCallback = ValidateCertificate;
+            using var httpClient = new HttpClient(httpClientHandler);
+            Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));
         }
 
         [Test]

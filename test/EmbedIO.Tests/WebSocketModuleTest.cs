@@ -77,19 +77,17 @@ namespace EmbedIO.Tests
         {
             var buffer = new ArraySegment<byte>(new byte[8192]);
 
-            using (var ms = new MemoryStream())
+            using var ms = new MemoryStream();
+            System.Net.WebSockets.WebSocketReceiveResult result;
+
+            do
             {
-                System.Net.WebSockets.WebSocketReceiveResult result;
-
-                do
-                {
-                    result = await ws.ReceiveAsync(buffer, default);
-                    ms.Write(buffer.Array, buffer.Offset, result.Count);
-                }
-                while (!result.EndOfMessage);
-
-                return Encoding.UTF8.GetString(ms.ToArray());
+                result = await ws.ReceiveAsync(buffer, default);
+                ms.Write(buffer.Array, buffer.Offset, result.Count);
             }
+            while (!result.EndOfMessage);
+
+            return Encoding.UTF8.GetString(ms.ToArray());
         }
     }
 }
