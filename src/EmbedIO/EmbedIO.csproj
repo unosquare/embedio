@@ -5,7 +5,7 @@
     <Copyright>Copyright © Unosquare 2013-2019</Copyright>
     <AssemblyTitle>EmbedIO Web Server</AssemblyTitle>
     <Authors>Unosquare, and Contributors to EmbedIO</Authors>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>EmbedIO</AssemblyName>
     <PackageId>EmbedIO</PackageId>
@@ -20,6 +20,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>webserver websocket webapi http</PackageTags>
     <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release' And Exists('NugetSigning.pfx')">
