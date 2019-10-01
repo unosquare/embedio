@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Version>3.1.0</Version>
     <AssemblyTitle>EmbedIO Web Server Testing</AssemblyTitle>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
