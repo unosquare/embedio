@@ -18,7 +18,7 @@ namespace EmbedIO.Testing.Internal
 
         public long ContentLength64 { get; set; }
 
-        public string ContentType { get; set; }
+        public string? ContentType { get; set; }
 
         public Stream OutputStream { get; } = new MemoryStream();
 
@@ -32,9 +32,9 @@ namespace EmbedIO.Testing.Internal
 
         public Version ProtocolVersion { get; } = HttpVersion.Version11;
 
-        public byte[] Body { get; private set; }
+        public byte[]? Body { get; private set; }
 
-        public string StatusDescription { get; set; }
+        public string? StatusDescription { get; set; }
         
         internal bool IsClosed { get; private set; }
 
@@ -54,7 +54,7 @@ namespace EmbedIO.Testing.Internal
             GC.SuppressFinalize(this);
         }
 
-        public string GetBodyAsString()
+        public string? GetBodyAsString()
         {
             if (!(OutputStream is MemoryStream ms)) return null;
 

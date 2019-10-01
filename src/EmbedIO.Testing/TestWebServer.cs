@@ -61,16 +61,12 @@ namespace EmbedIO.Testing
             Validate.NotNull(nameof(configure), configure);
             Validate.NotNull(nameof(use), use);
 
-            using (var server = new TestWebServer())
-            {
-                configure(server);
-                using (var cancellationTokenSource = new CancellationTokenSource())
-                {
-                    server.Start(cancellationTokenSource.Token);
-                    await use(server.Client).ConfigureAwait(false);
-                    cancellationTokenSource.Cancel();
-                }
-            }
+            using var server = new TestWebServer();
+            configure(server);
+            using var cancellationTokenSource = new CancellationTokenSource();
+            server.Start(cancellationTokenSource.Token);
+            await use(server.Client).ConfigureAwait(false);
+            cancellationTokenSource.Cancel();
         }
 
         /// <inheritdoc />

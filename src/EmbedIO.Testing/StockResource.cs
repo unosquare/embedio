@@ -59,7 +59,7 @@ namespace EmbedIO.Testing
         /// This parameter is passed uninitialized.</param>
         /// <returns><see langword="true"/> if the specified resource
         /// has been loaded; otherwise, <see langword="false"/>.</returns>
-        public static bool TryOpen(string path, out Stream stream)
+        public static bool TryOpen(string path, out Stream? stream)
         {
             stream = null;
             if (string.IsNullOrEmpty(path))
@@ -98,10 +98,8 @@ namespace EmbedIO.Testing
         /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
         public static long GetLength(string path)
         {
-            using (var stream = Open(path))
-            {
-                return stream.Length;
-            }
+            using var stream = Open(path);
+            return stream.Length;
         }
 
         /// <summary>
@@ -114,16 +112,14 @@ namespace EmbedIO.Testing
         /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
         public static byte[] GetBytes(string path)
         {
-            using (var stream = Open(path))
-            {
-                var length = (int)stream.Length;
-                if (length == 0)
-                    return Array.Empty<byte>();
+            using var stream = Open(path);
+            var length = (int)stream.Length;
+            if (length == 0)
+                return Array.Empty<byte>();
 
-                var buffer = new byte[length];
-                stream.Read(buffer, 0, length);
-                return buffer;
-            }
+            var buffer = new byte[length];
+            stream.Read(buffer, 0, length);
+            return buffer;
         }
 
         /// <summary>
@@ -141,20 +137,18 @@ namespace EmbedIO.Testing
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="path"/> is an empty string.</exception>
         /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
-        public static byte[] GetByteRange(string path, int start, int upperBound)
+        public static byte[]? GetByteRange(string path, int start, int upperBound)
         {
-            using (var stream = Open(path))
-            {
-                var length = (int) stream.Length;
-                if (start >= length || upperBound < start || upperBound >= length)
-                    return null;
+            using var stream = Open(path);
+            var length = (int) stream.Length;
+            if (start >= length || upperBound < start || upperBound >= length)
+                return null;
 
-                var rangeLength = upperBound - start + 1;
-                var buffer = new byte[rangeLength];
-                stream.Position = start;
-                stream.Read(buffer, 0, rangeLength);
-                return buffer;
-            }
+            var rangeLength = upperBound - start + 1;
+            var buffer = new byte[rangeLength];
+            stream.Position = start;
+            stream.Read(buffer, 0, rangeLength);
+            return buffer;
         }
 
         /// <summary>
@@ -168,16 +162,14 @@ namespace EmbedIO.Testing
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="path"/> is an empty string.</exception>
         /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
-        public static string GetText(string path, Encoding encoding = null)
+        public static string GetText(string path, Encoding? encoding = null)
         {
-            using (var stream = Open(path))
-            using (var reader = new StreamReader(stream, encoding ?? Encoding.UTF8, false, WebServer.StreamCopyBufferSize, true))
-            {
-                return reader.ReadToEnd();
-            }
+            using var stream = Open(path);
+            using var reader = new StreamReader(stream, encoding ?? Encoding.UTF8, false, WebServer.StreamCopyBufferSize, true);
+            return reader.ReadToEnd();
         }
 
-        private static string ConvertPath(string path)
+        private static string? ConvertPath(string path)
         {
             if (string.IsNullOrEmpty(path))
                 return null;
