@@ -62,13 +62,11 @@ namespace EmbedIO.Files
             long size;
             try
             {
-                using (var stream = Assembly.GetManifestResourceStream(resourceName))
-                {
-                    if (stream == null || stream == Stream.Null)
-                        return null;
+                using var stream = Assembly.GetManifestResourceStream(resourceName);
+                if (stream == null || stream == Stream.Null)
+                    return null;
 
-                    size = stream.Length;
-                }
+                size = stream.Length;
             }
             catch (FileNotFoundException)
             {

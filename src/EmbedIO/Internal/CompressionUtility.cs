@@ -17,13 +17,13 @@ namespace EmbedIO.Internal
             {
                 case CompressionMethod.Deflate:
                     using (var sourceStream = new MemoryStream(source, false))
-                    using (var decompressionStream = new DeflateStream(sourceStream, CompressionMode.Decompress, true))
-                    using (var targetStream = new MemoryStream())
                     {
+                        using var decompressionStream = new DeflateStream(sourceStream, CompressionMode.Decompress, true);
+                        using var targetStream = new MemoryStream();
                         if (targetMethod == CompressionMethod.Gzip)
                         {
-                            using (var compressionStream = new GZipStream(targetStream, CompressionMode.Compress, true))
-                                decompressionStream.CopyTo(compressionStream);
+                            using var compressionStream = new GZipStream(targetStream, CompressionMode.Compress, true);
+                            decompressionStream.CopyTo(compressionStream);
                         }
                         else
                         {
@@ -35,13 +35,13 @@ namespace EmbedIO.Internal
 
                 case CompressionMethod.Gzip:
                     using (var sourceStream = new MemoryStream(source, false))
-                    using (var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress, true))
-                    using (var targetStream = new MemoryStream())
                     {
+                        using var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress, true);
+                        using var targetStream = new MemoryStream();
                         if (targetMethod == CompressionMethod.Deflate)
                         {
-                            using (var compressionStream = new DeflateStream(targetStream, CompressionMode.Compress, true))
-                                decompressionStream.CopyToAsync(compressionStream);
+                            using var compressionStream = new DeflateStream(targetStream, CompressionMode.Compress, true);
+                            decompressionStream.CopyToAsync(compressionStream);
                         }
                         else
                         {
@@ -53,8 +53,8 @@ namespace EmbedIO.Internal
 
                 default:
                     using (var sourceStream = new MemoryStream(source, false))
-                    using (var targetStream = new MemoryStream())
                     {
+                        using var targetStream = new MemoryStream();
                         switch (targetMethod)
                         {
                             case CompressionMethod.Deflate:

@@ -22,12 +22,10 @@ namespace EmbedIO
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         public static async Task<byte[]> GetRequestBodyAsByteArrayAsync(this IHttpContext @this)
         {
-            using (var buffer = new MemoryStream())
-            using (var stream = @this.OpenRequestStream())
-            {
-                await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, @this.CancellationToken).ConfigureAwait(false);
-                return buffer.ToArray();
-            }
+            using var buffer = new MemoryStream();
+            using var stream = @this.OpenRequestStream();
+            await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, @this.CancellationToken).ConfigureAwait(false);
+            return buffer.ToArray();
         }
 
         /// <summary>
@@ -51,10 +49,8 @@ namespace EmbedIO
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         public static async Task<string> GetRequestBodyAsStringAsync(this IHttpContext @this)
         {
-            using (var reader = @this.OpenRequestText())
-            {
-                return await reader.ReadToEndAsync().ConfigureAwait(false);
-            }
+            using var reader = @this.OpenRequestText();
+            return await reader.ReadToEndAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -101,10 +97,8 @@ namespace EmbedIO
                 NameValueCollection result;
                 try
                 {
-                    using (var reader = @this.OpenRequestText())
-                    {
-                        result = UrlEncodedDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false), false);
-                    }
+                    using var reader = @this.OpenRequestText();
+                    result = UrlEncodedDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false), false);
                 }
                 catch (Exception e)
                 {

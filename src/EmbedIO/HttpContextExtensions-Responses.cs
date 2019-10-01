@@ -65,8 +65,8 @@ namespace EmbedIO
                 @this.Response.ContentEncoding = encoding;
             }
 
-            using (var text = @this.OpenResponseText(encoding))
-                await text.WriteAsync(content).ConfigureAwait(false);
+            using var text = @this.OpenResponseText(encoding);
+            await text.WriteAsync(content).ConfigureAwait(false);
         }
 
         /// <summary>

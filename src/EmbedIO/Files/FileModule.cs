@@ -532,8 +532,8 @@ namespace EmbedIO.Files
                 using (var memoryStream = new MemoryStream())
                 {
                     using (var compressor = new CompressionStream(memoryStream, compressionMethod))
-                    using (var source = Provider.OpenFile(info.Path))
                     {
+                        using var source = Provider.OpenFile(info.Path);
                         await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
                             .ConfigureAwait(false);
                     }
@@ -610,11 +610,9 @@ namespace EmbedIO.Files
                 }
                 else
                 {
-                    using (var compressor = new CompressionStream(context.Response.OutputStream, compressionMethod))
-                    {
-                        await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
-                            .ConfigureAwait(false);
-                    }
+                    using var compressor = new CompressionStream(context.Response.OutputStream, compressionMethod);
+                    await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
+                        .ConfigureAwait(false);
                 }
             }
         }
@@ -627,23 +625,21 @@ namespace EmbedIO.Files
             MappedResourceInfo info,
             CompressionMethod compressionMethod)
         {
-            using (var memoryStream = new MemoryStream())
+            using var memoryStream = new MemoryStream();
+            long uncompressedLength;
+            using (var stream = new CompressionStream(memoryStream, compressionMethod))
             {
-                long uncompressedLength;
-                using (var stream = new CompressionStream(memoryStream, compressionMethod))
-                {
-                    await DirectoryLister.ListDirectoryAsync(
-                        info,
-                        context.Request.Url.AbsolutePath,
-                        Provider.GetDirectoryEntries(info.Path, context),
-                        stream,
-                        context.CancellationToken).ConfigureAwait(false);
+                await DirectoryLister.ListDirectoryAsync(
+                    info,
+                    context.Request.Url.AbsolutePath,
+                    Provider.GetDirectoryEntries(info.Path, context),
+                    stream,
+                    context.CancellationToken).ConfigureAwait(false);
 
-                    uncompressedLength = stream.UncompressedLength;
-                }
-
-                return (memoryStream.ToArray(), uncompressedLength);
+                uncompressedLength = stream.UncompressedLength;
             }
+
+            return (memoryStream.ToArray(), uncompressedLength);
         }
     }
 }

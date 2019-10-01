@@ -158,11 +158,9 @@ namespace EmbedIO.WebSockets.Internal
             if (_readyState != WebSocketState.Open)
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
 
-            using (var stream = new WebSocketStream(data, opcode, Compression))
-            {
-                foreach (var frame in stream.GetFrames())
-                    await Send(frame).ConfigureAwait(false);
-            }
+            using var stream = new WebSocketStream(data, opcode, Compression);
+            foreach (var frame in stream.GetFrames())
+                await Send(frame).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -180,10 +178,8 @@ namespace EmbedIO.WebSockets.Internal
 
                 var buff = new StringBuilder(clientKey, 64).Append(Guid);
 #pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
-                using (var sha1 = SHA1.Create())
-                {
-                    return Convert.ToBase64String(sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString())));
-                }
+                using var sha1 = SHA1.Create();
+                return Convert.ToBase64String(sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString())));
 #pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
             }
 

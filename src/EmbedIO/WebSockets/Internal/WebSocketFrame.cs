@@ -127,40 +127,38 @@ Extended Payload Length: {extPayloadLen}
 
         public byte[] ToArray()
         {
-            using (var buff = new MemoryStream())
+            using var buff = new MemoryStream();
+            var header = (int)Fin;
+
+            header = (header << 1) + (int)Rsv1;
+            header = (header << 1) + (int)Rsv2;
+            header = (header << 1) + (int)Rsv3;
+            header = (header << 4) + (int)Opcode;
+            header = (header << 1) + (int)Mask;
+            header = (header << 7) + PayloadLength;
+            buff.Write(((ushort)header).ToByteArray(Endianness.Big), 0, 2);
+
+            if (PayloadLength > 125)
+                buff.Write(ExtendedPayloadLength, 0, PayloadLength == 126 ? 2 : 8);
+
+            if (Mask == Mask.On)
+                buff.Write(MaskingKey, 0, 4);
+
+            if (PayloadLength > 0)
             {
-                var header = (int)Fin;
-
-                header = (header << 1) + (int)Rsv1;
-                header = (header << 1) + (int)Rsv2;
-                header = (header << 1) + (int)Rsv3;
-                header = (header << 4) + (int)Opcode;
-                header = (header << 1) + (int)Mask;
-                header = (header << 7) + PayloadLength;
-                buff.Write(((ushort)header).ToByteArray(Endianness.Big), 0, 2);
-
-                if (PayloadLength > 125)
-                    buff.Write(ExtendedPayloadLength, 0, PayloadLength == 126 ? 2 : 8);
-
-                if (Mask == Mask.On)
-                    buff.Write(MaskingKey, 0, 4);
-
-                if (PayloadLength > 0)
+                var bytes = PayloadData.ToArray();
+                if (PayloadLength < 127)
                 {
-                    var bytes = PayloadData.ToArray();
-                    if (PayloadLength < 127)
-                    {
-                        buff.Write(bytes, 0, bytes.Length);
-                    }
-                    else
-                    {
-                        using (var input = new MemoryStream(bytes))
-                            input.CopyTo(buff, 1024);
-                    }
+                    buff.Write(bytes, 0, bytes.Length);
                 }
-
-                return buff.ToArray();
+                else
+                {
+                    using var input = new MemoryStream(bytes);
+                    input.CopyTo(buff, 1024);
+                }
             }
+
+            return buff.ToArray();
         }
 
         public override string ToString() => BitConverter.ToString(ToArray());

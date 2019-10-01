@@ -242,31 +242,27 @@ namespace EmbedIO
 
         private X509Certificate2 GetCertificate(string thumbprint = null)
         {
-            using (var store = new X509Store(StoreName, StoreLocation))
-            {
-                store.Open(OpenFlags.ReadOnly);
-                var signingCert = store.Certificates.Find(
-                    X509FindType.FindByThumbprint,
-                    thumbprint ?? _certificateThumbprint, 
-                    false);
-                return signingCert.Count == 0 ? null : signingCert[0];
-            }
+            using var store = new X509Store(StoreName, StoreLocation);
+            store.Open(OpenFlags.ReadOnly);
+            var signingCert = store.Certificates.Find(
+                X509FindType.FindByThumbprint,
+                thumbprint ?? _certificateThumbprint, 
+                false);
+            return signingCert.Count == 0 ? null : signingCert[0];
         }
 
         private bool AddCertificateToStore()
         {
-            using (var store = new X509Store(StoreName, StoreLocation))
+            using var store = new X509Store(StoreName, StoreLocation);
+            try
             {
-                try
-                {
-                    store.Open(OpenFlags.ReadWrite);
-                    store.Add(_certificate);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
+                store.Open(OpenFlags.ReadWrite);
+                store.Add(_certificate);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
