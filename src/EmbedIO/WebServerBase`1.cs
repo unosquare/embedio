@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
-using EmbedIO.Routing;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
 using Swan.Collections;
@@ -31,7 +30,7 @@ namespace EmbedIO
 
         private WebServerState _state = WebServerState.Created;
 
-        private ISessionManager _sessionManager;
+        private ISessionManager? _sessionManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServerBase{TOptions}" /> class.
@@ -82,7 +81,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public event WebServerStateChangedEventHandler StateChanged;
+        public event WebServerStateChangedEventHandler? StateChanged;
 
         /// <inheritdoc />
         public IComponentCollection<IWebModule> Modules => _modules;
@@ -127,7 +126,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public ISessionManager SessionManager
+        public ISessionManager? SessionManager
         {
             get => _sessionManager;
             set

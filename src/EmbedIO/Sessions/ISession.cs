@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Swan.Collections;
 
 namespace EmbedIO.Sessions
 {

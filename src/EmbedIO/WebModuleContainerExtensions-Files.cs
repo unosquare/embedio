@@ -2,7 +2,6 @@
 using System.IO;
 using System.Reflection;
 using EmbedIO.Files;
-using Swan;
 using Swan.Collections;
 
 namespace EmbedIO

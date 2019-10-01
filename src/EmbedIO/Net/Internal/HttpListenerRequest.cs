@@ -197,9 +197,6 @@ namespace EmbedIO.Net.Internal
         {
             if (_gccDelegate == null)
                 _gccDelegate = GetClientCertificate;
-            
-            if (_gccDelegate == null)
-                throw new InvalidOperationException();
 
             return _gccDelegate?.BeginInvoke(requestCallback, state);
         }
