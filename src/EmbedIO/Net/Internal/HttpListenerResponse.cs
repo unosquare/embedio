@@ -17,10 +17,10 @@ namespace EmbedIO.Net.Internal
         private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
         private readonly HttpListenerContext _context;
         private bool _disposed;
-        private string _contentType;
-        private CookieList _cookies;
+        private string? _contentType;
+        private CookieList? _cookies;
         private bool _keepAlive = true;
-        private ResponseStream _outputStream;
+        private ResponseStream? _outputStream;
         private int _statusCode = 200;
         private bool _chunked;
 
@@ -53,7 +53,7 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public string ContentType
+        public string? ContentType
         {
             get => _contentType;
 
@@ -93,8 +93,7 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public Stream OutputStream =>
-            _outputStream ?? (_outputStream = _context.Connection.GetResponseStream());
+        public Stream OutputStream => _outputStream ??= _context.Connection.GetResponseStream();
 
         /// <inheritdoc />
         public Version ProtocolVersion { get; } = HttpVersion.Version11;
@@ -152,7 +151,7 @@ namespace EmbedIO.Net.Internal
 
         internal CookieList CookieCollection
         {
-            get => _cookies ?? (_cookies = new CookieList());
+            get => _cookies ??= new CookieList();
             set => _cookies = value;
         }
 

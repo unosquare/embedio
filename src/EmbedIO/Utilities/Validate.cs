@@ -15,7 +15,7 @@ namespace EmbedIO.Utilities
         /// <param name="value">The value to validate.</param>
         /// <returns><paramref name="value"/> if not <see langword="null"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-        public static T NotNull<T>(string argumentName, T value)
+        public static T NotNull<T>(string argumentName, T? value)
             where T : class
             => value ?? throw new ArgumentNullException(argumentName);
         
@@ -27,7 +27,7 @@ namespace EmbedIO.Utilities
         /// <returns><paramref name="value"/> if neither <see langword="null"/> nor the empty string.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="value"/> is the empty string.</exception>
-        public static string NotNullOrEmpty(string argumentName, string value)
+        public static string NotNullOrEmpty(string argumentName, string? value)
         {
             if (value == null)
                 throw new ArgumentNullException(argumentName);

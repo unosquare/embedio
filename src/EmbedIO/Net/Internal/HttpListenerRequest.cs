@@ -20,14 +20,14 @@ namespace EmbedIO.Net.Internal
         private static readonly char[] Separators = { ' ' };
 
         private readonly HttpListenerContext _context;
-        private Encoding _contentEncoding;
-        private CookieList _cookies;
-        private Stream _inputStream;
-        private Uri _url;
+        private Encoding? _contentEncoding;
+        private CookieList? _cookies;
+        private Stream? _inputStream;
+        private Uri? _url;
         private bool _kaSet;
         private bool _keepAlive;
 
-        private GccDelegate _gccDelegate;
+        private GccDelegate? _gccDelegate;
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
@@ -42,7 +42,7 @@ namespace EmbedIO.Net.Internal
         /// <value>
         /// The accept types.
         /// </value>
-        public string[] AcceptTypes { get; private set; }
+        public string[]? AcceptTypes { get; private set; }
 
         /// <inheritdoc />
         public Encoding ContentEncoding
@@ -90,7 +90,7 @@ namespace EmbedIO.Net.Internal
         public string ContentType => Headers[HttpHeaderNames.ContentType];
 
         /// <inheritdoc />
-        public ICookieCollection Cookies => _cookies ?? (_cookies = new CookieList());
+        public ICookieCollection Cookies => _cookies ??= new CookieList();
 
         /// <inheritdoc />
         public bool HasEntityBody => ContentLength64 > 0;
@@ -99,15 +99,13 @@ namespace EmbedIO.Net.Internal
         public NameValueCollection Headers { get; }
 
         /// <inheritdoc />
-        public string HttpMethod { get; private set; }
+        public string? HttpMethod { get; private set; }
 
         /// <inheritdoc />
         public HttpVerbs HttpVerb { get; private set; }
 
         /// <inheritdoc />
-        public Stream InputStream => _inputStream ??
-                                     (_inputStream =
-                                         ContentLength64 > 0 ? _context.Connection.GetRequestStream(ContentLength64) : Stream.Null);
+        public Stream InputStream => _inputStream ??= ContentLength64 > 0 ? _context.Connection.GetRequestStream(ContentLength64) : Stream.Null;
 
         /// <inheritdoc />
         public bool IsAuthenticated => false;
@@ -159,7 +157,7 @@ namespace EmbedIO.Net.Internal
         public Version ProtocolVersion { get; private set; }
 
         /// <inheritdoc />
-        public NameValueCollection QueryString { get; private set; }
+        public NameValueCollection? QueryString { get; private set; }
 
         /// <inheritdoc />
         public string RawUrl { get; private set; }
@@ -168,7 +166,7 @@ namespace EmbedIO.Net.Internal
         public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
 
         /// <inheritdoc />
-        public Uri Url => _url;
+        public Uri? Url => _url;
 
         /// <inheritdoc />
         public Uri UrlReferrer { get; private set; }
@@ -400,7 +398,7 @@ namespace EmbedIO.Net.Internal
             .Select(part => Encoding.GetEncoding(GetValue(part)))
             .FirstOrDefault();
 
-        private static string GetValue(string nameAndValue)
+        private static string? GetValue(string nameAndValue)
         {
             var idx = nameAndValue.IndexOf('=');
 
@@ -414,7 +412,7 @@ namespace EmbedIO.Net.Internal
 
             var cookieStrings = val.SplitByAny(';', ',')
                 .Where(x => !string.IsNullOrEmpty(x));
-            Cookie current = null;
+            Cookie? current = null;
             var version = 0;
 
             foreach (var str in cookieStrings)

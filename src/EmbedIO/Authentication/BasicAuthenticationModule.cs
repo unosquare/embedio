@@ -21,7 +21,7 @@ namespace EmbedIO.Authentication
         /// the <see cref="BasicAuthenticationModuleBase.Realm">Realm</see> property will be set equal to
         /// <see cref="IWebModule.BaseRoute">BaseRoute</see>.</para>
         /// </remarks>
-        public BasicAuthenticationModule(string baseRoute, string realm = null)
+        public BasicAuthenticationModule(string baseRoute, string? realm = null)
             : base(baseRoute, realm)
         {
         }

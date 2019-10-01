@@ -63,7 +63,7 @@ namespace EmbedIO
         {
         }
 
-        private WebServerBase(TOptions options, Action<TOptions> configure)
+        private WebServerBase(TOptions options, Action<TOptions>? configure)
         {
             Options = options;
             LogSource = GetType().Name;

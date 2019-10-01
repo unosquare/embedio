@@ -13,7 +13,7 @@ namespace EmbedIO.Files
     /// <seealso cref="IFileProvider" />
     public class FileSystemProvider : IDisposable, IFileProvider
     {
-        private readonly FileSystemWatcher _watcher;
+        private readonly FileSystemWatcher? _watcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSystemProvider"/> class.
@@ -43,7 +43,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public event Action<string> ResourceChanged;
+        public event Action<string>? ResourceChanged;
 
         /// <summary>
         /// Gets the file system path from which files are retrieved.
@@ -73,7 +73,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
             urlPath = urlPath.Substring(1); // Drop the initial slash
             string localPath;

@@ -16,7 +16,7 @@ namespace EmbedIO.Routing
     /// <seealso cref="ConfiguredObject" />
     public abstract class RouteResolverBase<TData> : ConfiguredObject
     {
-        private readonly RouteMatcher _matcher;
+        private readonly RouteMatcher? _matcher;
         private readonly List<(TData data, RouteHandlerCallback handler)> _dataHandlerPairs
             = new List<(TData data, RouteHandlerCallback handler)>();
 

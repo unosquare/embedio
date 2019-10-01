@@ -11,7 +11,7 @@ namespace EmbedIO.Actions
     /// <seealso cref="WebModuleBase" />
     public class RedirectModule : WebModuleBase
     {
-        private readonly Func<IHttpContext, bool> _shouldRedirect;
+        private readonly Func<IHttpContext, bool>? _shouldRedirect;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedirectModule"/> class
@@ -53,12 +53,12 @@ namespace EmbedIO.Actions
         /// <para><paramref name="statusCode"/> is not a redirection (3xx) status code.</para>
         /// </exception>
         /// <seealso cref="WebModuleBase(string)"/>
-        public RedirectModule(string baseRoute, string redirectUrl, Func<IHttpContext, bool> shouldRedirect, HttpStatusCode statusCode = HttpStatusCode.Found)
+        public RedirectModule(string baseRoute, string redirectUrl, Func<IHttpContext, bool>? shouldRedirect, HttpStatusCode statusCode = HttpStatusCode.Found)
             : this(baseRoute, redirectUrl, shouldRedirect, statusCode, true)
         {
         }
 
-        private RedirectModule(string baseRoute, string redirectUrl, Func<IHttpContext, bool> shouldRedirect, HttpStatusCode statusCode, bool useCallback)
+        private RedirectModule(string baseRoute, string redirectUrl, Func<IHttpContext, bool>? shouldRedirect, HttpStatusCode statusCode, bool useCallback)
             : base(baseRoute)
         {
             RedirectUrl = Validate.Url(nameof(redirectUrl), redirectUrl);

@@ -24,7 +24,7 @@ namespace EmbedIO.Net
         public bool IsSynchronized => false;
 
         /// <inheritdoc />
-        public Cookie this[string name]
+        public Cookie? this[string name]
         {
             get
             {
@@ -51,7 +51,7 @@ namespace EmbedIO.Net
         {
             var cookies = new CookieList();
 
-            Cookie cookie = null;
+            Cookie? cookie = null;
             var pairs = SplitCookieHeaderValue(headerValue);
 
             for (var i = 0; i < pairs.Length; i++)
@@ -174,7 +174,7 @@ namespace EmbedIO.Net
             ((IList) this).CopyTo(array, index);
         }
 
-        private static string GetValue(string nameAndValue, bool unquote = false)
+        private static string? GetValue(string nameAndValue, bool unquote = false)
         {
             var idx = nameAndValue.IndexOf('=');
 

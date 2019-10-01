@@ -44,7 +44,7 @@ namespace EmbedIO.Utilities
                 return result;
             }
 
-            void AddKeyValuePair(string key, string value)
+            void AddKeyValuePair(string? key, string value)
             {
                 if (key != null)
                 {

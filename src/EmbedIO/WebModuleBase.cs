@@ -26,9 +26,9 @@ namespace EmbedIO
     /// </summary>
     public abstract class WebModuleBase : ConfiguredObject, IWebModule
     {
-        private ExceptionHandlerCallback _onUnhandledException;
-        private HttpExceptionHandlerCallback _onHttpException;
-        private RouteMatcher _routeMatcher;
+        private ExceptionHandlerCallback? _onUnhandledException;
+        private HttpExceptionHandlerCallback? _onHttpException;
+        private RouteMatcher? _routeMatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
@@ -50,7 +50,7 @@ namespace EmbedIO
 
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        public ExceptionHandlerCallback OnUnhandledException
+        public ExceptionHandlerCallback? OnUnhandledException
         {
             get => _onUnhandledException;
             set
@@ -62,7 +62,7 @@ namespace EmbedIO
 
         /// <inheritdoc />
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        public HttpExceptionHandlerCallback OnHttpException
+        public HttpExceptionHandlerCallback? OnHttpException
         {
             get => _onHttpException;
             set
@@ -86,7 +86,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public RouteMatch MatchUrlPath(string urlPath) => _routeMatcher.Match(urlPath);
+        public RouteMatch? MatchUrlPath(string urlPath) => _routeMatcher?.Match(urlPath);
 
         /// <inheritdoc />
         public async Task HandleRequestAsync(IHttpContext context)

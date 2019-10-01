@@ -123,7 +123,7 @@ namespace EmbedIO.Net.Internal
 
             if (!disposing) return;
 
-            var ms = GetHeaders();
+            using var ms = GetHeaders();
             var chunked = _response.SendChunked;
 
             if (_stream.CanWrite)
@@ -166,7 +166,7 @@ namespace EmbedIO.Net.Internal
 
         private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
 
-        private MemoryStream GetHeaders(bool closing = true)
+        private MemoryStream? GetHeaders(bool closing = true)
         {
             lock (_response.HeadersLock)
                 return _response.HeadersSent ? null : _response.SendHeaders(closing);

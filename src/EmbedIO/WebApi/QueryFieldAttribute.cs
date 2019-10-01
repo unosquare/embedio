@@ -82,7 +82,7 @@ namespace EmbedIO.WebApi
         {
         }
 
-        private QueryFieldAttribute(bool badRequestIfMissing, string fieldName)
+        private QueryFieldAttribute(bool badRequestIfMissing, string? fieldName)
         {
             BadRequestIfMissing = badRequestIfMissing;
             FieldName = fieldName;
@@ -93,7 +93,7 @@ namespace EmbedIO.WebApi
         /// or <see langword="null" /> if the name of the parameter carrying this
         /// attribute is to be used as field name.
         /// </summary>
-        public string FieldName { get; }
+        public string? FieldName { get; }
 
         /// <summary>
         /// <para>Gets or sets a value indicating whether to send a <c>400 Bad Request</c> response
@@ -108,7 +108,7 @@ namespace EmbedIO.WebApi
         /// </summary>
         public bool BadRequestIfMissing { get; }
 
-        Task<string> IRequestDataAttribute<WebApiController, string>.GetRequestDataAsync(
+        Task<string?> IRequestDataAttribute<WebApiController, string>.GetRequestDataAsync(
             WebApiController controller,
             string parameterName)
         {
@@ -134,7 +134,7 @@ namespace EmbedIO.WebApi
             return Task.FromResult(data.GetValues(fieldName) ?? Array.Empty<string>());
         }
 
-        Task<object> IRequestDataAttribute<WebApiController>.GetRequestDataAsync(
+        Task<object?> IRequestDataAttribute<WebApiController>.GetRequestDataAsync(
             WebApiController controller,
             Type type,
             string parameterName)

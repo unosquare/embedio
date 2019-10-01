@@ -20,7 +20,7 @@ namespace EmbedIO.WebSockets.Internal
             _data = data;
         }
 
-        internal PayloadData(ushort code = 1005, string reason = null)
+        internal PayloadData(ushort code = 1005, string? reason = null)
         {
             _code = code;
             _data = code == 1005 ? Array.Empty<byte>() : Append(code, reason);
@@ -52,7 +52,7 @@ namespace EmbedIO.WebSockets.Internal
 
         public override string ToString() => BitConverter.ToString(_data);
 
-        internal static byte[] Append(ushort code, string reason)
+        internal static byte[] Append(ushort code, string? reason)
         {
             var ret = code.ToByteArray(Endianness.Big);
             if (string.IsNullOrEmpty(reason)) return ret;

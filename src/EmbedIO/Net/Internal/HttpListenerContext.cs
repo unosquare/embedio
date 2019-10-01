@@ -50,15 +50,15 @@ namespace EmbedIO.Net.Internal
 
         public IHttpRequest Request { get; }
 
-        public RouteMatch Route { get; set; }
+        public RouteMatch? Route { get; set; }
 
-        public string RequestedPath => Route.SubPath;
+        public string? RequestedPath => Route?.SubPath;
 
         public IHttpResponse Response { get; }
 
-        public IPrincipal User { get; }
+        public IPrincipal? User { get; }
 
-        public ISessionProxy Session { get; set; }
+        public ISessionProxy? Session { get; set; }
 
         public bool SupportCompressedRequests { get; set; }
 
@@ -68,13 +68,13 @@ namespace EmbedIO.Net.Internal
 
         public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
 
-        internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
+        internal HttpListenerRequest? HttpListenerRequest => Request as HttpListenerRequest;
 
-        internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
+        internal HttpListenerResponse? HttpListenerResponse => Response as HttpListenerResponse;
 
-        internal HttpListener Listener { get; set; }
+        internal HttpListener? Listener { get; set; }
 
-        internal string ErrorMessage { get; set; }
+        internal string? ErrorMessage { get; set; }
 
         internal bool HaveError => ErrorMessage != null;
 

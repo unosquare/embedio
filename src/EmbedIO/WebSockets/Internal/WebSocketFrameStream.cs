@@ -16,7 +16,7 @@ namespace EmbedIO.WebSockets.Internal
             _unmask = unmask;
         }
 
-        internal async Task<WebSocketFrame> ReadFrameAsync(WebSocket webSocket)
+        internal async Task<WebSocketFrame?> ReadFrameAsync(WebSocket webSocket)
         {
             if (_stream == null) return null;
 

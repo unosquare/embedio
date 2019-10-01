@@ -34,7 +34,7 @@ namespace EmbedIO
             string baseRoute,
             string fileSystemPath,
             bool isImmutable,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
             => WithStaticFolder(@this, null, baseRoute, fileSystemPath, isImmutable, configure);
 
@@ -62,11 +62,11 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithStaticFolder<TContainer>(
             this TContainer @this,
-            string name,
+            string? name,
             string baseRoute,
             string fileSystemPath,
             bool isImmutable,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseRoute, new FileSystemProvider(fileSystemPath, isImmutable));
@@ -96,7 +96,7 @@ namespace EmbedIO
             string baseRoute,
             Assembly assembly,
             string pathPrefix,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
             => WithEmbeddedResources(@this, null, baseRoute, assembly, pathPrefix, configure);
 
@@ -122,11 +122,11 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithEmbeddedResources<TContainer>(
             this TContainer @this,
-            string name,
+            string? name,
             string baseRoute,
             Assembly assembly,
             string pathPrefix,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseRoute, new ResourceFileProvider(assembly, pathPrefix));
@@ -152,7 +152,7 @@ namespace EmbedIO
             this TContainer @this,
             string baseRoute,
             string zipFilePath,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
             => WithZipFile(@this, null, baseRoute, zipFilePath, configure);
 
@@ -175,10 +175,10 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithZipFile<TContainer>(
             this TContainer @this,
-            string name,
+            string? name,
             string baseRoute,
             string zipFilePath,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseRoute, new ZipFileProvider(zipFilePath));
@@ -204,7 +204,7 @@ namespace EmbedIO
             this TContainer @this,
             string baseRoute,
             Stream zipFileStream,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
             => WithZipFileStream(@this, null, baseRoute, zipFileStream, configure);
 
@@ -227,10 +227,10 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithZipFileStream<TContainer>(
             this TContainer @this,
-            string name,
+            string? name,
             string baseRoute,
             Stream zipFileStream,
-            Action<FileModule> configure = null)
+            Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
         {
             var module = new FileModule(baseRoute, new ZipFileProvider(zipFileStream));

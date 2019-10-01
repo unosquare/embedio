@@ -164,18 +164,10 @@ namespace EmbedIO
 
         private IHttpListener CreateHttpListener()
         {
-            IHttpListener DoCreate()
-            {
-                switch (Options.Mode)
-                {
-                    case HttpListenerMode.Microsoft:
-                        return System.Net.HttpListener.IsSupported
-                            ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener
-                            : new Net.HttpListener(Options.Certificate);
-                    default: // case HttpListenerMode.EmbedIO
-                        return new Net.HttpListener(Options.Certificate);
-                }
-            }
+            IHttpListener DoCreate() => Options.Mode switch {
+                HttpListenerMode.Microsoft => (System.Net.HttpListener.IsSupported ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener : new Net.HttpListener(Options.Certificate)),
+                _ => new Net.HttpListener(Options.Certificate)
+            };
 
             var listener = DoCreate();
             $"Running HTTPListener: {listener.Name}".Info(LogSource);

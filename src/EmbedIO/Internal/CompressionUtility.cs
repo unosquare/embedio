@@ -5,7 +5,7 @@ namespace EmbedIO.Internal
 {
     internal static class CompressionUtility
     {
-        public static byte[] ConvertCompression(byte[] source, CompressionMethod sourceMethod, CompressionMethod targetMethod)
+        public static byte[]? ConvertCompression(byte[] source, CompressionMethod sourceMethod, CompressionMethod targetMethod)
         {
             if (source == null)
                 return null;

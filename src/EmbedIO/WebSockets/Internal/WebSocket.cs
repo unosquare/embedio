@@ -29,11 +29,11 @@ namespace EmbedIO.WebSockets.Internal
         private readonly TimeSpan _waitTime = TimeSpan.FromSeconds(1);
 
         private volatile WebSocketState _readyState;
-        private AutoResetEvent _exitReceiving;
-        private FragmentBuffer _fragmentsBuffer;
+        private AutoResetEvent? _exitReceiving;
+        private FragmentBuffer? _fragmentsBuffer;
         private volatile bool _inMessage;
-        private AutoResetEvent _receivePong;
-        private Stream _stream;
+        private AutoResetEvent? _receivePong;
+        private Stream? _stream;
 
         private WebSocket(HttpConnection connection)
         {
@@ -50,7 +50,7 @@ namespace EmbedIO.WebSockets.Internal
         /// <summary>
         /// Occurs when the <see cref="WebSocket"/> receives a message.
         /// </summary>
-        public event EventHandler<MessageEventArgs> OnMessage;
+        public event EventHandler<MessageEventArgs>? OnMessage;
 
         /// <inheritdoc />
         public WebSocketState State => _readyState;
@@ -70,7 +70,7 @@ namespace EmbedIO.WebSockets.Internal
         /// <inheritdoc />
         public Task CloseAsync(
             CloseStatusCode code = CloseStatusCode.Undefined,
-            string reason = null,
+            string? reason = null,
             CancellationToken cancellationToken = default)
         {
             bool CheckParametersForClose()
@@ -242,7 +242,7 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         private async Task InternalCloseAsync(
-            PayloadData payloadData = null,
+            PayloadData? payloadData = null,
             bool send = true,
             bool receive = true,
             CancellationToken cancellationToken = default)
@@ -282,7 +282,7 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         private async Task CloseHandshakeAsync(
-            byte[] frameAsBytes,
+            byte[]? frameAsBytes,
             bool receive,
             CancellationToken cancellationToken)
         {
@@ -297,7 +297,7 @@ namespace EmbedIO.WebSockets.Internal
                 _exitReceiving?.WaitOne(_waitTime);
         }
 
-        private void Fatal(string message, Exception exception = null)
+        private void Fatal(string message, Exception? exception = null)
             => Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
         private void Fatal(string message, CloseStatusCode code)
@@ -354,7 +354,7 @@ namespace EmbedIO.WebSockets.Internal
         {
             if (frame.IsCompressed)
             {
-                var ms = await frame.PayloadData.ApplicationData.CompressAsync(Compression, false, CancellationToken.None).ConfigureAwait(false);
+                using var ms = await frame.PayloadData.ApplicationData.CompressAsync(Compression, false, CancellationToken.None).ConfigureAwait(false);
 
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame.Opcode, ms.ToArray()));
             }
@@ -400,7 +400,7 @@ namespace EmbedIO.WebSockets.Internal
 
         private void ProcessPongFrame()
         {
-            _receivePong.Set();
+            _receivePong?.Set();
             "Received a pong.".Trace(nameof(ProcessPongFrame));
         }
 

@@ -17,7 +17,7 @@ namespace EmbedIO.Sessions
         private readonly IHttpContext _context;
         private readonly ISessionManager _sessionManager;
 
-        private ISession _session;
+        private ISession? _session;
         private bool _onCloseRegistered;
 
         internal SessionProxy(IHttpContext context, ISessionManager sessionManager)

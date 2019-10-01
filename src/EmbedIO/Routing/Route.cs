@@ -74,28 +74,17 @@ namespace EmbedIO.Routing
 
         // Check the validity of a route by parsing it without storing the results.
         // Returns: ArgumentNullException, ArgumentException, null if OK
-        internal static Exception ValidateInternal(string argumentName, string value, bool isBaseRoute)
-        {
-            switch (ParseInternal(value, isBaseRoute, null))
-            {
-                case ArgumentNullException _:
-                    return new ArgumentNullException(argumentName);
-
-                case FormatException formatException:
-                    return new ArgumentException(formatException.Message, argumentName);
-
-                case Exception exception:
-                    return exception;
-
-                default:
-                    return null; // Unreachable, but the compiler doesn't know.
-            }
-        }
+        internal static Exception? ValidateInternal(string argumentName, string value, bool isBaseRoute) => ParseInternal(value, isBaseRoute, null) switch {
+            ArgumentNullException _ => new ArgumentNullException(argumentName),
+            FormatException formatException => new ArgumentException(formatException.Message, argumentName),
+            Exception exception => exception,
+            _ => null
+        };
 
         // Validate and parse a route, constructing a Regex pattern.
         // setResult will be called at the end with the isBaseRoute flag, parameter names and the constructed pattern.
         // Returns: ArgumentNullException, FormatException, null if OK
-        internal static Exception ParseInternal(string route, bool isBaseRoute, Action<bool, IEnumerable<string>, string> setResult)
+        internal static Exception? ParseInternal(string route, bool isBaseRoute, Action<bool, IEnumerable<string>, string>? setResult)
         {
             if (route == null)
                 return new ArgumentNullException(nameof(route));

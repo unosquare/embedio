@@ -43,7 +43,7 @@ namespace EmbedIO.Net.Internal
                 Path = Path.Substring(0, Path.Length - 1);
         }
 
-        public HttpListener Listener { get; set; }
+        public HttpListener? Listener { get; set; }
 
         public bool Secure { get; }
 

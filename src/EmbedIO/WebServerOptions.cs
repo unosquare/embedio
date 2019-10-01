@@ -23,9 +23,9 @@ namespace EmbedIO
 
         private HttpListenerMode _mode = HttpListenerMode.EmbedIO;
 
-        private X509Certificate2 _certificate;
+        private X509Certificate2? _certificate;
 
-        private string _certificateThumbprint;
+        private string? _certificateThumbprint;
 
         private bool _autoLoadCertificate;
 
@@ -68,7 +68,7 @@ namespace EmbedIO
         /// </summary>
         /// <exception cref="InvalidOperationException">This property is being set,
         /// and this instance's configuration is locked.</exception>
-        public X509Certificate2 Certificate
+        public X509Certificate2? Certificate
         {
             get
             {
@@ -89,7 +89,7 @@ namespace EmbedIO
         /// </summary>
         /// <exception cref="InvalidOperationException">This property is being set,
         /// and this instance's configuration is locked.</exception>
-        public string CertificateThumbprint
+        public string? CertificateThumbprint
         {
             get => _certificateThumbprint;
             set
@@ -198,16 +198,16 @@ namespace EmbedIO
             _urlPrefixes.Add(urlPrefix);
         }
 
-        private X509Certificate2 LoadCertificate()
+        private X509Certificate2? LoadCertificate()
         {
             if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 return null;
 
             if (!string.IsNullOrWhiteSpace(_certificateThumbprint)) return GetCertificate(_certificateThumbprint);
 
-            var netsh = GetNetsh("show");
+            using var netsh = GetNetsh("show");
 
-            string thumbprint = null;
+            string? thumbprint = null;
 
             netsh.ErrorDataReceived += (s, e) =>
             {
@@ -240,7 +240,7 @@ namespace EmbedIO
                 : null;
         }
 
-        private X509Certificate2 GetCertificate(string thumbprint = null)
+        private X509Certificate2? GetCertificate(string? thumbprint = null)
         {
             using var store = new X509Store(StoreName, StoreLocation);
             store.Open(OpenFlags.ReadOnly);
@@ -280,7 +280,7 @@ namespace EmbedIO
                     "The provided certificate cannot be added to the default store, add it manually");
             }
 
-            var netsh = GetNetsh("add", $"certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}");
+            using var netsh = GetNetsh("add", $"certhash={_certificate.Thumbprint} appid={{adaa04bb-8b63-4073-a12f-d6f8c0b4383f}}");
 
             var sb = new StringBuilder();
 

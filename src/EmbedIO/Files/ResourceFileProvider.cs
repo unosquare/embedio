@@ -55,7 +55,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
             var resourceName = PathPrefix + urlPath.Replace('/', '.');
 

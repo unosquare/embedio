@@ -37,7 +37,7 @@ namespace EmbedIO
         /// </summary>
         /// <param name="statusCode">The status code to set on the response.</param>
         /// <param name="message">A message to include in the response as plain text.</param>
-        public HttpException(int statusCode, string message)
+        public HttpException(int statusCode, string? message)
             : base(message)
         {
             StatusCode = statusCode;
@@ -50,7 +50,7 @@ namespace EmbedIO
         /// </summary>
         /// <param name="statusCode">The status code to set on the response.</param>
         /// <param name="message">A message to include in the response as plain text.</param>
-        public HttpException(HttpStatusCode statusCode, string message)
+        public HttpException(HttpStatusCode statusCode, string? message)
             : this((int)statusCode, message)
         {
         }
@@ -62,7 +62,7 @@ namespace EmbedIO
         /// <param name="statusCode">The status code to set on the response.</param>
         /// <param name="message">A message to include in the response as plain text.</param>
         /// <param name="data">The data object to include in the response.</param>
-        public HttpException(int statusCode, string message, object data)
+        public HttpException(int statusCode, string? message, object? data)
             : this(statusCode, message)
         {
             DataObject = data;
@@ -75,7 +75,7 @@ namespace EmbedIO
         /// <param name="statusCode">The status code to set on the response.</param>
         /// <param name="message">A message to include in the response as plain text.</param>
         /// <param name="data">The data object to include in the response.</param>
-        public HttpException(HttpStatusCode statusCode, string message, object data)
+        public HttpException(HttpStatusCode statusCode, string? message, object? data)
             : this((int)statusCode, message, data)
         {
         }
@@ -84,14 +84,14 @@ namespace EmbedIO
         public int StatusCode { get; }
  
         /// <inheritdoc />
-        public object DataObject { get; }
+        public object? DataObject { get; }
 
         /// <inheritdoc />
-        string IHttpException.Message => HttpExceptionMessage;
+        string? IHttpException.Message => HttpExceptionMessage;
 
         // This property is necessary because when an exception with a null Message is thrown
         // the CLR provides a standard message. We want null to remain null in IHttpException.
-        private string HttpExceptionMessage { get; }
+        private string? HttpExceptionMessage { get; }
 
         /// <inheritdoc />
         /// <remarks>

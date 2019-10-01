@@ -29,7 +29,7 @@ namespace EmbedIO
         /// <para>If this parameter is <see langword="null"/> or the empty string, the response's <c>Vary</c> header
         /// is not set.</para>
         /// </param>
-        public HttpNotAcceptableException(string vary)
+        public HttpNotAcceptableException(string? vary)
             : base((int)HttpStatusCode.NotAcceptable)
         {
             Vary = string.IsNullOrEmpty(vary) ? null : vary;
@@ -43,7 +43,7 @@ namespace EmbedIO
         /// <para>If the empty string has been passed to the <see cref="HttpNotAcceptableException(string)"/>
         /// constructor, the value of this property is <see langword="null"/>.</para>
         /// </remarks>
-        public string Vary { get; }
+        public string? Vary { get; }
 
         /// <inheritdoc />
         public override void PrepareResponse(IHttpContext context)

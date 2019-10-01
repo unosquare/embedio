@@ -17,7 +17,7 @@ namespace EmbedIO.Routing
 
         private readonly Regex _regex;
 
-        private RouteMatcher(bool isBaseRoute, string route, string pattern, IReadOnlyList<string> parameterNames)
+        private RouteMatcher(bool isBaseRoute, string route, string? pattern, IReadOnlyList<string> parameterNames)
         {
             IsBaseRoute = isBaseRoute;
             Route = route;
@@ -55,7 +55,7 @@ namespace EmbedIO.Routing
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
         /// <seealso cref="TryParse"/>
         /// <seealso cref="ClearCache"/>
-        public static RouteMatcher Parse(string route, bool isBaseRoute)
+        public static RouteMatcher? Parse(string route, bool isBaseRoute)
         {
             var exception = TryParseInternal(route, isBaseRoute, out var result);
             if (exception != null)
@@ -78,7 +78,7 @@ namespace EmbedIO.Routing
         /// <returns><see langword="true"/> if parsing was successful; otherwise, <see langword="false"/>.</returns>
         /// <seealso cref="Parse"/>
         /// <seealso cref="ClearCache"/>
-        public static bool TryParse(string route, bool isBaseRoute, out RouteMatcher result)
+        public static bool TryParse(string route, bool isBaseRoute, out RouteMatcher? result)
             => TryParseInternal(route, isBaseRoute, out result) == null;
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace EmbedIO.Routing
         /// <param name="path">The URL path to match.</param>
         /// <returns>If the match is successful, a <see cref="RouteMatch"/> object;
         /// otherwise, <see langword="null"/>.</returns>
-        public RouteMatch Match(string path)
+        public RouteMatch? Match(string path)
         {
             if (path == null)
                 return null;
@@ -127,11 +127,11 @@ namespace EmbedIO.Routing
                 IsBaseRoute ? "/" + path.Substring(match.Groups[0].Length) : null);
         }
 
-        private static Exception TryParseInternal(string route, bool isBaseRoute, out RouteMatcher result)
+        private static Exception? TryParseInternal(string route, bool isBaseRoute, out RouteMatcher? result)
         {
             lock (SyncRoot)
             {
-                string pattern = null;
+                string? pattern = null;
                 var parameterNames = new List<string>();
                 var exception = Routing.Route.ParseInternal(route, isBaseRoute, (_, n, p) => {
                     parameterNames.AddRange(n);

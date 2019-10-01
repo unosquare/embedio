@@ -11,8 +11,8 @@ namespace EmbedIO.Files
             private readonly object _syncRoot = new object();
             private readonly Dictionary<string, FileCacheItem> _items = new Dictionary<string, FileCacheItem>(StringComparer.Ordinal);
             private long _totalSize;
-            private string _oldestKey;
-            private string _newestKey;
+            private string? _oldestKey;
+            private string? _newestKey;
 
             public void Clear()
             {

@@ -25,7 +25,7 @@ namespace EmbedIO
         /// <summary>
         /// Gets or sets the route matched by the requested URL path.
         /// </summary>
-        RouteMatch Route { get; set; }
+        new RouteMatch Route { get; set; }
 
         /// <summary>
         /// <para>Gets or sets the session proxy associated with this context.</para>
@@ -71,7 +71,7 @@ namespace EmbedIO
         /// </returns>
         Task<IWebSocketContext> AcceptWebSocketAsync(
             IEnumerable<string> requestedProtocols, 
-            string acceptedProtocol, 
+            string? acceptedProtocol, 
             int receiveBufferSize, 
             TimeSpan keepAliveInterval,
             CancellationToken cancellationToken);

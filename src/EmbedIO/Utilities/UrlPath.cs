@@ -201,7 +201,7 @@ namespace EmbedIO.Utilities
         /// <seealso cref="Normalize"/>
         /// <seealso cref="HasPrefix"/>
         /// <seealso cref="Validate.UrlPath"/>
-        public static string StripPrefix(string urlPath, string baseUrlPath)
+        public static string? StripPrefix(string urlPath, string baseUrlPath)
             => UnsafeStripPrefix(
                 Validate.UrlPath(nameof(urlPath), urlPath, false),
                 Validate.UrlPath(nameof(baseUrlPath), baseUrlPath, true));
@@ -230,7 +230,7 @@ namespace EmbedIO.Utilities
         /// <seealso cref="Normalize"/>
         /// <seealso cref="HasPrefix"/>
         /// <seealso cref="Validate.UrlPath"/>
-        public static string UnsafeStripPrefix(string urlPath, string baseUrlPath)
+        public static string? UnsafeStripPrefix(string urlPath, string baseUrlPath)
         {
             if (!UnsafeHasPrefix(urlPath, baseUrlPath))
                 return null;
@@ -298,7 +298,7 @@ namespace EmbedIO.Utilities
             }
         }
 
-        internal static Exception ValidateInternal(string argumentName, string value)
+        internal static Exception? ValidateInternal(string argumentName, string value)
         {
             if (value == null)
                 return new ArgumentNullException(argumentName);

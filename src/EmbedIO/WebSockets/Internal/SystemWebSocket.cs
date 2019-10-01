@@ -51,28 +51,16 @@ namespace EmbedIO.WebSockets.Internal
             UnderlyingWebSocket.Dispose();
         }
 
-        private WebSocketCloseStatus MapCloseStatus(CloseStatusCode code)
-        {
-            switch (code)
-            {
-                case CloseStatusCode.Normal:
-                    return WebSocketCloseStatus.NormalClosure;
-                case CloseStatusCode.ProtocolError:
-                    return WebSocketCloseStatus.ProtocolError;
-                case CloseStatusCode.InvalidData:
-                case CloseStatusCode.UnsupportedData:
-                    return WebSocketCloseStatus.InvalidPayloadData;
-                case CloseStatusCode.PolicyViolation:
-                    return WebSocketCloseStatus.PolicyViolation;
-                case CloseStatusCode.TooBig:
-                    return WebSocketCloseStatus.MessageTooBig;
-                case CloseStatusCode.MandatoryExtension:
-                    return WebSocketCloseStatus.MandatoryExtension;
-                case CloseStatusCode.ServerError:
-                    return WebSocketCloseStatus.InternalServerError;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(code), code, null);
-            }
-        }
+        private WebSocketCloseStatus MapCloseStatus(CloseStatusCode code) => code switch {
+            CloseStatusCode.Normal => WebSocketCloseStatus.NormalClosure,
+            CloseStatusCode.ProtocolError => WebSocketCloseStatus.ProtocolError,
+            CloseStatusCode.InvalidData => WebSocketCloseStatus.InvalidPayloadData,
+            CloseStatusCode.UnsupportedData => WebSocketCloseStatus.InvalidPayloadData,
+            CloseStatusCode.PolicyViolation => WebSocketCloseStatus.PolicyViolation,
+            CloseStatusCode.TooBig => WebSocketCloseStatus.MessageTooBig,
+            CloseStatusCode.MandatoryExtension => WebSocketCloseStatus.MandatoryExtension,
+            CloseStatusCode.ServerError => WebSocketCloseStatus.InternalServerError,
+            _ => throw new ArgumentOutOfRangeException(nameof(code), code, null)
+        };
     }
 }

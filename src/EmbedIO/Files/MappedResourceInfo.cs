@@ -7,7 +7,7 @@ namespace EmbedIO.Files
     /// </summary>
     public sealed class MappedResourceInfo
     {
-        private MappedResourceInfo(string path, string name, DateTime lastModifiedUtc, long length, string contentType)
+        private MappedResourceInfo(string path, string name, DateTime lastModifiedUtc, long length, string? contentType)
         {
             Path = path;
             Name = name;
@@ -51,7 +51,7 @@ namespace EmbedIO.Files
         /// <para>If <see cref="IsDirectory"/> is <see langword="false"/>, gets a MIME type describing the kind of contents of the file.</para>
         /// <para>If <see cref="IsDirectory"/> is <see langword="true"/>, this property is always <see langword="null"/>.</para>
         /// </summary>
-        public string ContentType { get; }
+        public string? ContentType { get; }
 
         /// <summary>
         /// Creates and returns a new instance of the <see cref="MappedResourceInfo"/> class,

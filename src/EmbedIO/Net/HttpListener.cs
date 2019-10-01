@@ -27,7 +27,7 @@ namespace EmbedIO.Net
         /// Initializes a new instance of the <see cref="HttpListener" /> class.
         /// </summary>
         /// <param name="certificate">The certificate.</param>
-        public HttpListener(X509Certificate certificate =null)
+        public HttpListener(X509Certificate? certificate = null)
         {
             Certificate = certificate;
 

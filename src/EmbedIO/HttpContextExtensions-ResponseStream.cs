@@ -28,15 +28,12 @@ namespace EmbedIO
             @this.Request.TryNegotiateContentEncoding(preferCompression, out var compressionMethod, out var prepareResponse);
             prepareResponse(@this.Response); // The callback will throw HttpNotAcceptableException if negotiationSuccess is false.
             var stream = buffered ? new BufferingResponseStream(@this.Response) : @this.Response.OutputStream;
-            switch (compressionMethod)
-            {
-                case CompressionMethod.Gzip:
-                    return new GZipStream(stream, CompressionMode.Compress);
-                case CompressionMethod.Deflate:
-                    return new DeflateStream(stream, CompressionMode.Compress);
-                default:
-                    return stream;
-            }
+
+            return compressionMethod switch {
+                CompressionMethod.Gzip => new GZipStream(stream, CompressionMode.Compress),
+                CompressionMethod.Deflate => new DeflateStream(stream, CompressionMode.Compress),
+                _ => stream
+            };
         }
 
         /// <summary>
@@ -59,9 +56,9 @@ namespace EmbedIO
         /// <para>This writer MUST be disposed when finished writing.</para>
         /// </returns>
         /// <seealso cref="OpenResponseStream"/>
-        public static TextWriter OpenResponseText(this IHttpContext @this, Encoding encoding = null, bool buffered = false, bool preferCompression = true)
+        public static TextWriter OpenResponseText(this IHttpContext @this, Encoding? encoding = null, bool buffered = false, bool preferCompression = true)
         {
-            encoding = encoding ?? Encoding.UTF8;
+            encoding ??= Encoding.UTF8;
             @this.Response.ContentEncoding = encoding;
             return new StreamWriter(OpenResponseStream(@this, buffered, preferCompression), encoding);
         }

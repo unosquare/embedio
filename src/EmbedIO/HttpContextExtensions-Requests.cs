@@ -90,7 +90,7 @@ namespace EmbedIO
         /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
         /// it will return the same collection instead of trying to parse the request body again.</para>
         /// </remarks>
-        public static async Task<NameValueCollection> GetRequestFormDataAsync(this IHttpContext @this)
+        public static async Task<NameValueCollection?> GetRequestFormDataAsync(this IHttpContext @this)
         {
             if (!@this.Items.TryGetValue(FormDataKey, out var previousResult))
             {
@@ -141,7 +141,7 @@ namespace EmbedIO
         /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
         /// it will return the same collection instead of trying to parse the request body again.</para>
         /// </remarks>
-        public static NameValueCollection GetRequestQueryData(this IHttpContext @this)
+        public static NameValueCollection? GetRequestQueryData(this IHttpContext @this)
         {
             if (!@this.Items.TryGetValue(QueryDataKey, out var previousResult))
             {

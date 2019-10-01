@@ -78,7 +78,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithWebApi<TContainer>(
             this TContainer @this,
-            string name,
+            string? name,
             string baseRoute,
             Action<WebApiModule> configure)
             where TContainer : class, IWebModuleContainer
@@ -114,7 +114,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer WithWebApi<TContainer>(
             this TContainer @this,
-            string name,
+            string? name,
             string baseRoute,
             ResponseSerializerCallback serializer,
             Action<WebApiModule> configure)

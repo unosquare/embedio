@@ -22,13 +22,13 @@ namespace EmbedIO.WebApi
         /// <para>Gets the HTTP context.</para>
         /// <para>This property is automatically initialized upon controller creation.</para>
         /// </summary>
-        public IHttpContext HttpContext { get; internal set; }
+        public IHttpContext? HttpContext { get; internal set; }
 
         /// <summary>
         /// <para>Gets the resolved route.</para>
         /// <para>This property is automatically initialized upon controller creation.</para>
         /// </summary>
-        public RouteMatch Route { get; internal set; }
+        public RouteMatch? Route { get; internal set; }
 
         /// <summary>
         /// Gets the <see cref="CancellationToken" /> used to cancel processing of the request.

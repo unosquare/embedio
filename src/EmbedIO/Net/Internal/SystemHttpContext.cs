@@ -49,15 +49,15 @@ namespace EmbedIO.Net.Internal
 
         public IHttpRequest Request { get; }
 
-        public RouteMatch Route { get; set; }
+        public RouteMatch? Route { get; set; }
 
-        public string RequestedPath => Route.SubPath;
+        public string? RequestedPath => Route?.SubPath;
 
         public IHttpResponse Response { get; }
 
         public IPrincipal User { get; }
 
-        public ISessionProxy Session { get; set; }
+        public ISessionProxy? Session { get; set; }
 
         public bool SupportCompressedRequests { get; set; }
 

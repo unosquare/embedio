@@ -27,7 +27,7 @@
             this QValueList @this,
             bool preferCompression,
             out CompressionMethod compressionMethod,
-            out string compressionMethodName)
+            out string? compressionMethodName)
         {
             if (@this.QValues.Count < 1)
             {

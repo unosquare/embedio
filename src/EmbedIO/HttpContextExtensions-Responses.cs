@@ -96,7 +96,7 @@ namespace EmbedIO
         public static Task SendStandardHtmlAsync(
             this IHttpContext @this,
             int statusCode,
-            Action<TextWriter> writeAdditionalHtml)
+            Action<TextWriter>? writeAdditionalHtml)
         {
             if (!HttpStatusDescription.TryGet(statusCode, out var statusDescription))
                 throw new ArgumentException("Status code has no standard description.", nameof(statusCode));

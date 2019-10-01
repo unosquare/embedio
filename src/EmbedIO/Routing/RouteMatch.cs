@@ -24,7 +24,7 @@ namespace EmbedIO.Routing
 
         private readonly IReadOnlyList<string> _values;
 
-        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values, string subPath)
+        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values, string? subPath)
         {
             Path = path;
             Names = names;
@@ -41,7 +41,7 @@ namespace EmbedIO.Routing
         /// <para>For a base route, gets the part of <see cref="Path"/> that follows the matched route;
         /// for a non-base route, this property is always <see langword="null"/>.</para>
         /// </summary>
-        public string SubPath { get; }
+        public string? SubPath { get; }
 
         /// <summary>
         /// Gets a list of the names of the route's parameters.
@@ -119,7 +119,7 @@ namespace EmbedIO.Routing
         /// calling this method, using either <see cref="Validate.UrlPath"/>
         /// or <see cref="UrlPath.IsValid"/>.</para>
         /// </remarks>
-        public static RouteMatch UnsafeFromBasePath(string baseUrlPath, string urlPath)
+        public static RouteMatch? UnsafeFromBasePath(string baseUrlPath, string urlPath)
         {
             var subPath = UrlPath.UnsafeStripPrefix(urlPath, baseUrlPath);
             return subPath == null ? null : new RouteMatch(urlPath, EmptyStringList, EmptyStringList, "/" + subPath);
@@ -129,7 +129,7 @@ namespace EmbedIO.Routing
         public bool ContainsKey(string key) => Names.Any(n => n == key);
 
         /// <inheritdoc />
-        public bool TryGetValue(string key, out string value)
+        public bool TryGetValue(string key, out string? value)
         {
             var count = Names.Count;
             for (var i = 0; i < count; i++)
