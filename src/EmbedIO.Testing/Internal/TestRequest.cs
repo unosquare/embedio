@@ -20,31 +20,33 @@ namespace EmbedIO.Testing.Internal
             _content = Validate.NotNull(nameof(clientRequest), clientRequest).Content;
 
             var headers = new NameValueCollection();
-
-            foreach (var (key, enumerable) in clientRequest.Headers)
+            foreach (var pair in clientRequest.Headers)
             {
-                var values = enumerable.ToArray();
-
+                var values = pair.Value.ToArray();
                 switch (values.Length)
                 {
                     case 0:
-                        headers.Add(key, string.Empty);
+                        headers.Add(pair.Key, string.Empty);
                         break;
                     case 1:
-                        headers.Add(key, values[0]);
+                        headers.Add(pair.Key, values[0]);
                         break;
                     default:
                         foreach (var value in values)
-                            headers.Add(key, value);
+                            headers.Add(pair.Key, value);
 
                         break;
                 }
 
-                if (key == HttpHeaderNames.Cookie) Cookies = CookieList.Parse(string.Join(",", values));
+                switch (pair.Key)
+                {
+                    case HttpHeaderNames.Cookie:
+                        Cookies = CookieList.Parse(string.Join(",", values));
+                        break;
+                }
             }
 
             Headers = headers;
-
             if (Cookies == null)
                 Cookies = new CookieList();
 
@@ -121,7 +123,7 @@ namespace EmbedIO.Testing.Internal
             if (method == System.Net.Http.HttpMethod.Options)
                 return HttpVerbs.Options;
             
-            if (method == System.Net.Http.HttpMethod.Patch)
+            if (method == AdditionalHttpMethods.Patch)
                 return HttpVerbs.Patch;
 
             if (method == System.Net.Http.HttpMethod.Post)
