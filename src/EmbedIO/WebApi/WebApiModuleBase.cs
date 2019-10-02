@@ -198,7 +198,8 @@ namespace EmbedIO.WebApi
                     nameof(controllerType));
             }
 
-            RegisterControllerTypeCore(controllerType, Expression.New(constructor));
+            if (!TryRegisterControllerTypeCore(controllerType, Expression.New(constructor)))
+                throw new ArgumentException($"Type {controllerType.Name} contains no controller methods.");
         }
 
         /// <summary>
@@ -256,9 +257,12 @@ namespace EmbedIO.WebApi
             if (!controllerType.IsAssignableFrom(factory.Method.ReturnType))
                 throw new ArgumentException("Factory method has an incorrect return type.", nameof(factory));
 
-            RegisterControllerTypeCore(controllerType, Expression.Call(
+            var expression = Expression.Call(
                 factory.Target == null ? null : Expression.Constant(factory.Target),
-                factory.Method));
+                factory.Method);
+
+            if (!TryRegisterControllerTypeCore(controllerType, expression))
+                throw new ArgumentException($"Type {controllerType.Name} contains no controller methods.");
         }
 
         private static int IndexOfRouteParameter(RouteMatcher? matcher, string name)
@@ -430,11 +434,9 @@ namespace EmbedIO.WebApi
 
                 // No route parameter has the same name as a handler parameter.
                 // Pass the default for the parameter type.
-                handlerArguments.Add(Expression.Constant(parameter.HasDefaultValue
-                    ? parameter.DefaultValue
-                        : parameterType.IsValueType
-                        ? Activator.CreateInstance(parameterType)
-                        : null));
+                handlerArguments.Add(parameter.HasDefaultValue
+                    ? (Expression)Expression.Constant(parameter.DefaultValue)
+                    : Expression.Default(parameterType));
             }
 
             // Create the controller and initialize its properties
@@ -556,8 +558,9 @@ namespace EmbedIO.WebApi
             return value;
         }
 
-        private void RegisterControllerTypeCore(Type controllerType, Expression factoryExpression)
+        private bool TryRegisterControllerTypeCore(Type controllerType, Expression factoryExpression)
         {
+            var handlerCount = 0;
             var methods = controllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(m => !m.ContainsGenericParameters);
 
@@ -572,10 +575,15 @@ namespace EmbedIO.WebApi
                 foreach (var attribute in attributes)
                 {
                     AddHandler(attribute.Verb, attribute.Route, CompileHandler(factoryExpression, method, attribute.Route));
+                    handlerCount++;
                 }
             }
 
+            if (handlerCount < 1)
+                return false;
+
             _controllerTypes.Add(controllerType);
+            return true;
         }
 
         private static bool IsGenericTaskType(Type type, out Type? resultType)
