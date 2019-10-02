@@ -37,7 +37,7 @@ namespace EmbedIO.Files
         /// <returns>A provider-specific path identifying a file or directory,
         /// or <see langword="null"/> if this instance cannot provide a resource associated
         /// to <paramref name="urlPath"/>.</returns>
-        MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider);
+        MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider);
 
         /// <summary>
         /// Opens a file for reading.
