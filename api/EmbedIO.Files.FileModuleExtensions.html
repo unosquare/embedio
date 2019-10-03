@@ -565,6 +565,85 @@ and directory listings.</p>
   </div>
   
   
+  <a id="EmbedIO_Files_FileModuleExtensions_WithContentCaching_" data-uid="EmbedIO.Files.FileModuleExtensions.WithContentCaching*"></a>
+  <h4 id="EmbedIO_Files_FileModuleExtensions_WithContentCaching__1___0_System_Int32_System_Int32_" data-uid="EmbedIO.Files.FileModuleExtensions.WithContentCaching``1(``0,System.Int32,System.Int32)">WithContentCaching&lt;TModule&gt;(TModule, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Enables caching of file contents and directory listings on a module.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TModule WithContentCaching&lt;TModule&gt;(this TModule this, int maxFileSizeKb, int maxSizeKb)
+    where TModule : FileModule</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TModule</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The module on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">maxFileSizeKb</span></td>
+        <td><p><span class="xref">true</span> sets the maximum size of a single cached file in kilobytes</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">maxSizeKb</span></td>
+        <td><p><span class="xref">true</span> sets the maximum total size of cached data in kilobytes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TModule</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with its <a class="xref" href="EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_ContentCaching">ContentCaching</a> property
+    set to <span class="xref">true</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TModule</span></td>
+        <td><p>The type of the module on which this method is called.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Files_FileModuleExtensions_WithContentCaching__1___0_System_Int32_System_Int32__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_ContentCaching">ContentCaching</a></div>
+  </div>
+  
+  
   <a id="EmbedIO_Files_FileModuleExtensions_WithDefaultDocument_" data-uid="EmbedIO.Files.FileModuleExtensions.WithDefaultDocument*"></a>
   <h4 id="EmbedIO_Files_FileModuleExtensions_WithDefaultDocument__1___0_System_String_" data-uid="EmbedIO.Files.FileModuleExtensions.WithDefaultDocument``1(``0,System.String)">WithDefaultDocument&lt;TModule&gt;(TModule, String)</h4>
   <div class="markdown level1 summary"><p>Sets the name of the default document served, if it exists, instead of a directory listing

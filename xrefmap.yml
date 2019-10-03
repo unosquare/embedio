@@ -1006,6 +1006,15 @@ references:
   fullName.vb: EmbedIO.Files.FileModuleExtensions.WithContentCaching(Of TModule)(TModule, System.Boolean)
   nameWithType: FileModuleExtensions.WithContentCaching<TModule>(TModule, Boolean)
   nameWithType.vb: FileModuleExtensions.WithContentCaching(Of TModule)(TModule, Boolean)
+- uid: EmbedIO.Files.FileModuleExtensions.WithContentCaching``1(``0,System.Int32,System.Int32)
+  name: WithContentCaching<TModule>(TModule, Int32, Int32)
+  href: api/EmbedIO.Files.FileModuleExtensions.html#EmbedIO_Files_FileModuleExtensions_WithContentCaching__1___0_System_Int32_System_Int32_
+  commentId: M:EmbedIO.Files.FileModuleExtensions.WithContentCaching``1(``0,System.Int32,System.Int32)
+  name.vb: WithContentCaching(Of TModule)(TModule, Int32, Int32)
+  fullName: EmbedIO.Files.FileModuleExtensions.WithContentCaching<TModule>(TModule, System.Int32, System.Int32)
+  fullName.vb: EmbedIO.Files.FileModuleExtensions.WithContentCaching(Of TModule)(TModule, System.Int32, System.Int32)
+  nameWithType: FileModuleExtensions.WithContentCaching<TModule>(TModule, Int32, Int32)
+  nameWithType.vb: FileModuleExtensions.WithContentCaching(Of TModule)(TModule, Int32, Int32)
 - uid: EmbedIO.Files.FileModuleExtensions.WithDefaultDocument*
   name: WithDefaultDocument
   href: api/EmbedIO.Files.FileModuleExtensions.html#EmbedIO_Files_FileModuleExtensions_WithDefaultDocument_
