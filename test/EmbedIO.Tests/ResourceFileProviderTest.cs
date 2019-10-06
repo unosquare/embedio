@@ -37,8 +37,8 @@ namespace EmbedIO.Tests
             var expectedText = StockResource.GetText(urlPath, Encoding.UTF8);
             string actualText;
             using (var stream = _fileProvider.OpenFile(info.Path))
-            using (var reader = new StreamReader(stream, Encoding.UTF8, false, WebServer.StreamCopyBufferSize, true))
             {
+                using var reader = new StreamReader(stream, Encoding.UTF8, false, WebServer.StreamCopyBufferSize, true);
                 actualText = reader.ReadToEnd();
             }
 

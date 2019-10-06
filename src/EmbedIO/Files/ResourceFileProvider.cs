@@ -55,20 +55,18 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
             var resourceName = PathPrefix + urlPath.Replace('/', '.');
 
             long size;
             try
             {
-                using (var stream = Assembly.GetManifestResourceStream(resourceName))
-                {
-                    if (stream == null || stream == Stream.Null)
-                        return null;
+                using var stream = Assembly.GetManifestResourceStream(resourceName);
+                if (stream == null || stream == Stream.Null)
+                    return null;
 
-                    size = stream.Length;
-                }
+                size = stream.Length;
             }
             catch (FileNotFoundException)
             {

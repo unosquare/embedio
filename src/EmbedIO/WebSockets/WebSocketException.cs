@@ -9,18 +9,18 @@ namespace EmbedIO.WebSockets
     public class WebSocketException : Exception
 #pragma warning restore CA1032
     {
-        internal WebSocketException(string message = null) 
+        internal WebSocketException(string? message = null) 
             : this(CloseStatusCode.Abnormal, message)
         {
             // Ignore
         }
         
-        internal WebSocketException(CloseStatusCode code, Exception innerException = null)
+        internal WebSocketException(CloseStatusCode code, Exception? innerException = null)
             : this(code, null, innerException)
         {
         }
 
-        internal WebSocketException(CloseStatusCode code, string message, Exception innerException = null)
+        internal WebSocketException(CloseStatusCode code, string? message, Exception? innerException = null)
             : base(message ?? GetMessage(code), innerException)
         {
             Code = code;
@@ -35,31 +35,17 @@ namespace EmbedIO.WebSockets
         /// </value>
         public CloseStatusCode Code { get; }
 
-        internal static string GetMessage(CloseStatusCode code)
-        {
-            switch (code)
-            {
-                case CloseStatusCode.ProtocolError:
-                    return "A WebSocket protocol error has occurred.";
-                case CloseStatusCode.UnsupportedData:
-                    return "Unsupported data has been received.";
-                case CloseStatusCode.Abnormal:
-                    return "An exception has occurred.";
-                case CloseStatusCode.InvalidData:
-                    return "Invalid data has been received.";
-                case CloseStatusCode.PolicyViolation:
-                    return "A policy violation has occurred.";
-                case CloseStatusCode.TooBig:
-                    return "A too big message has been received.";
-                case CloseStatusCode.MandatoryExtension:
-                    return "WebSocket client didn't receive expected extension(s).";
-                case CloseStatusCode.ServerError:
-                    return "WebSocket server got an internal error.";
-                case CloseStatusCode.TlsHandshakeFailure:
-                    return "An error has occurred during a TLS handshake.";
-                default:
-                    return string.Empty;
-            }
-        }
+        internal static string GetMessage(CloseStatusCode code) => code switch {
+            CloseStatusCode.ProtocolError => "A WebSocket protocol error has occurred.",
+            CloseStatusCode.UnsupportedData => "Unsupported data has been received.",
+            CloseStatusCode.Abnormal => "An exception has occurred.",
+            CloseStatusCode.InvalidData => "Invalid data has been received.",
+            CloseStatusCode.PolicyViolation => "A policy violation has occurred.",
+            CloseStatusCode.TooBig => "A too big message has been received.",
+            CloseStatusCode.MandatoryExtension => "WebSocket client didn't receive expected extension(s).",
+            CloseStatusCode.ServerError => "WebSocket server got an internal error.",
+            CloseStatusCode.TlsHandshakeFailure => "An error has occurred during a TLS handshake.",
+            _ => string.Empty
+        };
     }
 }

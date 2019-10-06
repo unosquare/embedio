@@ -1,5 +1,5 @@
 ﻿using System;
-using EmbedIO.Utilities;
+using Swan.Collections;
 
 namespace EmbedIO
 {
@@ -34,7 +34,7 @@ namespace EmbedIO
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithModule<TContainer>(this TContainer @this, string name, IWebModule module)
+        public static TContainer WithModule<TContainer>(this TContainer @this, string? name, IWebModule module)
             where TContainer : class, IWebModuleContainer
         {
             @this.Modules.Add(name, module);
@@ -53,7 +53,7 @@ namespace EmbedIO
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithModule<TContainer, TWebModule>(this TContainer @this, TWebModule module, Action<TWebModule> configure)
+        public static TContainer WithModule<TContainer, TWebModule>(this TContainer @this, TWebModule module, Action<TWebModule>? configure)
             where TContainer : class, IWebModuleContainer
             where TWebModule : IWebModule
         => WithModule(@this, null, module, configure);
@@ -72,7 +72,7 @@ namespace EmbedIO
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithModule<TContainer, TWebModule>(this TContainer @this, string name, TWebModule module, Action<TWebModule> configure)
+        public static TContainer WithModule<TContainer, TWebModule>(this TContainer @this, string? name, TWebModule module, Action<TWebModule>? configure)
             where TContainer : class, IWebModuleContainer
             where TWebModule : IWebModule
         {

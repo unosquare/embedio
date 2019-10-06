@@ -45,13 +45,13 @@ namespace EmbedIO.Testing.Internal
 
         public RouteMatch Route { get; set; }
 
-        public string RequestedPath => Route.SubPath;
+        public string? RequestedPath => Route?.SubPath;
 
         public IHttpResponse Response => TestResponse;
 
         internal TestResponse TestResponse { get; }
 
-        public IPrincipal User { get; }
+        public IPrincipal? User { get; }
 
         public ISessionProxy Session { get; set; }
 

@@ -26,16 +26,21 @@ namespace EmbedIO.Testing.Internal
             if (!string.IsNullOrEmpty(cookiesFromContainer))
                 serverRequest.Headers.Add(HttpHeaderNames.Cookie, cookiesFromContainer);
 
-            var context = new TestContext(serverRequest);
-            context.CancellationToken = cancellationToken;
-            context.Route = RouteMatch.UnsafeFromRoot(UrlPath.Normalize(serverRequest.Url.AbsolutePath, false));
+            var context = new TestContext(serverRequest)
+            {
+                CancellationToken = cancellationToken,
+                Route = RouteMatch.UnsafeFromRoot(UrlPath.Normalize(serverRequest.Url.AbsolutePath, false))
+
+            };
+
             await _handler.HandleContextAsync(context).ConfigureAwait(false);
             var serverResponse = context.TestResponse;
             var responseCookies = serverResponse.Headers.Get(HttpHeaderNames.SetCookie);
             if (!string.IsNullOrEmpty(responseCookies))
                 CookieContainer.SetCookies(serverRequest.Url, responseCookies);
 
-            var response = new HttpResponseMessage((HttpStatusCode) serverResponse.StatusCode) {
+            var response = new HttpResponseMessage((HttpStatusCode)serverResponse.StatusCode)
+            {
                 RequestMessage = request,
                 Version = serverResponse.ProtocolVersion,
                 ReasonPhrase = serverResponse.StatusDescription,
@@ -57,39 +62,29 @@ namespace EmbedIO.Testing.Internal
             return response;
         }
 
-        private static ResponseHeaderType GetResponseHeaderType(string name)
-        {
-            // Not all headers are created equal in System.Net.Http.
-            // If a header is a "content" header, adding it to a HttpResponseMessage directly
-            // will cause an InvalidOperationException.
-            // The list of known headers with their respective "header types"
-            // is conveniently hidden in an internal class of System.Net.Http,
-            // because nobody outside the .NET team will ever need them, right?
-            // https://github.com/dotnet/corefx/blob/master/src/System.Net.Http/src/System/Net/Http/Headers/KnownHeaders.cs
-            // Here are the "content" headers, extracted on 2019-07-06:
-            switch (name)
-            {
-                // Content-Length is set automatically and shall not be touched
-                case HttpHeaderNames.ContentLength:
-                    return ResponseHeaderType.None;
-
-                // These headers belong to Content
-                case HttpHeaderNames.Allow:
-                case HttpHeaderNames.ContentDisposition:
-                case HttpHeaderNames.ContentEncoding:
-                case HttpHeaderNames.ContentLanguage:
-                case HttpHeaderNames.ContentLocation:
-                case HttpHeaderNames.ContentMD5:
-                case HttpHeaderNames.ContentRange:
-                case HttpHeaderNames.ContentType:
-                case HttpHeaderNames.Expires:
-                case HttpHeaderNames.LastModified:
-                    return ResponseHeaderType.Content;
-
-                // All other headers belong to the response
-                default:
-                    return ResponseHeaderType.Response;
-            }
-        }
+        // Not all headers are created equal in System.Net.Http.
+        // If a header is a "content" header, adding it to a HttpResponseMessage directly
+        // will cause an InvalidOperationException.
+        // The list of known headers with their respective "header types"
+        // is conveniently hidden in an internal class of System.Net.Http,
+        // because nobody outside the .NET team will ever need them, right?
+        // https://github.com/dotnet/corefx/blob/master/src/System.Net.Http/src/System/Net/Http/Headers/KnownHeaders.cs
+        // Here are the "content" headers, extracted on 2019-07-06:
+        private static ResponseHeaderType GetResponseHeaderType(string name) => name switch {
+            // Content-Length is set automatically and shall not be touched
+            HttpHeaderNames.ContentLength => ResponseHeaderType.None,
+            // These headers belong to Content
+            HttpHeaderNames.Allow => ResponseHeaderType.Content,
+            HttpHeaderNames.ContentDisposition => ResponseHeaderType.Content,
+            HttpHeaderNames.ContentEncoding => ResponseHeaderType.Content,
+            HttpHeaderNames.ContentLanguage => ResponseHeaderType.Content,
+            HttpHeaderNames.ContentLocation => ResponseHeaderType.Content,
+            HttpHeaderNames.ContentMD5 => ResponseHeaderType.Content,
+            HttpHeaderNames.ContentRange => ResponseHeaderType.Content,
+            HttpHeaderNames.ContentType => ResponseHeaderType.Content,
+            HttpHeaderNames.Expires => ResponseHeaderType.Content,
+            HttpHeaderNames.LastModified => ResponseHeaderType.Content,
+            _ => ResponseHeaderType.Response
+        };
     }
 }

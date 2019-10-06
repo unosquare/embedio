@@ -53,7 +53,7 @@ namespace EmbedIO.Tests
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode, "Status Code Unauthorized");
         }
 
-        private Task<HttpResponseMessage> MakeRequest(string userName, string password)
+        private Task<HttpResponseMessage> MakeRequest(string? userName, string? password)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl);
 

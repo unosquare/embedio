@@ -85,7 +85,7 @@ namespace EmbedIO.Testing
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
             if (string.IsNullOrEmpty(urlPath))
                 return null;
@@ -99,9 +99,9 @@ namespace EmbedIO.Testing
         }
 
         /// <inheritdoc />
-        public Stream OpenFile(string path)
+        public Stream? OpenFile(string path)
         {
-            var (name, entry) = FindEntry(path);
+            var (_, entry) = FindEntry(path);
             return entry is MockFile file ? new MemoryStream(file.Data, false) : null;
         }
 
@@ -189,24 +189,12 @@ namespace EmbedIO.Testing
             return default;
         }
 
-        private MappedResourceInfo GetResourceInfo(string path, string name, MockDirectoryEntry entry, IMimeTypeProvider mimeTypeProvider)
-        {
-            switch (entry)
-            {
-                case MockFile file:
-                    return MappedResourceInfo.ForFile(
-                        path,
-                        name,
-                        file.LastModifiedUtc,
-                        file.Data.Length,
-                        mimeTypeProvider.GetMimeType(Path.GetExtension(name)));
-                case MockDirectory directory:
-                    return MappedResourceInfo.ForDirectory(string.Empty, name, _root.LastModifiedUtc);
-                default:
-                    return null;
-            }
-        }
-        
+        private MappedResourceInfo? GetResourceInfo(string path, string name, MockDirectoryEntry entry, IMimeTypeProvider mimeTypeProvider) => entry switch {
+            MockFile file => MappedResourceInfo.ForFile(path, name, file.LastModifiedUtc, file.Data.Length, mimeTypeProvider.GetMimeType(Path.GetExtension(name))),
+            MockDirectory _ => MappedResourceInfo.ForDirectory(string.Empty, name, _root.LastModifiedUtc),
+            _ => null
+        };
+
         private static string AppendNameToPath(string path, string name)
             => string.IsNullOrEmpty(path) ? name : $"{path}/{name}";
     }

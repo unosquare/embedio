@@ -12,13 +12,11 @@ namespace EmbedIO.Tests.Issues
                 .WithMode(listenerMode)
                 .WithUrlPrefix("http://*:12345");
 
-            using (var server1 = new WebServer(ConfigureServerOptions))
-            using (var server2 = new WebServer(ConfigureServerOptions))
-            {
-                server1.Start();
-                server2.Start();
-                Assert.AreEqual(WebServerState.Stopped, server2.State);
-            }
+            using var server1 = new WebServer(ConfigureServerOptions);
+            using var server2 = new WebServer(ConfigureServerOptions);
+            server1.Start();
+            server2.Start();
+            Assert.AreEqual(WebServerState.Stopped, server2.State);
         }
     }
 }

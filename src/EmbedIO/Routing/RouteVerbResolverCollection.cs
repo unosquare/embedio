@@ -63,22 +63,13 @@ namespace EmbedIO.Routing
         /// will count as one for each attribute.</para>
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
-        public int AddFrom(object target)
-        {
-            switch (Validate.NotNull(nameof(target), target))
-            {
-                case Type type:
-                    return AddFrom(null, type);
-                case Assembly assembly:
-                    return assembly.GetExportedTypes().Sum(t => AddFrom(null, t));
-                case MethodInfo method:
-                    return method.IsStatic ? Add(null, method) : 0;
-                case Delegate callback:
-                    return Add(callback.Target, callback.Method);
-                default:
-                    return AddFrom(target, target.GetType());
-            }
-        }
+        public int AddFrom(object target) => Validate.NotNull(nameof(target), target) switch {
+            Type type => AddFrom(null, type),
+            Assembly assembly => assembly.GetExportedTypes().Sum(t => AddFrom(null, t)),
+            MethodInfo method => method.IsStatic ? Add(null, method) : 0,
+            Delegate callback => Add(callback.Target, callback.Method),
+            _ => AddFrom(target, target.GetType())
+        };
 
         /// <inheritdoc />
         protected override RouteVerbResolver CreateResolver(string route) => new RouteVerbResolver(route);
@@ -107,7 +98,7 @@ namespace EmbedIO.Routing
         }
 
         // Call Add with all suitable methods of a Type, return sum of results.
-        private int AddFrom(object target, Type type)
+        private int AddFrom(object? target, Type type)
             => type.GetMethods(target == null
                     ? BindingFlags.Public | BindingFlags.Static
                     : BindingFlags.Public | BindingFlags.Instance)
@@ -116,7 +107,7 @@ namespace EmbedIO.Routing
                               && !method.ContainsGenericParameters)
                 .Sum(m => Add(target, m));
 
-        private int Add(object target, MethodInfo method)
+        private int Add(object? target, MethodInfo method)
         {
             if (!IsHandlerCompatibleMethod(method, out var isSynchronous))
                 return 0;

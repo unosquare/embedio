@@ -22,12 +22,10 @@ namespace EmbedIO
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         public static async Task<byte[]> GetRequestBodyAsByteArrayAsync(this IHttpContext @this)
         {
-            using (var buffer = new MemoryStream())
-            using (var stream = @this.OpenRequestStream())
-            {
-                await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, @this.CancellationToken).ConfigureAwait(false);
-                return buffer.ToArray();
-            }
+            using var buffer = new MemoryStream();
+            using var stream = @this.OpenRequestStream();
+            await stream.CopyToAsync(buffer, WebServer.StreamCopyBufferSize, @this.CancellationToken).ConfigureAwait(false);
+            return buffer.ToArray();
         }
 
         /// <summary>
@@ -51,10 +49,8 @@ namespace EmbedIO
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         public static async Task<string> GetRequestBodyAsStringAsync(this IHttpContext @this)
         {
-            using (var reader = @this.OpenRequestText())
-            {
-                return await reader.ReadToEndAsync().ConfigureAwait(false);
-            }
+            using var reader = @this.OpenRequestText();
+            return await reader.ReadToEndAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -94,17 +90,15 @@ namespace EmbedIO
         /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
         /// it will return the same collection instead of trying to parse the request body again.</para>
         /// </remarks>
-        public static async Task<NameValueCollection> GetRequestFormDataAsync(this IHttpContext @this)
+        public static async Task<NameValueCollection?> GetRequestFormDataAsync(this IHttpContext @this)
         {
             if (!@this.Items.TryGetValue(FormDataKey, out var previousResult))
             {
                 NameValueCollection result;
                 try
                 {
-                    using (var reader = @this.OpenRequestText())
-                    {
-                        result = UrlEncodedDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false), false);
-                    }
+                    using var reader = @this.OpenRequestText();
+                    result = UrlEncodedDataParser.Parse(await reader.ReadToEndAsync().ConfigureAwait(false), false);
                 }
                 catch (Exception e)
                 {
@@ -147,7 +141,7 @@ namespace EmbedIO
         /// <para>This method may safely be called more than once for the same <see cref="IHttpContext"/>:
         /// it will return the same collection instead of trying to parse the request body again.</para>
         /// </remarks>
-        public static NameValueCollection GetRequestQueryData(this IHttpContext @this)
+        public static NameValueCollection? GetRequestQueryData(this IHttpContext @this)
         {
             if (!@this.Items.TryGetValue(QueryDataKey, out var previousResult))
             {

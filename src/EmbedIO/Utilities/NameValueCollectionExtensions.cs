@@ -19,21 +19,17 @@ namespace EmbedIO.Utilities
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> associating the collection's keys
         /// with their values.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
-        public static Dictionary<string, object> ToDictionary(this NameValueCollection @this)
+        public static Dictionary<string, object?> ToDictionary(this NameValueCollection @this)
             => @this.Keys.Cast<string>().ToDictionary(key => key, key => {
                 var values = @this.GetValues(key);
                 if (values == null)
                     return null;
 
-                switch (values.Length)
-                {
-                    case 0:
-                        return null;
-                    case 1:
-                        return (object)values[0];
-                    default:
-                        return (object)values;
-                }
+                return values.Length switch {
+                    0 => null,
+                    1 => (object) values[0],
+                    _ => (object) values
+                };
             });
 
         /// <summary>
@@ -104,7 +100,7 @@ namespace EmbedIO.Utilities
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <remarks>White space is trimmed from the start and end of each value before comparison.</remarks>
         /// <seealso cref="Contains(NameValueCollection,string,string)"/>
-        public static bool Contains(this NameValueCollection @this, string name, string value, StringComparison comparisonType)
+        public static bool Contains(this NameValueCollection @this, string name, string? value, StringComparison comparisonType)
         {
             value = value?.Trim();
             return @this[name]?.SplitByComma()

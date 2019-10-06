@@ -16,16 +16,16 @@ namespace EmbedIO.Net.Internal
 
         private readonly Timer _timer;
         private readonly EndPointListener _epl;
-        private Socket _sock;
-        private MemoryStream _ms;
-        private byte[] _buffer;
-        private HttpListenerContext _context;
-        private StringBuilder _currentLine;
-        private RequestStream _iStream;
-        private ResponseStream _oStream;
+        private Socket? _sock;
+        private MemoryStream? _ms;
+        private byte[]? _buffer;
+        private HttpListenerContext? _context;
+        private StringBuilder? _currentLine;
+        private RequestStream? _iStream;
+        private ResponseStream? _oStream;
         private bool _contextBound;
         private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
-        private HttpListener _lastListener;
+        private HttpListener? _lastListener;
         private InputState _inputState = InputState.RequestLine;
         private LineState _lineState = LineState.None;
         private int _position;
@@ -77,9 +77,9 @@ namespace EmbedIO.Net.Internal
 
         public bool IsSecure { get; }
 
-        public ListenerPrefix Prefix { get; set; }
+        public ListenerPrefix? Prefix { get; set; }
 
-        internal X509Certificate2 ClientCertificate { get; }
+        internal X509Certificate2? ClientCertificate { get; }
 
         public void Dispose()
         {
@@ -122,9 +122,7 @@ namespace EmbedIO.Net.Internal
             return _iStream;
         }
 
-        public ResponseStream GetResponseStream() => _oStream ??
-                                                     (_oStream =
-                                                         new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true));
+        public ResponseStream GetResponseStream() => _oStream ??= new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true);
 
         internal void ForceClose() => Close(true);
 
@@ -277,7 +275,7 @@ namespace EmbedIO.Net.Internal
                 if (_position >= len)
                     break;
 
-                string line;
+                string? line;
                 try
                 {
                     line = ReadLine(buffer, _position, len - _position, out used);
@@ -329,7 +327,7 @@ namespace EmbedIO.Net.Internal
             return false;
         }
 
-        private string ReadLine(byte[] buffer, int offset, int len, out int used)
+        private string? ReadLine(byte[] buffer, int offset, int len, out int used)
         {
             if (_currentLine == null)
                 _currentLine = new StringBuilder(128);

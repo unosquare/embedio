@@ -31,13 +31,13 @@ namespace EmbedIO.Files
         private static readonly Stopwatch TimeBase = Stopwatch.StartNew();
 
         private static readonly object DefaultSyncRoot = new object();
-        private static FileCache _defaultInstance;
+        private static FileCache? _defaultInstance;
 
         private readonly ConcurrentDictionary<string, Section> _sections = new ConcurrentDictionary<string, Section>(StringComparer.Ordinal);
         private int _sectionCount; // Because ConcurrentDictionary<,>.Count is locking.
         private int _maxSizeKb = DefaultMaxSizeKb;
         private int _maxFileSizeKb = DefaultMaxFileSizeKb;
-        private PeriodicTask _cleaner;
+        private PeriodicTask? _cleaner;
 
         /// <summary>
         /// Gets the default <see cref="FileCache"/> instance used by <see cref="FileModule"/>.
@@ -106,7 +106,7 @@ namespace EmbedIO.Files
 
             if (Interlocked.Decrement(ref _sectionCount) == 0)
             {
-                _cleaner.Dispose();
+                _cleaner?.Dispose();
                 _cleaner = null;
             }
         }
@@ -156,9 +156,9 @@ namespace EmbedIO.Files
         private long ComputeTotalSize()
             => _sections.Sum(pair => pair.Value.GetTotalSize());
 
-        private Section GetSectionWithLeastRecentItem()
+        private Section? GetSectionWithLeastRecentItem()
         {
-            Section result = null;
+            Section? result = null;
             var earliestTime = long.MaxValue;
             foreach (var pair in _sections)
             {

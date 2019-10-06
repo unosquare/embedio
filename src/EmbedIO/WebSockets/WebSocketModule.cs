@@ -48,7 +48,7 @@ namespace EmbedIO.WebSockets
         private int _maxMessageSize;
         private TimeSpan _keepAliveInterval;
         private Encoding _encoding;
-        private PeriodicTask _connectionWatchdog;
+        private PeriodicTask? _connectionWatchdog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketModule" /> class.
@@ -160,7 +160,7 @@ namespace EmbedIO.WebSockets
                                          .Where(s => s.Length > 0)
                                          .ToArray()
                                   ?? Array.Empty<string>();
-            string acceptedProtocol;
+            string? acceptedProtocol;
             bool acceptConnection;
             if (_protocols.Count > 0)
             {

@@ -38,7 +38,7 @@ namespace EmbedIO
         /// <summary>
         /// Gets or sets the content encoding.
         /// </summary>
-        Encoding ContentEncoding { get; set; }
+        Encoding? ContentEncoding { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [keep alive].

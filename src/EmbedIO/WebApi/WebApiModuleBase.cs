@@ -265,7 +265,7 @@ namespace EmbedIO.WebApi
                 throw new ArgumentException($"Type {controllerType.Name} contains no controller methods.");
         }
 
-        private static int IndexOfRouteParameter(RouteMatcher matcher, string name)
+        private static int IndexOfRouteParameter(RouteMatcher? matcher, string name)
         {
             var names = matcher.ParameterNames;
             for (var i = 0; i < names.Count; i++)
@@ -519,17 +519,13 @@ namespace EmbedIO.WebApi
         private static T AwaitAndCastResult<T>(string parameterName, Task<object> task)
         {
             var result = task.ConfigureAwait(false).GetAwaiter().GetResult();
-            switch (result)
-            {
-                case null when typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null:
-                    throw new InvalidCastException($"Cannot cast null to {typeof(T).FullName} for parameter \"{parameterName}\".");
-                case null:
-                    return default;
-                case T castResult:
-                    return castResult;
-                default:
-                    throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".");
-            }
+            
+            return result switch {
+                null when typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null => throw new InvalidCastException($"Cannot cast null to {typeof(T).FullName} for parameter \"{parameterName}\"."),
+                null => default,
+                T castResult => castResult,
+                _ => throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".")
+            };
         }
 
         private async Task SerializeResultAsync<TResult>(IHttpContext context, Task<TResult> task)
@@ -590,7 +586,7 @@ namespace EmbedIO.WebApi
             return true;
         }
 
-        private static bool IsGenericTaskType(Type type, out Type resultType)
+        private static bool IsGenericTaskType(Type type, out Type? resultType)
         {
             resultType = null;
 

@@ -25,39 +25,31 @@ namespace EmbedIO.WebSockets.Internal
                 case CompressionMethod.Deflate:
                     if (compress)
                     {
-                        using (var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true))
-                        {
-                            await @this.CopyToAsync(compressor, 1024, cancellationToken).ConfigureAwait(false);
-                            await @this.CopyToAsync(compressor).ConfigureAwait(false);
+                        using var compressor = new DeflateStream(targetStream, CompressionMode.Compress, true);
+                        await @this.CopyToAsync(compressor, 1024, cancellationToken).ConfigureAwait(false);
+                        await @this.CopyToAsync(compressor).ConfigureAwait(false);
 
-                            // WebSocket use this
-                            targetStream.Write(LastByte, 0, 1);
-                            targetStream.Position = 0;
-                        }
+                        // WebSocket use this
+                        targetStream.Write(LastByte, 0, 1);
+                        targetStream.Position = 0;
                     }
                     else
                     {
-                        using (var compressor = new DeflateStream(@this, CompressionMode.Decompress))
-                        {
-                            await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
-                        }
+                        using var compressor = new DeflateStream(@this, CompressionMode.Decompress);
+                        await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
                     }
 
                     break;
                 case CompressionMethod.Gzip:
                     if (compress)
                     {
-                        using (var compressor = new GZipStream(targetStream, CompressionMode.Compress, true))
-                        {
-                            await @this.CopyToAsync(compressor).ConfigureAwait(false);
-                        }
+                        using var compressor = new GZipStream(targetStream, CompressionMode.Compress, true);
+                        await @this.CopyToAsync(compressor).ConfigureAwait(false);
                     }
                     else
                     {
-                        using (var compressor = new GZipStream(@this, CompressionMode.Decompress))
-                        {
-                            await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
-                        }
+                        using var compressor = new GZipStream(@this, CompressionMode.Decompress);
+                        await compressor.CopyToAsync(targetStream).ConfigureAwait(false);
                     }
 
                     break;

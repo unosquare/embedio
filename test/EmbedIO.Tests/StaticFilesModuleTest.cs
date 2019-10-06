@@ -74,14 +74,12 @@ namespace EmbedIO.Tests
             {
                 var request = new HttpRequestMessage(HttpMethod.Head, UrlPath.Root);
 
-                using (var response = await Client.SendAsync(request))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
+                using var response = await Client.SendAsync(request);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
 
-                    var html = await response.Content.ReadAsStringAsync();
+                var html = await response.Content.ReadAsStringAsync();
 
-                    Assert.IsEmpty(html, "Content Empty");
-                }
+                Assert.IsEmpty(html, "Content Empty");
             }
 
             [Test]
@@ -91,21 +89,19 @@ namespace EmbedIO.Tests
                 var file = Path.Combine(root, "index.html");
                 File.WriteAllText(file, Resources.Index);
 
-                using (var server = new TestWebServer())
-                {
-                    server
-                        .WithStaticFolder("/", root, false)
-                        .Start();
+                using var server = new TestWebServer();
+                server
+                    .WithStaticFolder("/", root, false)
+                    .Start();
 
-                    var remoteFile = await server.Client.GetStringAsync(UrlPath.Root);
-                    File.WriteAllText(file, Resources.SubIndex);
+                var remoteFile = await server.Client.GetStringAsync(UrlPath.Root);
+                File.WriteAllText(file, Resources.SubIndex);
 
-                    var remoteUpdatedFile = await server.Client.GetStringAsync(UrlPath.Root);
-                    File.WriteAllText(file, nameof(WebServer));
+                var remoteUpdatedFile = await server.Client.GetStringAsync(UrlPath.Root);
+                File.WriteAllText(file, nameof(WebServer));
 
-                    Assert.AreEqual(Resources.Index, remoteFile);
-                    Assert.AreEqual(Resources.SubIndex, remoteUpdatedFile);
-                }
+                Assert.AreEqual(Resources.Index, remoteFile);
+                Assert.AreEqual(Resources.SubIndex, remoteUpdatedFile);
             }
 
             [Test]
@@ -139,18 +135,14 @@ namespace EmbedIO.Tests
                 var request = new HttpRequestMessage(HttpMethod.Get, StaticFolder.WithDataFiles.BigDataFile);
                 request.Headers.Range = new RangeHeaderValue(offset, offset + length - 1);
 
-                using (var response = await Client.SendAsync(request))
-                {
-                    Assert.AreEqual(HttpStatusCode.PartialContent, response.StatusCode, "Responds with 216 Partial Content");
+                using var response = await Client.SendAsync(request);
+                Assert.AreEqual(HttpStatusCode.PartialContent, response.StatusCode, "Responds with 216 Partial Content");
 
-                    using (var ms = new MemoryStream())
-                    {
-                        var responseStream = await response.Content.ReadAsStreamAsync();
-                        responseStream.CopyTo(ms);
-                        var data = ms.ToArray();
-                        Assert.IsTrue(ServedFolder.BigData.Skip(offset).Take(length).SequenceEqual(data), message);
-                    }
-                }
+                using var ms = new MemoryStream();
+                var responseStream = await response.Content.ReadAsStreamAsync();
+                responseStream.CopyTo(ms);
+                var data = ms.ToArray();
+                Assert.IsTrue(ServedFolder.BigData.Skip(offset).Take(length).SequenceEqual(data), message);
             }
 
             [Test]
@@ -158,15 +150,13 @@ namespace EmbedIO.Tests
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, StaticFolder.WithDataFiles.BigDataFile);
 
-                using (var response = await Client.SendAsync(request))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
+                using var response = await Client.SendAsync(request);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
 
-                    var data = await response.Content.ReadAsByteArrayAsync();
+                var data = await response.Content.ReadAsByteArrayAsync();
 
-                    Assert.IsNotNull(data, "Data is not empty");
-                    Assert.IsTrue(ServedFolder.BigData.SequenceEqual(data));
-                }
+                Assert.IsNotNull(data, "Data is not empty");
+                Assert.IsTrue(ServedFolder.BigData.SequenceEqual(data));
             }
 
             [Test]
@@ -191,17 +181,13 @@ namespace EmbedIO.Tests
 
                     request.Headers.Range = new RangeHeaderValue(offset, top);
 
-                    using (var response = await Client.SendAsync(request))
-                    {
-                        Assert.AreEqual(HttpStatusCode.PartialContent, response.StatusCode);
+                    using var response = await Client.SendAsync(request);
+                    Assert.AreEqual(HttpStatusCode.PartialContent, response.StatusCode);
 
-                        using (var ms = new MemoryStream())
-                        {
-                            var stream = await response.Content.ReadAsStreamAsync();
-                            stream.CopyTo(ms);
-                            Buffer.BlockCopy(ms.GetBuffer(), 0, buffer, offset, (int)ms.Length);
-                        }
-                    }
+                    using var ms = new MemoryStream();
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    stream.CopyTo(ms);
+                    Buffer.BlockCopy(ms.GetBuffer(), 0, buffer, offset, (int)ms.Length);
                 }
 
                 Assert.IsTrue(ServedFolder.BigData.SequenceEqual(buffer));
@@ -212,17 +198,13 @@ namespace EmbedIO.Tests
             {
                 var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
 
-                using (var res = await Client.SendAsync(requestHead))
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
-                    request.Headers.Range = new RangeHeaderValue(0, StaticFolder.WithDataFiles.BigDataSize + 10);
+                using var res = await Client.SendAsync(requestHead);
+                var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
+                request.Headers.Range = new RangeHeaderValue(0, StaticFolder.WithDataFiles.BigDataSize + 10);
 
-                    using (var response = await Client.SendAsync(request))
-                    {
-                        Assert.AreEqual(HttpStatusCode.RequestedRangeNotSatisfiable, response.StatusCode);
-                        Assert.AreEqual(StaticFolder.WithDataFiles.BigDataSize, response.Content.Headers.ContentRange.Length);
-                    }
-                }
+                using var response = await Client.SendAsync(request);
+                Assert.AreEqual(HttpStatusCode.RequestedRangeNotSatisfiable, response.StatusCode);
+                Assert.AreEqual(StaticFolder.WithDataFiles.BigDataSize, response.Content.Headers.ContentRange.Length);
             }
         }
 
@@ -237,14 +219,14 @@ namespace EmbedIO.Tests
                 using (var response = await Client.SendAsync(request))
                 {
                     Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
-                    using (var memoryStream = new MemoryStream())
+                    using var memoryStream = new MemoryStream();
+                    using (var compressor = new GZipStream(memoryStream, CompressionMode.Compress))
                     {
-                        using (var compressor = new GZipStream(memoryStream, CompressionMode.Compress))
-                        using (var responseStream = await response.Content.ReadAsStreamAsync())
-                            responseStream.CopyTo(compressor);
-
-                        compressedBytes = memoryStream.ToArray();
+                        using var responseStream = await response.Content.ReadAsStreamAsync();
+                        responseStream.CopyTo(compressor);
                     }
+
+                    compressedBytes = memoryStream.ToArray();
                 }
 
                 request = new HttpRequestMessage(HttpMethod.Get, UrlPath.Root);

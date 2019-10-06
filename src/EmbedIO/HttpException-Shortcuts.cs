@@ -15,7 +15,7 @@ namespace EmbedIO
         /// <returns>
         /// A newly-created <see cref="HttpException" />.
         /// </returns>
-        public static HttpException InternalServerError(string message = null, object data = null)
+        public static HttpException InternalServerError(string? message = null, object? data = null)
             => new HttpException(HttpStatusCode.InternalServerError, message, data);
         
         /// <summary>
@@ -28,7 +28,7 @@ namespace EmbedIO
         /// <returns>
         /// A newly-created <see cref="HttpException" />.
         /// </returns>
-        public static HttpException Unauthorized(string message = null, object data = null)
+        public static HttpException Unauthorized(string? message = null, object? data = null)
             => new HttpException(HttpStatusCode.Unauthorized, message, data);
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException Forbidden(string message = null, object data = null)
+        public static HttpException Forbidden(string? message = null, object? data = null)
             => new HttpException(HttpStatusCode.Forbidden, message, data);
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException BadRequest(string message = null, object data = null)
+        public static HttpException BadRequest(string? message = null, object? data = null)
             => new HttpException(HttpStatusCode.BadRequest, message, data);
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException NotFound(string message = null, object data = null)
+        public static HttpException NotFound(string? message = null, object? data = null)
             => new HttpException(HttpStatusCode.NotFound, message, data);
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace EmbedIO
         /// <param name="message">A message to include in the response.</param>
         /// <param name="data">The data object to include in the response.</param>
         /// <returns>A newly-created <see cref="HttpException"/>.</returns>
-        public static HttpException MethodNotAllowed(string message = null, object data = null)
+        public static HttpException MethodNotAllowed(string? message = null, object? data = null)
             => new HttpException(HttpStatusCode.MethodNotAllowed, message, data);
 
         /// <summary>

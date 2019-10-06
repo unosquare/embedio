@@ -14,27 +14,21 @@ namespace EmbedIO.Tests.Issues
 
             var ok = Encoding.UTF8.GetBytes("content");
 
-            using (var server = new WebServer(HttpListenerMode.EmbedIO, DefaultUrl))
+            using var server = new WebServer(HttpListenerMode.EmbedIO, DefaultUrl);
+            server.WithAction("/", HttpVerbs.Get, async context =>
             {
-                server.WithAction("/", HttpVerbs.Get, async context =>
-                {
-                    context.Response.ContentLength64 = ok.Length;
+                context.Response.ContentLength64 = ok.Length;
 
-                    await context.Response.OutputStream.WriteAsync(ok, 0, ok.Length);
-                });
+                await context.Response.OutputStream.WriteAsync(ok, 0, ok.Length);
+            });
 
-                server.RunAsync();
+            _ = server.RunAsync();
 
-                using (var client = new HttpClient())
-                {
-                    using (var response = await client.GetAsync(DefaultUrl).ConfigureAwait(false))
-                    {
-                        var responseArray = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+            using var client = new HttpClient();
+            using var response = await client.GetAsync(DefaultUrl).ConfigureAwait(false);
+            var responseArray = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 
-                        Assert.AreEqual(ok[0], responseArray[0]);
-                    }
-                }
-            }
+            Assert.AreEqual(ok[0], responseArray[0]);
         }
 
         [Test]
@@ -42,27 +36,21 @@ namespace EmbedIO.Tests.Issues
         {
             var ok = Encoding.UTF8.GetBytes("content");
 
-            using (var server = new WebServer(1234))
+            using var server = new WebServer(1234);
+            server.WithAction("/", HttpVerbs.Get, async context =>
             {
-                server.WithAction("/", HttpVerbs.Get, async context =>
-                {
-                    context.Response.Headers[HttpHeaderNames.ContentLength] = ok.Length.ToString();
+                context.Response.Headers[HttpHeaderNames.ContentLength] = ok.Length.ToString();
 
-                    await context.Response.OutputStream.WriteAsync(ok, 0, ok.Length);
-                });
+                await context.Response.OutputStream.WriteAsync(ok, 0, ok.Length);
+            });
 
-                server.RunAsync();
+            _ = server.RunAsync();
 
-                using (var client = new HttpClient())
-                {
-                    using (var response = await client.GetAsync("http://localhost:1234/").ConfigureAwait(false))
-                    {
-                        var responseArray = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+            using var client = new HttpClient();
+            using var response = await client.GetAsync("http://localhost:1234/").ConfigureAwait(false);
+            var responseArray = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 
-                        Assert.AreEqual(ok[0], responseArray[0]);
-                    }
-                }
-            }
+            Assert.AreEqual(ok[0], responseArray[0]);
         }
     }
 }

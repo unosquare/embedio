@@ -29,11 +29,11 @@ namespace EmbedIO.WebSockets.Internal
         private readonly TimeSpan _waitTime = TimeSpan.FromSeconds(1);
 
         private volatile WebSocketState _readyState;
-        private AutoResetEvent _exitReceiving;
-        private FragmentBuffer _fragmentsBuffer;
+        private AutoResetEvent? _exitReceiving;
+        private FragmentBuffer? _fragmentsBuffer;
         private volatile bool _inMessage;
-        private AutoResetEvent _receivePong;
-        private Stream _stream;
+        private AutoResetEvent? _receivePong;
+        private Stream? _stream;
 
         private WebSocket(HttpConnection connection)
         {
@@ -50,7 +50,7 @@ namespace EmbedIO.WebSockets.Internal
         /// <summary>
         /// Occurs when the <see cref="WebSocket"/> receives a message.
         /// </summary>
-        public event EventHandler<MessageEventArgs> OnMessage;
+        public event EventHandler<MessageEventArgs>? OnMessage;
 
         /// <inheritdoc />
         public WebSocketState State => _readyState;
@@ -70,7 +70,7 @@ namespace EmbedIO.WebSockets.Internal
         /// <inheritdoc />
         public Task CloseAsync(
             CloseStatusCode code = CloseStatusCode.Undefined,
-            string reason = null,
+            string? reason = null,
             CancellationToken cancellationToken = default)
         {
             bool CheckParametersForClose()
@@ -158,11 +158,9 @@ namespace EmbedIO.WebSockets.Internal
             if (_readyState != WebSocketState.Open)
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
 
-            using (var stream = new WebSocketStream(data, opcode, Compression))
-            {
-                foreach (var frame in stream.GetFrames())
-                    await Send(frame).ConfigureAwait(false);
-            }
+            using var stream = new WebSocketStream(data, opcode, Compression);
+            foreach (var frame in stream.GetFrames())
+                await Send(frame).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -180,10 +178,8 @@ namespace EmbedIO.WebSockets.Internal
 
                 var buff = new StringBuilder(clientKey, 64).Append(Guid);
 #pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
-                using (var sha1 = SHA1.Create())
-                {
-                    return Convert.ToBase64String(sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString())));
-                }
+                using var sha1 = SHA1.Create();
+                return Convert.ToBase64String(sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString())));
 #pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
             }
 
@@ -246,7 +242,7 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         private async Task InternalCloseAsync(
-            PayloadData payloadData = null,
+            PayloadData? payloadData = null,
             bool send = true,
             bool receive = true,
             CancellationToken cancellationToken = default)
@@ -286,7 +282,7 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         private async Task CloseHandshakeAsync(
-            byte[] frameAsBytes,
+            byte[]? frameAsBytes,
             bool receive,
             CancellationToken cancellationToken)
         {
@@ -301,7 +297,7 @@ namespace EmbedIO.WebSockets.Internal
                 _exitReceiving?.WaitOne(_waitTime);
         }
 
-        private void Fatal(string message, Exception exception = null)
+        private void Fatal(string message, Exception? exception = null)
             => Fatal(message, (exception as WebSocketException)?.Code ?? CloseStatusCode.Abnormal);
 
         private void Fatal(string message, CloseStatusCode code)
@@ -358,7 +354,7 @@ namespace EmbedIO.WebSockets.Internal
         {
             if (frame.IsCompressed)
             {
-                var ms = await frame.PayloadData.ApplicationData.CompressAsync(Compression, false, CancellationToken.None).ConfigureAwait(false);
+                using var ms = await frame.PayloadData.ApplicationData.CompressAsync(Compression, false, CancellationToken.None).ConfigureAwait(false);
 
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame.Opcode, ms.ToArray()));
             }
@@ -404,7 +400,7 @@ namespace EmbedIO.WebSockets.Internal
 
         private void ProcessPongFrame()
         {
-            _receivePong.Set();
+            _receivePong?.Set();
             "Received a pong.".Trace(nameof(ProcessPongFrame));
         }
 

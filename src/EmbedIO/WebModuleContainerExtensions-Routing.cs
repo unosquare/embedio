@@ -1,6 +1,5 @@
 ﻿using EmbedIO.Routing;
 using EmbedIO.Utilities;
-using Swan;
 using Swan.Collections;
 using System;
 
@@ -42,7 +41,7 @@ namespace EmbedIO
         /// <seealso cref="RoutingModuleExtensions"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithRouting<TContainer>(this TContainer @this, string name, string baseRoute, Action<RoutingModule> configure)
+        public static TContainer WithRouting<TContainer>(this TContainer @this, string? name, string baseRoute, Action<RoutingModule> configure)
             where TContainer : class, IWebModuleContainer
         {
             configure = Validate.NotNull(nameof(configure), configure);

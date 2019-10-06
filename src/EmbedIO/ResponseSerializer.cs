@@ -25,10 +25,8 @@ namespace EmbedIO
         public static async Task Json(IHttpContext context, object data)
         {
             context.Response.ContentType = MimeType.Json;
-            using (var text = context.OpenResponseText(Encoding.UTF8))
-            {
-                await text.WriteAsync(Swan.Formatters.Json.Serialize(data)).ConfigureAwait(false);
-            }
+            using var text = context.OpenResponseText(Encoding.UTF8);
+            await text.WriteAsync(Swan.Formatters.Json.Serialize(data)).ConfigureAwait(false);
         }
     }
 }

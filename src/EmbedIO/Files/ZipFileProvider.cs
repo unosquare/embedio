@@ -67,7 +67,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
             if (urlPath.Length == 1)
                 return null;
@@ -85,7 +85,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public Stream OpenFile(string path)
+        public Stream? OpenFile(string path)
             => _zipArchive.GetEntry(path)?.Open();
 
         /// <inheritdoc />

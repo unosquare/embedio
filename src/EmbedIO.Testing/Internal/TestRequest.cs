@@ -85,7 +85,7 @@ namespace EmbedIO.Testing.Internal
 
         public bool HasEntityBody { get; }
 
-        public Stream InputStream => _content?.ReadAsStreamAsync().Await();
+        public Stream? InputStream => _content?.ReadAsStreamAsync().Await();
 
         public Encoding ContentEncoding { get; }
 
@@ -95,19 +95,19 @@ namespace EmbedIO.Testing.Internal
 
         public bool IsSecureConnection => false;
 
-        public string UserAgent { get; }
+        public string? UserAgent { get; }
 
         public bool IsWebSocketRequest => false;
 
         public IPEndPoint LocalEndPoint { get; }
 
-        public string ContentType { get; }
+        public string? ContentType { get; }
 
         public long ContentLength64 => 0;
 
         public bool IsAuthenticated => false;
 
-        public Uri UrlReferrer => null;
+        public Uri? UrlReferrer => null;
 
         private static HttpVerbs HttpMethodToVerb(HttpMethod method)
         {

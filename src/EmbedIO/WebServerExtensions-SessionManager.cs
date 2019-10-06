@@ -31,7 +31,7 @@ namespace EmbedIO
         /// <returns><paramref name="this"/> with the session manager set.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The web server has already been started.</exception>
-        public static TWebServer WithLocalSessionManager<TWebServer>(this TWebServer @this, Action<LocalSessionManager> configure = null)
+        public static TWebServer WithLocalSessionManager<TWebServer>(this TWebServer @this, Action<LocalSessionManager>? configure = null)
             where TWebServer : IWebServer
         {
             var sessionManager = new LocalSessionManager();

@@ -23,18 +23,18 @@ namespace EmbedIO.Files
 
         private readonly string _cacheSectionName = UniqueIdGenerator.GetNext();
         private readonly MimeTypeCustomizer _mimeTypeCustomizer = new MimeTypeCustomizer();
-        private readonly ConcurrentDictionary<string, MappedResourceInfo> _mappingCache;
+        private readonly ConcurrentDictionary<string, MappedResourceInfo>? _mappingCache;
 
         private FileCache _cache = FileCache.Default;
         private bool _contentCaching = true;
-        private string _defaultDocument = DefaultDocumentName;
-        private string _defaultExtension;
-        private IDirectoryLister _directoryLister;
+        private string? _defaultDocument = DefaultDocumentName;
+        private string? _defaultExtension;
+        private IDirectoryLister? _directoryLister;
         private FileRequestHandlerCallback _onMappingFailed = FileRequestHandler.ThrowNotFound;
         private FileRequestHandlerCallback _onDirectoryNotListable = FileRequestHandler.ThrowUnauthorized;
         private FileRequestHandlerCallback _onMethodNotAllowed = FileRequestHandler.ThrowMethodNotAllowed;
 
-        private FileCache.Section _cacheSection;
+        private FileCache.Section? _cacheSection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileModule"/> class,
@@ -110,7 +110,7 @@ namespace EmbedIO.Files
         /// <para>The default value for this property is the <see cref="DefaultDocumentName"/> constant.</para>
         /// </summary>
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        public string DefaultDocument
+        public string? DefaultDocument
         {
             get => _defaultDocument;
             set
@@ -127,7 +127,7 @@ namespace EmbedIO.Files
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
         /// <exception cref="ArgumentException">This property is being set to a non-<see langword="null"/>,
         /// non-empty string that does not start with a period (<c>.</c>).</exception>
-        public string DefaultExtension
+        public string? DefaultExtension
         {
             get => _defaultExtension;
             set
@@ -156,7 +156,7 @@ namespace EmbedIO.Files
         /// of directory listings.</para>
         /// </summary>
         /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        public IDirectoryLister DirectoryLister
+        public IDirectoryLister? DirectoryLister
         {
             get => _directoryLister;
             set
@@ -293,7 +293,7 @@ namespace EmbedIO.Files
         /// <inheritdoc />
         protected override async Task OnRequestAsync(IHttpContext context)
         {
-            MappedResourceInfo info;
+            MappedResourceInfo? info;
 
             var path = context.RequestedPath;
 
@@ -371,7 +371,7 @@ namespace EmbedIO.Files
         // handling DefaultDocument and DefaultExtension.
         // Returns null if not found.
         // Directories mus be returned regardless of directory listing being enabled.
-        private MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        private MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
         {
             var result = Provider.MapUrlPath(urlPath, mimeTypeProvider);
 
@@ -532,8 +532,8 @@ namespace EmbedIO.Files
                 using (var memoryStream = new MemoryStream())
                 {
                     using (var compressor = new CompressionStream(memoryStream, compressionMethod))
-                    using (var source = Provider.OpenFile(info.Path))
                     {
+                        using var source = Provider.OpenFile(info.Path);
                         await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
                             .ConfigureAwait(false);
                     }
@@ -610,11 +610,9 @@ namespace EmbedIO.Files
                 }
                 else
                 {
-                    using (var compressor = new CompressionStream(context.Response.OutputStream, compressionMethod))
-                    {
-                        await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
-                            .ConfigureAwait(false);
-                    }
+                    using var compressor = new CompressionStream(context.Response.OutputStream, compressionMethod);
+                    await source.CopyToAsync(compressor, WebServer.StreamCopyBufferSize, context.CancellationToken)
+                        .ConfigureAwait(false);
                 }
             }
         }
@@ -627,23 +625,21 @@ namespace EmbedIO.Files
             MappedResourceInfo info,
             CompressionMethod compressionMethod)
         {
-            using (var memoryStream = new MemoryStream())
+            using var memoryStream = new MemoryStream();
+            long uncompressedLength;
+            using (var stream = new CompressionStream(memoryStream, compressionMethod))
             {
-                long uncompressedLength;
-                using (var stream = new CompressionStream(memoryStream, compressionMethod))
-                {
-                    await DirectoryLister.ListDirectoryAsync(
-                        info,
-                        context.Request.Url.AbsolutePath,
-                        Provider.GetDirectoryEntries(info.Path, context),
-                        stream,
-                        context.CancellationToken).ConfigureAwait(false);
+                await DirectoryLister.ListDirectoryAsync(
+                    info,
+                    context.Request.Url.AbsolutePath,
+                    Provider.GetDirectoryEntries(info.Path, context),
+                    stream,
+                    context.CancellationToken).ConfigureAwait(false);
 
-                    uncompressedLength = stream.UncompressedLength;
-                }
-
-                return (memoryStream.ToArray(), uncompressedLength);
+                uncompressedLength = stream.UncompressedLength;
             }
+
+            return (memoryStream.ToArray(), uncompressedLength);
         }
     }
 }

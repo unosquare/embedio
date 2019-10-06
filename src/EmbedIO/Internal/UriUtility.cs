@@ -53,7 +53,7 @@ namespace EmbedIO.Internal
             return result;
         }
 
-        public static Uri StringToAbsoluteUri(string str)
+        public static Uri? StringToAbsoluteUri(string str)
         {
             if (!CanBeAbsoluteUrl(str))
                 return null;

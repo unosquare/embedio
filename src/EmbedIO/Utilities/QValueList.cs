@@ -133,7 +133,7 @@ namespace EmbedIO.Utilities
         /// <param name="values">The values.</param>
         /// <returns>The value preferred by the client, or <see langword="null"/>
         /// if none of the provided <paramref name="values"/> is accepted.</returns>
-        public string FindPreferred(IEnumerable<string> values)
+        public string? FindPreferred(IEnumerable<string> values)
             => FindPreferredCore(values, out var result) >= 0 ? result : null;
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace EmbedIO.Utilities
             }
         }
 
-        private int FindPreferredCore(IEnumerable<string> values, out string result)
+        private int FindPreferredCore(IEnumerable<string> values, out string? result)
         {
             values = Validate.NotNull(nameof(values), values);
 

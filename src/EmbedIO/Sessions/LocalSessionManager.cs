@@ -265,7 +265,7 @@ namespace EmbedIO.Sessions
             => cookie.Name.Equals(CookieName, StringComparison.OrdinalIgnoreCase)
              && !cookie.Expired;
 
-        private Cookie BuildSessionCookie(string id)
+        private Cookie BuildSessionCookie(string? id)
         {
             var cookie = new Cookie(CookieName, id, CookiePath)
             {

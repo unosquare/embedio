@@ -30,10 +30,8 @@ namespace EmbedIO.Tests
 
             var dump = instance.RunAsync();
 
-            using (var client = new HttpClient())
-            {
-                Assert.IsNotEmpty(await client.GetStringAsync(urlTest));
-            }
+            using var client = new HttpClient();
+            Assert.IsNotEmpty(await client.GetStringAsync(urlTest));
         }
 
         [Test]
@@ -47,10 +45,8 @@ namespace EmbedIO.Tests
 
             var dump = instance.RunAsync();
 
-            using (var client = new HttpClient())
-            {
-                Assert.IsNotEmpty(await client.GetStringAsync("http://[::1]:8877"));
-            }
+            using var client = new HttpClient();
+            Assert.IsNotEmpty(await client.GetStringAsync("http://[::1]:8877"));
         }
 
         [TearDown]

@@ -3,7 +3,6 @@ using System.Net;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Web;
-using Swan;
 using Swan.Logging;
 
 namespace EmbedIO

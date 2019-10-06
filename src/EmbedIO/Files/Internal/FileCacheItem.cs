@@ -10,8 +10,8 @@ namespace EmbedIO.Files.Internal
         // inside the cache's dictionary.
         // Their purpose is to keep track of items
         // in order from least to most recently used.
-        internal string PreviousKey;
-        internal string NextKey;
+        internal string? PreviousKey;
+        internal string? NextKey;
         internal long LastUsedAt;
 #pragma warning restore SA1401
 
@@ -50,9 +50,9 @@ namespace EmbedIO.Files.Internal
 
         // There are only 3 possible compression methods,
         // hence a dictionary (or two dictionaries) would be overkill.
-        private byte[] _uncompressedContent;
-        private byte[] _gzippedContent;
-        private byte[] _deflatedContent;
+        private byte[]? _uncompressedContent;
+        private byte[]? _gzippedContent;
+        private byte[]? _deflatedContent;
 
         internal FileCacheItem(FileCache.Section section, DateTime lastModifiedUtc, long length)
         {
@@ -78,7 +78,7 @@ namespace EmbedIO.Files.Internal
         // It is NOT the length of the cache resource!
         public long SizeInCache { get; private set; }
 
-        public byte[] GetContent(CompressionMethod compressionMethod)
+        public byte[]? GetContent(CompressionMethod compressionMethod)
         {
             // If there are both entity tag and content, use them.
             switch (compressionMethod)
@@ -95,7 +95,7 @@ namespace EmbedIO.Files.Internal
             }
 
             // Try to convert existing content, if any.
-            byte[] content;
+            byte[]? content;
             if (_uncompressedContent != null)
             {
                 content = CompressionUtility.ConvertCompression(_uncompressedContent, CompressionMethod.None, compressionMethod);
@@ -117,11 +117,11 @@ namespace EmbedIO.Files.Internal
             return SetContent(compressionMethod, content);
         }
 
-        public byte[] SetContent(CompressionMethod compressionMethod, byte[] content)
+        public byte[]? SetContent(CompressionMethod compressionMethod, byte[]? content)
         {
             // This is the bare minimum locking we need
             // to ensure we don't mess sizes up.
-            byte[] oldContent;
+            byte[]? oldContent;
             lock (this)
             {
                 switch (compressionMethod)

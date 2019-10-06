@@ -20,12 +20,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.GetAsync("/").ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.GetAsync("/").ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
@@ -39,12 +37,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.GetAsync("/").ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.GetAsync("/").ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
@@ -58,12 +54,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.PostAsync("/", null).ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.PostAsync("/", null).ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
@@ -77,12 +71,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.PutAsync("/", null).ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.PutAsync("/", null).ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
@@ -96,12 +88,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.HeadAsync("/").ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.HeadAsync("/").ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
@@ -115,12 +105,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.DeleteAsync("/").ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.DeleteAsync("/").ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
@@ -134,12 +122,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.OptionsAsync("/").ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.OptionsAsync("/").ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
@@ -153,12 +139,10 @@ namespace EmbedIO.Tests
 
             async Task Use(HttpClient client)
             {
-                using (var response = await client.PatchAsync("/", null).ConfigureAwait(false))
-                {
-                    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    Assert.AreEqual(Ok, responseString);
-                }
+                using var response = await client.PatchAsync("/", null).ConfigureAwait(false);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.AreEqual(Ok, responseString);
             }
 
             return TestWebServer.UseAsync(Configure, Use);
