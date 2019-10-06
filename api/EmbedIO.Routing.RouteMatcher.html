@@ -215,7 +215,7 @@ is a base route.</p>
   <h5 id="EmbedIO_Routing_RouteMatcher_ClearCache_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_Parse_System_String_System_Boolean_">Parse(String, Boolean)</a></div>
-      <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_EmbedIO_Routing_RouteMatcher__">TryParse(String, Boolean, out RouteMatcher)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_System_Nullable_EmbedIO_Routing_RouteMatcher___">TryParse(String, Boolean, out Nullable&lt;RouteMatcher&gt;)</a></div>
   </div>
   
   
@@ -227,7 +227,7 @@ and extracts values for the route&apos;s parameters.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouteMatch Match(string path)</code></pre>
+    <pre><code class="lang-csharp hljs">public RouteMatch? Match(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -257,7 +257,7 @@ and extracts values for the route&apos;s parameters.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a>&gt;</td>
         <td><p>If the match is successful, a <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a> object;
 otherwise, <span class="xref">null</span>.</p>
 </td>
@@ -275,7 +275,7 @@ this method obtains an instance from a static cache.</p></p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static RouteMatcher Parse(string route, bool isBaseRoute)</code></pre>
+    <pre><code class="lang-csharp hljs">public static RouteMatcher? Parse(string route, bool isBaseRoute)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -312,7 +312,7 @@ this method obtains an instance from a static cache.</p></p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>&gt;</td>
         <td><p>A newly-constructed instance of <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>
 that will match URL paths against <code data-dev-comment-type="paramref" class="paramref">route</code>.</p>
 </td>
@@ -321,13 +321,13 @@ that will match URL paths against <code data-dev-comment-type="paramref" class="
   </table>
   <h5 id="EmbedIO_Routing_RouteMatcher_Parse_System_String_System_Boolean__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_EmbedIO_Routing_RouteMatcher__">TryParse(String, Boolean, out RouteMatcher)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_System_Nullable_EmbedIO_Routing_RouteMatcher___">TryParse(String, Boolean, out Nullable&lt;RouteMatcher&gt;)</a></div>
       <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_ClearCache">ClearCache()</a></div>
   </div>
   
   
   <a id="EmbedIO_Routing_RouteMatcher_TryParse_" data-uid="EmbedIO.Routing.RouteMatcher.TryParse*"></a>
-  <h4 id="EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_EmbedIO_Routing_RouteMatcher__" data-uid="EmbedIO.Routing.RouteMatcher.TryParse(System.String,System.Boolean,EmbedIO.Routing.RouteMatcher@)">TryParse(String, Boolean, out RouteMatcher)</h4>
+  <h4 id="EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_System_Nullable_EmbedIO_Routing_RouteMatcher___" data-uid="EmbedIO.Routing.RouteMatcher.TryParse(System.String,System.Boolean,System.Nullable{EmbedIO.Routing.RouteMatcher}@)">TryParse(String, Boolean, out Nullable&lt;RouteMatcher&gt;)</h4>
   <div class="markdown level1 summary"><p>Attempts to obtain an instance of <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> by parsing the specified route.</p>
 <p>If the same route was previously parsed and the <a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_ClearCache">ClearCache()</a> method has not been called since,
 this method obtains an instance from a static cache.</p>
@@ -335,7 +335,7 @@ this method obtains an instance from a static cache.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryParse(string route, bool isBaseRoute, out RouteMatcher result)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryParse(string route, bool isBaseRoute, out RouteMatcher? result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -361,7 +361,7 @@ this method obtains an instance from a static cache.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>&gt;</td>
         <td><span class="parametername">result</span></td>
         <td><p>When this method returns <span class="xref">true</span>, a newly-constructed instance of <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>
 that will match URL paths against <code data-dev-comment-type="paramref" class="paramref">route</code>; otherwise, <span class="xref">null</span>.
@@ -386,7 +386,7 @@ This parameter is passed uninitialized.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_EmbedIO_Routing_RouteMatcher___seealso">See Also</h5>
+  <h5 id="EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_System_Nullable_EmbedIO_Routing_RouteMatcher____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_Parse_System_String_System_Boolean_">Parse(String, Boolean)</a></div>
       <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_ClearCache">ClearCache()</a></div>

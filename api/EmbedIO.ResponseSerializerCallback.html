@@ -87,7 +87,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
   <h5 id="EmbedIO_ResponseSerializerCallback_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate Task ResponseSerializerCallback(IHttpContext context, object data);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate Task ResponseSerializerCallback(IHttpContext context, object? data);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -106,7 +106,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">data</span></td>
         <td><p>The data to serialize.</p>
 </td>

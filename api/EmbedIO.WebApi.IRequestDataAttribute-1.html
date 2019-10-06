@@ -118,7 +118,7 @@ that causes the parameter to be passed deserialized data from a request.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;object&gt; GetRequestDataAsync(TController controller, Type type, string parameterName)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;object? &gt; GetRequestDataAsync(TController controller, Type type, string parameterName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,7 +160,7 @@ that causes the parameter to be passed deserialized data from a request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;&gt;</td>
         <td><p>a <see cref="!:Task"></see> whose result will be the data
 to pass as a parameter to a controller method.</p>
 </td>

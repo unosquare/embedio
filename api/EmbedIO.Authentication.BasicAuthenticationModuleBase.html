@@ -132,13 +132,13 @@
   
   
   <a id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor*"></a>
-  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_String_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor(System.String,System.String)">BasicAuthenticationModuleBase(String, String)</h4>
+  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_Nullable_System_String__" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor(System.String,System.Nullable{System.String})">BasicAuthenticationModuleBase(String, Nullable&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.html">BasicAuthenticationModuleBase</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected BasicAuthenticationModuleBase(string baseRoute, string realm)</code></pre>
+    <pre><code class="lang-csharp hljs">protected BasicAuthenticationModuleBase(string baseRoute, string? realm)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,14 +157,14 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">realm</span></td>
         <td><p>The authentication realm.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_String__remarks">Remarks</h5>
+  <h5 id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_Nullable_System_String___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">realm</code> is <span class="xref">null</span> or the empty string,
 the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_Realm">Realm</a> property will be set equal to
 <a class="xref" href="EmbedIO.IWebModule.html#EmbedIO_IWebModule_BaseRoute">BaseRoute</a>.</p>

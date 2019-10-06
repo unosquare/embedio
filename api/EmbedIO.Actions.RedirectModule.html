@@ -131,60 +131,6 @@
   
   
   <a id="EmbedIO_Actions_RedirectModule__ctor_" data-uid="EmbedIO.Actions.RedirectModule.#ctor*"></a>
-  <h4 id="EmbedIO_Actions_RedirectModule__ctor_System_String_System_String_Func_EmbedIO_IHttpContext_System_Boolean__HttpStatusCode_" data-uid="EmbedIO.Actions.RedirectModule.#ctor(System.String,System.String,Func{EmbedIO.IHttpContext,System.Boolean},HttpStatusCode)">RedirectModule(String, String, Func&lt;IHttpContext, Boolean&gt;, HttpStatusCode)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Actions.RedirectModule.html">RedirectModule</a> class
-that will redirect all requests for which the <code data-dev-comment-type="paramref" class="paramref">shouldRedirect</code> callback
-returns <span class="xref">true</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RedirectModule(string baseRoute, string redirectUrl, Func&lt;IHttpContext, bool&gt; shouldRedirect, HttpStatusCode statusCode = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseRoute</span></td>
-        <td><p>The base route.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">redirectUrl</span></td>
-        <td><p>The redirect URL.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Func</span>&lt;<a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
-        <td><span class="parametername">shouldRedirect</span></td>
-        <td><p>A callback function that returns <span class="xref">true</span>
-if a request must be redirected.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">HttpStatusCode</span></td>
-        <td><span class="parametername">statusCode</span></td>
-        <td><p>The response status code; default is <code>302 - Found</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="EmbedIO_Actions_RedirectModule__ctor_System_String_System_String_Func_EmbedIO_IHttpContext_System_Boolean__HttpStatusCode__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase__ctor_System_String_">WebModuleBase(String)</a></div>
-  </div>
-  
-  
-  <a id="EmbedIO_Actions_RedirectModule__ctor_" data-uid="EmbedIO.Actions.RedirectModule.#ctor*"></a>
   <h4 id="EmbedIO_Actions_RedirectModule__ctor_System_String_System_String_HttpStatusCode_" data-uid="EmbedIO.Actions.RedirectModule.#ctor(System.String,System.String,HttpStatusCode)">RedirectModule(String, String, HttpStatusCode)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Actions.RedirectModule.html">RedirectModule</a> class
 that will redirect all served requests.</p>
@@ -225,6 +171,60 @@ that will redirect all served requests.</p>
     </tbody>
   </table>
   <h5 id="EmbedIO_Actions_RedirectModule__ctor_System_String_System_String_HttpStatusCode__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase__ctor_System_String_">WebModuleBase(String)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Actions_RedirectModule__ctor_" data-uid="EmbedIO.Actions.RedirectModule.#ctor*"></a>
+  <h4 id="EmbedIO_Actions_RedirectModule__ctor_System_String_System_String_System_Nullable_Func_EmbedIO_IHttpContext_System_Boolean___HttpStatusCode_" data-uid="EmbedIO.Actions.RedirectModule.#ctor(System.String,System.String,System.Nullable{Func{EmbedIO.IHttpContext,System.Boolean}},HttpStatusCode)">RedirectModule(String, String, Nullable&lt;Func&lt;IHttpContext, Boolean&gt;&gt;, HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Actions.RedirectModule.html">RedirectModule</a> class
+that will redirect all requests for which the <code data-dev-comment-type="paramref" class="paramref">shouldRedirect</code> callback
+returns <span class="xref">true</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RedirectModule(string baseRoute, string redirectUrl, Func&lt;IHttpContext, bool&gt;? shouldRedirect, HttpStatusCode statusCode = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">redirectUrl</span></td>
+        <td><p>The redirect URL.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;&gt;</td>
+        <td><span class="parametername">shouldRedirect</span></td>
+        <td><p>A callback function that returns <span class="xref">true</span>
+if a request must be redirected.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The response status code; default is <code>302 - Found</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Actions_RedirectModule__ctor_System_String_System_String_System_Nullable_Func_EmbedIO_IHttpContext_System_Boolean___HttpStatusCode__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase__ctor_System_String_">WebModuleBase(String)</a></div>
   </div>

@@ -123,14 +123,14 @@
   
   
   <a id="EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_" data-uid="EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding*"></a>
-  <h4 id="EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_EmbedIO_Utilities_QValueList_System_Boolean_EmbedIO_CompressionMethod__System_String__" data-uid="EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList,System.Boolean,EmbedIO.CompressionMethod@,System.String@)">TryNegotiateContentEncoding(QValueList, Boolean, out CompressionMethod, out String)</h4>
+  <h4 id="EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_EmbedIO_Utilities_QValueList_System_Boolean_EmbedIO_CompressionMethod__System_Nullable_System_String___" data-uid="EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList,System.Boolean,EmbedIO.CompressionMethod@,System.Nullable{System.String}@)">TryNegotiateContentEncoding(QValueList, Boolean, out CompressionMethod, out Nullable&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Attempts to proactively negotiate a compression method for a response,
 based on the contents of a <a class="xref" href="EmbedIO.Utilities.QValueList.html">QValueList</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryNegotiateContentEncoding(this QValueList this, bool preferCompression, out CompressionMethod compressionMethod, out string compressionMethodName)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryNegotiateContentEncoding(this QValueList this, bool preferCompression, out CompressionMethod compressionMethod, out string? compressionMethodName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,7 +163,7 @@ if content negotiation is successful. This parameter is passed uninitialized.</p
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">compressionMethodName</span></td>
         <td><p>When this method returns, the name of the compression method,
 if content negotiation is successful. This parameter is passed uninitialized.</p>
@@ -188,7 +188,7 @@ if content negotiation is successful. This parameter is passed uninitialized.</p
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_EmbedIO_Utilities_QValueList_System_Boolean_EmbedIO_CompressionMethod__System_String___remarks">Remarks</h5>
+  <h5 id="EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_EmbedIO_Utilities_QValueList_System_Boolean_EmbedIO_CompressionMethod__System_Nullable_System_String____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">this</code> is empty, this method always returns <span class="xref">true</span>,
 setting <code data-dev-comment-type="paramref" class="paramref">compressionMethod</code> to <a class="xref" href="EmbedIO.CompressionMethod.html#EmbedIO_CompressionMethod_None">None</a>
 and <code data-dev-comment-type="paramref" class="paramref">compressionMethodName</code> to <a class="xref" href="EmbedIO.CompressionMethodNames.html#EmbedIO_CompressionMethodNames_None">None</a>.</p>

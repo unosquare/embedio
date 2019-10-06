@@ -281,7 +281,7 @@
   
   
   <a id="EmbedIO_IHttpContextImpl_AcceptWebSocketAsync_" data-uid="EmbedIO.IHttpContextImpl.AcceptWebSocketAsync*"></a>
-  <h4 id="EmbedIO_IHttpContextImpl_AcceptWebSocketAsync_IEnumerable_System_String__System_String_System_Int32_TimeSpan_CancellationToken_" data-uid="EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable{System.String},System.String,System.Int32,TimeSpan,CancellationToken)">AcceptWebSocketAsync(IEnumerable&lt;String&gt;, String, Int32, TimeSpan, CancellationToken)</h4>
+  <h4 id="EmbedIO_IHttpContextImpl_AcceptWebSocketAsync_IEnumerable_System_String__System_Nullable_System_String__System_Int32_TimeSpan_CancellationToken_" data-uid="EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable{System.String},System.Nullable{System.String},System.Int32,TimeSpan,CancellationToken)">AcceptWebSocketAsync(IEnumerable&lt;String&gt;, Nullable&lt;String&gt;, Int32, TimeSpan, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Asynchronously handles a WebSockets opening handshake
 and returns a newly-created <seealso cref="!:IWebSocketContext"></seealso> interface.</p>
 <p>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</p>
@@ -289,7 +289,7 @@ and returns a newly-created <seealso cref="!:IWebSocketContext"></seealso> inter
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(IEnumerable&lt;string&gt; requestedProtocols, string acceptedProtocol, int receiveBufferSize, TimeSpan keepAliveInterval, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IWebSocketContext&gt; AcceptWebSocketAsync(IEnumerable&lt;string&gt; requestedProtocols, string? acceptedProtocol, int receiveBufferSize, TimeSpan keepAliveInterval, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -308,7 +308,7 @@ and returns a newly-created <seealso cref="!:IWebSocketContext"></seealso> inter
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">acceptedProtocol</span></td>
         <td><p>The accepted WebSocket sub-protocol.</p>
 </td>
