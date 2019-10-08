@@ -84,7 +84,7 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public long ContentLength64 => Headers.ContainsKey(HttpHeaderNames.ContentLength) && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var val) ? val : 0;
+        public long ContentLength64 => long.TryParse(Headers[HttpHeaderNames.ContentLength], out var val) ? val : 0;
 
         /// <inheritdoc />
         public string ContentType => Headers[HttpHeaderNames.ContentType];
