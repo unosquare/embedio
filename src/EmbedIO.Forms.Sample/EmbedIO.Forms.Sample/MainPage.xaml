@@ -1,16 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ContentPage 
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    xmlns:local="clr-namespace:EmbedIO.Forms.Sample" 
-    x:Class="EmbedIO.Forms.Sample.MainPage"
-    xmlns:wv="clr-namespace:Xam.Plugin.WebView.Abstractions;assembly=Xam.Plugin.WebView.Abstractions">
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="EmbedIO.Forms.Sample.MainPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:EmbedIO.Forms.Sample"
+             xmlns:wv="clr-namespace:Xam.Plugin.WebView.Abstractions;assembly=Xam.Plugin.WebView.Abstractions">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="HeightRequest" Value="80" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="Text" Value="GO" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <wv:FormsWebView x:Name="WebContent" 
-                         Grid.Row="0" Grid.Column="0" 
+        <wv:FormsWebView x:Name="WebContent"
+                         Grid.Row="0"
+                         Grid.Column="0"
                          Source="http://127.0.0.1:8080/index.html" />
+        <Button Grid.Row="1"
+                Grid.Column="0"
+                Command="{Binding AcceptEncoding_None_Command}"
+                Text="Accept Encoding = None" />
+        <Button Grid.Row="2"
+                Grid.Column="0"
+                Command="{Binding AcceptEncoding_Gzip_Command}"
+                Text="Accept Encoding = Gzip" />
+        <Label Grid.Row="3"
+               Grid.Column="0"
+               BackgroundColor="LightGreen"
+               Text="{Binding Result}" />
     </Grid>
 </ContentPage>

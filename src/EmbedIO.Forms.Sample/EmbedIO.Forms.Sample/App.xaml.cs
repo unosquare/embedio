@@ -1,11 +1,8 @@
+using EmbedIO.WebApi;
+using System.Reflection;
 using System.Threading.Tasks;
-using System.Net;
-using System.Net.Sockets;
-using Unosquare.Labs.EmbedIO;
-using Unosquare.Labs.EmbedIO.Modules;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Reflection;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace EmbedIO.Forms.Sample
@@ -20,11 +17,12 @@ namespace EmbedIO.Forms.Sample
             // because we have no reload implemented in this sample.
             Task.Factory.StartNew(async () =>
             {
-                using (var server = new WebServer("http://*:8080"))
+                using (var server = new WebServer(HttpListenerMode.EmbedIO, "http://*:8080"))
                 {
                     Assembly assembly = typeof(App).Assembly;
-                    server.RegisterModule(new ResourceFilesModule(assembly, "EmbedIO.Forms.Sample.html"));
-
+                    server.WithLocalSessionManager();
+                    server.WithWebApi("/api", m => m.WithController(() => new TestController()));
+                    server.WithEmbeddedResources("/", assembly, "EmbedIO.Forms.Sample.html");
                     await server.RunAsync();
                 }
             });
