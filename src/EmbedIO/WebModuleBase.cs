@@ -26,9 +26,10 @@ namespace EmbedIO
     /// </summary>
     public abstract class WebModuleBase : ConfiguredObject, IWebModule
     {
+        private readonly RouteMatcher _routeMatcher;
+        
         private ExceptionHandlerCallback? _onUnhandledException;
         private HttpExceptionHandlerCallback? _onHttpException;
-        private RouteMatcher? _routeMatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebModuleBase"/> class.
@@ -86,7 +87,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public RouteMatch? MatchUrlPath(string urlPath) => _routeMatcher?.Match(urlPath);
+        public RouteMatch? MatchUrlPath(string urlPath) => _routeMatcher.Match(urlPath);
 
         /// <inheritdoc />
         public async Task HandleRequestAsync(IHttpContext context)

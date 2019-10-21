@@ -55,13 +55,13 @@ namespace EmbedIO.Routing
         /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
         /// <seealso cref="TryParse"/>
         /// <seealso cref="ClearCache"/>
-        public static RouteMatcher? Parse(string route, bool isBaseRoute)
+        public static RouteMatcher Parse(string route, bool isBaseRoute)
         {
             var exception = TryParseInternal(route, isBaseRoute, out var result);
             if (exception != null)
                 throw exception;
 
-            return result;
+            return result!;
         }
 
         /// <summary>
