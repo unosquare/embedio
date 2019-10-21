@@ -330,7 +330,7 @@ for a non-base route, this property is always <span class="xref">null</span>.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? SubPath { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string SubPath { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -342,7 +342,7 @@ for a non-base route, this property is always <span class="xref">null</span>.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -465,12 +465,12 @@ route parameters have the specified name.</p>
   
   
   <a id="EmbedIO_Routing_RouteMatch_TryGetValue_" data-uid="EmbedIO.Routing.RouteMatch.TryGetValue*"></a>
-  <h4 id="EmbedIO_Routing_RouteMatch_TryGetValue_System_String_System_Nullable_System_String___" data-uid="EmbedIO.Routing.RouteMatch.TryGetValue(System.String,System.Nullable{System.String}@)">TryGetValue(String, out Nullable&lt;String&gt;)</h4>
+  <h4 id="EmbedIO_Routing_RouteMatch_TryGetValue_System_String_System_String__" data-uid="EmbedIO.Routing.RouteMatch.TryGetValue(System.String,System.String@)">TryGetValue(String, out String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool TryGetValue(string key, out string? value)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool TryGetValue(string key, out string value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -488,7 +488,7 @@ route parameters have the specified name.</p>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">value</span></td>
         <td></td>
       </tr>
@@ -520,7 +520,7 @@ the specified parameterless base route.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static RouteMatch? UnsafeFromBasePath(string baseUrlPath, string urlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static RouteMatch UnsafeFromBasePath(string baseUrlPath, string urlPath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -556,7 +556,7 @@ the specified parameterless base route.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a>&gt;</td>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a></td>
         <td><p>A newly-constructed <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a>.</p>
 </td>
       </tr>

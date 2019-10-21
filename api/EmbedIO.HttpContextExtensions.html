@@ -469,7 +469,7 @@ whose result will be the deserialized data.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;NameValueCollection? &gt; GetRequestFormDataAsync(this IHttpContext this)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;NameValueCollection?&gt; GetRequestFormDataAsync(this IHttpContext this)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -730,6 +730,84 @@ is disposed; if set to <span class="xref">false</span> (the default), chunked tr
       </tr>
     </tbody>
   </table>
+  <h5 id="EmbedIO_HttpContextExtensions_OpenResponseStream_EmbedIO_IHttpContext_System_Boolean_System_Boolean__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_OpenResponseText_EmbedIO_IHttpContext_System_Nullable_Encoding__System_Boolean_System_Boolean_">OpenResponseText(IHttpContext, Nullable&lt;Encoding&gt;, Boolean, Boolean)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_HttpContextExtensions_OpenResponseText_" data-uid="EmbedIO.HttpContextExtensions.OpenResponseText*"></a>
+  <h4 id="EmbedIO_HttpContextExtensions_OpenResponseText_EmbedIO_IHttpContext_System_Nullable_Encoding__System_Boolean_System_Boolean_" data-uid="EmbedIO.HttpContextExtensions.OpenResponseText(EmbedIO.IHttpContext,System.Nullable{Encoding},System.Boolean,System.Boolean)">OpenResponseText(IHttpContext, Nullable&lt;Encoding&gt;, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Wraps the response output stream and returns a <see cref="!:TextWriter"></see> that can be used directly.</p>
+<p>Optional buffering is applied, so that the response may be sent as one instead of using chunked transfer.</p>
+<p>Proactive negotiation is performed to select the best compression method supported by the client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TextWriter OpenResponseText(this IHttpContext this, Encoding? encoding = default(Encoding? ), bool buffered = false, bool preferCompression = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Encoding</span>&gt;</td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>The <see cref="!:Encoding"></see> to use to convert text to data bytes.</p>
+<p>If <span class="xref">null</span> (the default), <see cref="!:Encoding.UTF8">UTF-8</see> is used.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">buffered</span></td>
+        <td><p>If set to <span class="xref">true</span>, sent data is collected
+in a <see cref="!:MemoryStream"></see> and sent all at once when the returned <see cref="!:Stream"></see>
+is disposed; if set to <span class="xref">false</span> (the default), chunked transfer will be used.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">preferCompression</span></td>
+        <td><p><span class="xref">true</span> if sending compressed data is preferred over
+    sending non-compressed data; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TextWriter</span></td>
+        <td><p>A <see cref="!:TextWriter"></see> that can be used to write response data.</p>
+<p>This writer MUST be disposed when finished writing.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_HttpContextExtensions_OpenResponseText_EmbedIO_IHttpContext_System_Nullable_Encoding__System_Boolean_System_Boolean__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_OpenResponseStream_EmbedIO_IHttpContext_System_Boolean_System_Boolean_">OpenResponseStream(IHttpContext, Boolean, Boolean)</a></div>
+  </div>
   
   
   <a id="EmbedIO_HttpContextExtensions_Redirect_" data-uid="EmbedIO.HttpContextExtensions.Redirect*"></a>

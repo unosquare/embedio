@@ -1668,105 +1668,6 @@ and adds it to a module container.</p>
   
   
   <a id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources_" data-uid="EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_Nullable_System_String__System_String_Assembly_System_String_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.Nullable{System.String},System.String,Assembly,System.String,System.Nullable{Action{FileModule}})">WithEmbeddedResources&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, String, Assembly, String, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ResourceFileProvider"></see>, uses it to initialize
-a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container,
-giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithEmbeddedResources&lt;TContainer&gt;(this TContainer this, string? name, string baseRoute, Assembly assembly, string pathPrefix, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
-    where TContainer : class, IWebModuleContainer</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TContainer</code> on which this method is called.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The name.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseRoute</span></td>
-        <td><p>The base route of the module.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Assembly</span></td>
-        <td><span class="parametername">assembly</span></td>
-        <td><p>The assembly where served files are contained as embedded resources.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">pathPrefix</span></td>
-        <td><p>A string to prepend to provider-specific paths
-to form the name of a manifest resource in <code data-dev-comment-type="paramref" class="paramref">assembly</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">FileModule</span>&gt;&gt;</td>
-        <td><span class="parametername">configure</span></td>
-        <td><p>A callback used to configure the module.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:FileModule"></see> added.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TContainer</span></td>
-        <td><p>The type of the module container.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_Nullable_System_String__System_String_Assembly_System_String_System_Nullable_Action_FileModule____seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
-  </div>
-  
-  
-  <a id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources_" data-uid="EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources*"></a>
   <h4 id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_String_Assembly_System_String_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.String,Assembly,System.String,System.Nullable{Action{FileModule}})">WithEmbeddedResources&lt;TContainer&gt;(TContainer, String, Assembly, String, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ResourceFileProvider"></see>, uses it to initialize
 a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container.</p>
@@ -1858,6 +1759,105 @@ to form the name of a manifest resource in <code data-dev-comment-type="paramref
   </div>
   
   
+  <a id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources_" data-uid="EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources*"></a>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_String_System_String_Assembly_System_String_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.String,System.String,Assembly,System.String,System.Nullable{Action{FileModule}})">WithEmbeddedResources&lt;TContainer&gt;(TContainer, String, String, Assembly, String, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ResourceFileProvider"></see>, uses it to initialize
+a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container,
+giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TContainer WithEmbeddedResources&lt;TContainer&gt;(this TContainer this, string name, string baseRoute, Assembly assembly, string pathPrefix, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
+    where TContainer : class, IWebModuleContainer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContainer</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TContainer</code> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route of the module.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Assembly</span></td>
+        <td><span class="parametername">assembly</span></td>
+        <td><p>The assembly where served files are contained as embedded resources.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">pathPrefix</span></td>
+        <td><p>A string to prepend to provider-specific paths
+to form the name of a manifest resource in <code data-dev-comment-type="paramref" class="paramref">assembly</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">FileModule</span>&gt;&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td><p>A callback used to configure the module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContainer</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:FileModule"></see> added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TContainer</span></td>
+        <td><p>The type of the module container.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_String_System_String_Assembly_System_String_System_Nullable_Action_FileModule____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
+  </div>
+  
+  
   <a id="EmbedIO_WebModuleContainerExtensions_WithModule_" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule*"></a>
   <h4 id="EmbedIO_WebModuleContainerExtensions_WithModule__1___0_EmbedIO_IWebModule_" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule``1(``0,EmbedIO.IWebModule)">WithModule&lt;TContainer&gt;(TContainer, IWebModule)</h4>
   <div class="markdown level1 summary"><p>Adds the specified <code data-dev-comment-type="paramref" class="paramref">module</code> to a module container, without giving it a name.</p>
@@ -1931,14 +1931,14 @@ to form the name of a manifest resource in <code data-dev-comment-type="paramref
   
   
   <a id="EmbedIO_WebModuleContainerExtensions_WithModule_" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithModule__1___0_System_Nullable_System_String__EmbedIO_IWebModule_" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule``1(``0,System.Nullable{System.String},EmbedIO.IWebModule)">WithModule&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, IWebModule)</h4>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithModule__1___0_System_String_EmbedIO_IWebModule_" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule``1(``0,System.String,EmbedIO.IWebModule)">WithModule&lt;TContainer&gt;(TContainer, String, IWebModule)</h4>
   <div class="markdown level1 summary"><p>Adds the specified <code data-dev-comment-type="paramref" class="paramref">module</code> to a module container,
 giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithModule&lt;TContainer&gt;(this TContainer this, string? name, IWebModule module)
+    <pre><code class="lang-csharp hljs">public static TContainer WithModule&lt;TContainer&gt;(this TContainer this, string name, IWebModule module)
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1958,7 +1958,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The name.</p>
 </td>
@@ -2003,7 +2003,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithModule__1___0_System_Nullable_System_String__EmbedIO_IWebModule__seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithModule__1___0_System_String_EmbedIO_IWebModule__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>
@@ -2093,14 +2093,14 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
   
   
   <a id="EmbedIO_WebModuleContainerExtensions_WithModule_" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithModule__2___0_System_Nullable_System_String____1_System_Nullable_Action___1___" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule``2(``0,System.Nullable{System.String},``1,System.Nullable{Action{``1}})">WithModule&lt;TContainer, TWebModule&gt;(TContainer, Nullable&lt;String&gt;, TWebModule, Nullable&lt;Action&lt;TWebModule&gt;&gt;)</h4>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithModule__2___0_System_String___1_System_Nullable_Action___1___" data-uid="EmbedIO.WebModuleContainerExtensions.WithModule``2(``0,System.String,``1,System.Nullable{Action{``1}})">WithModule&lt;TContainer, TWebModule&gt;(TContainer, String, TWebModule, Nullable&lt;Action&lt;TWebModule&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds the specified <code data-dev-comment-type="paramref" class="paramref">module</code> to a module container,
 giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithModule&lt;TContainer, TWebModule&gt;(this TContainer this, string? name, TWebModule module, Action&lt;TWebModule&gt;? configure)
+    <pre><code class="lang-csharp hljs">public static TContainer WithModule&lt;TContainer, TWebModule&gt;(this TContainer this, string name, TWebModule module, Action&lt;TWebModule&gt;? configure)
     where TContainer : class, IWebModuleContainer where TWebModule : IWebModule</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2120,7 +2120,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The name.</p>
 </td>
@@ -2176,92 +2176,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithModule__2___0_System_Nullable_System_String____1_System_Nullable_Action___1____seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
-  </div>
-  
-  
-  <a id="EmbedIO_WebModuleContainerExtensions_WithRouting_" data-uid="EmbedIO.WebModuleContainerExtensions.WithRouting*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithRouting__1___0_System_Nullable_System_String__System_String_Action_RoutingModule__" data-uid="EmbedIO.WebModuleContainerExtensions.WithRouting``1(``0,System.Nullable{System.String},System.String,Action{RoutingModule})">WithRouting&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, String, Action&lt;RoutingModule&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:RoutingModule"></see> and adds it to a module container,
-giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithRouting&lt;TContainer&gt;(this TContainer this, string? name, string baseRoute, Action&lt;RoutingModule&gt; configure)
-    where TContainer : class, IWebModuleContainer</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TContainer</code> on which this method is called.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The name.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseRoute</span></td>
-        <td><p>The base route of the module.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Action</span>&lt;<span class="xref">RoutingModule</span>&gt;</td>
-        <td><span class="parametername">configure</span></td>
-        <td><p>A callback used to configure the newly-created <see cref="!:RoutingModule"></see>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:RoutingModule"></see> added.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TContainer</span></td>
-        <td><p>The type of the module container.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithRouting__1___0_System_Nullable_System_String__System_String_Action_RoutingModule___seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithModule__2___0_System_String___1_System_Nullable_Action___1____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>
@@ -2345,16 +2260,15 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
   </div>
   
   
-  <a id="EmbedIO_WebModuleContainerExtensions_WithStaticFolder_" data-uid="EmbedIO.WebModuleContainerExtensions.WithStaticFolder*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithStaticFolder__1___0_System_Nullable_System_String__System_String_System_String_System_Boolean_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithStaticFolder``1(``0,System.Nullable{System.String},System.String,System.String,System.Boolean,System.Nullable{Action{FileModule}})">WithStaticFolder&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, String, String, Boolean, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:FileSystemProvider"></see>, uses it to initialize
-a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container,
+  <a id="EmbedIO_WebModuleContainerExtensions_WithRouting_" data-uid="EmbedIO.WebModuleContainerExtensions.WithRouting*"></a>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithRouting__1___0_System_String_System_String_Action_RoutingModule__" data-uid="EmbedIO.WebModuleContainerExtensions.WithRouting``1(``0,System.String,System.String,Action{RoutingModule})">WithRouting&lt;TContainer&gt;(TContainer, String, String, Action&lt;RoutingModule&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:RoutingModule"></see> and adds it to a module container,
 giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithStaticFolder&lt;TContainer&gt;(this TContainer this, string? name, string baseRoute, string fileSystemPath, bool isImmutable, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
+    <pre><code class="lang-csharp hljs">public static TContainer WithRouting&lt;TContainer&gt;(this TContainer this, string name, string baseRoute, Action&lt;RoutingModule&gt; configure)
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2374,7 +2288,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The name.</p>
 </td>
@@ -2386,23 +2300,9 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">fileSystemPath</span></td>
-        <td><p>The path of the directory to serve.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">isImmutable</span></td>
-        <td><p><span class="xref">true</span> if files and directories in
-<code data-dev-comment-type="paramref" class="paramref">fileSystemPath</code> are not expected to change during a web server&apos;s
-lifetime; <span class="xref">false</span> otherwise.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">FileModule</span>&gt;&gt;</td>
+        <td><span class="xref">Action</span>&lt;<span class="xref">RoutingModule</span>&gt;</td>
         <td><span class="parametername">configure</span></td>
-        <td><p>A callback used to configure the module.</p>
+        <td><p>A callback used to configure the newly-created <see cref="!:RoutingModule"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -2418,7 +2318,7 @@ lifetime; <span class="xref">false</span> otherwise.</p>
     <tbody>
       <tr>
         <td><span class="xref">TContainer</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:FileModule"></see> added.</p>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:RoutingModule"></see> added.</p>
 </td>
       </tr>
     </tbody>
@@ -2439,7 +2339,7 @@ lifetime; <span class="xref">false</span> otherwise.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithStaticFolder__1___0_System_Nullable_System_String__System_String_System_String_System_Boolean_System_Nullable_Action_FileModule____seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithRouting__1___0_System_String_System_String_Action_RoutingModule___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>
@@ -2538,16 +2438,16 @@ lifetime; <span class="xref">false</span> otherwise.</p>
   </div>
   
   
-  <a id="EmbedIO_WebModuleContainerExtensions_WithWebApi_" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_Nullable_System_String__System_String_Action_WebApiModule__" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.Nullable{System.String},System.String,Action{WebApiModule})">WithWebApi&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, String, Action&lt;WebApiModule&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:WebApiModule"></see> using the default response serializer
-and adds it to a module container, giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code>
-if not <span class="xref">null</span></p>
+  <a id="EmbedIO_WebModuleContainerExtensions_WithStaticFolder_" data-uid="EmbedIO.WebModuleContainerExtensions.WithStaticFolder*"></a>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithStaticFolder__1___0_System_String_System_String_System_String_System_Boolean_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithStaticFolder``1(``0,System.String,System.String,System.String,System.Boolean,System.Nullable{Action{FileModule}})">WithStaticFolder&lt;TContainer&gt;(TContainer, String, String, String, Boolean, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:FileSystemProvider"></see>, uses it to initialize
+a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container,
+giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithWebApi&lt;TContainer&gt;(this TContainer this, string? name, string baseRoute, Action&lt;WebApiModule&gt; configure)
+    <pre><code class="lang-csharp hljs">public static TContainer WithStaticFolder&lt;TContainer&gt;(this TContainer this, string name, string baseRoute, string fileSystemPath, bool isImmutable, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2567,7 +2467,7 @@ if not <span class="xref">null</span></p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The name.</p>
 </td>
@@ -2579,9 +2479,23 @@ if not <span class="xref">null</span></p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Action</span>&lt;<span class="xref">WebApiModule</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">fileSystemPath</span></td>
+        <td><p>The path of the directory to serve.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isImmutable</span></td>
+        <td><p><span class="xref">true</span> if files and directories in
+<code data-dev-comment-type="paramref" class="paramref">fileSystemPath</code> are not expected to change during a web server&apos;s
+lifetime; <span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">FileModule</span>&gt;&gt;</td>
         <td><span class="parametername">configure</span></td>
-        <td><p>A callback used to configure the newly-created <see cref="!:WebApiModule"></see>.</p>
+        <td><p>A callback used to configure the module.</p>
 </td>
       </tr>
     </tbody>
@@ -2597,7 +2511,7 @@ if not <span class="xref">null</span></p>
     <tbody>
       <tr>
         <td><span class="xref">TContainer</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:RoutingModule"></see> added.</p>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:FileModule"></see> added.</p>
 </td>
       </tr>
     </tbody>
@@ -2618,101 +2532,7 @@ if not <span class="xref">null</span></p>
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_Nullable_System_String__System_String_Action_WebApiModule___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
-  </div>
-  
-  
-  <a id="EmbedIO_WebModuleContainerExtensions_WithWebApi_" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_Nullable_System_String__System_String_EmbedIO_ResponseSerializerCallback_Action_WebApiModule__" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.Nullable{System.String},System.String,EmbedIO.ResponseSerializerCallback,Action{WebApiModule})">WithWebApi&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, String, ResponseSerializerCallback, Action&lt;WebApiModule&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:WebApiModule"></see>, using the specified response serializer
-and adds it to a module container, giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code>
-if not <span class="xref">null</span></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithWebApi&lt;TContainer&gt;(this TContainer this, string? name, string baseRoute, ResponseSerializerCallback serializer, Action&lt;WebApiModule&gt; configure)
-    where TContainer : class, IWebModuleContainer</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TContainer</code> on which this method is called.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The name.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseRoute</span></td>
-        <td><p>The base route of the module.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="EmbedIO.ResponseSerializerCallback.html">ResponseSerializerCallback</a></td>
-        <td><span class="parametername">serializer</span></td>
-        <td><p>A <a class="xref" href="EmbedIO.ResponseSerializerCallback.html">ResponseSerializerCallback</a> used to serialize
-the result of controller methods returning <span class="xref">langword_csharp_object</span>
-or <see cref="!:Task&lt;TResult>">Task&lt;object&gt;</see>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Action</span>&lt;<span class="xref">WebApiModule</span>&gt;</td>
-        <td><span class="parametername">configure</span></td>
-        <td><p>A callback used to configure the newly-created <see cref="!:WebApiModule"></see>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:RoutingModule"></see> added.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TContainer</span></td>
-        <td><p>The type of the module container.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_Nullable_System_String__System_String_EmbedIO_ResponseSerializerCallback_Action_WebApiModule___seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithStaticFolder__1___0_System_String_System_String_System_String_System_Boolean_System_Nullable_Action_FileModule____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>
@@ -2884,16 +2704,16 @@ or <see cref="!:Task&lt;TResult>">Task&lt;object&gt;</see>.</p>
   </div>
   
   
-  <a id="EmbedIO_WebModuleContainerExtensions_WithZipFile_" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFile*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithZipFile__1___0_System_Nullable_System_String__System_String_System_String_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFile``1(``0,System.Nullable{System.String},System.String,System.String,System.Nullable{Action{FileModule}})">WithZipFile&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, String, String, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ZipFileProvider"></see> using a file-system path, uses it to initialize
-a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container,
-giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
+  <a id="EmbedIO_WebModuleContainerExtensions_WithWebApi_" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi*"></a>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_String_System_String_Action_WebApiModule__" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.String,System.String,Action{WebApiModule})">WithWebApi&lt;TContainer&gt;(TContainer, String, String, Action&lt;WebApiModule&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:WebApiModule"></see> using the default response serializer
+and adds it to a module container, giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code>
+if not <span class="xref">null</span></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithZipFile&lt;TContainer&gt;(this TContainer this, string? name, string baseRoute, string zipFilePath, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
+    <pre><code class="lang-csharp hljs">public static TContainer WithWebApi&lt;TContainer&gt;(this TContainer this, string name, string baseRoute, Action&lt;WebApiModule&gt; configure)
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2913,7 +2733,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The name.</p>
 </td>
@@ -2925,15 +2745,9 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">zipFilePath</span></td>
-        <td><p>The zip file-system path.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">FileModule</span>&gt;&gt;</td>
+        <td><span class="xref">Action</span>&lt;<span class="xref">WebApiModule</span>&gt;</td>
         <td><span class="parametername">configure</span></td>
-        <td><p>A callback used to configure the module.</p>
+        <td><p>A callback used to configure the newly-created <see cref="!:WebApiModule"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -2949,7 +2763,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
     <tbody>
       <tr>
         <td><span class="xref">TContainer</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:FileModule"></see> added.</p>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:RoutingModule"></see> added.</p>
 </td>
       </tr>
     </tbody>
@@ -2970,7 +2784,101 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithZipFile__1___0_System_Nullable_System_String__System_String_System_String_System_Nullable_Action_FileModule____seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_String_System_String_Action_WebApiModule___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebModuleContainerExtensions_WithWebApi_" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi*"></a>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_String_System_String_EmbedIO_ResponseSerializerCallback_Action_WebApiModule__" data-uid="EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.String,System.String,EmbedIO.ResponseSerializerCallback,Action{WebApiModule})">WithWebApi&lt;TContainer&gt;(TContainer, String, String, ResponseSerializerCallback, Action&lt;WebApiModule&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:WebApiModule"></see>, using the specified response serializer
+and adds it to a module container, giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code>
+if not <span class="xref">null</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TContainer WithWebApi&lt;TContainer&gt;(this TContainer this, string name, string baseRoute, ResponseSerializerCallback serializer, Action&lt;WebApiModule&gt; configure)
+    where TContainer : class, IWebModuleContainer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContainer</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TContainer</code> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route of the module.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.ResponseSerializerCallback.html">ResponseSerializerCallback</a></td>
+        <td><span class="parametername">serializer</span></td>
+        <td><p>A <a class="xref" href="EmbedIO.ResponseSerializerCallback.html">ResponseSerializerCallback</a> used to serialize
+the result of controller methods returning <span class="xref">langword_csharp_object</span>
+or <see cref="!:Task&lt;TResult>">Task&lt;object&gt;</see>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Action</span>&lt;<span class="xref">WebApiModule</span>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td><p>A callback used to configure the newly-created <see cref="!:WebApiModule"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContainer</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:RoutingModule"></see> added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TContainer</span></td>
+        <td><p>The type of the module container.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_String_System_String_EmbedIO_ResponseSerializerCallback_Action_WebApiModule___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>
@@ -3061,16 +2969,16 @@ a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module conta
   </div>
   
   
-  <a id="EmbedIO_WebModuleContainerExtensions_WithZipFileStream_" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFileStream*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_Nullable_System_String__System_String_Stream_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFileStream``1(``0,System.Nullable{System.String},System.String,Stream,System.Nullable{Action{FileModule}})">WithZipFileStream&lt;TContainer&gt;(TContainer, Nullable&lt;String&gt;, String, Stream, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ZipFileProvider"></see> using a zip file as stream, uses it to initialize
+  <a id="EmbedIO_WebModuleContainerExtensions_WithZipFile_" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFile*"></a>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithZipFile__1___0_System_String_System_String_System_String_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFile``1(``0,System.String,System.String,System.String,System.Nullable{Action{FileModule}})">WithZipFile&lt;TContainer&gt;(TContainer, String, String, String, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ZipFileProvider"></see> using a file-system path, uses it to initialize
 a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container,
 giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithZipFileStream&lt;TContainer&gt;(this TContainer this, string? name, string baseRoute, Stream zipFileStream, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
+    <pre><code class="lang-csharp hljs">public static TContainer WithZipFile&lt;TContainer&gt;(this TContainer this, string name, string baseRoute, string zipFilePath, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -3090,7 +2998,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>The name.</p>
 </td>
@@ -3102,9 +3010,9 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">zipFileStream</span></td>
-        <td><p>The zip file as stream.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">zipFilePath</span></td>
+        <td><p>The zip file-system path.</p>
 </td>
       </tr>
       <tr>
@@ -3147,7 +3055,7 @@ giving it the specified <code data-dev-comment-type="paramref" class="paramref">
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_Nullable_System_String__System_String_Stream_System_Nullable_Action_FileModule____seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithZipFile__1___0_System_String_System_String_System_String_System_Nullable_Action_FileModule____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>
@@ -3233,6 +3141,98 @@ a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module conta
     </tbody>
   </table>
   <h5 id="EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_String_Stream_System_Nullable_Action_FileModule____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_WebModuleContainerExtensions_WithZipFileStream_" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFileStream*"></a>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_String_System_String_Stream_System_Nullable_Action_FileModule___" data-uid="EmbedIO.WebModuleContainerExtensions.WithZipFileStream``1(``0,System.String,System.String,Stream,System.Nullable{Action{FileModule}})">WithZipFileStream&lt;TContainer&gt;(TContainer, String, String, Stream, Nullable&lt;Action&lt;FileModule&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ZipFileProvider"></see> using a zip file as stream, uses it to initialize
+a <seealso cref="!:FileModule"></seealso>, and adds the latter to a module container,
+giving it the specified <code data-dev-comment-type="paramref" class="paramref">name</code> if not <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TContainer WithZipFileStream&lt;TContainer&gt;(this TContainer this, string name, string baseRoute, Stream zipFileStream, Action&lt;FileModule&gt;? configure = default(Action&lt;FileModule&gt;? ))
+    where TContainer : class, IWebModuleContainer</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContainer</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TContainer</code> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route of the module.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">zipFileStream</span></td>
+        <td><p>The zip file as stream.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">FileModule</span>&gt;&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td><p>A callback used to configure the module.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContainer</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:FileModule"></see> added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TContainer</span></td>
+        <td><p>The type of the module container.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_String_System_String_Stream_System_Nullable_Action_FileModule____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>

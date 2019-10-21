@@ -156,15 +156,12 @@ references:
   commentId: T:EmbedIO.Authentication.BasicAuthenticationModule
   fullName: EmbedIO.Authentication.BasicAuthenticationModule
   nameWithType: BasicAuthenticationModule
-- uid: EmbedIO.Authentication.BasicAuthenticationModule.#ctor(System.String,System.Nullable{System.String})
-  name: BasicAuthenticationModule(String, Nullable<String>)
-  href: api/EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule__ctor_System_String_System_Nullable_System_String__
-  commentId: M:EmbedIO.Authentication.BasicAuthenticationModule.#ctor(System.String,System.Nullable{System.String})
-  name.vb: BasicAuthenticationModule(String, Nullable(Of String))
-  fullName: EmbedIO.Authentication.BasicAuthenticationModule.BasicAuthenticationModule(System.String, System.Nullable<System.String>)
-  fullName.vb: EmbedIO.Authentication.BasicAuthenticationModule.BasicAuthenticationModule(System.String, System.Nullable(Of System.String))
-  nameWithType: BasicAuthenticationModule.BasicAuthenticationModule(String, Nullable<String>)
-  nameWithType.vb: BasicAuthenticationModule.BasicAuthenticationModule(String, Nullable(Of String))
+- uid: EmbedIO.Authentication.BasicAuthenticationModule.#ctor(System.String,System.String)
+  name: BasicAuthenticationModule(String, String)
+  href: api/EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule__ctor_System_String_System_String_
+  commentId: M:EmbedIO.Authentication.BasicAuthenticationModule.#ctor(System.String,System.String)
+  fullName: EmbedIO.Authentication.BasicAuthenticationModule.BasicAuthenticationModule(System.String, System.String)
+  nameWithType: BasicAuthenticationModule.BasicAuthenticationModule(String, String)
 - uid: EmbedIO.Authentication.BasicAuthenticationModule.#ctor*
   name: BasicAuthenticationModule
   href: api/EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule__ctor_
@@ -204,15 +201,12 @@ references:
   commentId: T:EmbedIO.Authentication.BasicAuthenticationModuleBase
   fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase
   nameWithType: BasicAuthenticationModuleBase
-- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor(System.String,System.Nullable{System.String})
-  name: BasicAuthenticationModuleBase(String, Nullable<String>)
-  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_Nullable_System_String__
-  commentId: M:EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor(System.String,System.Nullable{System.String})
-  name.vb: BasicAuthenticationModuleBase(String, Nullable(Of String))
-  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.BasicAuthenticationModuleBase(System.String, System.Nullable<System.String>)
-  fullName.vb: EmbedIO.Authentication.BasicAuthenticationModuleBase.BasicAuthenticationModuleBase(System.String, System.Nullable(Of System.String))
-  nameWithType: BasicAuthenticationModuleBase.BasicAuthenticationModuleBase(String, Nullable<String>)
-  nameWithType.vb: BasicAuthenticationModuleBase.BasicAuthenticationModuleBase(String, Nullable(Of String))
+- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor(System.String,System.String)
+  name: BasicAuthenticationModuleBase(String, String)
+  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_String_
+  commentId: M:EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor(System.String,System.String)
+  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.BasicAuthenticationModuleBase(System.String, System.String)
+  nameWithType: BasicAuthenticationModuleBase.BasicAuthenticationModuleBase(String, String)
 - uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor*
   name: BasicAuthenticationModuleBase
   href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_
@@ -1962,6 +1956,22 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpContextExtensions.OpenResponseStream
   nameWithType: HttpContextExtensions.OpenResponseStream
+- uid: EmbedIO.HttpContextExtensions.OpenResponseText(EmbedIO.IHttpContext,System.Nullable{Encoding},System.Boolean,System.Boolean)
+  name: OpenResponseText(IHttpContext, Nullable<Encoding>, Boolean, Boolean)
+  href: api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_OpenResponseText_EmbedIO_IHttpContext_System_Nullable_Encoding__System_Boolean_System_Boolean_
+  commentId: M:EmbedIO.HttpContextExtensions.OpenResponseText(EmbedIO.IHttpContext,System.Nullable{Encoding},System.Boolean,System.Boolean)
+  name.vb: OpenResponseText(IHttpContext, Nullable(Of Encoding), Boolean, Boolean)
+  fullName: EmbedIO.HttpContextExtensions.OpenResponseText(EmbedIO.IHttpContext, System.Nullable<Encoding>, System.Boolean, System.Boolean)
+  fullName.vb: EmbedIO.HttpContextExtensions.OpenResponseText(EmbedIO.IHttpContext, System.Nullable(Of Encoding), System.Boolean, System.Boolean)
+  nameWithType: HttpContextExtensions.OpenResponseText(IHttpContext, Nullable<Encoding>, Boolean, Boolean)
+  nameWithType.vb: HttpContextExtensions.OpenResponseText(IHttpContext, Nullable(Of Encoding), Boolean, Boolean)
+- uid: EmbedIO.HttpContextExtensions.OpenResponseText*
+  name: OpenResponseText
+  href: api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_OpenResponseText_
+  commentId: Overload:EmbedIO.HttpContextExtensions.OpenResponseText
+  isSpec: "True"
+  fullName: EmbedIO.HttpContextExtensions.OpenResponseText
+  nameWithType: HttpContextExtensions.OpenResponseText
 - uid: EmbedIO.HttpContextExtensions.Redirect(EmbedIO.IHttpContext,System.String,System.Int32)
   name: Redirect(IHttpContext, String, Int32)
   href: api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_Redirect_EmbedIO_IHttpContext_System_String_System_Int32_
@@ -2057,48 +2067,36 @@ references:
   commentId: M:EmbedIO.HttpException.#ctor(HttpStatusCode)
   fullName: EmbedIO.HttpException.HttpException(HttpStatusCode)
   nameWithType: HttpException.HttpException(HttpStatusCode)
-- uid: EmbedIO.HttpException.#ctor(HttpStatusCode,System.Nullable{System.String})
-  name: HttpException(HttpStatusCode, Nullable<String>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_HttpStatusCode_System_Nullable_System_String__
-  commentId: M:EmbedIO.HttpException.#ctor(HttpStatusCode,System.Nullable{System.String})
-  name.vb: HttpException(HttpStatusCode, Nullable(Of String))
-  fullName: EmbedIO.HttpException.HttpException(HttpStatusCode, System.Nullable<System.String>)
-  fullName.vb: EmbedIO.HttpException.HttpException(HttpStatusCode, System.Nullable(Of System.String))
-  nameWithType: HttpException.HttpException(HttpStatusCode, Nullable<String>)
-  nameWithType.vb: HttpException.HttpException(HttpStatusCode, Nullable(Of String))
-- uid: EmbedIO.HttpException.#ctor(HttpStatusCode,System.Nullable{System.String},System.Nullable{System.Object})
-  name: HttpException(HttpStatusCode, Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_HttpStatusCode_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.#ctor(HttpStatusCode,System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: HttpException(HttpStatusCode, Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.HttpException(HttpStatusCode, System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.HttpException(HttpStatusCode, System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.HttpException(HttpStatusCode, Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.HttpException(HttpStatusCode, Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.#ctor(HttpStatusCode,System.String)
+  name: HttpException(HttpStatusCode, String)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_HttpStatusCode_System_String_
+  commentId: M:EmbedIO.HttpException.#ctor(HttpStatusCode,System.String)
+  fullName: EmbedIO.HttpException.HttpException(HttpStatusCode, System.String)
+  nameWithType: HttpException.HttpException(HttpStatusCode, String)
+- uid: EmbedIO.HttpException.#ctor(HttpStatusCode,System.String,System.Object)
+  name: HttpException(HttpStatusCode, String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_HttpStatusCode_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.#ctor(HttpStatusCode,System.String,System.Object)
+  fullName: EmbedIO.HttpException.HttpException(HttpStatusCode, System.String, System.Object)
+  nameWithType: HttpException.HttpException(HttpStatusCode, String, Object)
 - uid: EmbedIO.HttpException.#ctor(System.Int32)
   name: HttpException(Int32)
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_System_Int32_
   commentId: M:EmbedIO.HttpException.#ctor(System.Int32)
   fullName: EmbedIO.HttpException.HttpException(System.Int32)
   nameWithType: HttpException.HttpException(Int32)
-- uid: EmbedIO.HttpException.#ctor(System.Int32,System.Nullable{System.String})
-  name: HttpException(Int32, Nullable<String>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_System_Int32_System_Nullable_System_String__
-  commentId: M:EmbedIO.HttpException.#ctor(System.Int32,System.Nullable{System.String})
-  name.vb: HttpException(Int32, Nullable(Of String))
-  fullName: EmbedIO.HttpException.HttpException(System.Int32, System.Nullable<System.String>)
-  fullName.vb: EmbedIO.HttpException.HttpException(System.Int32, System.Nullable(Of System.String))
-  nameWithType: HttpException.HttpException(Int32, Nullable<String>)
-  nameWithType.vb: HttpException.HttpException(Int32, Nullable(Of String))
-- uid: EmbedIO.HttpException.#ctor(System.Int32,System.Nullable{System.String},System.Nullable{System.Object})
-  name: HttpException(Int32, Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_System_Int32_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.#ctor(System.Int32,System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: HttpException(Int32, Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.HttpException(System.Int32, System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.HttpException(System.Int32, System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.HttpException(Int32, Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.HttpException(Int32, Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.#ctor(System.Int32,System.String)
+  name: HttpException(Int32, String)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_System_Int32_System_String_
+  commentId: M:EmbedIO.HttpException.#ctor(System.Int32,System.String)
+  fullName: EmbedIO.HttpException.HttpException(System.Int32, System.String)
+  nameWithType: HttpException.HttpException(Int32, String)
+- uid: EmbedIO.HttpException.#ctor(System.Int32,System.String,System.Object)
+  name: HttpException(Int32, String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_System_Int32_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.#ctor(System.Int32,System.String,System.Object)
+  fullName: EmbedIO.HttpException.HttpException(System.Int32, System.String, System.Object)
+  nameWithType: HttpException.HttpException(Int32, String, Object)
 - uid: EmbedIO.HttpException.#ctor*
   name: HttpException
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException__ctor_
@@ -2106,15 +2104,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpException.HttpException
   nameWithType: HttpException.HttpException
-- uid: EmbedIO.HttpException.BadRequest(System.Nullable{System.String},System.Nullable{System.Object})
-  name: BadRequest(Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_BadRequest_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.BadRequest(System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: BadRequest(Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.BadRequest(System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.BadRequest(System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.BadRequest(Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.BadRequest(Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.BadRequest(System.String,System.Object)
+  name: BadRequest(String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_BadRequest_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.BadRequest(System.String,System.Object)
+  fullName: EmbedIO.HttpException.BadRequest(System.String, System.Object)
+  nameWithType: HttpException.BadRequest(String, Object)
 - uid: EmbedIO.HttpException.BadRequest*
   name: BadRequest
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_BadRequest_
@@ -2135,15 +2130,29 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpException.DataObject
   nameWithType: HttpException.DataObject
-- uid: EmbedIO.HttpException.Forbidden(System.Nullable{System.String},System.Nullable{System.Object})
-  name: Forbidden(Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_Forbidden_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.Forbidden(System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: Forbidden(Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.Forbidden(System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.Forbidden(System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.Forbidden(Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.Forbidden(Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.EmbedIO#IHttpException#Message
+  name: IHttpException.Message
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_EmbedIO_IHttpException_Message
+  commentId: P:EmbedIO.HttpException.EmbedIO#IHttpException#Message
+  name.vb: EmbedIO.IHttpException.Message
+  fullName: EmbedIO.HttpException.EmbedIO.IHttpException.Message
+  nameWithType: HttpException.IHttpException.Message
+  nameWithType.vb: HttpException.EmbedIO.IHttpException.Message
+- uid: EmbedIO.HttpException.EmbedIO#IHttpException#Message*
+  name: IHttpException.Message
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_EmbedIO_IHttpException_Message_
+  commentId: Overload:EmbedIO.HttpException.EmbedIO#IHttpException#Message
+  isSpec: "True"
+  name.vb: EmbedIO.IHttpException.Message
+  fullName: EmbedIO.HttpException.EmbedIO.IHttpException.Message
+  nameWithType: HttpException.IHttpException.Message
+  nameWithType.vb: HttpException.EmbedIO.IHttpException.Message
+- uid: EmbedIO.HttpException.Forbidden(System.String,System.Object)
+  name: Forbidden(String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_Forbidden_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.Forbidden(System.String,System.Object)
+  fullName: EmbedIO.HttpException.Forbidden(System.String, System.Object)
+  nameWithType: HttpException.Forbidden(String, Object)
 - uid: EmbedIO.HttpException.Forbidden*
   name: Forbidden
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_Forbidden_
@@ -2151,15 +2160,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpException.Forbidden
   nameWithType: HttpException.Forbidden
-- uid: EmbedIO.HttpException.InternalServerError(System.Nullable{System.String},System.Nullable{System.Object})
-  name: InternalServerError(Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_InternalServerError_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.InternalServerError(System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: InternalServerError(Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.InternalServerError(System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.InternalServerError(System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.InternalServerError(Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.InternalServerError(Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.InternalServerError(System.String,System.Object)
+  name: InternalServerError(String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_InternalServerError_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.InternalServerError(System.String,System.Object)
+  fullName: EmbedIO.HttpException.InternalServerError(System.String, System.Object)
+  nameWithType: HttpException.InternalServerError(String, Object)
 - uid: EmbedIO.HttpException.InternalServerError*
   name: InternalServerError
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_InternalServerError_
@@ -2167,15 +2173,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpException.InternalServerError
   nameWithType: HttpException.InternalServerError
-- uid: EmbedIO.HttpException.MethodNotAllowed(System.Nullable{System.String},System.Nullable{System.Object})
-  name: MethodNotAllowed(Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_MethodNotAllowed_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.MethodNotAllowed(System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: MethodNotAllowed(Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.MethodNotAllowed(System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.MethodNotAllowed(System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.MethodNotAllowed(Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.MethodNotAllowed(Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.MethodNotAllowed(System.String,System.Object)
+  name: MethodNotAllowed(String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_MethodNotAllowed_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.MethodNotAllowed(System.String,System.Object)
+  fullName: EmbedIO.HttpException.MethodNotAllowed(System.String, System.Object)
+  nameWithType: HttpException.MethodNotAllowed(String, Object)
 - uid: EmbedIO.HttpException.MethodNotAllowed*
   name: MethodNotAllowed
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_MethodNotAllowed_
@@ -2202,15 +2205,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpException.NotAcceptable
   nameWithType: HttpException.NotAcceptable
-- uid: EmbedIO.HttpException.NotFound(System.Nullable{System.String},System.Nullable{System.Object})
-  name: NotFound(Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_NotFound_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.NotFound(System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: NotFound(Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.NotFound(System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.NotFound(System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.NotFound(Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.NotFound(Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.NotFound(System.String,System.Object)
+  name: NotFound(String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_NotFound_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.NotFound(System.String,System.Object)
+  fullName: EmbedIO.HttpException.NotFound(System.String, System.Object)
+  nameWithType: HttpException.NotFound(String, Object)
 - uid: EmbedIO.HttpException.NotFound*
   name: NotFound
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_NotFound_
@@ -2291,15 +2291,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.HttpException.StatusCode
   nameWithType: HttpException.StatusCode
-- uid: EmbedIO.HttpException.Unauthorized(System.Nullable{System.String},System.Nullable{System.Object})
-  name: Unauthorized(Nullable<String>, Nullable<Object>)
-  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_Unauthorized_System_Nullable_System_String__System_Nullable_System_Object__
-  commentId: M:EmbedIO.HttpException.Unauthorized(System.Nullable{System.String},System.Nullable{System.Object})
-  name.vb: Unauthorized(Nullable(Of String), Nullable(Of Object))
-  fullName: EmbedIO.HttpException.Unauthorized(System.Nullable<System.String>, System.Nullable<System.Object>)
-  fullName.vb: EmbedIO.HttpException.Unauthorized(System.Nullable(Of System.String), System.Nullable(Of System.Object))
-  nameWithType: HttpException.Unauthorized(Nullable<String>, Nullable<Object>)
-  nameWithType.vb: HttpException.Unauthorized(Nullable(Of String), Nullable(Of Object))
+- uid: EmbedIO.HttpException.Unauthorized(System.String,System.Object)
+  name: Unauthorized(String, Object)
+  href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_Unauthorized_System_String_System_Object_
+  commentId: M:EmbedIO.HttpException.Unauthorized(System.String,System.Object)
+  fullName: EmbedIO.HttpException.Unauthorized(System.String, System.Object)
+  nameWithType: HttpException.Unauthorized(String, Object)
 - uid: EmbedIO.HttpException.Unauthorized*
   name: Unauthorized
   href: api/EmbedIO.HttpException.html#EmbedIO_HttpException_Unauthorized_
@@ -2943,15 +2940,12 @@ references:
   commentId: M:EmbedIO.HttpNotAcceptableException.#ctor
   fullName: EmbedIO.HttpNotAcceptableException.HttpNotAcceptableException()
   nameWithType: HttpNotAcceptableException.HttpNotAcceptableException()
-- uid: EmbedIO.HttpNotAcceptableException.#ctor(System.Nullable{System.String})
-  name: HttpNotAcceptableException(Nullable<String>)
-  href: api/EmbedIO.HttpNotAcceptableException.html#EmbedIO_HttpNotAcceptableException__ctor_System_Nullable_System_String__
-  commentId: M:EmbedIO.HttpNotAcceptableException.#ctor(System.Nullable{System.String})
-  name.vb: HttpNotAcceptableException(Nullable(Of String))
-  fullName: EmbedIO.HttpNotAcceptableException.HttpNotAcceptableException(System.Nullable<System.String>)
-  fullName.vb: EmbedIO.HttpNotAcceptableException.HttpNotAcceptableException(System.Nullable(Of System.String))
-  nameWithType: HttpNotAcceptableException.HttpNotAcceptableException(Nullable<String>)
-  nameWithType.vb: HttpNotAcceptableException.HttpNotAcceptableException(Nullable(Of String))
+- uid: EmbedIO.HttpNotAcceptableException.#ctor(System.String)
+  name: HttpNotAcceptableException(String)
+  href: api/EmbedIO.HttpNotAcceptableException.html#EmbedIO_HttpNotAcceptableException__ctor_System_String_
+  commentId: M:EmbedIO.HttpNotAcceptableException.#ctor(System.String)
+  fullName: EmbedIO.HttpNotAcceptableException.HttpNotAcceptableException(System.String)
+  nameWithType: HttpNotAcceptableException.HttpNotAcceptableException(String)
 - uid: EmbedIO.HttpNotAcceptableException.#ctor*
   name: HttpNotAcceptableException
   href: api/EmbedIO.HttpNotAcceptableException.html#EmbedIO_HttpNotAcceptableException__ctor_
@@ -3615,15 +3609,15 @@ references:
   commentId: T:EmbedIO.IHttpContextImpl
   fullName: EmbedIO.IHttpContextImpl
   nameWithType: IHttpContextImpl
-- uid: EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable{System.String},System.Nullable{System.String},System.Int32,TimeSpan,CancellationToken)
-  name: AcceptWebSocketAsync(IEnumerable<String>, Nullable<String>, Int32, TimeSpan, CancellationToken)
-  href: api/EmbedIO.IHttpContextImpl.html#EmbedIO_IHttpContextImpl_AcceptWebSocketAsync_IEnumerable_System_String__System_Nullable_System_String__System_Int32_TimeSpan_CancellationToken_
-  commentId: M:EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable{System.String},System.Nullable{System.String},System.Int32,TimeSpan,CancellationToken)
-  name.vb: AcceptWebSocketAsync(IEnumerable(Of String), Nullable(Of String), Int32, TimeSpan, CancellationToken)
-  fullName: EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable<System.String>, System.Nullable<System.String>, System.Int32, TimeSpan, CancellationToken)
-  fullName.vb: EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable(Of System.String), System.Nullable(Of System.String), System.Int32, TimeSpan, CancellationToken)
-  nameWithType: IHttpContextImpl.AcceptWebSocketAsync(IEnumerable<String>, Nullable<String>, Int32, TimeSpan, CancellationToken)
-  nameWithType.vb: IHttpContextImpl.AcceptWebSocketAsync(IEnumerable(Of String), Nullable(Of String), Int32, TimeSpan, CancellationToken)
+- uid: EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable{System.String},System.String,System.Int32,TimeSpan,CancellationToken)
+  name: AcceptWebSocketAsync(IEnumerable<String>, String, Int32, TimeSpan, CancellationToken)
+  href: api/EmbedIO.IHttpContextImpl.html#EmbedIO_IHttpContextImpl_AcceptWebSocketAsync_IEnumerable_System_String__System_String_System_Int32_TimeSpan_CancellationToken_
+  commentId: M:EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable{System.String},System.String,System.Int32,TimeSpan,CancellationToken)
+  name.vb: AcceptWebSocketAsync(IEnumerable(Of String), String, Int32, TimeSpan, CancellationToken)
+  fullName: EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable<System.String>, System.String, System.Int32, TimeSpan, CancellationToken)
+  fullName.vb: EmbedIO.IHttpContextImpl.AcceptWebSocketAsync(IEnumerable(Of System.String), System.String, System.Int32, TimeSpan, CancellationToken)
+  nameWithType: IHttpContextImpl.AcceptWebSocketAsync(IEnumerable<String>, String, Int32, TimeSpan, CancellationToken)
+  nameWithType.vb: IHttpContextImpl.AcceptWebSocketAsync(IEnumerable(Of String), String, Int32, TimeSpan, CancellationToken)
 - uid: EmbedIO.IHttpContextImpl.AcceptWebSocketAsync*
   name: AcceptWebSocketAsync
   href: api/EmbedIO.IHttpContextImpl.html#EmbedIO_IHttpContextImpl_AcceptWebSocketAsync_
@@ -5773,15 +5767,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.RequestHandler.PassThrough
   nameWithType: RequestHandler.PassThrough
-- uid: EmbedIO.RequestHandler.ThrowBadRequest(System.Nullable{System.String})
-  name: ThrowBadRequest(Nullable<String>)
-  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowBadRequest_System_Nullable_System_String__
-  commentId: M:EmbedIO.RequestHandler.ThrowBadRequest(System.Nullable{System.String})
-  name.vb: ThrowBadRequest(Nullable(Of String))
-  fullName: EmbedIO.RequestHandler.ThrowBadRequest(System.Nullable<System.String>)
-  fullName.vb: EmbedIO.RequestHandler.ThrowBadRequest(System.Nullable(Of System.String))
-  nameWithType: RequestHandler.ThrowBadRequest(Nullable<String>)
-  nameWithType.vb: RequestHandler.ThrowBadRequest(Nullable(Of String))
+- uid: EmbedIO.RequestHandler.ThrowBadRequest(System.String)
+  name: ThrowBadRequest(String)
+  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowBadRequest_System_String_
+  commentId: M:EmbedIO.RequestHandler.ThrowBadRequest(System.String)
+  fullName: EmbedIO.RequestHandler.ThrowBadRequest(System.String)
+  nameWithType: RequestHandler.ThrowBadRequest(String)
 - uid: EmbedIO.RequestHandler.ThrowBadRequest*
   name: ThrowBadRequest
   href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowBadRequest_
@@ -5789,15 +5780,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.RequestHandler.ThrowBadRequest
   nameWithType: RequestHandler.ThrowBadRequest
-- uid: EmbedIO.RequestHandler.ThrowForbidden(System.Nullable{System.String})
-  name: ThrowForbidden(Nullable<String>)
-  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowForbidden_System_Nullable_System_String__
-  commentId: M:EmbedIO.RequestHandler.ThrowForbidden(System.Nullable{System.String})
-  name.vb: ThrowForbidden(Nullable(Of String))
-  fullName: EmbedIO.RequestHandler.ThrowForbidden(System.Nullable<System.String>)
-  fullName.vb: EmbedIO.RequestHandler.ThrowForbidden(System.Nullable(Of System.String))
-  nameWithType: RequestHandler.ThrowForbidden(Nullable<String>)
-  nameWithType.vb: RequestHandler.ThrowForbidden(Nullable(Of String))
+- uid: EmbedIO.RequestHandler.ThrowForbidden(System.String)
+  name: ThrowForbidden(String)
+  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowForbidden_System_String_
+  commentId: M:EmbedIO.RequestHandler.ThrowForbidden(System.String)
+  fullName: EmbedIO.RequestHandler.ThrowForbidden(System.String)
+  nameWithType: RequestHandler.ThrowForbidden(String)
 - uid: EmbedIO.RequestHandler.ThrowForbidden*
   name: ThrowForbidden
   href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowForbidden_
@@ -5805,15 +5793,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.RequestHandler.ThrowForbidden
   nameWithType: RequestHandler.ThrowForbidden
-- uid: EmbedIO.RequestHandler.ThrowMethodNotAllowed(System.Nullable{System.String})
-  name: ThrowMethodNotAllowed(Nullable<String>)
-  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowMethodNotAllowed_System_Nullable_System_String__
-  commentId: M:EmbedIO.RequestHandler.ThrowMethodNotAllowed(System.Nullable{System.String})
-  name.vb: ThrowMethodNotAllowed(Nullable(Of String))
-  fullName: EmbedIO.RequestHandler.ThrowMethodNotAllowed(System.Nullable<System.String>)
-  fullName.vb: EmbedIO.RequestHandler.ThrowMethodNotAllowed(System.Nullable(Of System.String))
-  nameWithType: RequestHandler.ThrowMethodNotAllowed(Nullable<String>)
-  nameWithType.vb: RequestHandler.ThrowMethodNotAllowed(Nullable(Of String))
+- uid: EmbedIO.RequestHandler.ThrowMethodNotAllowed(System.String)
+  name: ThrowMethodNotAllowed(String)
+  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowMethodNotAllowed_System_String_
+  commentId: M:EmbedIO.RequestHandler.ThrowMethodNotAllowed(System.String)
+  fullName: EmbedIO.RequestHandler.ThrowMethodNotAllowed(System.String)
+  nameWithType: RequestHandler.ThrowMethodNotAllowed(String)
 - uid: EmbedIO.RequestHandler.ThrowMethodNotAllowed*
   name: ThrowMethodNotAllowed
   href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowMethodNotAllowed_
@@ -5821,15 +5806,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.RequestHandler.ThrowMethodNotAllowed
   nameWithType: RequestHandler.ThrowMethodNotAllowed
-- uid: EmbedIO.RequestHandler.ThrowNotFound(System.Nullable{System.String})
-  name: ThrowNotFound(Nullable<String>)
-  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowNotFound_System_Nullable_System_String__
-  commentId: M:EmbedIO.RequestHandler.ThrowNotFound(System.Nullable{System.String})
-  name.vb: ThrowNotFound(Nullable(Of String))
-  fullName: EmbedIO.RequestHandler.ThrowNotFound(System.Nullable<System.String>)
-  fullName.vb: EmbedIO.RequestHandler.ThrowNotFound(System.Nullable(Of System.String))
-  nameWithType: RequestHandler.ThrowNotFound(Nullable<String>)
-  nameWithType.vb: RequestHandler.ThrowNotFound(Nullable(Of String))
+- uid: EmbedIO.RequestHandler.ThrowNotFound(System.String)
+  name: ThrowNotFound(String)
+  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowNotFound_System_String_
+  commentId: M:EmbedIO.RequestHandler.ThrowNotFound(System.String)
+  fullName: EmbedIO.RequestHandler.ThrowNotFound(System.String)
+  nameWithType: RequestHandler.ThrowNotFound(String)
 - uid: EmbedIO.RequestHandler.ThrowNotFound*
   name: ThrowNotFound
   href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowNotFound_
@@ -5837,15 +5819,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.RequestHandler.ThrowNotFound
   nameWithType: RequestHandler.ThrowNotFound
-- uid: EmbedIO.RequestHandler.ThrowUnauthorized(System.Nullable{System.String})
-  name: ThrowUnauthorized(Nullable<String>)
-  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowUnauthorized_System_Nullable_System_String__
-  commentId: M:EmbedIO.RequestHandler.ThrowUnauthorized(System.Nullable{System.String})
-  name.vb: ThrowUnauthorized(Nullable(Of String))
-  fullName: EmbedIO.RequestHandler.ThrowUnauthorized(System.Nullable<System.String>)
-  fullName.vb: EmbedIO.RequestHandler.ThrowUnauthorized(System.Nullable(Of System.String))
-  nameWithType: RequestHandler.ThrowUnauthorized(Nullable<String>)
-  nameWithType.vb: RequestHandler.ThrowUnauthorized(Nullable(Of String))
+- uid: EmbedIO.RequestHandler.ThrowUnauthorized(System.String)
+  name: ThrowUnauthorized(String)
+  href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowUnauthorized_System_String_
+  commentId: M:EmbedIO.RequestHandler.ThrowUnauthorized(System.String)
+  fullName: EmbedIO.RequestHandler.ThrowUnauthorized(System.String)
+  nameWithType: RequestHandler.ThrowUnauthorized(String)
 - uid: EmbedIO.RequestHandler.ThrowUnauthorized*
   name: ThrowUnauthorized
   href: api/EmbedIO.RequestHandler.html#EmbedIO_RequestHandler_ThrowUnauthorized_
@@ -6114,15 +6093,15 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteMatch.SubPath
   nameWithType: RouteMatch.SubPath
-- uid: EmbedIO.Routing.RouteMatch.TryGetValue(System.String,System.Nullable{System.String}@)
-  name: TryGetValue(String, out Nullable<String>)
-  href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_TryGetValue_System_String_System_Nullable_System_String___
-  commentId: M:EmbedIO.Routing.RouteMatch.TryGetValue(System.String,System.Nullable{System.String}@)
-  name.vb: TryGetValue(String, ByRef Nullable(Of String))
-  fullName: EmbedIO.Routing.RouteMatch.TryGetValue(System.String, out System.Nullable<System.String>)
-  fullName.vb: EmbedIO.Routing.RouteMatch.TryGetValue(System.String, ByRef System.Nullable(Of System.String))
-  nameWithType: RouteMatch.TryGetValue(String, out Nullable<String>)
-  nameWithType.vb: RouteMatch.TryGetValue(String, ByRef Nullable(Of String))
+- uid: EmbedIO.Routing.RouteMatch.TryGetValue(System.String,System.String@)
+  name: TryGetValue(String, out String)
+  href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_TryGetValue_System_String_System_String__
+  commentId: M:EmbedIO.Routing.RouteMatch.TryGetValue(System.String,System.String@)
+  name.vb: TryGetValue(String, ByRef String)
+  fullName: EmbedIO.Routing.RouteMatch.TryGetValue(System.String, out System.String)
+  fullName.vb: EmbedIO.Routing.RouteMatch.TryGetValue(System.String, ByRef System.String)
+  nameWithType: RouteMatch.TryGetValue(String, out String)
+  nameWithType.vb: RouteMatch.TryGetValue(String, ByRef String)
 - uid: EmbedIO.Routing.RouteMatch.TryGetValue*
   name: TryGetValue
   href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_TryGetValue_
@@ -6253,15 +6232,15 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteMatcher.Route
   nameWithType: RouteMatcher.Route
-- uid: EmbedIO.Routing.RouteMatcher.TryParse(System.String,System.Boolean,System.Nullable{EmbedIO.Routing.RouteMatcher}@)
-  name: TryParse(String, Boolean, out Nullable<RouteMatcher>)
-  href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_System_Nullable_EmbedIO_Routing_RouteMatcher___
-  commentId: M:EmbedIO.Routing.RouteMatcher.TryParse(System.String,System.Boolean,System.Nullable{EmbedIO.Routing.RouteMatcher}@)
-  name.vb: TryParse(String, Boolean, ByRef Nullable(Of RouteMatcher))
-  fullName: EmbedIO.Routing.RouteMatcher.TryParse(System.String, System.Boolean, out System.Nullable<EmbedIO.Routing.RouteMatcher>)
-  fullName.vb: EmbedIO.Routing.RouteMatcher.TryParse(System.String, System.Boolean, ByRef System.Nullable(Of EmbedIO.Routing.RouteMatcher))
-  nameWithType: RouteMatcher.TryParse(String, Boolean, out Nullable<RouteMatcher>)
-  nameWithType.vb: RouteMatcher.TryParse(String, Boolean, ByRef Nullable(Of RouteMatcher))
+- uid: EmbedIO.Routing.RouteMatcher.TryParse(System.String,System.Boolean,EmbedIO.Routing.RouteMatcher@)
+  name: TryParse(String, Boolean, out RouteMatcher)
+  href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_EmbedIO_Routing_RouteMatcher__
+  commentId: M:EmbedIO.Routing.RouteMatcher.TryParse(System.String,System.Boolean,EmbedIO.Routing.RouteMatcher@)
+  name.vb: TryParse(String, Boolean, ByRef RouteMatcher)
+  fullName: EmbedIO.Routing.RouteMatcher.TryParse(System.String, System.Boolean, out EmbedIO.Routing.RouteMatcher)
+  fullName.vb: EmbedIO.Routing.RouteMatcher.TryParse(System.String, System.Boolean, ByRef EmbedIO.Routing.RouteMatcher)
+  nameWithType: RouteMatcher.TryParse(String, Boolean, out RouteMatcher)
+  nameWithType.vb: RouteMatcher.TryParse(String, Boolean, ByRef RouteMatcher)
 - uid: EmbedIO.Routing.RouteMatcher.TryParse*
   name: TryParse
   href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_
@@ -6618,6 +6597,32 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteVerbResolverCollection.AddFrom
   nameWithType: RouteVerbResolverCollection.AddFrom
+- uid: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(System.String)
+  name: CreateResolver(String)
+  href: api/EmbedIO.Routing.RouteVerbResolverCollection.html#EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_System_String_
+  commentId: M:EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(System.String)
+  fullName: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(System.String)
+  nameWithType: RouteVerbResolverCollection.CreateResolver(String)
+- uid: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver*
+  name: CreateResolver
+  href: api/EmbedIO.Routing.RouteVerbResolverCollection.html#EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_
+  commentId: Overload:EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver
+  nameWithType: RouteVerbResolverCollection.CreateResolver
+- uid: EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled(EmbedIO.IHttpContext,EmbedIO.Routing.RouteVerbResolver,EmbedIO.Routing.RouteResolutionResult)
+  name: OnResolverCalled(IHttpContext, RouteVerbResolver, RouteResolutionResult)
+  href: api/EmbedIO.Routing.RouteVerbResolverCollection.html#EmbedIO_Routing_RouteVerbResolverCollection_OnResolverCalled_EmbedIO_IHttpContext_EmbedIO_Routing_RouteVerbResolver_EmbedIO_Routing_RouteResolutionResult_
+  commentId: M:EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled(EmbedIO.IHttpContext,EmbedIO.Routing.RouteVerbResolver,EmbedIO.Routing.RouteResolutionResult)
+  fullName: EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled(EmbedIO.IHttpContext, EmbedIO.Routing.RouteVerbResolver, EmbedIO.Routing.RouteResolutionResult)
+  nameWithType: RouteVerbResolverCollection.OnResolverCalled(IHttpContext, RouteVerbResolver, RouteResolutionResult)
+- uid: EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled*
+  name: OnResolverCalled
+  href: api/EmbedIO.Routing.RouteVerbResolverCollection.html#EmbedIO_Routing_RouteVerbResolverCollection_OnResolverCalled_
+  commentId: Overload:EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled
+  nameWithType: RouteVerbResolverCollection.OnResolverCalled
 - uid: EmbedIO.Routing.RoutingModule
   name: RoutingModule
   href: api/EmbedIO.Routing.RoutingModule.html
@@ -7951,6 +7956,51 @@ references:
   commentId: T:EmbedIO.Utilities.NameValueCollectionExtensions
   fullName: EmbedIO.Utilities.NameValueCollectionExtensions
   nameWithType: NameValueCollectionExtensions
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.Contains(NameValueCollection,System.String,System.String)
+  name: Contains(NameValueCollection, String, String)
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_Contains_NameValueCollection_System_String_System_String_
+  commentId: M:EmbedIO.Utilities.NameValueCollectionExtensions.Contains(NameValueCollection,System.String,System.String)
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.Contains(NameValueCollection, System.String, System.String)
+  nameWithType: NameValueCollectionExtensions.Contains(NameValueCollection, String, String)
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.Contains(NameValueCollection,System.String,System.String,StringComparison)
+  name: Contains(NameValueCollection, String, String, StringComparison)
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_Contains_NameValueCollection_System_String_System_String_StringComparison_
+  commentId: M:EmbedIO.Utilities.NameValueCollectionExtensions.Contains(NameValueCollection,System.String,System.String,StringComparison)
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.Contains(NameValueCollection, System.String, System.String, StringComparison)
+  nameWithType: NameValueCollectionExtensions.Contains(NameValueCollection, String, String, StringComparison)
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.Contains*
+  name: Contains
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_Contains_
+  commentId: Overload:EmbedIO.Utilities.NameValueCollectionExtensions.Contains
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.Contains
+  nameWithType: NameValueCollectionExtensions.Contains
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.ContainsKey(NameValueCollection,System.String)
+  name: ContainsKey(NameValueCollection, String)
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_ContainsKey_NameValueCollection_System_String_
+  commentId: M:EmbedIO.Utilities.NameValueCollectionExtensions.ContainsKey(NameValueCollection,System.String)
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.ContainsKey(NameValueCollection, System.String)
+  nameWithType: NameValueCollectionExtensions.ContainsKey(NameValueCollection, String)
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.ContainsKey*
+  name: ContainsKey
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_ContainsKey_
+  commentId: Overload:EmbedIO.Utilities.NameValueCollectionExtensions.ContainsKey
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.ContainsKey
+  nameWithType: NameValueCollectionExtensions.ContainsKey
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.ToArrayDictionary(NameValueCollection)
+  name: ToArrayDictionary(NameValueCollection)
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_ToArrayDictionary_NameValueCollection_
+  commentId: M:EmbedIO.Utilities.NameValueCollectionExtensions.ToArrayDictionary(NameValueCollection)
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.ToArrayDictionary(NameValueCollection)
+  nameWithType: NameValueCollectionExtensions.ToArrayDictionary(NameValueCollection)
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.ToArrayDictionary*
+  name: ToArrayDictionary
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_ToArrayDictionary_
+  commentId: Overload:EmbedIO.Utilities.NameValueCollectionExtensions.ToArrayDictionary
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.ToArrayDictionary
+  nameWithType: NameValueCollectionExtensions.ToArrayDictionary
 - uid: EmbedIO.Utilities.NameValueCollectionExtensions.ToDictionary(NameValueCollection)
   name: ToDictionary(NameValueCollection)
   href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_ToDictionary_NameValueCollection_
@@ -7964,6 +8014,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.NameValueCollectionExtensions.ToDictionary
   nameWithType: NameValueCollectionExtensions.ToDictionary
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.ToStringDictionary(NameValueCollection)
+  name: ToStringDictionary(NameValueCollection)
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_ToStringDictionary_NameValueCollection_
+  commentId: M:EmbedIO.Utilities.NameValueCollectionExtensions.ToStringDictionary(NameValueCollection)
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.ToStringDictionary(NameValueCollection)
+  nameWithType: NameValueCollectionExtensions.ToStringDictionary(NameValueCollection)
+- uid: EmbedIO.Utilities.NameValueCollectionExtensions.ToStringDictionary*
+  name: ToStringDictionary
+  href: api/EmbedIO.Utilities.NameValueCollectionExtensions.html#EmbedIO_Utilities_NameValueCollectionExtensions_ToStringDictionary_
+  commentId: Overload:EmbedIO.Utilities.NameValueCollectionExtensions.ToStringDictionary
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.NameValueCollectionExtensions.ToStringDictionary
+  nameWithType: NameValueCollectionExtensions.ToStringDictionary
 - uid: EmbedIO.Utilities.QValueList
   name: QValueList
   href: api/EmbedIO.Utilities.QValueList.html
@@ -8109,15 +8172,15 @@ references:
   commentId: T:EmbedIO.Utilities.QValueListExtensions
   fullName: EmbedIO.Utilities.QValueListExtensions
   nameWithType: QValueListExtensions
-- uid: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList,System.Boolean,EmbedIO.CompressionMethod@,System.Nullable{System.String}@)
-  name: TryNegotiateContentEncoding(QValueList, Boolean, out CompressionMethod, out Nullable<String>)
-  href: api/EmbedIO.Utilities.QValueListExtensions.html#EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_EmbedIO_Utilities_QValueList_System_Boolean_EmbedIO_CompressionMethod__System_Nullable_System_String___
-  commentId: M:EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList,System.Boolean,EmbedIO.CompressionMethod@,System.Nullable{System.String}@)
-  name.vb: TryNegotiateContentEncoding(QValueList, Boolean, ByRef CompressionMethod, ByRef Nullable(Of String))
-  fullName: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList, System.Boolean, out EmbedIO.CompressionMethod, out System.Nullable<System.String>)
-  fullName.vb: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList, System.Boolean, ByRef EmbedIO.CompressionMethod, ByRef System.Nullable(Of System.String))
-  nameWithType: QValueListExtensions.TryNegotiateContentEncoding(QValueList, Boolean, out CompressionMethod, out Nullable<String>)
-  nameWithType.vb: QValueListExtensions.TryNegotiateContentEncoding(QValueList, Boolean, ByRef CompressionMethod, ByRef Nullable(Of String))
+- uid: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList,System.Boolean,EmbedIO.CompressionMethod@,System.String@)
+  name: TryNegotiateContentEncoding(QValueList, Boolean, out CompressionMethod, out String)
+  href: api/EmbedIO.Utilities.QValueListExtensions.html#EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_EmbedIO_Utilities_QValueList_System_Boolean_EmbedIO_CompressionMethod__System_String__
+  commentId: M:EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList,System.Boolean,EmbedIO.CompressionMethod@,System.String@)
+  name.vb: TryNegotiateContentEncoding(QValueList, Boolean, ByRef CompressionMethod, ByRef String)
+  fullName: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList, System.Boolean, out EmbedIO.CompressionMethod, out System.String)
+  fullName.vb: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding(EmbedIO.Utilities.QValueList, System.Boolean, ByRef EmbedIO.CompressionMethod, ByRef System.String)
+  nameWithType: QValueListExtensions.TryNegotiateContentEncoding(QValueList, Boolean, out CompressionMethod, out String)
+  nameWithType.vb: QValueListExtensions.TryNegotiateContentEncoding(QValueList, Boolean, ByRef CompressionMethod, ByRef String)
 - uid: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding*
   name: TryNegotiateContentEncoding
   href: api/EmbedIO.Utilities.QValueListExtensions.html#EmbedIO_Utilities_QValueListExtensions_TryNegotiateContentEncoding_
@@ -8372,24 +8435,21 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.Validate.NotNull
   nameWithType: Validate.NotNull
-- uid: EmbedIO.Utilities.Validate.NotNull``1(System.String,System.Nullable{``0})
-  name: NotNull<T>(String, Nullable<T>)
-  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_NotNull__1_System_String_System_Nullable___0__
-  commentId: M:EmbedIO.Utilities.Validate.NotNull``1(System.String,System.Nullable{``0})
-  name.vb: NotNull(Of T)(String, Nullable(Of T))
-  fullName: EmbedIO.Utilities.Validate.NotNull<T>(System.String, System.Nullable<T>)
-  fullName.vb: EmbedIO.Utilities.Validate.NotNull(Of T)(System.String, System.Nullable(Of T))
-  nameWithType: Validate.NotNull<T>(String, Nullable<T>)
-  nameWithType.vb: Validate.NotNull(Of T)(String, Nullable(Of T))
-- uid: EmbedIO.Utilities.Validate.NotNullOrEmpty(System.String,System.Nullable{System.String})
-  name: NotNullOrEmpty(String, Nullable<String>)
-  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_NotNullOrEmpty_System_String_System_Nullable_System_String__
-  commentId: M:EmbedIO.Utilities.Validate.NotNullOrEmpty(System.String,System.Nullable{System.String})
-  name.vb: NotNullOrEmpty(String, Nullable(Of String))
-  fullName: EmbedIO.Utilities.Validate.NotNullOrEmpty(System.String, System.Nullable<System.String>)
-  fullName.vb: EmbedIO.Utilities.Validate.NotNullOrEmpty(System.String, System.Nullable(Of System.String))
-  nameWithType: Validate.NotNullOrEmpty(String, Nullable<String>)
-  nameWithType.vb: Validate.NotNullOrEmpty(String, Nullable(Of String))
+- uid: EmbedIO.Utilities.Validate.NotNull``1(System.String,``0)
+  name: NotNull<T>(String, T)
+  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_NotNull__1_System_String___0_
+  commentId: M:EmbedIO.Utilities.Validate.NotNull``1(System.String,``0)
+  name.vb: NotNull(Of T)(String, T)
+  fullName: EmbedIO.Utilities.Validate.NotNull<T>(System.String, T)
+  fullName.vb: EmbedIO.Utilities.Validate.NotNull(Of T)(System.String, T)
+  nameWithType: Validate.NotNull<T>(String, T)
+  nameWithType.vb: Validate.NotNull(Of T)(String, T)
+- uid: EmbedIO.Utilities.Validate.NotNullOrEmpty(System.String,System.String)
+  name: NotNullOrEmpty(String, String)
+  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_NotNullOrEmpty_System_String_System_String_
+  commentId: M:EmbedIO.Utilities.Validate.NotNullOrEmpty(System.String,System.String)
+  fullName: EmbedIO.Utilities.Validate.NotNullOrEmpty(System.String, System.String)
+  nameWithType: Validate.NotNullOrEmpty(String, String)
 - uid: EmbedIO.Utilities.Validate.NotNullOrEmpty*
   name: NotNullOrEmpty
   href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_NotNullOrEmpty_
@@ -8549,6 +8609,25 @@ references:
   fullName.vb: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
   nameWithType: FormFieldAttribute.IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
   nameWithType.vb: FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+- uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name: IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync(WebApiController, String)
+  href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String__GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
+  commentId: M:EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync(WebApiController, String)
+  fullName: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  fullName.vb: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  nameWithType: FormFieldAttribute.IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync(WebApiController, String)
+  nameWithType.vb: FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync(WebApiController, String)
+- uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync*
+  name: IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync
+  href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String__GetRequestDataAsync_
+  commentId: Overload:EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync
+  isSpec: "True"
+  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync
+  fullName: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String>.GetRequestDataAsync
+  fullName.vb: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync
+  nameWithType: FormFieldAttribute.IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync
+  nameWithType.vb: FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync
 - uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,Type,System.String)
   name: IRequestDataAttribute<WebApiController>.GetRequestDataAsync(WebApiController, Type, String)
   href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController__GetRequestDataAsync_EmbedIO_WebApi_WebApiController_Type_System_String_
@@ -8719,6 +8798,25 @@ references:
   fullName.vb: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
   nameWithType: QueryFieldAttribute.IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
   nameWithType.vb: QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+- uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name: IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync(WebApiController, String)
+  href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String__GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
+  commentId: M:EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync(WebApiController, String)
+  fullName: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  fullName.vb: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  nameWithType: QueryFieldAttribute.IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync(WebApiController, String)
+  nameWithType.vb: QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync(WebApiController, String)
+- uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync*
+  name: IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync
+  href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String__GetRequestDataAsync_
+  commentId: Overload:EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync
+  isSpec: "True"
+  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync
+  fullName: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String>.GetRequestDataAsync
+  fullName.vb: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync
+  nameWithType: QueryFieldAttribute.IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync
+  nameWithType.vb: QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String>.GetRequestDataAsync
 - uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,Type,System.String)
   name: IRequestDataAttribute<WebApiController>.GetRequestDataAsync(WebApiController, Type, String)
   href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController__GetRequestDataAsync_EmbedIO_WebApi_WebApiController_Type_System_String_
@@ -9499,15 +9597,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources
   nameWithType: WebModuleContainerExtensions.WithEmbeddedResources
-- uid: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.Nullable{System.String},System.String,Assembly,System.String,System.Nullable{Action{FileModule}})
-  name: WithEmbeddedResources<TContainer>(TContainer, Nullable<String>, String, Assembly, String, Nullable<Action<FileModule>>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_Nullable_System_String__System_String_Assembly_System_String_System_Nullable_Action_FileModule___
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.Nullable{System.String},System.String,Assembly,System.String,System.Nullable{Action{FileModule}})
-  name.vb: WithEmbeddedResources(Of TContainer)(TContainer, Nullable(Of String), String, Assembly, String, Nullable(Of Action(Of FileModule)))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources<TContainer>(TContainer, System.Nullable<System.String>, System.String, Assembly, System.String, System.Nullable<Action<FileModule>>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, System.Nullable(Of System.String), System.String, Assembly, System.String, System.Nullable(Of Action(Of FileModule)))
-  nameWithType: WebModuleContainerExtensions.WithEmbeddedResources<TContainer>(TContainer, Nullable<String>, String, Assembly, String, Nullable<Action<FileModule>>)
-  nameWithType.vb: WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, Nullable(Of String), String, Assembly, String, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.String,Assembly,System.String,System.Nullable{Action{FileModule}})
   name: WithEmbeddedResources<TContainer>(TContainer, String, Assembly, String, Nullable<Action<FileModule>>)
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_String_Assembly_System_String_System_Nullable_Action_FileModule___
@@ -9517,6 +9606,15 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, System.String, Assembly, System.String, System.Nullable(Of Action(Of FileModule)))
   nameWithType: WebModuleContainerExtensions.WithEmbeddedResources<TContainer>(TContainer, String, Assembly, String, Nullable<Action<FileModule>>)
   nameWithType.vb: WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, String, Assembly, String, Nullable(Of Action(Of FileModule)))
+- uid: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.String,System.String,Assembly,System.String,System.Nullable{Action{FileModule}})
+  name: WithEmbeddedResources<TContainer>(TContainer, String, String, Assembly, String, Nullable<Action<FileModule>>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithEmbeddedResources__1___0_System_String_System_String_Assembly_System_String_System_Nullable_Action_FileModule___
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources``1(``0,System.String,System.String,Assembly,System.String,System.Nullable{Action{FileModule}})
+  name.vb: WithEmbeddedResources(Of TContainer)(TContainer, String, String, Assembly, String, Nullable(Of Action(Of FileModule)))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources<TContainer>(TContainer, System.String, System.String, Assembly, System.String, System.Nullable<Action<FileModule>>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, System.String, System.String, Assembly, System.String, System.Nullable(Of Action(Of FileModule)))
+  nameWithType: WebModuleContainerExtensions.WithEmbeddedResources<TContainer>(TContainer, String, String, Assembly, String, Nullable<Action<FileModule>>)
+  nameWithType.vb: WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, String, String, Assembly, String, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithModule*
   name: WithModule
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithModule_
@@ -9533,15 +9631,15 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithModule(Of TContainer)(TContainer, EmbedIO.IWebModule)
   nameWithType: WebModuleContainerExtensions.WithModule<TContainer>(TContainer, IWebModule)
   nameWithType.vb: WebModuleContainerExtensions.WithModule(Of TContainer)(TContainer, IWebModule)
-- uid: EmbedIO.WebModuleContainerExtensions.WithModule``1(``0,System.Nullable{System.String},EmbedIO.IWebModule)
-  name: WithModule<TContainer>(TContainer, Nullable<String>, IWebModule)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithModule__1___0_System_Nullable_System_String__EmbedIO_IWebModule_
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithModule``1(``0,System.Nullable{System.String},EmbedIO.IWebModule)
-  name.vb: WithModule(Of TContainer)(TContainer, Nullable(Of String), IWebModule)
-  fullName: EmbedIO.WebModuleContainerExtensions.WithModule<TContainer>(TContainer, System.Nullable<System.String>, EmbedIO.IWebModule)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithModule(Of TContainer)(TContainer, System.Nullable(Of System.String), EmbedIO.IWebModule)
-  nameWithType: WebModuleContainerExtensions.WithModule<TContainer>(TContainer, Nullable<String>, IWebModule)
-  nameWithType.vb: WebModuleContainerExtensions.WithModule(Of TContainer)(TContainer, Nullable(Of String), IWebModule)
+- uid: EmbedIO.WebModuleContainerExtensions.WithModule``1(``0,System.String,EmbedIO.IWebModule)
+  name: WithModule<TContainer>(TContainer, String, IWebModule)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithModule__1___0_System_String_EmbedIO_IWebModule_
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithModule``1(``0,System.String,EmbedIO.IWebModule)
+  name.vb: WithModule(Of TContainer)(TContainer, String, IWebModule)
+  fullName: EmbedIO.WebModuleContainerExtensions.WithModule<TContainer>(TContainer, System.String, EmbedIO.IWebModule)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithModule(Of TContainer)(TContainer, System.String, EmbedIO.IWebModule)
+  nameWithType: WebModuleContainerExtensions.WithModule<TContainer>(TContainer, String, IWebModule)
+  nameWithType.vb: WebModuleContainerExtensions.WithModule(Of TContainer)(TContainer, String, IWebModule)
 - uid: EmbedIO.WebModuleContainerExtensions.WithModule``2(``0,``1,System.Nullable{Action{``1}})
   name: WithModule<TContainer, TWebModule>(TContainer, TWebModule, Nullable<Action<TWebModule>>)
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithModule__2___0___1_System_Nullable_Action___1___
@@ -9551,15 +9649,15 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithModule(Of TContainer, TWebModule)(TContainer, TWebModule, System.Nullable(Of Action(Of TWebModule)))
   nameWithType: WebModuleContainerExtensions.WithModule<TContainer, TWebModule>(TContainer, TWebModule, Nullable<Action<TWebModule>>)
   nameWithType.vb: WebModuleContainerExtensions.WithModule(Of TContainer, TWebModule)(TContainer, TWebModule, Nullable(Of Action(Of TWebModule)))
-- uid: EmbedIO.WebModuleContainerExtensions.WithModule``2(``0,System.Nullable{System.String},``1,System.Nullable{Action{``1}})
-  name: WithModule<TContainer, TWebModule>(TContainer, Nullable<String>, TWebModule, Nullable<Action<TWebModule>>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithModule__2___0_System_Nullable_System_String____1_System_Nullable_Action___1___
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithModule``2(``0,System.Nullable{System.String},``1,System.Nullable{Action{``1}})
-  name.vb: WithModule(Of TContainer, TWebModule)(TContainer, Nullable(Of String), TWebModule, Nullable(Of Action(Of TWebModule)))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithModule<TContainer, TWebModule>(TContainer, System.Nullable<System.String>, TWebModule, System.Nullable<Action<TWebModule>>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithModule(Of TContainer, TWebModule)(TContainer, System.Nullable(Of System.String), TWebModule, System.Nullable(Of Action(Of TWebModule)))
-  nameWithType: WebModuleContainerExtensions.WithModule<TContainer, TWebModule>(TContainer, Nullable<String>, TWebModule, Nullable<Action<TWebModule>>)
-  nameWithType.vb: WebModuleContainerExtensions.WithModule(Of TContainer, TWebModule)(TContainer, Nullable(Of String), TWebModule, Nullable(Of Action(Of TWebModule)))
+- uid: EmbedIO.WebModuleContainerExtensions.WithModule``2(``0,System.String,``1,System.Nullable{Action{``1}})
+  name: WithModule<TContainer, TWebModule>(TContainer, String, TWebModule, Nullable<Action<TWebModule>>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithModule__2___0_System_String___1_System_Nullable_Action___1___
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithModule``2(``0,System.String,``1,System.Nullable{Action{``1}})
+  name.vb: WithModule(Of TContainer, TWebModule)(TContainer, String, TWebModule, Nullable(Of Action(Of TWebModule)))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithModule<TContainer, TWebModule>(TContainer, System.String, TWebModule, System.Nullable<Action<TWebModule>>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithModule(Of TContainer, TWebModule)(TContainer, System.String, TWebModule, System.Nullable(Of Action(Of TWebModule)))
+  nameWithType: WebModuleContainerExtensions.WithModule<TContainer, TWebModule>(TContainer, String, TWebModule, Nullable<Action<TWebModule>>)
+  nameWithType.vb: WebModuleContainerExtensions.WithModule(Of TContainer, TWebModule)(TContainer, String, TWebModule, Nullable(Of Action(Of TWebModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithRouting*
   name: WithRouting
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithRouting_
@@ -9567,15 +9665,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleContainerExtensions.WithRouting
   nameWithType: WebModuleContainerExtensions.WithRouting
-- uid: EmbedIO.WebModuleContainerExtensions.WithRouting``1(``0,System.Nullable{System.String},System.String,Action{RoutingModule})
-  name: WithRouting<TContainer>(TContainer, Nullable<String>, String, Action<RoutingModule>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithRouting__1___0_System_Nullable_System_String__System_String_Action_RoutingModule__
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithRouting``1(``0,System.Nullable{System.String},System.String,Action{RoutingModule})
-  name.vb: WithRouting(Of TContainer)(TContainer, Nullable(Of String), String, Action(Of RoutingModule))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithRouting<TContainer>(TContainer, System.Nullable<System.String>, System.String, Action<RoutingModule>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithRouting(Of TContainer)(TContainer, System.Nullable(Of System.String), System.String, Action(Of RoutingModule))
-  nameWithType: WebModuleContainerExtensions.WithRouting<TContainer>(TContainer, Nullable<String>, String, Action<RoutingModule>)
-  nameWithType.vb: WebModuleContainerExtensions.WithRouting(Of TContainer)(TContainer, Nullable(Of String), String, Action(Of RoutingModule))
 - uid: EmbedIO.WebModuleContainerExtensions.WithRouting``1(``0,System.String,Action{RoutingModule})
   name: WithRouting<TContainer>(TContainer, String, Action<RoutingModule>)
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithRouting__1___0_System_String_Action_RoutingModule__
@@ -9585,6 +9674,15 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithRouting(Of TContainer)(TContainer, System.String, Action(Of RoutingModule))
   nameWithType: WebModuleContainerExtensions.WithRouting<TContainer>(TContainer, String, Action<RoutingModule>)
   nameWithType.vb: WebModuleContainerExtensions.WithRouting(Of TContainer)(TContainer, String, Action(Of RoutingModule))
+- uid: EmbedIO.WebModuleContainerExtensions.WithRouting``1(``0,System.String,System.String,Action{RoutingModule})
+  name: WithRouting<TContainer>(TContainer, String, String, Action<RoutingModule>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithRouting__1___0_System_String_System_String_Action_RoutingModule__
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithRouting``1(``0,System.String,System.String,Action{RoutingModule})
+  name.vb: WithRouting(Of TContainer)(TContainer, String, String, Action(Of RoutingModule))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithRouting<TContainer>(TContainer, System.String, System.String, Action<RoutingModule>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithRouting(Of TContainer)(TContainer, System.String, System.String, Action(Of RoutingModule))
+  nameWithType: WebModuleContainerExtensions.WithRouting<TContainer>(TContainer, String, String, Action<RoutingModule>)
+  nameWithType.vb: WebModuleContainerExtensions.WithRouting(Of TContainer)(TContainer, String, String, Action(Of RoutingModule))
 - uid: EmbedIO.WebModuleContainerExtensions.WithStaticFolder*
   name: WithStaticFolder
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithStaticFolder_
@@ -9592,15 +9690,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleContainerExtensions.WithStaticFolder
   nameWithType: WebModuleContainerExtensions.WithStaticFolder
-- uid: EmbedIO.WebModuleContainerExtensions.WithStaticFolder``1(``0,System.Nullable{System.String},System.String,System.String,System.Boolean,System.Nullable{Action{FileModule}})
-  name: WithStaticFolder<TContainer>(TContainer, Nullable<String>, String, String, Boolean, Nullable<Action<FileModule>>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithStaticFolder__1___0_System_Nullable_System_String__System_String_System_String_System_Boolean_System_Nullable_Action_FileModule___
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithStaticFolder``1(``0,System.Nullable{System.String},System.String,System.String,System.Boolean,System.Nullable{Action{FileModule}})
-  name.vb: WithStaticFolder(Of TContainer)(TContainer, Nullable(Of String), String, String, Boolean, Nullable(Of Action(Of FileModule)))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithStaticFolder<TContainer>(TContainer, System.Nullable<System.String>, System.String, System.String, System.Boolean, System.Nullable<Action<FileModule>>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithStaticFolder(Of TContainer)(TContainer, System.Nullable(Of System.String), System.String, System.String, System.Boolean, System.Nullable(Of Action(Of FileModule)))
-  nameWithType: WebModuleContainerExtensions.WithStaticFolder<TContainer>(TContainer, Nullable<String>, String, String, Boolean, Nullable<Action<FileModule>>)
-  nameWithType.vb: WebModuleContainerExtensions.WithStaticFolder(Of TContainer)(TContainer, Nullable(Of String), String, String, Boolean, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithStaticFolder``1(``0,System.String,System.String,System.Boolean,System.Nullable{Action{FileModule}})
   name: WithStaticFolder<TContainer>(TContainer, String, String, Boolean, Nullable<Action<FileModule>>)
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithStaticFolder__1___0_System_String_System_String_System_Boolean_System_Nullable_Action_FileModule___
@@ -9610,6 +9699,15 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithStaticFolder(Of TContainer)(TContainer, System.String, System.String, System.Boolean, System.Nullable(Of Action(Of FileModule)))
   nameWithType: WebModuleContainerExtensions.WithStaticFolder<TContainer>(TContainer, String, String, Boolean, Nullable<Action<FileModule>>)
   nameWithType.vb: WebModuleContainerExtensions.WithStaticFolder(Of TContainer)(TContainer, String, String, Boolean, Nullable(Of Action(Of FileModule)))
+- uid: EmbedIO.WebModuleContainerExtensions.WithStaticFolder``1(``0,System.String,System.String,System.String,System.Boolean,System.Nullable{Action{FileModule}})
+  name: WithStaticFolder<TContainer>(TContainer, String, String, String, Boolean, Nullable<Action<FileModule>>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithStaticFolder__1___0_System_String_System_String_System_String_System_Boolean_System_Nullable_Action_FileModule___
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithStaticFolder``1(``0,System.String,System.String,System.String,System.Boolean,System.Nullable{Action{FileModule}})
+  name.vb: WithStaticFolder(Of TContainer)(TContainer, String, String, String, Boolean, Nullable(Of Action(Of FileModule)))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithStaticFolder<TContainer>(TContainer, System.String, System.String, System.String, System.Boolean, System.Nullable<Action<FileModule>>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithStaticFolder(Of TContainer)(TContainer, System.String, System.String, System.String, System.Boolean, System.Nullable(Of Action(Of FileModule)))
+  nameWithType: WebModuleContainerExtensions.WithStaticFolder<TContainer>(TContainer, String, String, String, Boolean, Nullable<Action<FileModule>>)
+  nameWithType.vb: WebModuleContainerExtensions.WithStaticFolder(Of TContainer)(TContainer, String, String, String, Boolean, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithWebApi*
   name: WithWebApi
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithWebApi_
@@ -9617,24 +9715,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleContainerExtensions.WithWebApi
   nameWithType: WebModuleContainerExtensions.WithWebApi
-- uid: EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.Nullable{System.String},System.String,Action{WebApiModule})
-  name: WithWebApi<TContainer>(TContainer, Nullable<String>, String, Action<WebApiModule>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_Nullable_System_String__System_String_Action_WebApiModule__
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.Nullable{System.String},System.String,Action{WebApiModule})
-  name.vb: WithWebApi(Of TContainer)(TContainer, Nullable(Of String), String, Action(Of WebApiModule))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, System.Nullable<System.String>, System.String, Action<WebApiModule>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, System.Nullable(Of System.String), System.String, Action(Of WebApiModule))
-  nameWithType: WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, Nullable<String>, String, Action<WebApiModule>)
-  nameWithType.vb: WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, Nullable(Of String), String, Action(Of WebApiModule))
-- uid: EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.Nullable{System.String},System.String,EmbedIO.ResponseSerializerCallback,Action{WebApiModule})
-  name: WithWebApi<TContainer>(TContainer, Nullable<String>, String, ResponseSerializerCallback, Action<WebApiModule>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_Nullable_System_String__System_String_EmbedIO_ResponseSerializerCallback_Action_WebApiModule__
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.Nullable{System.String},System.String,EmbedIO.ResponseSerializerCallback,Action{WebApiModule})
-  name.vb: WithWebApi(Of TContainer)(TContainer, Nullable(Of String), String, ResponseSerializerCallback, Action(Of WebApiModule))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, System.Nullable<System.String>, System.String, EmbedIO.ResponseSerializerCallback, Action<WebApiModule>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, System.Nullable(Of System.String), System.String, EmbedIO.ResponseSerializerCallback, Action(Of WebApiModule))
-  nameWithType: WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, Nullable<String>, String, ResponseSerializerCallback, Action<WebApiModule>)
-  nameWithType.vb: WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, Nullable(Of String), String, ResponseSerializerCallback, Action(Of WebApiModule))
 - uid: EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.String,Action{WebApiModule})
   name: WithWebApi<TContainer>(TContainer, String, Action<WebApiModule>)
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_String_Action_WebApiModule__
@@ -9653,6 +9733,24 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, System.String, EmbedIO.ResponseSerializerCallback, Action(Of WebApiModule))
   nameWithType: WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, String, ResponseSerializerCallback, Action<WebApiModule>)
   nameWithType.vb: WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, String, ResponseSerializerCallback, Action(Of WebApiModule))
+- uid: EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.String,System.String,Action{WebApiModule})
+  name: WithWebApi<TContainer>(TContainer, String, String, Action<WebApiModule>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_String_System_String_Action_WebApiModule__
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.String,System.String,Action{WebApiModule})
+  name.vb: WithWebApi(Of TContainer)(TContainer, String, String, Action(Of WebApiModule))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, System.String, System.String, Action<WebApiModule>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, System.String, System.String, Action(Of WebApiModule))
+  nameWithType: WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, String, String, Action<WebApiModule>)
+  nameWithType.vb: WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, String, String, Action(Of WebApiModule))
+- uid: EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.String,System.String,EmbedIO.ResponseSerializerCallback,Action{WebApiModule})
+  name: WithWebApi<TContainer>(TContainer, String, String, ResponseSerializerCallback, Action<WebApiModule>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithWebApi__1___0_System_String_System_String_EmbedIO_ResponseSerializerCallback_Action_WebApiModule__
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithWebApi``1(``0,System.String,System.String,EmbedIO.ResponseSerializerCallback,Action{WebApiModule})
+  name.vb: WithWebApi(Of TContainer)(TContainer, String, String, ResponseSerializerCallback, Action(Of WebApiModule))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, System.String, System.String, EmbedIO.ResponseSerializerCallback, Action<WebApiModule>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, System.String, System.String, EmbedIO.ResponseSerializerCallback, Action(Of WebApiModule))
+  nameWithType: WebModuleContainerExtensions.WithWebApi<TContainer>(TContainer, String, String, ResponseSerializerCallback, Action<WebApiModule>)
+  nameWithType.vb: WebModuleContainerExtensions.WithWebApi(Of TContainer)(TContainer, String, String, ResponseSerializerCallback, Action(Of WebApiModule))
 - uid: EmbedIO.WebModuleContainerExtensions.WithZipFile*
   name: WithZipFile
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFile_
@@ -9660,15 +9758,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleContainerExtensions.WithZipFile
   nameWithType: WebModuleContainerExtensions.WithZipFile
-- uid: EmbedIO.WebModuleContainerExtensions.WithZipFile``1(``0,System.Nullable{System.String},System.String,System.String,System.Nullable{Action{FileModule}})
-  name: WithZipFile<TContainer>(TContainer, Nullable<String>, String, String, Nullable<Action<FileModule>>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFile__1___0_System_Nullable_System_String__System_String_System_String_System_Nullable_Action_FileModule___
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithZipFile``1(``0,System.Nullable{System.String},System.String,System.String,System.Nullable{Action{FileModule}})
-  name.vb: WithZipFile(Of TContainer)(TContainer, Nullable(Of String), String, String, Nullable(Of Action(Of FileModule)))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithZipFile<TContainer>(TContainer, System.Nullable<System.String>, System.String, System.String, System.Nullable<Action<FileModule>>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithZipFile(Of TContainer)(TContainer, System.Nullable(Of System.String), System.String, System.String, System.Nullable(Of Action(Of FileModule)))
-  nameWithType: WebModuleContainerExtensions.WithZipFile<TContainer>(TContainer, Nullable<String>, String, String, Nullable<Action<FileModule>>)
-  nameWithType.vb: WebModuleContainerExtensions.WithZipFile(Of TContainer)(TContainer, Nullable(Of String), String, String, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithZipFile``1(``0,System.String,System.String,System.Nullable{Action{FileModule}})
   name: WithZipFile<TContainer>(TContainer, String, String, Nullable<Action<FileModule>>)
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFile__1___0_System_String_System_String_System_Nullable_Action_FileModule___
@@ -9678,6 +9767,15 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithZipFile(Of TContainer)(TContainer, System.String, System.String, System.Nullable(Of Action(Of FileModule)))
   nameWithType: WebModuleContainerExtensions.WithZipFile<TContainer>(TContainer, String, String, Nullable<Action<FileModule>>)
   nameWithType.vb: WebModuleContainerExtensions.WithZipFile(Of TContainer)(TContainer, String, String, Nullable(Of Action(Of FileModule)))
+- uid: EmbedIO.WebModuleContainerExtensions.WithZipFile``1(``0,System.String,System.String,System.String,System.Nullable{Action{FileModule}})
+  name: WithZipFile<TContainer>(TContainer, String, String, String, Nullable<Action<FileModule>>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFile__1___0_System_String_System_String_System_String_System_Nullable_Action_FileModule___
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithZipFile``1(``0,System.String,System.String,System.String,System.Nullable{Action{FileModule}})
+  name.vb: WithZipFile(Of TContainer)(TContainer, String, String, String, Nullable(Of Action(Of FileModule)))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithZipFile<TContainer>(TContainer, System.String, System.String, System.String, System.Nullable<Action<FileModule>>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithZipFile(Of TContainer)(TContainer, System.String, System.String, System.String, System.Nullable(Of Action(Of FileModule)))
+  nameWithType: WebModuleContainerExtensions.WithZipFile<TContainer>(TContainer, String, String, String, Nullable<Action<FileModule>>)
+  nameWithType.vb: WebModuleContainerExtensions.WithZipFile(Of TContainer)(TContainer, String, String, String, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithZipFileStream*
   name: WithZipFileStream
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFileStream_
@@ -9685,15 +9783,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleContainerExtensions.WithZipFileStream
   nameWithType: WebModuleContainerExtensions.WithZipFileStream
-- uid: EmbedIO.WebModuleContainerExtensions.WithZipFileStream``1(``0,System.Nullable{System.String},System.String,Stream,System.Nullable{Action{FileModule}})
-  name: WithZipFileStream<TContainer>(TContainer, Nullable<String>, String, Stream, Nullable<Action<FileModule>>)
-  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_Nullable_System_String__System_String_Stream_System_Nullable_Action_FileModule___
-  commentId: M:EmbedIO.WebModuleContainerExtensions.WithZipFileStream``1(``0,System.Nullable{System.String},System.String,Stream,System.Nullable{Action{FileModule}})
-  name.vb: WithZipFileStream(Of TContainer)(TContainer, Nullable(Of String), String, Stream, Nullable(Of Action(Of FileModule)))
-  fullName: EmbedIO.WebModuleContainerExtensions.WithZipFileStream<TContainer>(TContainer, System.Nullable<System.String>, System.String, Stream, System.Nullable<Action<FileModule>>)
-  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithZipFileStream(Of TContainer)(TContainer, System.Nullable(Of System.String), System.String, Stream, System.Nullable(Of Action(Of FileModule)))
-  nameWithType: WebModuleContainerExtensions.WithZipFileStream<TContainer>(TContainer, Nullable<String>, String, Stream, Nullable<Action<FileModule>>)
-  nameWithType.vb: WebModuleContainerExtensions.WithZipFileStream(Of TContainer)(TContainer, Nullable(Of String), String, Stream, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleContainerExtensions.WithZipFileStream``1(``0,System.String,Stream,System.Nullable{Action{FileModule}})
   name: WithZipFileStream<TContainer>(TContainer, String, Stream, Nullable<Action<FileModule>>)
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_String_Stream_System_Nullable_Action_FileModule___
@@ -9703,6 +9792,15 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithZipFileStream(Of TContainer)(TContainer, System.String, Stream, System.Nullable(Of Action(Of FileModule)))
   nameWithType: WebModuleContainerExtensions.WithZipFileStream<TContainer>(TContainer, String, Stream, Nullable<Action<FileModule>>)
   nameWithType.vb: WebModuleContainerExtensions.WithZipFileStream(Of TContainer)(TContainer, String, Stream, Nullable(Of Action(Of FileModule)))
+- uid: EmbedIO.WebModuleContainerExtensions.WithZipFileStream``1(``0,System.String,System.String,Stream,System.Nullable{Action{FileModule}})
+  name: WithZipFileStream<TContainer>(TContainer, String, String, Stream, Nullable<Action<FileModule>>)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithZipFileStream__1___0_System_String_System_String_Stream_System_Nullable_Action_FileModule___
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithZipFileStream``1(``0,System.String,System.String,Stream,System.Nullable{Action{FileModule}})
+  name.vb: WithZipFileStream(Of TContainer)(TContainer, String, String, Stream, Nullable(Of Action(Of FileModule)))
+  fullName: EmbedIO.WebModuleContainerExtensions.WithZipFileStream<TContainer>(TContainer, System.String, System.String, Stream, System.Nullable<Action<FileModule>>)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithZipFileStream(Of TContainer)(TContainer, System.String, System.String, Stream, System.Nullable(Of Action(Of FileModule)))
+  nameWithType: WebModuleContainerExtensions.WithZipFileStream<TContainer>(TContainer, String, String, Stream, Nullable<Action<FileModule>>)
+  nameWithType.vb: WebModuleContainerExtensions.WithZipFileStream(Of TContainer)(TContainer, String, String, Stream, Nullable(Of Action(Of FileModule)))
 - uid: EmbedIO.WebModuleExtensions
   name: WebModuleExtensions
   href: api/EmbedIO.WebModuleExtensions.html
@@ -10950,15 +11048,12 @@ references:
   commentId: M:EmbedIO.WebSockets.IWebSocket.CloseAsync(CancellationToken)
   fullName: EmbedIO.WebSockets.IWebSocket.CloseAsync(CancellationToken)
   nameWithType: IWebSocket.CloseAsync(CancellationToken)
-- uid: EmbedIO.WebSockets.IWebSocket.CloseAsync(EmbedIO.WebSockets.CloseStatusCode,System.Nullable{System.String},CancellationToken)
-  name: CloseAsync(CloseStatusCode, Nullable<String>, CancellationToken)
-  href: api/EmbedIO.WebSockets.IWebSocket.html#EmbedIO_WebSockets_IWebSocket_CloseAsync_EmbedIO_WebSockets_CloseStatusCode_System_Nullable_System_String__CancellationToken_
-  commentId: M:EmbedIO.WebSockets.IWebSocket.CloseAsync(EmbedIO.WebSockets.CloseStatusCode,System.Nullable{System.String},CancellationToken)
-  name.vb: CloseAsync(CloseStatusCode, Nullable(Of String), CancellationToken)
-  fullName: EmbedIO.WebSockets.IWebSocket.CloseAsync(EmbedIO.WebSockets.CloseStatusCode, System.Nullable<System.String>, CancellationToken)
-  fullName.vb: EmbedIO.WebSockets.IWebSocket.CloseAsync(EmbedIO.WebSockets.CloseStatusCode, System.Nullable(Of System.String), CancellationToken)
-  nameWithType: IWebSocket.CloseAsync(CloseStatusCode, Nullable<String>, CancellationToken)
-  nameWithType.vb: IWebSocket.CloseAsync(CloseStatusCode, Nullable(Of String), CancellationToken)
+- uid: EmbedIO.WebSockets.IWebSocket.CloseAsync(EmbedIO.WebSockets.CloseStatusCode,System.String,CancellationToken)
+  name: CloseAsync(CloseStatusCode, String, CancellationToken)
+  href: api/EmbedIO.WebSockets.IWebSocket.html#EmbedIO_WebSockets_IWebSocket_CloseAsync_EmbedIO_WebSockets_CloseStatusCode_System_String_CancellationToken_
+  commentId: M:EmbedIO.WebSockets.IWebSocket.CloseAsync(EmbedIO.WebSockets.CloseStatusCode,System.String,CancellationToken)
+  fullName: EmbedIO.WebSockets.IWebSocket.CloseAsync(EmbedIO.WebSockets.CloseStatusCode, System.String, CancellationToken)
+  nameWithType: IWebSocket.CloseAsync(CloseStatusCode, String, CancellationToken)
 - uid: EmbedIO.WebSockets.IWebSocket.CloseAsync*
   name: CloseAsync
   href: api/EmbedIO.WebSockets.IWebSocket.html#EmbedIO_WebSockets_IWebSocket_CloseAsync_
