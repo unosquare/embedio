@@ -30,7 +30,7 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public Encoding ContentEncoding { get; set; } = Encoding.UTF8;
+        public Encoding? ContentEncoding { get; set; } = Encoding.UTF8;
 
         /// <inheritdoc />
         public long ContentLength64

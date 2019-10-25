@@ -24,7 +24,7 @@ namespace EmbedIO.Testing.Internal
 
         public ICookieCollection Cookies { get; } = new Net.CookieList();
 
-        public Encoding ContentEncoding { get; set; } = Encoding.UTF8;
+        public Encoding? ContentEncoding { get; set; } = Encoding.UTF8;
 
         public bool KeepAlive { get; set; }
 
@@ -52,16 +52,6 @@ namespace EmbedIO.Testing.Internal
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public string? GetBodyAsString()
-        {
-            if (!(OutputStream is MemoryStream ms)) return null;
-
-            var result = (ContentEncoding ?? Encoding.UTF8).GetString(ms.ToArray());
-
-            // Remove BOM
-            return result.Length > 0 && result[0] == 65279 ? result.Remove(0, 1) : result;
         }
 
         private void Dispose(bool disposing)

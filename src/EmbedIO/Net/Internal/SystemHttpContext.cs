@@ -22,7 +22,6 @@ namespace EmbedIO.Net.Internal
 
         private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
 
-        private bool _isHandled;
         private bool _closed;
 
         public SystemHttpContext(System.Net.HttpListenerContext context)
@@ -49,9 +48,9 @@ namespace EmbedIO.Net.Internal
 
         public IHttpRequest Request { get; }
 
-        public RouteMatch? Route { get; set; }
+        public RouteMatch Route { get; set; }
 
-        public string? RequestedPath => Route?.SubPath;
+        public string? RequestedPath => Route.SubPath;
 
         public IHttpResponse Response { get; }
 
@@ -63,11 +62,11 @@ namespace EmbedIO.Net.Internal
 
         public IDictionary<object, object> Items { get; } = new Dictionary<object, object>();
 
-        public bool IsHandled => _isHandled;
+        public bool IsHandled { get; private set; }
 
         public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
 
-        public void SetHandled() => _isHandled = true;
+        public void SetHandled() => IsHandled = true;
 
         public void OnClose(Action<IHttpContext> callback)
         {
@@ -79,7 +78,7 @@ namespace EmbedIO.Net.Internal
 
         public async Task<IWebSocketContext> AcceptWebSocketAsync(
             IEnumerable<string> requestedProtocols,
-            string acceptedProtocol,
+            string? acceptedProtocol,
             int receiveBufferSize,
             TimeSpan keepAliveInterval,
             CancellationToken cancellationToken)
