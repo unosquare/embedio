@@ -13,7 +13,7 @@ namespace EmbedIO.Testing
 
             public DateTime LastModifiedUtc { get; private set; }
 
-            public void Touch() => LastModifiedUtc = DateTime.UtcNow;
+            protected void Touch() => LastModifiedUtc = DateTime.UtcNow;
         }
     }
 }

@@ -95,7 +95,7 @@ namespace EmbedIO
         /// <summary>
         /// Gets the type of the content.
         /// </summary>
-        string ContentType { get; }
+        string? ContentType { get; }
 
         /// <summary>
         /// Gets the content length.
@@ -110,6 +110,6 @@ namespace EmbedIO
         /// <summary>
         /// Gets the URL referrer.
         /// </summary>
-        Uri UrlReferrer { get; }
+        Uri? UrlReferrer { get; }
     }
 }

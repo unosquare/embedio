@@ -38,12 +38,7 @@ namespace EmbedIO.Testing.Internal
                         break;
                 }
 
-                switch (pair.Key)
-                {
-                    case HttpHeaderNames.Cookie:
-                        Cookies = CookieList.Parse(string.Join(",", values));
-                        break;
-                }
+                if (pair.Key == HttpHeaderNames.Cookie) Cookies = CookieList.Parse(string.Join(",", values));
             }
 
             Headers = headers;
@@ -53,7 +48,7 @@ namespace EmbedIO.Testing.Internal
             ProtocolVersion = clientRequest.Version;
             KeepAlive = !(clientRequest.Headers.ConnectionClose ?? true);
             RawUrl = clientRequest.RequestUri.PathAndQuery;
-            QueryString = UrlEncodedDataParser.Parse(clientRequest.RequestUri.Query, true, true);
+            QueryString = UrlEncodedDataParser.Parse(clientRequest.RequestUri.Query, true);
             HttpMethod = clientRequest.Method.ToString();
             HttpVerb = HttpMethodToVerb(clientRequest.Method);
             Url = clientRequest.RequestUri;
