@@ -128,8 +128,8 @@
     public async Task GetBinary() 
     {
     // Call a fictional external source
-    using (var stream = HttpContext.OpenResponseStream())
-                await stream.WriteAsync(dataBuffer, 0, 0);
+    var stream = HttpContext.OpenResponseStream();
+    await stream.WriteAsync(dataBuffer, 0, 0);
     }
 </code></pre><h2 id="how-to-turn-off-logging">How to turn off logging</h2>
 <p>We moved the logging from SWAN to a new class <code>Logger</code>. You can Register or Unregister log targets, by default the <code>ConsoleLogger</code> is enabled in the startup. You can Unregister using:</p>
