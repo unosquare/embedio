@@ -89,7 +89,7 @@ that causes the parameter to be passed deserialized data from a request.</p>
   <h5 id="EmbedIO_WebApi_IRequestDataAttribute_2_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IRequestDataAttribute&lt;in TController, TData&gt;
-    where TController : WebApiController</code></pre>
+    where TController : WebApiController where TData : class</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
