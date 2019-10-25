@@ -12,13 +12,6 @@ namespace EmbedIO.WebApi
     public abstract class WebApiController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiController" /> class.
-        /// </summary>
-        protected WebApiController()
-        {
-        }
-
-        /// <summary>
         /// <para>Gets the HTTP context.</para>
         /// <para>This property is automatically initialized upon controller creation.</para>
         /// </summary>
@@ -48,7 +41,7 @@ namespace EmbedIO.WebApi
         /// <summary>
         /// Gets the user.
         /// </summary>
-        public IPrincipal User => HttpContext.User;
+        public IPrincipal? User => HttpContext.User;
 
         /// <summary>
         /// Gets the session proxy associated with the HTTP context.

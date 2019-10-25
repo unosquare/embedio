@@ -70,7 +70,7 @@ namespace EmbedIO.WebSockets
         ICookieCollection Cookies { get; }
 
         /// <summary>An object used to obtain identity, authentication information, and security roles for the WebSocket client.</summary>
-        IPrincipal User { get; }
+        IPrincipal? User { get; }
 
         /// <summary>Whether the WebSocket client is authenticated.</summary>
         bool IsAuthenticated { get; }

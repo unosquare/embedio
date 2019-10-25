@@ -53,7 +53,7 @@ namespace EmbedIO
         /// <para>This property is in itself a valid URL path, including an initial
         /// slash (<c>/</c>) character.</para>
         /// </remarks>
-        string? RequestedPath { get; }
+        string RequestedPath { get; }
 
         /// <summary>
         /// Gets the HTTP response object.

@@ -44,7 +44,7 @@ namespace EmbedIO
         /// <see cref="ModuleGroup"/>.</para>
         /// </summary>
         /// <seealso cref="ExceptionHandler"/>
-        ExceptionHandlerCallback OnUnhandledException { get; set; }
+        ExceptionHandlerCallback? OnUnhandledException { get; set; }
 
         /// <summary>
         /// <para>Gets or sets a callback that is called every time a HTTP exception
@@ -54,7 +54,7 @@ namespace EmbedIO
         /// <see cref="ModuleGroup"/>.</para>
         /// </summary>
         /// <seealso cref="HttpExceptionHandler"/>
-        HttpExceptionHandlerCallback OnHttpException { get; set; }
+        HttpExceptionHandlerCallback? OnHttpException { get; set; }
 
         /// <summary>
         /// Signals a module that the web server is starting.

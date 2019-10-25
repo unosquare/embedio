@@ -47,7 +47,7 @@ namespace EmbedIO
         /// The session manager, or <see langword="null"/> if no session manager is present.
         /// </value>
         /// <exception cref="InvalidOperationException">This property is being set and the web server has already been started.</exception>
-        ISessionManager SessionManager { get; set; }
+        ISessionManager? SessionManager { get; set; }
 
         /// <summary>
         /// Gets the state of the web server.

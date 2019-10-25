@@ -16,7 +16,7 @@ namespace EmbedIO.Files
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws an exception instead.</returns>
-        public static Task PassThrough(IHttpContext context, MappedResourceInfo info)
+        public static Task PassThrough(IHttpContext context, MappedResourceInfo? info)
             => throw RequestHandler.PassThrough();
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace EmbedIO.Files
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task ThrowUnauthorized(IHttpContext context, MappedResourceInfo info)
+        public static Task ThrowUnauthorized(IHttpContext context, MappedResourceInfo? info)
             => throw HttpException.Unauthorized();
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace EmbedIO.Files
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task ThrowNotFound(IHttpContext context, MappedResourceInfo info)
+        public static Task ThrowNotFound(IHttpContext context, MappedResourceInfo? info)
             => throw HttpException.NotFound();
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace EmbedIO.Files
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
-        public static Task ThrowMethodNotAllowed(IHttpContext context, MappedResourceInfo info)
+        public static Task ThrowMethodNotAllowed(IHttpContext context, MappedResourceInfo? info)
             => throw HttpException.MethodNotAllowed();
 #pragma warning restore CA1801
     }

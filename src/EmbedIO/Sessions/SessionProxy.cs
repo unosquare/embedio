@@ -15,12 +15,12 @@ namespace EmbedIO.Sessions
     public sealed class SessionProxy : ISessionProxy
     {
         private readonly IHttpContext _context;
-        private readonly ISessionManager _sessionManager;
+        private readonly ISessionManager? _sessionManager;
 
         private ISession? _session;
         private bool _onCloseRegistered;
 
-        internal SessionProxy(IHttpContext context, ISessionManager sessionManager)
+        internal SessionProxy(IHttpContext context, ISessionManager? sessionManager)
         {
             _context = context;
             _sessionManager = sessionManager;
@@ -35,7 +35,7 @@ namespace EmbedIO.Sessions
             get
             {
                 EnsureSessionExists();
-                return _session.Id;
+                return _session!.Id;
             }
         }
 
@@ -45,7 +45,7 @@ namespace EmbedIO.Sessions
             get
             {
                 EnsureSessionExists();
-                return _session.Duration;
+                return _session!.Duration;
             }
         }
 
@@ -55,7 +55,7 @@ namespace EmbedIO.Sessions
             get
             {
                 EnsureSessionExists();
-                return _session.LastActivity;
+                return _session!.LastActivity;
             }
         }
 
@@ -71,12 +71,12 @@ namespace EmbedIO.Sessions
             get
             {
                 EnsureSessionExists();
-                return _session[key];
+                return _session![key];
             }
             set
             {
                 EnsureSessionExists();
-                _session[key] = value;
+                _session![key] = value;
             }
         }
 
@@ -86,7 +86,7 @@ namespace EmbedIO.Sessions
             if (_session == null)
                 return;
 
-            _sessionManager.Delete(_context, _session.Id);
+            _sessionManager!.Delete(_context, _session.Id);
             _session = null;
         }
 
@@ -95,11 +95,11 @@ namespace EmbedIO.Sessions
         {
             if (_session != null)
             {
-                _sessionManager.Delete(_context, _session.Id);
+                _sessionManager!.Delete(_context, _session.Id);
             }
 
             EnsureSessionManagerExists();
-            _session = _sessionManager.Create(_context);
+            _session = _sessionManager!.Create(_context);
         }
 
         /// <inheritdoc/>
@@ -109,28 +109,28 @@ namespace EmbedIO.Sessions
         public bool ContainsKey(string key)
         {
             EnsureSessionExists();
-            return _session.ContainsKey(key);
+            return _session!.ContainsKey(key);
         }
 
         /// <inheritdoc/>
         public bool TryGetValue(string key, out object value)
         {
             EnsureSessionExists();
-            return _session.TryGetValue(key, out value);
+            return _session!.TryGetValue(key, out value);
         }
 
         /// <inheritdoc/>
         public bool TryRemove(string key, out object value)
         {
             EnsureSessionExists();
-            return _session.TryRemove(key, out value);
+            return _session!.TryRemove(key, out value);
         }
 
         /// <inheritdoc/>
         public IReadOnlyList<KeyValuePair<string, object>> TakeSnapshot()
         {
             EnsureSessionExists();
-            return _session.TakeSnapshot();
+            return _session!.TakeSnapshot();
         }
 
         private void EnsureSessionManagerExists()
@@ -145,7 +145,7 @@ namespace EmbedIO.Sessions
                 return;
 
             EnsureSessionManagerExists();
-            _session = _sessionManager.Create(_context);
+            _session = _sessionManager!.Create(_context);
 
             if (_onCloseRegistered)
                 return;

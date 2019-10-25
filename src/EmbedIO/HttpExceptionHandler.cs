@@ -116,7 +116,7 @@ namespace EmbedIO
             });
         }
 
-        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, HttpExceptionHandlerCallback handler)
+        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, HttpExceptionHandlerCallback? handler)
         {
             if (handler == null || !(exception is IHttpException httpException))
             {

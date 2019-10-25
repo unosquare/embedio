@@ -83,7 +83,7 @@ namespace EmbedIO.WebSockets.Internal
         public ICookieCollection Cookies { get; }
 
         /// <inheritdoc />
-        public IPrincipal User { get; }
+        public IPrincipal? User { get; }
 
         /// <inheritdoc />
         public bool IsAuthenticated { get; }

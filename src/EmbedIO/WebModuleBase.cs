@@ -75,6 +75,11 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public abstract bool IsFinalHandler { get; }
+        
+        /// <summary>
+        /// Gets a string to use as a source for log messages.
+        /// </summary>
+        protected string LogSource { get; }
 
         /// <inheritdoc />
         /// <remarks>
@@ -129,11 +134,6 @@ namespace EmbedIO
                     contextImpl?.MimeTypeProviders.Pop();
             }
         }
-
-        /// <summary>
-        /// Gets a string to use as a source for log messages.
-        /// </summary>
-        protected string LogSource { get; }
 
         /// <summary>
         /// Called to handle a request from a client.

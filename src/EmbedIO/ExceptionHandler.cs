@@ -29,7 +29,7 @@ namespace EmbedIO
         /// <summary>
         /// Gets or sets the contact information to include in exception responses.
         /// </summary>
-        public static string ContactInformation { get; set; }
+        public static string? ContactInformation { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to include stack traces
@@ -120,7 +120,7 @@ namespace EmbedIO
                     }
                 });
 
-        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, ExceptionHandlerCallback handler)
+        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, ExceptionHandlerCallback? handler)
         {
             if (handler == null)
             {

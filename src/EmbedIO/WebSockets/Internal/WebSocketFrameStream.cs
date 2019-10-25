@@ -8,9 +8,9 @@ namespace EmbedIO.WebSockets.Internal
     internal class WebSocketFrameStream
     {
         private readonly bool _unmask;
-        private readonly Stream _stream;
+        private readonly Stream? _stream;
 
-        public WebSocketFrameStream(Stream stream, bool unmask = false)
+        public WebSocketFrameStream(Stream? stream, bool unmask = false)
         {
             _stream = stream;
             _unmask = unmask;

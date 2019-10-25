@@ -207,7 +207,7 @@ namespace EmbedIO.Sessions
             SessionImpl session;
             lock (_sessions)
             {
-                if (!string.IsNullOrEmpty(id) && _sessions.TryGetValue(id, out session))
+                if (!string.IsNullOrEmpty(id) && _sessions.TryGetValue(id!, out session))
                 {
                     session.BeginUse();
                 }
