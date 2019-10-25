@@ -19,7 +19,7 @@ namespace EmbedIO.Net.Internal
         private Socket? _sock;
         private MemoryStream? _ms;
         private byte[]? _buffer;
-        private HttpListenerContext? _context;
+        private HttpListenerContext _context;
         private StringBuilder? _currentLine;
         private RequestStream? _iStream;
         private ResponseStream? _oStream;
@@ -122,7 +122,7 @@ namespace EmbedIO.Net.Internal
             return _iStream;
         }
 
-        public ResponseStream GetResponseStream() => _oStream ??= new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true);
+        public ResponseStream GetResponseStream() => _oStream ??= new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener.IgnoreWriteExceptions);
 
         internal void ForceClose() => Close(true);
 

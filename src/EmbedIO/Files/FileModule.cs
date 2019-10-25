@@ -626,20 +626,16 @@ namespace EmbedIO.Files
             CompressionMethod compressionMethod)
         {
             using var memoryStream = new MemoryStream();
-            long uncompressedLength;
-            using (var stream = new CompressionStream(memoryStream, compressionMethod))
-            {
-                await DirectoryLister.ListDirectoryAsync(
-                    info,
-                    context.Request.Url.AbsolutePath,
-                    Provider.GetDirectoryEntries(info.Path, context),
-                    stream,
-                    context.CancellationToken).ConfigureAwait(false);
+            using var stream = new CompressionStream(memoryStream, compressionMethod);
 
-                uncompressedLength = stream.UncompressedLength;
-            }
+            await DirectoryLister.ListDirectoryAsync(
+                info,
+                context.Request.Url.AbsolutePath,
+                Provider.GetDirectoryEntries(info.Path, context),
+                stream,
+                context.CancellationToken).ConfigureAwait(false);
 
-            return (memoryStream.ToArray(), uncompressedLength);
+            return (memoryStream.ToArray(), stream.UncompressedLength);
         }
     }
 }

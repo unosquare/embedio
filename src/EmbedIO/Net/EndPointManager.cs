@@ -55,7 +55,7 @@ namespace EmbedIO.Net
                 }
             }
 
-            epl.Close();
+            epl.Dispose();
         }
 
         internal static void RemoveListener(HttpListener listener)

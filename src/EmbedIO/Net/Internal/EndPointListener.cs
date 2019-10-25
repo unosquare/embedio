@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace EmbedIO.Net.Internal
 {
-    internal sealed class EndPointListener
+    internal sealed class EndPointListener : IDisposable
     {
         private readonly Dictionary<HttpConnection, HttpConnection> _unregistered;
         private readonly IPEndPoint _endpoint;
@@ -61,7 +61,7 @@ namespace EmbedIO.Net.Internal
             context.Listener.UnregisterContext(context);
         }
 
-        public void Close()
+        public void Dispose()
         {
             _sock.Dispose();
             List<HttpConnection> connections;

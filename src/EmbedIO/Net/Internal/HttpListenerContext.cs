@@ -67,11 +67,11 @@ namespace EmbedIO.Net.Internal
 
         public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
 
-        internal HttpListenerRequest? HttpListenerRequest => Request as HttpListenerRequest;
+        internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
 
-        internal HttpListenerResponse? HttpListenerResponse => Response as HttpListenerResponse;
+        internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
 
-        internal HttpListener? Listener { get; set; }
+        internal HttpListener Listener { get; set; }
 
         internal string? ErrorMessage { get; set; }
 
