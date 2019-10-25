@@ -14,11 +14,6 @@ namespace EmbedIO.Tests
         private const string UserName = "root";
         private const string Password = "password1234";
 
-        public BasicAuthenticationModuleTest()
-            : base(true)
-        {
-        }
-
         protected override void OnSetUp()
         {
             Server

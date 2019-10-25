@@ -28,8 +28,7 @@ namespace EmbedIO.Tests
         [Test]
         public void SetSessionManager_ReturnsValidInstance()
         {
-            using var webserver = new TestWebServer();
-            webserver.SessionManager = new LocalSessionManager();
+            using var webserver = new TestWebServer { SessionManager = new LocalSessionManager() };
 
             Assert.NotNull(webserver.SessionManager);
         }
@@ -49,7 +48,7 @@ namespace EmbedIO.Tests
         {
             using var server = new TestWebServer();
             server
-                .OnAny(ctx => ctx.SendDataAsync(new Person {Name = nameof(Person)}))
+                .OnAny(ctx => ctx.SendDataAsync(new Person { Name = nameof(Person) }))
                 .Start();
 
             var data = await server.Client.GetStringAsync("/").ConfigureAwait(false);

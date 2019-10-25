@@ -9,22 +9,17 @@ namespace EmbedIO.Tests
 {
     public class ExceptionHandlingTest : EndToEndFixtureBase
     {
-        const HttpStatusCode HttpExceptionStatusCode = HttpStatusCode.GatewayTimeout;
+        private const HttpStatusCode HttpExceptionStatusCode = HttpStatusCode.GatewayTimeout;
 
-        private readonly string ExceptionMessage = Guid.NewGuid().ToString();
-        private readonly string SecondLevelExceptionMessage = Guid.NewGuid().ToString();
-
-        public ExceptionHandlingTest()
-            : base(true)
-        {
-        }
+        private readonly string _exceptionMessage = Guid.NewGuid().ToString();
+        private readonly string _secondLevelExceptionMessage = Guid.NewGuid().ToString();
 
         public class Unhandled_FirstLevel : ExceptionHandlingTest
         {
             protected override void OnSetUp()
             {
                 Server
-                    .OnAny(_ => throw new Exception(ExceptionMessage))
+                    .OnAny(_ => throw new Exception(_exceptionMessage))
                     .HandleUnhandledException(ExceptionHandler.EmptyResponseWithHeaders);
             }
 
@@ -40,7 +35,7 @@ namespace EmbedIO.Tests
                     response.Headers.GetValues(ExceptionHandler.ExceptionTypeHeaderName));
 
                 CollectionAssert.AreEqual(
-                    new[] { ExceptionMessage },
+                    new[] { _exceptionMessage },
                     response.Headers.GetValues(ExceptionHandler.ExceptionMessageHeaderName));
             }
         }
@@ -50,8 +45,8 @@ namespace EmbedIO.Tests
             protected override void OnSetUp()
             {
                 Server
-                    .OnAny(_ => throw new Exception(ExceptionMessage))
-                    .HandleUnhandledException((ctx, ex) => throw new Exception(SecondLevelExceptionMessage));
+                    .OnAny(_ => throw new Exception(_exceptionMessage))
+                    .HandleUnhandledException((ctx, ex) => throw new Exception(_secondLevelExceptionMessage));
             }
 
             [Test]
@@ -68,7 +63,7 @@ namespace EmbedIO.Tests
             protected override void OnSetUp()
             {
                 Server
-                    .OnAny(_ => throw new HttpException(HttpExceptionStatusCode, ExceptionMessage))
+                    .OnAny(_ => throw new HttpException(HttpExceptionStatusCode, _exceptionMessage))
                     .HandleHttpException(HttpExceptionHandler.PlainTextResponse);
             }
 
@@ -80,7 +75,7 @@ namespace EmbedIO.Tests
                 Assert.IsNotNull(response);
                 Assert.AreEqual(HttpExceptionStatusCode, response.StatusCode);
                 Assert.AreEqual(
-                    ExceptionMessage,
+                    _exceptionMessage,
                     await response.Content.ReadAsStringAsync());
             }
 
@@ -89,8 +84,8 @@ namespace EmbedIO.Tests
                 protected override void OnSetUp()
                 {
                     Server
-                        .OnAny(_ => throw new HttpException(HttpExceptionStatusCode, ExceptionMessage))
-                        .HandleUnhandledException((ctx, ex) => throw new Exception(SecondLevelExceptionMessage));
+                        .OnAny(_ => throw new HttpException(HttpExceptionStatusCode, _exceptionMessage))
+                        .HandleUnhandledException((ctx, ex) => throw new Exception(_secondLevelExceptionMessage));
                 }
 
                 [Test]

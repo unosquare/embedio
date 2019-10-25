@@ -11,7 +11,7 @@ namespace EmbedIO.Tests
     {
         private readonly bool _useTestWebServer;
 
-        protected EndToEndFixtureBase(bool useTestWebServer)
+        protected EndToEndFixtureBase(bool useTestWebServer = true)
         {
             _useTestWebServer = useTestWebServer;
         }
@@ -37,6 +37,7 @@ namespace EmbedIO.Tests
         public void SetUp()
         {
             WebServerUrl = Resources.GetServerAddress();
+
             if (_useTestWebServer)
             {
                 var testWebServer = new TestWebServer(WebServerUrl);

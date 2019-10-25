@@ -9,11 +9,6 @@ namespace EmbedIO.Tests
     [TestFixture]
     public class CorsModuleTest : EndToEndFixtureBase
     {
-        public CorsModuleTest()
-            : base(true)
-        {
-        }
-
         protected override void OnSetUp()
         {
             Server

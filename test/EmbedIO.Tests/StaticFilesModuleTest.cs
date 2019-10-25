@@ -17,7 +17,6 @@ namespace EmbedIO.Tests
     public class StaticFilesModuleTest : EndToEndFixtureBase
     {
         protected StaticFilesModuleTest()
-            : base(false)
         {
             ServedFolder = new StaticFolder.WithDataFiles(nameof(StaticFilesModuleTest));
         }
@@ -138,7 +137,7 @@ namespace EmbedIO.Tests
                 using var response = await Client.SendAsync(request);
                 Assert.AreEqual(HttpStatusCode.PartialContent, response.StatusCode, "Responds with 216 Partial Content");
 
-                using var ms = new MemoryStream();
+                await using var ms = new MemoryStream();
                 var responseStream = await response.Content.ReadAsStreamAsync();
                 responseStream.CopyTo(ms);
                 var data = ms.ToArray();
@@ -184,7 +183,7 @@ namespace EmbedIO.Tests
                     using var response = await Client.SendAsync(request);
                     Assert.AreEqual(HttpStatusCode.PartialContent, response.StatusCode);
 
-                    using var ms = new MemoryStream();
+                    await using var ms = new MemoryStream();
                     var stream = await response.Content.ReadAsStreamAsync();
                     stream.CopyTo(ms);
                     Buffer.BlockCopy(ms.GetBuffer(), 0, buffer, offset, (int)ms.Length);
@@ -219,10 +218,10 @@ namespace EmbedIO.Tests
                 using (var response = await Client.SendAsync(request))
                 {
                     Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status Code OK");
-                    using var memoryStream = new MemoryStream();
-                    using (var compressor = new GZipStream(memoryStream, CompressionMode.Compress))
+                    await using var memoryStream = new MemoryStream();
+                    await using (var compressor = new GZipStream(memoryStream, CompressionMode.Compress))
                     {
-                        using var responseStream = await response.Content.ReadAsStreamAsync();
+                        await using var responseStream = await response.Content.ReadAsStreamAsync();
                         responseStream.CopyTo(compressor);
                     }
 

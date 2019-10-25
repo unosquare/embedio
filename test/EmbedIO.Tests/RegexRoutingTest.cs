@@ -7,11 +7,6 @@ namespace EmbedIO.Tests
     [TestFixture]
     public class RegexRoutingTest : EndToEndFixtureBase
     {
-        public RegexRoutingTest()
-            : base(true)
-        {
-        }
-
         protected override void OnSetUp()
         {
             Server.WithModule(new TestRegexModule("/"));
