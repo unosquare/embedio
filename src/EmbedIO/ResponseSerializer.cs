@@ -22,10 +22,10 @@ namespace EmbedIO
         /// <param name="context">The HTTP context of the request.</param>
         /// <param name="data">The data to serialize.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        public static async Task Json(IHttpContext context, object data)
+        public static async Task Json(IHttpContext context, object? data)
         {
             context.Response.ContentType = MimeType.Json;
-            using var text = context.OpenResponseText(Encoding.UTF8);
+            using var text = context.OpenResponseText(new UTF8Encoding(false));
             await text.WriteAsync(Swan.Formatters.Json.Serialize(data)).ConfigureAwait(false);
         }
     }
