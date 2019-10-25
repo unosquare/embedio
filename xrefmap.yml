@@ -8853,19 +8853,6 @@ references:
   commentId: T:EmbedIO.WebApi.WebApiController
   fullName: EmbedIO.WebApi.WebApiController
   nameWithType: WebApiController
-- uid: EmbedIO.WebApi.WebApiController.#ctor
-  name: WebApiController()
-  href: api/EmbedIO.WebApi.WebApiController.html#EmbedIO_WebApi_WebApiController__ctor
-  commentId: M:EmbedIO.WebApi.WebApiController.#ctor
-  fullName: EmbedIO.WebApi.WebApiController.WebApiController()
-  nameWithType: WebApiController.WebApiController()
-- uid: EmbedIO.WebApi.WebApiController.#ctor*
-  name: WebApiController
-  href: api/EmbedIO.WebApi.WebApiController.html#EmbedIO_WebApi_WebApiController__ctor_
-  commentId: Overload:EmbedIO.WebApi.WebApiController.#ctor
-  isSpec: "True"
-  fullName: EmbedIO.WebApi.WebApiController.WebApiController
-  nameWithType: WebApiController.WebApiController
 - uid: EmbedIO.WebApi.WebApiController.CancellationToken
   name: CancellationToken
   href: api/EmbedIO.WebApi.WebApiController.html#EmbedIO_WebApi_WebApiController_CancellationToken
