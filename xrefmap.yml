@@ -10469,19 +10469,6 @@ references:
   commentId: T:EmbedIO.WebServerOptions
   fullName: EmbedIO.WebServerOptions
   nameWithType: WebServerOptions
-- uid: EmbedIO.WebServerOptions.#ctor
-  name: WebServerOptions()
-  href: api/EmbedIO.WebServerOptions.html#EmbedIO_WebServerOptions__ctor
-  commentId: M:EmbedIO.WebServerOptions.#ctor
-  fullName: EmbedIO.WebServerOptions.WebServerOptions()
-  nameWithType: WebServerOptions.WebServerOptions()
-- uid: EmbedIO.WebServerOptions.#ctor*
-  name: WebServerOptions
-  href: api/EmbedIO.WebServerOptions.html#EmbedIO_WebServerOptions__ctor_
-  commentId: Overload:EmbedIO.WebServerOptions.#ctor
-  isSpec: "True"
-  fullName: EmbedIO.WebServerOptions.WebServerOptions
-  nameWithType: WebServerOptions.WebServerOptions
 - uid: EmbedIO.WebServerOptions.AddUrlPrefix(System.String)
   name: AddUrlPrefix(String)
   href: api/EmbedIO.WebServerOptions.html#EmbedIO_WebServerOptions_AddUrlPrefix_System_String_
