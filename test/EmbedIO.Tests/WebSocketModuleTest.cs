@@ -77,7 +77,7 @@ namespace EmbedIO.Tests
         {
             var buffer = new ArraySegment<byte>(new byte[8192]);
 
-            using var ms = new MemoryStream();
+            await using var ms = new MemoryStream();
             System.Net.WebSockets.WebSocketReceiveResult result;
 
             do
