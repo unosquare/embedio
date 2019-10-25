@@ -15,7 +15,7 @@ namespace EmbedIO.WebSockets.Internal
             IHttpContextImpl httpContext,
             string webSocketVersion, 
             IEnumerable<string> requestedProtocols,
-            string acceptedProtocol,
+            string? acceptedProtocol,
             IWebSocket webSocket,
             CancellationToken cancellationToken)
         {
@@ -74,7 +74,7 @@ namespace EmbedIO.WebSockets.Internal
         public IEnumerable<string> RequestedProtocols { get; }
 
         /// <inheritdoc />
-        public string AcceptedProtocol { get; }
+        public string? AcceptedProtocol { get; }
 
         /// <inheritdoc />
         public string WebSocketVersion { get; }

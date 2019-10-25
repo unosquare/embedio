@@ -170,7 +170,7 @@ namespace EmbedIO.WebSockets.Internal
             GC.SuppressFinalize(this);
         }
 
-        internal static async Task<WebSocket> AcceptAsync(HttpListenerContext httpContext, string acceptedProtocol)
+        internal static async Task<WebSocket> AcceptAsync(HttpListenerContext httpContext, string? acceptedProtocol)
         {
             string CreateResponseKey(string clientKey)
             {

@@ -53,7 +53,7 @@ namespace EmbedIO
         /// <para>This property is in itself a valid URL path, including an initial
         /// slash (<c>/</c>) character.</para>
         /// </remarks>
-        string RequestedPath { get; }
+        string? RequestedPath { get; }
 
         /// <summary>
         /// Gets the HTTP response object.
@@ -63,7 +63,7 @@ namespace EmbedIO
         /// <summary>
         /// Gets the user.
         /// </summary>
-        IPrincipal User { get; }
+        IPrincipal? User { get; }
 
         /// <summary>
         /// Gets the session proxy associated with this context.
