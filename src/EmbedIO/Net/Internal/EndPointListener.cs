@@ -130,7 +130,7 @@ namespace EmbedIO.Net.Internal
             while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
         }
 
-        public void RemovePrefix(ListenerPrefix prefix, HttpListener listener)
+        public void RemovePrefix(ListenerPrefix prefix)
         {
             List<ListenerPrefix>? current;
             List<ListenerPrefix> future;

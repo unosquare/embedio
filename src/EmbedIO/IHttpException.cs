@@ -37,7 +37,7 @@ namespace EmbedIO
         /// because a default message will be supplied by the CLR at throw time
         /// when <see cref="Exception.Message"/> is <see langword="null"/>.</para>
         /// </remarks>
-        string Message { get; }
+        string? Message { get; }
 
         /// <summary>
         /// <para>Gets an object that can be serialized and included
@@ -45,7 +45,7 @@ namespace EmbedIO
         /// <para>Whether the object is actually sent to the client will depend
         /// upon the handler used to send the response.</para>
         /// </summary>
-        object DataObject { get; }
+        object? DataObject { get; }
 
         /// <summary>
         /// Sets necessary headers, as required by the nature

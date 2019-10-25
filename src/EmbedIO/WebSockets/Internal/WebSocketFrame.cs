@@ -56,7 +56,7 @@ namespace EmbedIO.WebSockets.Internal
         {
         }
 
-        public byte[] ExtendedPayloadLength { get; internal set; }
+        public byte[]? ExtendedPayloadLength { get; internal set; }
 
         public Fin Fin { get; internal set; }
 

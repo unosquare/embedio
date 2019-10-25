@@ -120,7 +120,7 @@ namespace EmbedIO.Net
                     return;
 
                 var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
-                epl.RemovePrefix(lp, listener);
+                epl.RemovePrefix(lp);
             }
             catch (SocketException)
             {

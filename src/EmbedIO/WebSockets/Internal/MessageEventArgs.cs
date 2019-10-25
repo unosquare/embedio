@@ -20,7 +20,7 @@ namespace EmbedIO.WebSockets.Internal
     internal class MessageEventArgs : EventArgs
     {
         private readonly byte[] _rawData;
-        private string _data;
+        private string? _data;
         private bool _dataSet;
 
         internal MessageEventArgs(WebSocketFrame frame)
@@ -46,7 +46,7 @@ namespace EmbedIO.WebSockets.Internal
         /// text or ping and if decoding it to a string has successfully done;
         /// otherwise, <see langword="null"/>.
         /// </value>
-        public string Data
+        public string? Data
         {
             get
             {

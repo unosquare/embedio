@@ -53,11 +53,11 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [Route(HttpVerbs.Post, "/" + EchoPath)]
-        public Dictionary<string, object> PostEcho([FormData] NameValueCollection data)
+        public Dictionary<string, object?> PostEcho([FormData] NameValueCollection data)
             => data.ToDictionary();
 
         [Route(HttpVerbs.Get, "/" + QueryTestPath)]
-        public Dictionary<string, object> TestQuery([QueryData] NameValueCollection data)
+        public Dictionary<string, object?> TestQuery([QueryData] NameValueCollection data)
             => data.ToDictionary();
 
         [Route(HttpVerbs.Get, "/" + QueryFieldTestPath)]

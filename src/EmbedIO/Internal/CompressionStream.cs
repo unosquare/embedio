@@ -39,7 +39,15 @@ namespace EmbedIO.Internal
         public override bool CanSeek => false;
 
         public override bool CanWrite => true;
+
+        public override long Length => throw SeekingNotSupported();
         
+        public override long Position
+        {
+            get => throw SeekingNotSupported();
+            set => throw SeekingNotSupported();
+        }
+
         public override void Flush() => _target.Flush();
 
         public override Task FlushAsync(CancellationToken cancellationToken) => _target.FlushAsync(cancellationToken);
@@ -62,14 +70,6 @@ namespace EmbedIO.Internal
 
         public override void SetLength(long value) => throw SeekingNotSupported();
 
-        public override long Length => throw SeekingNotSupported();
-
-        public override long Position
-        {
-            get => throw SeekingNotSupported();
-            set => throw SeekingNotSupported();
-        }
-
         public override void Write(byte[] buffer, int offset, int count)
         {
             _target.Write(buffer, offset, count);
@@ -83,12 +83,15 @@ namespace EmbedIO.Internal
         }
 
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-        {
-            return _target.BeginWrite(buffer, offset, count, ar => {
-                UncompressedLength += count;
-                callback(ar);
-            }, state);
-        }
+            => _target.BeginWrite(
+                buffer,
+                offset,
+                count,
+                ar => {
+                    UncompressedLength += count;
+                    callback(ar);
+                },
+                state);
 
         public override void EndWrite(IAsyncResult asyncResult)
         {
@@ -100,7 +103,7 @@ namespace EmbedIO.Internal
             await _target.WriteAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
             UncompressedLength += count;
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && !_leaveOpen)

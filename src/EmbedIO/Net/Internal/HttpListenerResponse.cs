@@ -98,6 +98,7 @@ namespace EmbedIO.Net.Internal
         /// <inheritdoc />
         public Version ProtocolVersion { get; } = HttpVersion.Version11;
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets or sets a value indicating whether [send chunked].
         /// </summary>
