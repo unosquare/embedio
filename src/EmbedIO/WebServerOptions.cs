@@ -36,13 +36,6 @@ namespace EmbedIO
         private StoreLocation _storeLocation = StoreLocation.LocalMachine;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebServerOptions" /> class.
-        /// </summary>
-        public WebServerOptions()
-        {
-        }
-
-        /// <summary>
         /// Gets the URL prefixes.
         /// </summary>
         public IReadOnlyList<string> UrlPrefixes => _urlPrefixes;
