@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
 
 namespace EmbedIO.Tests.Issues
 {

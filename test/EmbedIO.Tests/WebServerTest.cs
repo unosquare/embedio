@@ -22,13 +22,6 @@ namespace EmbedIO.Tests
         private static string[] GetMultiplePrefixes()
             => new[] { "http://localhost:9696", "http://localhost:9697", "http://localhost:9698" };
 
-        [SetUp]
-        public void Setup()
-        {
-            // TODO: Unregister console logger
-            // Terminal.Settings.DisplayLoggingMessageType = LogMessageType.None;
-        }
-
         public class Constructors : WebServerTest
         {
             [Test]
@@ -103,7 +96,7 @@ namespace EmbedIO.Tests
                     using var instance = new WebServer(url);
                     instance.Modules.Add(nameof(ActionModule), new ActionModule(_ => throw new InvalidOperationException("Error")));
 
-                    var runTask = instance.RunAsync();
+                    _ = instance.RunAsync();
                     var request = new HttpClient();
                     await request.GetStringAsync(url);
                 });
@@ -117,7 +110,7 @@ namespace EmbedIO.Tests
                     var url = Resources.GetServerAddress();
 
                     using var instance = new WebServer(url);
-                    var runTask = instance.RunAsync();
+                    _ = instance.RunAsync();
                     var request = new HttpClient();
                     await request.GetStringAsync(url);
                 });
@@ -160,7 +153,7 @@ namespace EmbedIO.Tests
                     });
                 });
 
-                var runTask = instance.RunAsync();
+                _ = instance.RunAsync();
 
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Accept

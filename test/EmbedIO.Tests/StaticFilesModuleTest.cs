@@ -197,7 +197,8 @@ namespace EmbedIO.Tests
             {
                 var requestHead = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
 
-                using var res = await Client.SendAsync(requestHead);
+                _ = await Client.SendAsync(requestHead);
+
                 var request = new HttpRequestMessage(HttpMethod.Get, WebServerUrl + StaticFolder.WithDataFiles.BigDataFile);
                 request.Headers.Range = new RangeHeaderValue(0, StaticFolder.WithDataFiles.BigDataSize + 10);
 

@@ -44,15 +44,7 @@ namespace EmbedIO.Tests.TestObjects
         protected string PathOf(string path) => Path.Combine(RootPath, path);
 
         protected string PathOf(string path1, string path2) => Path.Combine(RootPath, path1, path2);
-
-        public sealed class WithIndexOnly : StaticFolder
-        {
-            public WithIndexOnly(string folderName)
-                : base(folderName)
-            {
-            }
-        }
-
+        
         public sealed class WithDataFiles : StaticFolder
         {
             public const string BigDataFile = "bigdata.bin";

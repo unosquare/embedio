@@ -24,7 +24,7 @@ namespace EmbedIO.Tests.Issues
         public void QValueList_TryNegotiateContentEncoding_WhenPreferCompressionFalse_OnNoCompressionSpecified_YieldsIdentity()
         {
             var list = new QValueList(true, "gzip, deflate");
-            list.TryNegotiateContentEncoding(false, out var _, out var name);
+            list.TryNegotiateContentEncoding(false, out _, out var name);
             Assert.AreEqual(CompressionMethodNames.None, name);
         }
     }

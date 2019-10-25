@@ -26,7 +26,7 @@ namespace EmbedIO.Tests
         public void ContentEncodingNegotiation_Fails(string requestHeaders, bool preferCompression)
         {
             var list = new QValueList(true, requestHeaders);
-            var negotiated = list.TryNegotiateContentEncoding(preferCompression, out var actualCompressionMethod, out var actualCompressionMethodName);
+            var negotiated = list.TryNegotiateContentEncoding(preferCompression, out _, out _);
             Assert.AreEqual(false, negotiated);
         }
     }

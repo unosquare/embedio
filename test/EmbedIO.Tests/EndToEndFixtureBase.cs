@@ -4,6 +4,7 @@ using EmbedIO.Testing;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
 using Swan;
+using Swan.Logging;
 
 namespace EmbedIO.Tests
 {
@@ -77,5 +78,12 @@ namespace EmbedIO.Tests
         protected virtual void OnTearDown()
         {
         }
+    }
+
+    [SetUpFixture]
+    public class SetUpEndToEnd
+    {
+        [OneTimeSetUp]
+        public void RunBeforeAnyTests() => Logger.NoLogging();
     }
 }
