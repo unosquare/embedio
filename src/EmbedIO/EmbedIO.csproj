@@ -10,7 +10,7 @@
     <AssemblyName>EmbedIO</AssemblyName>
     <PackageId>EmbedIO</PackageId>
     <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
-    <Version>3.1.0</Version>
+    <Version>3.1.2</Version>
     <Product>EmbedIO</Product>
     <Company>Unosquare</Company>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
