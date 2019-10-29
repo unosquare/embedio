@@ -15,12 +15,12 @@ namespace EmbedIO.Net
             new ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether [use IPv6].
+        /// Gets or sets a value indicating whether [use IPv6]. By default, this flag is set.
         /// </summary>
         /// <value>
         ///   <c>true</c> if [use IPv6]; otherwise, <c>false</c>.
         /// </value>
-        public static bool UseIpv6 { get; set; }
+        public static bool UseIpv6 { get; set; } = true;
 
         internal static void AddListener(HttpListener listener)
         {
@@ -80,34 +80,33 @@ namespace EmbedIO.Net
 
         private static EndPointListener GetEpListener(string host, int port, HttpListener listener, bool secure = false)
         {
-            IPAddress address;
-
-            if (host == "*")
-            {
-                address = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
-            }
-            else if (IPAddress.TryParse(host, out address) == false)
-            {
-                try
-                {
-                    var hostEntry = new IPHostEntry
-                    {
-                        HostName = host,
-                        AddressList = Dns.GetHostAddresses(host),
-                    };
-
-                    address = hostEntry.AddressList[0];
-                }
-                catch
-                {
-                    address = UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
-                }
-            }
+            var address = ResolveAddress(host);
 
             var p = IPToEndpoints.GetOrAdd(address, x => new ConcurrentDictionary<int, EndPointListener>());
-            var epl = p.GetOrAdd(port, x => new EndPointListener(listener, address, x, secure));
-            
-            return epl;
+            return p.GetOrAdd(port, x => new EndPointListener(listener, address, x, secure));
+        }
+
+        private static IPAddress ResolveAddress(string host)
+        {
+            if (host == "*" || host == "+" || host == "0.0.0.0")
+                return UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
+
+            if (IPAddress.TryParse(host, out var address)) 
+                return address;
+
+            try
+            {
+                var hostEntry = new IPHostEntry {
+                    HostName = host,
+                    AddressList = Dns.GetHostAddresses(host),
+                };
+
+                return hostEntry.AddressList[0];
+            }
+            catch
+            {
+                return UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
+            }
         }
 
         private static void RemovePrefix(string prefix, HttpListener listener)
