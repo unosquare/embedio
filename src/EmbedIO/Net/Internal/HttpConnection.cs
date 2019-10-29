@@ -130,8 +130,7 @@ namespace EmbedIO.Net.Internal
         {
             if (_sock != null)
             {
-                GetResponseStream()?.Dispose();
-
+                _oStream?.Dispose();
                 _oStream = null;
             }
 

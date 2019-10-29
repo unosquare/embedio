@@ -37,7 +37,7 @@ namespace EmbedIO.Net
         }
         
         /// <inheritdoc />
-        public bool IgnoreWriteExceptions { get; set; }
+        public bool IgnoreWriteExceptions { get; set; } = true;
 
         /// <inheritdoc />
         public bool IsListening { get; private set; }

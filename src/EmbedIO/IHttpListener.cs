@@ -11,7 +11,7 @@ namespace EmbedIO
     public interface IHttpListener : IDisposable
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the listener should ignore write exceptions.
+        /// Gets or sets a value indicating whether the listener should ignore write exceptions. By default the flag is set on.
         /// </summary>
         /// <value>
         /// <c>true</c> if [ignore write exceptions]; otherwise, <c>false</c>.

@@ -165,17 +165,20 @@ namespace EmbedIO
         private IHttpListener CreateHttpListener()
         {
             IHttpListener DoCreate() => Options.Mode switch {
-                HttpListenerMode.Microsoft => (System.Net.HttpListener.IsSupported ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener : new Net.HttpListener(Options.Certificate)),
+                HttpListenerMode.Microsoft => System.Net.HttpListener.IsSupported 
+                    ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener 
+                    : new Net.HttpListener(Options.Certificate),
                 _ => new Net.HttpListener(Options.Certificate)
             };
 
             var listener = DoCreate();
             $"Running HTTPListener: {listener.Name}".Info(LogSource);
+
             foreach (var prefix in Options.UrlPrefixes)
             {
                 var urlPrefix = new string(prefix?.ToCharArray());
 
-                if (urlPrefix.EndsWith("/") == false) urlPrefix = urlPrefix + "/";
+                if (!urlPrefix.EndsWith("/")) urlPrefix += "/";
                 urlPrefix = urlPrefix.ToLowerInvariant();
 
                 listener.AddPrefix(urlPrefix);
