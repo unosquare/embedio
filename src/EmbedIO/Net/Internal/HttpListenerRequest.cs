@@ -52,7 +52,7 @@ namespace EmbedIO.Net.Internal
                 if (_contentEncoding != null)
                     return _contentEncoding;
 
-                var contentType = Headers["Content-Type"];
+                var contentType = Headers[HttpHeaderNames.ContentType];
 
                 if (!string.IsNullOrEmpty(contentType))
                 {
@@ -63,7 +63,7 @@ namespace EmbedIO.Net.Internal
                 }
 
                 var defaultEncoding = Encoding.UTF8;
-                var acceptCharset = Headers["Accept-Charset"]?.SplitByComma()
+                var acceptCharset = Headers[HttpHeaderNames.AcceptCharset]?.SplitByComma()
                     .Select(x => x.Trim().Split(';'))
                     .Select(x => new
                     {
@@ -129,7 +129,7 @@ namespace EmbedIO.Net.Internal
                 // 1. Connection header
                 // 2. Protocol (1.1 == keep-alive by default)
                 // 3. Keep-Alive header
-                var cnc = Headers["Connection"];
+                var cnc = Headers[HttpHeaderNames.Connection];
                 if (!string.IsNullOrEmpty(cnc))
                 {
                     _keepAlive = string.Compare(cnc, "keep-alive", StringComparison.OrdinalIgnoreCase) == 0;
@@ -140,7 +140,7 @@ namespace EmbedIO.Net.Internal
                 }
                 else
                 {
-                    cnc = Headers["keep-alive"];
+                    cnc = Headers[HttpHeaderNames.KeepAlive];
 
                     if (!string.IsNullOrEmpty(cnc))
                         _keepAlive = string.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase) != 0;
@@ -172,11 +172,11 @@ namespace EmbedIO.Net.Internal
         public Uri UrlReferrer { get; private set; }
 
         /// <inheritdoc />
-        public string UserAgent => Headers["user-agent"];
+        public string UserAgent => Headers[HttpHeaderNames.UserAgent];
 
         public string UserHostAddress => LocalEndPoint.ToString();
 
-        public string UserHostName => Headers["host"];
+        public string UserHostName => Headers[HttpHeaderNames.Host];
 
         public string[] UserLanguages { get; private set; }
 
@@ -184,8 +184,8 @@ namespace EmbedIO.Net.Internal
         public bool IsWebSocketRequest
             => HttpVerb == HttpVerbs.Get
             && ProtocolVersion >= HttpVersion.Version11
-            && Headers.Contains("Upgrade", "websocket")
-            && Headers.Contains("Connection", "Upgrade");
+            && Headers.Contains(HttpHeaderNames.Upgrade, "websocket")
+            && Headers.Contains(HttpHeaderNames.Connection, "Upgrade");
 
         /// <summary>
         /// Begins to the get client certificate asynchronously.
@@ -477,6 +477,7 @@ namespace EmbedIO.Net.Internal
                 query = query.Substring(1);
 
             var components = query.Split('&');
+
             foreach (var kv in components)
             {
                 var pos = kv.IndexOf('=');

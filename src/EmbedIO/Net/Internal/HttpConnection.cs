@@ -45,6 +45,7 @@ namespace EmbedIO.Net.Internal
             else
             {
                 var sslStream = new SslStream(new NetworkStream(sock, false), true);
+
                 try
                 {
                     sslStream.AuthenticateAsServer(cert);
