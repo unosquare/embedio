@@ -54,7 +54,7 @@ namespace EmbedIO.Net.Internal
         public ICookieCollection Cookies { get; }
 
         /// <inheritdoc />
-        public Encoding ContentEncoding
+        public Encoding? ContentEncoding
         {
             get => _response.ContentEncoding;
             set => _response.ContentEncoding = value;

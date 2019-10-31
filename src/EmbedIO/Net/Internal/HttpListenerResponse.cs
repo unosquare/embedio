@@ -40,7 +40,7 @@ namespace EmbedIO.Net.Internal
             set
             {
                 if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
+                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
 
                 if (HeadersSent)
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
@@ -60,7 +60,7 @@ namespace EmbedIO.Net.Internal
             set
             {
                 if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
+                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
 
                 if (HeadersSent)
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
@@ -83,7 +83,7 @@ namespace EmbedIO.Net.Internal
             set
             {
                 if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
+                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
 
                 if (HeadersSent)
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
@@ -117,7 +117,7 @@ namespace EmbedIO.Net.Internal
             set
             {
                 if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
+                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
 
                 if (HeadersSent)
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
@@ -134,7 +134,7 @@ namespace EmbedIO.Net.Internal
             set
             {
                 if (_disposed)
-                    throw new ObjectDisposedException(GetType().ToString());
+                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
 
                 if (HeadersSent)
                     throw new InvalidOperationException(CannotChangeHeaderWarning);
