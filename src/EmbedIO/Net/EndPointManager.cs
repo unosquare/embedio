@@ -1,8 +1,10 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using EmbedIO.Net.Internal;
+using Swan.Logging;
 
 namespace EmbedIO.Net
 {
@@ -34,8 +36,10 @@ namespace EmbedIO.Net
                     added.Add(prefix);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                ex.Log(nameof(AddListener));
+
                 foreach (var prefix in added)
                 {
                     RemovePrefix(prefix, listener);
