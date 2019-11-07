@@ -72,6 +72,8 @@ namespace EmbedIO.Files
             if (urlPath.Length == 1)
                 return null;
 
+            urlPath = Uri.UnescapeDataString(urlPath);
+
             var entry = _zipArchive.GetEntry(urlPath.Substring(1));
             if (entry == null)
                 return null;
