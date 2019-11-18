@@ -73,12 +73,11 @@
 <p>This cookbook includes common tasks and solutions for EmbedIOv3.</p>
 <ul>
 <li><a href="#reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a dictionary (application/x-www-form-urlencoded)</a></li>
-<li><a href="#reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</a><ul>
+<li><a href="#reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</a></li>
 <li><a href="#reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</a></li>
 <li><a href="#writing-a-binary-stream">Writing a binary stream</a></li>
-</ul>
-</li>
 <li><a href="#how-to-turn-off-logging">How to turn off logging</a></li>
+<li><a href="#set-custom-error-page">Set custom Error page</a></li>
 </ul>
 <h2 id="reading-from-a-post-body-as-a-dictionary-applicationx-www-form-urlencoded">Reading from a POST body as a dictionary (application/x-www-form-urlencoded)</h2>
 <p>For reading a dictionary from an HTTP Request body inside a WebAPI method you can add an argument to your method with the attribute <code>FormData</code>.</p>
@@ -134,6 +133,25 @@
 </code></pre><h2 id="how-to-turn-off-logging">How to turn off logging</h2>
 <p>We moved the logging from SWAN to a new class <code>Logger</code>. You can Register or Unregister log targets, by default the <code>ConsoleLogger</code> is enabled in the startup. You can Unregister using:</p>
 <pre><code class="lang-csharp">Logger.UnregisterLogger&lt;ConsoleLogger&gt;();
+</code></pre><h2 id="set-custom-error-page">Set custom Error page</h2>
+<p>EmbedIO can handle two types of HTTP Exceptions, one by Webserver and another by <code>WebModule</code> by using the same extension method <code>HandleHttpException</code>. So you can set a general handler and/or specific handler by each module. The following snippet shows how to set a custom handler for a Webserver:</p>
+<pre><code class="lang-csharp">    var server = new WebServer(8877);
+
+    // use this method to set a callback
+    server.HandleHttpException(async (ctx, ex) =&gt; {
+        ctx.Response.StatusCode = ex.StatusCode;
+
+        switch (ex.StatusCode)
+        {
+            case 404:
+                await ctx.SendStringAsync(&quot;Your content&quot;, &quot;text/html&quot;, Encoding.UTF8);
+                break;
+            default:
+                // Handle other HTTP Status codes or call the default handler &#39;SendStandardHtmlAsync&#39;
+                await ctx.SendStandardHtmlAsync(ex.StatusCode);
+                break;
+        }
+    });
 </code></pre></article>
           </div>
           
