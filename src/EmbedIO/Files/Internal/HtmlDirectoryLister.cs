@@ -27,7 +27,7 @@ namespace EmbedIO.Files.Internal
         public async Task ListDirectoryAsync(
             MappedResourceInfo info,
             string absoluteUrlPath,
-            IEnumerable<MappedResourceInfo> entries, 
+            IEnumerable<MappedResourceInfo> entries,
             Stream stream,
             CancellationToken cancellationToken)
         {

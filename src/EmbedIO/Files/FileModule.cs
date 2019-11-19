@@ -506,6 +506,7 @@ namespace EmbedIO.Files
             var isPartial = compressionMethod == CompressionMethod.None
                          && context.Request.IsRangeRequest(contentLength, entityTag, info.LastModifiedUtc, out partialStart, out partialUpperBound);
             var partialLength = contentLength;
+
             if (isPartial)
             {
                 // Prepare a "206 Partial Content" response.

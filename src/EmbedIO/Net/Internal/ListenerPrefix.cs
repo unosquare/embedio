@@ -63,10 +63,12 @@ namespace EmbedIO.Net.Internal
 
             var length = uri.Length;
             var startHost = uri.IndexOf(':') + 3;
+
             if (startHost >= length)
                 throw new ArgumentException("No host specified.");
 
             var colon = uri.Substring(startHost).IndexOf(':') > 0 ? uri.LastIndexOf(':') : -1;
+
             if (startHost == colon)
                 throw new ArgumentException("No host specified.");
 
@@ -92,5 +94,7 @@ namespace EmbedIO.Net.Internal
         }
 
         public bool IsValid() => Path.IndexOf('%') == -1 && Path.IndexOf("//", StringComparison.Ordinal) == -1;
+
+        public override string ToString() => $"{Host}:{Port} ({(Secure ? "Secure" : "Insecure")}";
     }
 }

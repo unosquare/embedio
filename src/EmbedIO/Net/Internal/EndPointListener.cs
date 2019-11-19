@@ -89,7 +89,7 @@ namespace EmbedIO.Net.Internal
                     current = _unhandled;
 
                     // TODO: Should we clone the items?
-                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
+                    future = current?.ToList() ?? new List<ListenerPrefix>();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
                 }
@@ -103,7 +103,7 @@ namespace EmbedIO.Net.Internal
                 do
                 {
                     current = _all;
-                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
+                    future = current?.ToList() ?? new List<ListenerPrefix>();
                     prefix.Listener = listener;
                     AddSpecial(future, prefix);
                 }
@@ -140,7 +140,7 @@ namespace EmbedIO.Net.Internal
                 do
                 {
                     current = _unhandled;
-                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
+                    future = current?.ToList() ?? new List<ListenerPrefix>();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
                 }
@@ -155,7 +155,7 @@ namespace EmbedIO.Net.Internal
                 do
                 {
                     current = _all;
-                    future = current?.Select(item => item).ToList() ?? new List<ListenerPrefix>();
+                    future = current?.ToList() ?? new List<ListenerPrefix>();
                     if (!RemoveSpecial(future, prefix))
                         break; // Prefix not found
                 }

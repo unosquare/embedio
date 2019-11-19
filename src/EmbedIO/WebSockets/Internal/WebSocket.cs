@@ -507,7 +507,7 @@ namespace EmbedIO.WebSockets.Internal
                             return;
                         }
 
-                        var dummy = Task.Run(Message);
+                        _ = Task.Run(Message);
                     }
                     catch (Exception ex)
                     {
