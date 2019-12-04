@@ -15,6 +15,6 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.0.100
+        dotnet-version: 3.1.100
     - name: Test with dotnet
       run:  dotnet test ./test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
