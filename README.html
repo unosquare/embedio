@@ -218,7 +218,14 @@
     }
 </code></pre><h3 id="reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</h3>
 <p>EmbedIO doesn&#39;t provide the functionality to read from a Multipart FormData stream. But you can check the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser Nuget</a> and connect the Request input directly to the HttpMultipartParser, very helpful and small library.</p>
-<p>There is <a href="http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post">another solution</a> but it requires this <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client">Microsoft Nuget</a>.</p>
+<p>A sample code using the previous library:</p>
+<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/upload&quot;)]
+    public async Task UploadFile()
+    {
+        var parser = await MultipartFormDataParser.ParseAsync(Request.InputStream);
+        // Now you can access parser.Files
+    }
+</code></pre><p>There is <a href="http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post">another solution</a> but it requires this <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client">Microsoft Nuget</a>.</p>
 <h3 id="writing-a-binary-stream">Writing a binary stream</h3>
 <p>You can open the Response Output Stream with the extension <a href="">OpenResponseStream</a>.</p>
 <pre><code class="lang-csharp">    [Route(HttpVerbs.Get, &quot;/binary&quot;)]
