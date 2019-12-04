@@ -178,6 +178,17 @@ For reading a JSON payload and deserialize it to an object from an HTTP Request 
 
 EmbedIO doesn't provide the functionality to read from a Multipart FormData stream. But you can check the [HttpMultipartParser Nuget](https://www.nuget.org/packages/HttpMultipartParser/) and connect the Request input directly to the HttpMultipartParser, very helpful and small library.
 
+A sample code using the previous library:
+
+```csharp
+    [Route(HttpVerbs.Post, "/upload")]
+    public async Task UploadFile()
+    {
+        var parser = await MultipartFormDataParser.ParseAsync(Request.InputStream);
+        // Now you can access parser.Files
+    }
+```
+
 There is [another solution](http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post) but it requires this [Microsoft Nuget](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client).
 
 ### Writing a binary stream
