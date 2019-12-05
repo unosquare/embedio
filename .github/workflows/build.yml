@@ -20,5 +20,5 @@ jobs:
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:Exclude=[NUnit3.TestAdapter]* ./test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
     - uses: codecov/codecov-action@v1
       with:
-        file: test/Swan.Test/coverage.info
+        file: test/EmbedIO.Tests/coverage.info
         token: ${{ secrets.CODECOV_TOKEN }}
