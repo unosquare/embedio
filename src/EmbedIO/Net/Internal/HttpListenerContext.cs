@@ -71,7 +71,7 @@ namespace EmbedIO.Net.Internal
 
         internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
 
-        internal HttpListener Listener { get; set; }
+        internal HttpListener? Listener { get; set; }
 
         internal string? ErrorMessage { get; set; }
 

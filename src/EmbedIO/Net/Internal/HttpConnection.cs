@@ -123,7 +123,7 @@ namespace EmbedIO.Net.Internal
             return _iStream;
         }
 
-        public ResponseStream GetResponseStream() => _oStream ??= new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener.IgnoreWriteExceptions);
+        public ResponseStream GetResponseStream() => _oStream ??= new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true);
 
         internal void ForceClose() => Close(true);
 
