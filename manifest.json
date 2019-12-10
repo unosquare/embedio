@@ -1833,6 +1833,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "wiki/Partial-content-and-compression.md",
+      "output": {
+        ".html": {
+          "relative_path": "wiki/Partial-content-and-compression.html",
+          "hash": "BqJkheKJV5BtGUT7K7H2ew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "wiki/Self-signed-certified-(Windows).md",
       "output": {
         ".html": {
@@ -1861,7 +1873,7 @@
       "output": {
         ".html": {
           "relative_path": "wiki/_Sidebar.html",
-          "hash": "MTyW9Qxn5NaRM2B+rTjBeg=="
+          "hash": "RVYFTKUn3Qpz1Uej4GWDgA=="
         }
       },
       "is_incremental": false,
@@ -1889,7 +1901,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 9,
+          "total_file_count": 10,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

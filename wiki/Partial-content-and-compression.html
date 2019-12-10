@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>General | Unosquare EmbedIO </title>
+    <title> | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="General | Unosquare EmbedIO ">
+    <meta name="title" content=" | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -68,18 +68,18 @@
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h2 id="general">General</h2>
 
+<p>As of version 3, <code>FileModule</code> supports the delivery of partial content, i.e. requests containing a <code>Range</code> header are correctly handled.</p>
+<p>EmbedIO also supports both <code>gzip</code> and <code>deflate</code> compression when requested through <code>Content-Encoding</code> headers.</p>
+<p>The combination of the two, however, is <em>not</em> supported. When a request contains both <code>Range</code> and <code>Content-Encoding</code> headers, the following will happen:</p>
 <ul>
-<li><a href="https://github.com/unosquare/embedio/wiki/Upgrade-from-v2">Upgrade from v2</a></li>
-<li><a href="https://github.com/unosquare/embedio/wiki/Cookbook">Cookbook</a></li>
+<li>If the client can accept an uncompressed response payload (e.g. the <code>Content-Encoding</code> header also contains <code>identity</code>), then the <code>Range</code> header is honored: the resulting <em>uncompressed</em> response will contain the requested range.</li>
+<li>If the client <em>cannot</em> accept an uncompressed response payload, then the <code>Range</code> header is ignored: the response will contain <em>the whole requested resource</em>, compressed with the requested <code>Content-Encoding</code> method.</li>
 </ul>
-<h2 id="additional-details">Additional details</h2>
-<ul>
-<li><a href="https://github.com/unosquare/embedio/wiki/Exceptions-handlers">Exception Handlers</a></li>
-<li><a href="https://github.com/unosquare/embedio/wiki/Self-signed-certified-(Windows)">Self-signed Certified</a></li>
-<li><a href="https://github.com/unosquare/embedio/wiki/Partial-content-and-compression">Partial content and compression</a></li>
-</ul>
+<p>You can verify this behavior by looking at <a href="https://github.com/unosquare/embedio/blob/024bf455cc872f7942599ebecf3b9ba7f8cef8e6/src/EmbedIO/Files/FileModule.cs#L446">the source for <code>FileModule</code></a>.</p>
+<p>There&#39;s an interesting discussion on the subject <a href="https://www.ruby-forum.com/t/potential-bug-gzipping-preventing-http-range-requests/208701">on ruby-forum.com</a>. It&#39;s a few years old, talking about Nginx vs. Apache and CURL vs. browsers, but the relevant parts of RFCs have not changed much in the meantime.</p>
+<p>In short, combining range requests with content compression would mean sending pieces of a gzipped / deflated resource. The client couldn&#39;t decompress the resource without first combining all the pieces, because of how compression / decompression algorithms work. Different clients will mess things up in different ways; there seems to be no clear standard about handling compressed <code>206 Partial Content</code> responses. Therefore it makes no sense to send them.</p>
+<p>This is usually no big deal, since most files over a few kilobytes are compressed anyway: think ZIP, JPEG, PNG, even OfficeOpenXML and OpenDocument (which are ZIP files under disguise).</p>
 </article>
           </div>
           
@@ -93,7 +93,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li class="top-sep">
-                    <a href="https://github.com/unosquare/embedio.wiki/blob/master/_Sidebar.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/unosquare/embedio.wiki/blob/master/Partial-content-and-compression.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
