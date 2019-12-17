@@ -87,7 +87,7 @@ namespace EmbedIO.Utilities
             var shiftBits = (byte)(32 - prefixLen);
             uint ip1 = (ip >> shiftBits) << shiftBits;
 
-            if (ip1 != ip) // Check correct subnet address
+            if ((ip1 & ip) != ip1) // Check correct subnet address
                 return ipList;
 
             uint ip2 = ip1 >> shiftBits;

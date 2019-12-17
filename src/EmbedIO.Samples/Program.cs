@@ -61,7 +61,9 @@ namespace EmbedIO.Samples
             var server = new WebServer(o => o
                     .WithUrlPrefix(url)
                     .WithMode(HttpListenerMode.EmbedIO))
-                .WithIPBanning(new List<string>() { "(404 Not Found)+" })
+                .WithIPBanning(
+                    new List<string>() { "(404 Not Found)+" },
+                    new List<string>() { "172.16.17.1/24", "172.16.16.124", "192.168.1-2.2-5" })
                 .WithLocalSessionManager()
                 .WithCors(
                     // Origins, separated by comma without last slash
