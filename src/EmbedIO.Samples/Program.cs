@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -60,7 +61,7 @@ namespace EmbedIO.Samples
             var server = new WebServer(o => o
                     .WithUrlPrefix(url)
                     .WithMode(HttpListenerMode.EmbedIO))
-                .WithIPBanning()
+                .WithIPBanning(new List<string>() { "(404 Not Found)+" })
                 .WithLocalSessionManager()
                 .WithCors(
                     // Origins, separated by comma without last slash

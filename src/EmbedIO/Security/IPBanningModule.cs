@@ -12,18 +12,64 @@ namespace EmbedIO.Security
 {
     public class IPBanningModule : WebModuleBase, IDisposable, ILogger
     {
+        public const int DefaultBanTime = 30;
+        public const int DefaultMaxRetry = 10;
+
         private static readonly ConcurrentDictionary<IPAddress, List<DateTime>> AccessAttempts = new ConcurrentDictionary<IPAddress, List<DateTime>>();
         private static readonly ConcurrentDictionary<IPAddress, BannedInfo> Blacklist = new ConcurrentDictionary<IPAddress, BannedInfo>();
 
-        private readonly List<IPAddress> Whitelist = new List<IPAddress>();
-        private readonly IEnumerable<string> failRegex;
-        private readonly static int banTime = 30;
-        private readonly int maxRetry = 10;
-        private bool disposedValue = false;
+        private readonly List<IPAddress> _whitelist = new List<IPAddress>();
+        private readonly IEnumerable<string>? _failRegex;
+        private readonly int _banTime = 30;
+        private readonly int _maxRetry = 10;
+        private bool _disposedValue = false;
 
-        public IPBanningModule(string baseRoute)
+        public IPBanningModule(string baseRoute, IEnumerable<string> failRegex)
+            : this(baseRoute, failRegex, null, DefaultBanTime, DefaultMaxRetry)
+        {
+        }
+
+        public IPBanningModule(string baseRoute, IEnumerable<string> failRegex, IEnumerable<string>? whitelist)
+            : this(baseRoute, failRegex, whitelist, DefaultBanTime, DefaultMaxRetry)
+        {
+        }
+
+        public IPBanningModule(string baseRoute,
+            IEnumerable<string> failRegex,
+            int banTime)
+            : this(baseRoute, failRegex, null, banTime, DefaultMaxRetry)
+        {
+        }
+
+        public IPBanningModule(string baseRoute, 
+            IEnumerable<string> failRegex, 
+            IEnumerable<string>? whitelist,
+            int banTime)
+            : this(baseRoute, failRegex, whitelist, banTime, DefaultMaxRetry)
+        {
+        }
+
+        public IPBanningModule(string baseRoute,
+            IEnumerable<string> failRegex,
+            int banTime,
+            int maxRerty)
+            : this(baseRoute, failRegex, null, banTime, maxRerty)
+        {
+        }
+
+        public IPBanningModule(string baseRoute,
+            IEnumerable<string> failRegex,
+            IEnumerable<string>? whitelist,
+            int banTime,
+            int maxRerty)
             : base(baseRoute)
         {
+            _failRegex = failRegex;
+            _banTime = banTime;
+            _maxRetry = maxRerty;
+
+            ParseWhiteList(whitelist);
+
             Logger.RegisterLogger(this);
         }
 
@@ -37,12 +83,12 @@ namespace EmbedIO.Security
         {
             // Process Log
             if (ClientAddress == null ||
-                failRegex?.Any() != true ||
-                Whitelist.Contains(ClientAddress) ||
+                _failRegex?.Any() != true ||
+                _whitelist.Contains(ClientAddress) ||
                 Blacklist.ContainsKey(ClientAddress))
                 return;
 
-            foreach (var regex in failRegex)
+            foreach (var regex in _failRegex)
             {
                 if (Regex.IsMatch(logEvent.Message, regex, RegexOptions.CultureInvariant))
                 {
@@ -54,20 +100,11 @@ namespace EmbedIO.Security
             }
         }
 
-        private void UpdateBlackList()
-        {
-            var time = DateTime.UtcNow.AddMinutes(-1 * banTime);
-            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() > maxRetry) == true)
-            {
-                TryBanIP(ClientAddress, banTime, false);
-            }
-        }
-
         protected override Task OnRequestAsync(IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
             PurgeBlackList();
-            PurgeAccessAttempts(banTime);
+            PurgeAccessAttempts();
 
             if (Blacklist.ContainsKey(ClientAddress))
             {
@@ -82,6 +119,37 @@ namespace EmbedIO.Security
         {
             PurgeBlackList();
             return Blacklist.Values.ToList();
+        }
+
+        private void ParseWhiteList(IEnumerable<string>? whitelist)
+        {
+            if (whitelist?.Any() != true)
+                return;
+
+            foreach (var address in whitelist)
+            {
+                var ipAdresses = ParseIPAddress(address);
+                foreach (var ipAddress in ipAdresses)
+                {
+                    if (!_whitelist.Contains(ipAddress))
+                        _whitelist.Add(ipAddress);
+                }
+            }
+        }
+
+        private IEnumerable<IPAddress> ParseIPAddress(string address)
+        {
+            // TODO:
+            return new List<IPAddress>();
+        }
+
+        private void UpdateBlackList()
+        {
+            var time = DateTime.UtcNow.AddMinutes(-1);
+            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() > _maxRetry) == true)
+            {
+                TryBanIP(ClientAddress, _banTime, false);
+            }
         }
 
         public static bool TryBanIP(IPAddress address, int minutes, bool isExplicit = true) =>
@@ -131,9 +199,9 @@ namespace EmbedIO.Security
             }
         }
 
-        private static void PurgeAccessAttempts(int banTime)
+        private static void PurgeAccessAttempts()
         {
-            var banDate = DateTime.UtcNow.AddMinutes(-1 * banTime);
+            var banDate = DateTime.UtcNow.AddMinutes(-1);
             var keys = AccessAttempts.Keys;
 
             foreach (var k in keys)
@@ -148,17 +216,14 @@ namespace EmbedIO.Security
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
+                    _whitelist?.Clear();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 
