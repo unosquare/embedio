@@ -60,6 +60,7 @@ namespace EmbedIO.Samples
             var server = new WebServer(o => o
                     .WithUrlPrefix(url)
                     .WithMode(HttpListenerMode.EmbedIO))
+                .WithIPBanning()
                 .WithLocalSessionManager()
                 .WithCors(
                     // Origins, separated by comma without last slash
