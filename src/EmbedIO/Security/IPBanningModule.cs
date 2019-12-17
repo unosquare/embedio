@@ -1,4 +1,5 @@
-﻿using Swan;
+﻿using EmbedIO.Utilities;
+using Swan;
 using Swan.Logging;
 using System;
 using System.Collections.Concurrent;
@@ -10,9 +11,20 @@ using System.Threading.Tasks;
 
 namespace EmbedIO.Security
 {
+    /// <summary>
+    /// A module for ban IPs that show the malicious signs, based on scanning log messages.
+    /// </summary>
+    /// <seealso cref="EmbedIO.WebModuleBase" />
     public class IPBanningModule : WebModuleBase, IDisposable, ILogger
     {
+        /// <summary>
+        /// The default ban time, in minutes.
+        /// </summary>
         public const int DefaultBanTime = 30;
+
+        /// <summary>
+        /// The default maximum retries per minute.
+        /// </summary>
         public const int DefaultMaxRetry = 10;
 
         private static readonly ConcurrentDictionary<IPAddress, List<DateTime>> AccessAttempts = new ConcurrentDictionary<IPAddress, List<DateTime>>();
@@ -24,16 +36,33 @@ namespace EmbedIO.Security
         private readonly int _maxRetry = 10;
         private bool _disposedValue = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// </summary>
+        /// <param name="baseRoute">The base route.</param>
+        /// <param name="failRegex">A list of regex to match the log messages against.</param>
         public IPBanningModule(string baseRoute, IEnumerable<string> failRegex)
             : this(baseRoute, failRegex, null, DefaultBanTime, DefaultMaxRetry)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// </summary>
+        /// <param name="baseRoute">The base route.</param>
+        /// <param name="failRegex">A list of regex to match the log messages against.</param>
+        /// <param name="whitelist">A list of valid IPs that never will be banned.</param>
         public IPBanningModule(string baseRoute, IEnumerable<string> failRegex, IEnumerable<string>? whitelist)
             : this(baseRoute, failRegex, whitelist, DefaultBanTime, DefaultMaxRetry)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// </summary>
+        /// <param name="baseRoute">The base route.</param>
+        /// <param name="failRegex">A list of regex to match the log messages against.</param>
+        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string> failRegex,
             int banTime)
@@ -41,6 +70,13 @@ namespace EmbedIO.Security
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// </summary>
+        /// <param name="baseRoute">The base route.</param>
+        /// <param name="failRegex">A list of regex to match the log messages against.</param>
+        /// <param name="whitelist">A list of valid IPs that never will be banned.</param>
+        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
         public IPBanningModule(string baseRoute, 
             IEnumerable<string> failRegex, 
             IEnumerable<string>? whitelist,
@@ -49,36 +85,54 @@ namespace EmbedIO.Security
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// </summary>
+        /// <param name="baseRoute">The base route.</param>
+        /// <param name="failRegex">A list of regex to match the log messages against.</param>
+        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
+        /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string> failRegex,
             int banTime,
-            int maxRerty)
-            : this(baseRoute, failRegex, null, banTime, maxRerty)
+            int maxRetry)
+            : this(baseRoute, failRegex, null, banTime, maxRetry)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// </summary>
+        /// <param name="baseRoute">The base route.</param>
+        /// <param name="failRegex">A list of regex to match the log messages against.</param>
+        /// <param name="whitelist">A list of valid IPs that never will be banned.</param>
+        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
+        /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string> failRegex,
             IEnumerable<string>? whitelist,
             int banTime,
-            int maxRerty)
+            int maxRetry)
             : base(baseRoute)
         {
             _failRegex = failRegex;
             _banTime = banTime;
-            _maxRetry = maxRerty;
+            _maxRetry = maxRetry;
 
             ParseWhiteList(whitelist);
 
             Logger.RegisterLogger(this);
         }
 
-        public IPAddress? ClientAddress { get; set; }
-
+        /// <inheritdoc />
         public override bool IsFinalHandler => false;
 
+        /// <inheritdoc />
         public LogLevel LogLevel => LogLevel.Trace;
 
+        private IPAddress? ClientAddress { get; set; }
+
+        /// <inheritdoc />
         public void Log(LogMessageReceivedEventArgs logEvent)
         {
             // Process Log
@@ -100,6 +154,7 @@ namespace EmbedIO.Security
             }
         }
 
+        /// <inheritdoc />
         protected override Task OnRequestAsync(IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
@@ -115,6 +170,10 @@ namespace EmbedIO.Security
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Gets the list of current banned IPs.
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<BannedInfo> GetBannedIPs()
         {
             PurgeBlackList();
@@ -128,19 +187,13 @@ namespace EmbedIO.Security
 
             foreach (var address in whitelist)
             {
-                var ipAdresses = ParseIPAddress(address);
+                var ipAdresses = IPParser.Parse(address);
                 foreach (var ipAddress in ipAdresses)
                 {
                     if (!_whitelist.Contains(ipAddress))
                         _whitelist.Add(ipAddress);
                 }
             }
-        }
-
-        private IEnumerable<IPAddress> ParseIPAddress(string address)
-        {
-            // TODO:
-            return new List<IPAddress>();
         }
 
         private void UpdateBlackList()
@@ -152,12 +205,33 @@ namespace EmbedIO.Security
             }
         }
 
+        /// <summary>
+        /// Tries to ban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address to ban.</param>
+        /// <param name="minutes">The time in minutes that the IP will remain ban.</param>
+        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <returns></returns>
         public static bool TryBanIP(IPAddress address, int minutes, bool isExplicit = true) =>
             TryBanIP(address, DateTime.UtcNow.AddMinutes(minutes), isExplicit);
 
+        /// <summary>
+        /// Tries to ban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address to ban.</param>
+        /// <param name="banTime">An <see cref="TimeSpan"/> that sets the time the IP will remain ban.</param>
+        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <returns></returns>
         public static bool TryBanIP(IPAddress address, TimeSpan banTime, bool isExplicit = true) =>
             TryBanIP(address, DateTime.UtcNow.Add(banTime), isExplicit);
 
+        /// <summary>
+        /// Tries to ban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address to ban.</param>
+        /// <param name="banUntil">A <see cref="DateTime"/> that sets until when the IP will remain ban.</param>
+        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <returns></returns>
         public static bool TryBanIP(IPAddress address, DateTime banUntil, bool isExplicit = true)
         {
             if (Blacklist.ContainsKey(address))
@@ -177,6 +251,11 @@ namespace EmbedIO.Security
             });
         }
 
+        /// <summary>
+        /// Tries to unban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address.</param>
+        /// <returns></returns>
         public static bool TryUnbanIP(IPAddress address) =>
             Blacklist.TryRemove(address, out _);
 
