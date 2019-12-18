@@ -32,12 +32,23 @@ namespace EmbedIO.Security
         private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> AccessAttempts = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
         private static readonly ConcurrentDictionary<IPAddress, BannedInfo> Blacklist = new ConcurrentDictionary<IPAddress, BannedInfo>();
         private static readonly ConcurrentDictionary<string, Regex> FailRegex = new ConcurrentDictionary<string, Regex>();
+        private static readonly PeriodicTask? Purger;
 
         private readonly List<IPAddress> _whitelist = new List<IPAddress>();
         private readonly int _banTime = 30;
         private readonly int _maxRetry = 10;
         private bool _disposedValue = false;
-        private PeriodicTask? _purger;
+
+        static IPBanningModule()
+        {
+            Purger = new PeriodicTask(TimeSpan.FromMinutes(1), ct =>
+                {
+                    PurgeBlackList();
+                    PurgeAccessAttempts();
+
+                    return Task.CompletedTask;
+                });
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
@@ -63,37 +74,18 @@ namespace EmbedIO.Security
         /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
         /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
         public IPBanningModule(string baseRoute,
-            IEnumerable<string> failRegex,
+            IEnumerable<string>? failRegex = null,
             IEnumerable<string>? whitelist = null,
             int banTime = DefaultBanTime,
             int maxRetry = DefaultMaxRetry)
             : base(baseRoute)
         {
-            foreach (var pattern in failRegex)
-            {
-                try
-                {
-                    FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
-                }
-                catch (Exception ex)
-                {
-                    ex.Log(nameof(IPBanningModule));
-                }
-            }
+            if (failRegex != null)
+                AddRules(failRegex);
 
             _banTime = banTime;
             _maxRetry = maxRetry;
-
-            ParseWhiteList(whitelist);
-
-            _purger = new PeriodicTask(TimeSpan.FromMinutes(1), ct =>
-            {
-                PurgeBlackList();
-                PurgeAccessAttempts();
-
-                return Task.CompletedTask;
-            });
-
+            AddToWhitelist(whitelist);
             Logger.RegisterLogger(this);
         }
 
@@ -104,6 +96,43 @@ namespace EmbedIO.Security
         public LogLevel LogLevel => LogLevel.Trace;
 
         private IPAddress? ClientAddress { get; set; }
+
+        internal void AddRules(IEnumerable<string> patterns)
+        {
+            foreach (var pattern in patterns)
+                AddRule(pattern);
+        }
+
+        internal void AddRule(string pattern)
+        {
+            try
+            {
+                FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(IPBanningModule), $"Invalid regex - '{pattern}'.");
+            }
+        }
+
+        internal void AddToWhitelist(IEnumerable<string> whitelist) =>
+            AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
+
+        internal async Task AddToWhitelistAsync(IEnumerable<string> whitelist)
+        {
+            if (whitelist?.Any() != true)
+                return;
+
+            foreach (var address in whitelist)
+            {
+                var adresses = await IPParser.Parse(address).ConfigureAwait(false);
+                foreach (var ipAddress in adresses)
+                {
+                    if (!_whitelist.Contains(ipAddress))
+                        _whitelist.Add(ipAddress);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the list of current banned IPs.
@@ -248,26 +277,10 @@ namespace EmbedIO.Security
             }
         }
 
-        private void ParseWhiteList(IEnumerable<string>? whitelist)
-        {
-            if (whitelist?.Any() != true)
-                return;
-
-            foreach (var address in whitelist)
-            {
-                var adresses = IPParser.Parse(address);
-                foreach (var ipAddress in adresses)
-                {
-                    if (!_whitelist.Contains(ipAddress))
-                        _whitelist.Add(ipAddress);
-                }
-            }
-        }
-
         private void UpdateBlackList()
         {
             var time = DateTime.Now.AddMinutes(-1).Ticks;
-            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() > _maxRetry) == true)
+            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() >= _maxRetry) == true)
             {
                 TryBanIP(ClientAddress, _banTime, false);
             }
@@ -286,10 +299,8 @@ namespace EmbedIO.Security
                 if (disposing)
                 {
                     _whitelist.Clear();
-                    _purger?.Dispose();
                 }
 
-                _purger = null;
                 _disposedValue = true;
             }
         }

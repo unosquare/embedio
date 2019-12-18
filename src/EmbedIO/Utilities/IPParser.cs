@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace EmbedIO.Utilities
 {
@@ -14,12 +15,9 @@ namespace EmbedIO.Utilities
         /// </summary>
         /// <param name="address">The IP address.</param>
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="address"/>.</returns>
-        public static IEnumerable<IPAddress> Parse(string address)
+        public static async Task<IEnumerable<IPAddress>> Parse(string address)
         {
             var addressList = new List<IPAddress>();
-
-            if (string.IsNullOrWhiteSpace(address))
-                return addressList;
 
             if (IPAddress.TryParse(address, out var ip))
             {
@@ -29,8 +27,7 @@ namespace EmbedIO.Utilities
 
             try
             {
-                var entries = Dns.GetHostEntry(address);
-                return entries.AddressList;
+                return await Dns.GetHostAddressesAsync(address).ConfigureAwait(false);
             }
             catch
             {
