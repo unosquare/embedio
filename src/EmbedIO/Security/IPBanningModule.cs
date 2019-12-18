@@ -31,9 +31,9 @@ namespace EmbedIO.Security
 
         private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> AccessAttempts = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
         private static readonly ConcurrentDictionary<IPAddress, BannedInfo> Blacklist = new ConcurrentDictionary<IPAddress, BannedInfo>();
+        private static readonly ConcurrentDictionary<string, Regex> FailRegex = new ConcurrentDictionary<string, Regex>();
 
         private readonly List<IPAddress> _whitelist = new List<IPAddress>();
-        private readonly List<Regex> _failRegex = new List<Regex>();
         private readonly int _banTime = 30;
         private readonly int _maxRetry = 10;
         private bool _disposedValue = false;
@@ -73,7 +73,7 @@ namespace EmbedIO.Security
             {
                 try
                 {
-                    _failRegex.Add(new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
+                    FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
                 }
                 catch (Exception ex)
                 {
@@ -105,18 +105,87 @@ namespace EmbedIO.Security
 
         private IPAddress? ClientAddress { get; set; }
 
+        /// <summary>
+        /// Gets the list of current banned IPs.
+        /// </summary>
+        /// <returns>A collection of <see cref="BannedInfo"/> in the blacklist.</returns>
+        public static IEnumerable<BannedInfo> GetBannedIPs() =>
+            Blacklist.Values.ToList();
+
+        /// <summary>
+        /// Tries to ban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address to ban.</param>
+        /// <param name="minutes">The time in minutes that the IP will remain ban.</param>
+        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <returns>
+        ///     <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool TryBanIP(IPAddress address, int minutes, bool isExplicit = true) =>
+            TryBanIP(address, DateTime.Now.AddMinutes(minutes), isExplicit);
+
+        /// <summary>
+        /// Tries to ban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address to ban.</param>
+        /// <param name="banTime">An <see cref="TimeSpan"/> that sets the time the IP will remain ban.</param>
+        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <returns>
+        ///     <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool TryBanIP(IPAddress address, TimeSpan banTime, bool isExplicit = true) =>
+            TryBanIP(address, DateTime.Now.Add(banTime), isExplicit);
+
+        /// <summary>
+        /// Tries to ban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address to ban.</param>
+        /// <param name="banUntil">A <see cref="DateTime"/> that sets until when the IP will remain ban.</param>
+        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <returns>
+        ///     <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool TryBanIP(IPAddress address, DateTime banUntil, bool isExplicit = true)
+        {
+            if (Blacklist.ContainsKey(address))
+            {
+                var bannedInfo = Blacklist[address];
+                bannedInfo.BanUntil = banUntil.Ticks;
+                bannedInfo.IsExplicit = isExplicit;
+
+                return true;
+            }
+
+            return Blacklist.TryAdd(address, new BannedInfo()
+            {
+                IPAddress = address,
+                BanUntil = banUntil.Ticks,
+                IsExplicit = isExplicit,
+            });
+        }
+
+        /// <summary>
+        /// Tries to unban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The IP address.</param>
+        /// <returns>
+        ///     <c>true</c> if the IP was removed from the blacklist; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool TryUnbanIP(IPAddress address) =>
+            Blacklist.TryRemove(address, out _);
+
         /// <inheritdoc />
         public void Log(LogMessageReceivedEventArgs logEvent)
         {
             // Process Log
             if (string.IsNullOrWhiteSpace(logEvent.Message) ||
                 ClientAddress == null ||
-                !_failRegex.Any() ||
+                !FailRegex.Any() ||
                 _whitelist.Contains(ClientAddress) ||
                 Blacklist.ContainsKey(ClientAddress))
                 return;
 
-            foreach (var regex in _failRegex)
+            foreach (var regex in FailRegex.Values)
             {
                 try
                 {
@@ -147,92 +216,6 @@ namespace EmbedIO.Security
 
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        /// Gets the list of current banned IPs.
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<BannedInfo> GetBannedIPs() =>
-            Blacklist.Values.ToList();
-
-        private void ParseWhiteList(IEnumerable<string>? whitelist)
-        {
-            if (whitelist?.Any() != true)
-                return;
-
-            foreach (var address in whitelist)
-            {
-                var ipAdresses = IPParser.Parse(address);
-                foreach (var ipAddress in ipAdresses)
-                {
-                    if (!_whitelist.Contains(ipAddress))
-                        _whitelist.Add(ipAddress);
-                }
-            }
-        }
-
-        private void UpdateBlackList()
-        {
-            var time = DateTime.Now.AddMinutes(-1).Ticks;
-            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() > _maxRetry) == true)
-            {
-                TryBanIP(ClientAddress, _banTime, false);
-            }
-        }
-
-        /// <summary>
-        /// Tries to ban an IP explicitly.
-        /// </summary>
-        /// <param name="address">The IP address to ban.</param>
-        /// <param name="minutes">The time in minutes that the IP will remain ban.</param>
-        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
-        /// <returns></returns>
-        public static bool TryBanIP(IPAddress address, int minutes, bool isExplicit = true) =>
-            TryBanIP(address, DateTime.Now.AddMinutes(minutes), isExplicit);
-
-        /// <summary>
-        /// Tries to ban an IP explicitly.
-        /// </summary>
-        /// <param name="address">The IP address to ban.</param>
-        /// <param name="banTime">An <see cref="TimeSpan"/> that sets the time the IP will remain ban.</param>
-        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
-        /// <returns></returns>
-        public static bool TryBanIP(IPAddress address, TimeSpan banTime, bool isExplicit = true) =>
-            TryBanIP(address, DateTime.Now.Add(banTime), isExplicit);
-
-        /// <summary>
-        /// Tries to ban an IP explicitly.
-        /// </summary>
-        /// <param name="address">The IP address to ban.</param>
-        /// <param name="banUntil">A <see cref="DateTime"/> that sets until when the IP will remain ban.</param>
-        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
-        /// <returns></returns>
-        public static bool TryBanIP(IPAddress address, DateTime banUntil, bool isExplicit = true)
-        {
-            if (Blacklist.ContainsKey(address))
-            {
-                var bannedInfo = Blacklist[address];
-                bannedInfo.BanUntil = banUntil.Ticks;
-                bannedInfo.IsExplicit = isExplicit;
-
-                return true;
-            }
-
-            return Blacklist.TryAdd(address, new BannedInfo()
-            {
-                IPAddress = address,
-                BanUntil = banUntil.Ticks,
-                IsExplicit = isExplicit,
-            });
-        }
-
-        /// <summary>
-        /// Tries to unban an IP explicitly.
-        /// </summary>
-        /// <param name="address">The IP address.</param>
-        /// <returns></returns>
-        public static bool TryUnbanIP(IPAddress address) =>
-            Blacklist.TryRemove(address, out _);
 
         private static void AddAccessAttempt(IPAddress address)
         {
@@ -265,8 +248,37 @@ namespace EmbedIO.Security
             }
         }
 
+        private void ParseWhiteList(IEnumerable<string>? whitelist)
+        {
+            if (whitelist?.Any() != true)
+                return;
+
+            foreach (var address in whitelist)
+            {
+                var adresses = IPParser.Parse(address);
+                foreach (var ipAddress in adresses)
+                {
+                    if (!_whitelist.Contains(ipAddress))
+                        _whitelist.Add(ipAddress);
+                }
+            }
+        }
+
+        private void UpdateBlackList()
+        {
+            var time = DateTime.Now.AddMinutes(-1).Ticks;
+            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() > _maxRetry) == true)
+            {
+                TryBanIP(ClientAddress, _banTime, false);
+            }
+        }
+
         #region IDisposable Support
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -274,7 +286,6 @@ namespace EmbedIO.Security
                 if (disposing)
                 {
                     _whitelist.Clear();
-                    _failRegex.Clear();
                     _purger?.Dispose();
                 }
 
@@ -283,11 +294,12 @@ namespace EmbedIO.Security
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose() =>
             Dispose(true);
         
         #endregion
-
     }
 }

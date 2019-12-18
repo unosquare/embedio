@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
-using System.Text;
 
 namespace EmbedIO.Utilities
 {
+    /// <summary>
+    /// Provides standard methods to parse IP address strings.
+    /// </summary>
     public static class IPParser
     {
         /// <summary>
@@ -14,15 +16,15 @@ namespace EmbedIO.Utilities
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="address"/>.</returns>
         public static IEnumerable<IPAddress> Parse(string address)
         {
-            var ipList = new List<IPAddress>();
+            var addressList = new List<IPAddress>();
 
             if (string.IsNullOrWhiteSpace(address))
-                return ipList;
+                return addressList;
 
-            if (IPAddress.TryParse(address, out var _ip))
+            if (IPAddress.TryParse(address, out var ip))
             {
-                ipList.Add(_ip);
-                return ipList;
+                addressList.Add(ip);
+                return addressList;
             }
 
             try
@@ -41,7 +43,7 @@ namespace EmbedIO.Utilities
             if (IsSimpleIPRange(address))
                 return TryParseSimpleIPRange(address);
 
-            return ipList;
+            return addressList;
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace EmbedIO.Utilities
             if (prefixParts.Length != 4)
                 return false;
 
-            return byte.TryParse(prefixLen, out var _len) && _len >= 0 && _len <= 32;
+            return byte.TryParse(prefixLen, out var len) && len >= 0 && len <= 32;
         }
 
         /// <summary>
@@ -74,28 +76,28 @@ namespace EmbedIO.Utilities
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
         public static IEnumerable<IPAddress> ParseCIDRNotation(string range)
         {
-            var ipList = new List<IPAddress>();
+            var addressList = new List<IPAddress>();
 
             if (!IsCIDRNotation(range))
-                return ipList;
+                return addressList;
 
             var parts = range.Split('/');
             var prefix = parts[0];
-            var prefixLen = byte.Parse(parts[1]);
+            var prefixLen = byte.Parse(parts[1], NumberFormatInfo.InvariantInfo);
             var prefixParts = prefix.Split('.');
             
             uint ip = 0;
             for (int i = 0; i < 4; i++)
             {
                 ip = ip << 8;
-                ip += uint.Parse(prefixParts[i]);
+                ip += uint.Parse(prefixParts[i], NumberFormatInfo.InvariantInfo);
             }
 
             var shiftBits = (byte)(32 - prefixLen);
             uint ip1 = (ip >> shiftBits) << shiftBits;
 
             if ((ip1 & ip) != ip1) // Check correct subnet address
-                return ipList;
+                return addressList;
 
             uint ip2 = ip1 >> shiftBits;
             for (int k = 0; k < shiftBits; k++)
@@ -108,8 +110,8 @@ namespace EmbedIO.Utilities
 
             for (int i = 0; i < 4; i++)
             {
-                beginIP[i] = (byte)((ip1 >> (3 - i) * 8) & 255);
-                endIP[i] = (byte)((ip2 >> (3 - i) * 8) & 255);
+                beginIP[i] = (byte)((ip1 >> ((3 - i) * 8)) & 255);
+                endIP[i] = (byte)((ip2 >> ((3 - i) * 8)) & 255);
             }
 
             return GetAllIP(beginIP, endIP);
@@ -149,10 +151,10 @@ namespace EmbedIO.Utilities
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
         public static IEnumerable<IPAddress> TryParseSimpleIPRange(string range)
         {
-            var ipList = new List<IPAddress>();
+            var addressList = new List<IPAddress>();
 
             if (!IsSimpleIPRange(range))
-                return ipList;
+                return addressList;
 
             var beginIP = new byte[4];
             var endIP = new byte[4];
@@ -161,8 +163,8 @@ namespace EmbedIO.Utilities
             for (int i = 0; i < 4; i++)
             {
                 var rangeParts = parts[i].Split('-');
-                beginIP[i] = byte.Parse(rangeParts[0]);
-                endIP[i] = (rangeParts.Length == 1) ? beginIP[i] : byte.Parse(rangeParts[1]);
+                beginIP[i] = byte.Parse(rangeParts[0], NumberFormatInfo.InvariantInfo);
+                endIP[i] = (rangeParts.Length == 1) ? beginIP[i] : byte.Parse(rangeParts[1], NumberFormatInfo.InvariantInfo);
             }
 
             return GetAllIP(beginIP, endIP);
