@@ -9,7 +9,7 @@ namespace EmbedIO.Security
     {
         public IPAddress IPAddress { get; set; }
 
-        public DateTime BanUntil { get; set; }
+        public long BanUntil { get; set; }
 
         public bool IsExplicit { get; set; }
     }

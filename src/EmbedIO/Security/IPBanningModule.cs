@@ -1,12 +1,14 @@
 ﻿using EmbedIO.Utilities;
 using Swan;
 using Swan.Logging;
+using Swan.Threading;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO.Security
@@ -14,7 +16,7 @@ namespace EmbedIO.Security
     /// <summary>
     /// A module for ban IPs that show the malicious signs, based on scanning log messages.
     /// </summary>
-    /// <seealso cref="EmbedIO.WebModuleBase" />
+    /// <seealso cref="WebModuleBase" />
     public class IPBanningModule : WebModuleBase, IDisposable, ILogger
     {
         /// <summary>
@@ -27,75 +29,27 @@ namespace EmbedIO.Security
         /// </summary>
         public const int DefaultMaxRetry = 10;
 
-        private static readonly ConcurrentDictionary<IPAddress, List<DateTime>> AccessAttempts = new ConcurrentDictionary<IPAddress, List<DateTime>>();
+        private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> AccessAttempts = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
         private static readonly ConcurrentDictionary<IPAddress, BannedInfo> Blacklist = new ConcurrentDictionary<IPAddress, BannedInfo>();
 
         private readonly List<IPAddress> _whitelist = new List<IPAddress>();
-        private readonly IEnumerable<string>? _failRegex;
+        private readonly List<Regex> _failRegex = new List<Regex>();
         private readonly int _banTime = 30;
         private readonly int _maxRetry = 10;
         private bool _disposedValue = false;
+        private PeriodicTask? _purger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A list of regex to match the log messages against.</param>
-        public IPBanningModule(string baseRoute, IEnumerable<string> failRegex)
-            : this(baseRoute, failRegex, null, DefaultBanTime, DefaultMaxRetry)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
-        /// </summary>
-        /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A list of regex to match the log messages against.</param>
-        /// <param name="whitelist">A list of valid IPs that never will be banned.</param>
-        public IPBanningModule(string baseRoute, IEnumerable<string> failRegex, IEnumerable<string>? whitelist)
-            : this(baseRoute, failRegex, whitelist, DefaultBanTime, DefaultMaxRetry)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
-        /// </summary>
-        /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A list of regex to match the log messages against.</param>
-        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
-        public IPBanningModule(string baseRoute,
-            IEnumerable<string> failRegex,
-            int banTime)
-            : this(baseRoute, failRegex, null, banTime, DefaultMaxRetry)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
-        /// </summary>
-        /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A list of regex to match the log messages against.</param>
-        /// <param name="whitelist">A list of valid IPs that never will be banned.</param>
-        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
-        public IPBanningModule(string baseRoute, 
-            IEnumerable<string> failRegex, 
-            IEnumerable<string>? whitelist,
-            int banTime)
-            : this(baseRoute, failRegex, whitelist, banTime, DefaultMaxRetry)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
-        /// </summary>
-        /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A list of regex to match the log messages against.</param>
+        /// <param name="failRegex">A collection of regex to match the log messages against.</param>
         /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
         /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string> failRegex,
-            int banTime,
-            int maxRetry)
+            int banTime = DefaultBanTime,
+            int maxRetry = DefaultMaxRetry)
             : this(baseRoute, failRegex, null, banTime, maxRetry)
         {
         }
@@ -104,22 +58,41 @@ namespace EmbedIO.Security
         /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A list of regex to match the log messages against.</param>
-        /// <param name="whitelist">A list of valid IPs that never will be banned.</param>
+        /// <param name="failRegex">A collection of regex to match the log messages against.</param>
+        /// <param name="whitelist">A collection of valid IPs that never will be banned.</param>
         /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
         /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string> failRegex,
-            IEnumerable<string>? whitelist,
-            int banTime,
-            int maxRetry)
+            IEnumerable<string>? whitelist = null,
+            int banTime = DefaultBanTime,
+            int maxRetry = DefaultMaxRetry)
             : base(baseRoute)
         {
-            _failRegex = failRegex;
+            foreach (var pattern in failRegex)
+            {
+                try
+                {
+                    _failRegex.Add(new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
+                }
+                catch (Exception ex)
+                {
+                    ex.Log(nameof(IPBanningModule));
+                }
+            }
+
             _banTime = banTime;
             _maxRetry = maxRetry;
 
             ParseWhiteList(whitelist);
+
+            _purger = new PeriodicTask(TimeSpan.FromMinutes(1), ct =>
+            {
+                PurgeBlackList();
+                PurgeAccessAttempts();
+
+                return Task.CompletedTask;
+            });
 
             Logger.RegisterLogger(this);
         }
@@ -136,20 +109,28 @@ namespace EmbedIO.Security
         public void Log(LogMessageReceivedEventArgs logEvent)
         {
             // Process Log
-            if (ClientAddress == null ||
-                _failRegex?.Any() != true ||
+            if (string.IsNullOrWhiteSpace(logEvent.Message) ||
+                ClientAddress == null ||
+                !_failRegex.Any() ||
                 _whitelist.Contains(ClientAddress) ||
                 Blacklist.ContainsKey(ClientAddress))
                 return;
 
             foreach (var regex in _failRegex)
             {
-                if (Regex.IsMatch(logEvent.Message, regex, RegexOptions.CultureInvariant))
+                try
                 {
-                    // Add to list
-                    AddAccessAttempt(ClientAddress);
-                    UpdateBlackList();
-                    break;
+                    if (regex.IsMatch(logEvent.Message))
+                    {
+                        // Add to list
+                        AddAccessAttempt(ClientAddress);
+                        UpdateBlackList();
+                        break;
+                    }
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    $"Timeout trying to match '{ex.Input}' with pattern '{ex.Pattern}'.".Error(nameof(IPBanningModule));
                 }
             }
         }
@@ -158,9 +139,6 @@ namespace EmbedIO.Security
         protected override Task OnRequestAsync(IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
-            PurgeBlackList();
-            PurgeAccessAttempts();
-
             if (Blacklist.ContainsKey(ClientAddress))
             {
                 context.SetHandled();
@@ -174,11 +152,8 @@ namespace EmbedIO.Security
         /// Gets the list of current banned IPs.
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<BannedInfo> GetBannedIPs()
-        {
-            PurgeBlackList();
-            return Blacklist.Values.ToList();
-        }
+        public static IEnumerable<BannedInfo> GetBannedIPs() =>
+            Blacklist.Values.ToList();
 
         private void ParseWhiteList(IEnumerable<string>? whitelist)
         {
@@ -198,7 +173,7 @@ namespace EmbedIO.Security
 
         private void UpdateBlackList()
         {
-            var time = DateTime.UtcNow.AddMinutes(-1);
+            var time = DateTime.Now.AddMinutes(-1).Ticks;
             if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() > _maxRetry) == true)
             {
                 TryBanIP(ClientAddress, _banTime, false);
@@ -213,7 +188,7 @@ namespace EmbedIO.Security
         /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
         /// <returns></returns>
         public static bool TryBanIP(IPAddress address, int minutes, bool isExplicit = true) =>
-            TryBanIP(address, DateTime.UtcNow.AddMinutes(minutes), isExplicit);
+            TryBanIP(address, DateTime.Now.AddMinutes(minutes), isExplicit);
 
         /// <summary>
         /// Tries to ban an IP explicitly.
@@ -223,7 +198,7 @@ namespace EmbedIO.Security
         /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
         /// <returns></returns>
         public static bool TryBanIP(IPAddress address, TimeSpan banTime, bool isExplicit = true) =>
-            TryBanIP(address, DateTime.UtcNow.Add(banTime), isExplicit);
+            TryBanIP(address, DateTime.Now.Add(banTime), isExplicit);
 
         /// <summary>
         /// Tries to ban an IP explicitly.
@@ -237,7 +212,7 @@ namespace EmbedIO.Security
             if (Blacklist.ContainsKey(address))
             {
                 var bannedInfo = Blacklist[address];
-                bannedInfo.BanUntil = banUntil;
+                bannedInfo.BanUntil = banUntil.Ticks;
                 bannedInfo.IsExplicit = isExplicit;
 
                 return true;
@@ -246,7 +221,7 @@ namespace EmbedIO.Security
             return Blacklist.TryAdd(address, new BannedInfo()
             {
                 IPAddress = address,
-                BanUntil = banUntil,
+                BanUntil = banUntil.Ticks,
                 IsExplicit = isExplicit,
             });
         }
@@ -262,32 +237,31 @@ namespace EmbedIO.Security
         private static void AddAccessAttempt(IPAddress address)
         {
             if (AccessAttempts.ContainsKey(address))
-                AccessAttempts[address].Add(DateTime.UtcNow);
+                AccessAttempts[address].Add(DateTime.Now.Ticks);
             else
-                AccessAttempts.TryAdd(address, new List<DateTime>() { DateTime.UtcNow });
+                AccessAttempts.TryAdd(address, new ConcurrentBag<long>() { DateTime.Now.Ticks });
         }
 
         private static void PurgeBlackList()
         {
-            var keys = Blacklist.Keys;
-
-            foreach (var k in keys)
+            foreach (var k in Blacklist.Keys)
             {
-                if (DateTime.UtcNow > Blacklist[k].BanUntil)
+                if (DateTime.Now.Ticks > Blacklist[k].BanUntil)
                     Blacklist.TryRemove(k, out _);
             }
         }
 
         private static void PurgeAccessAttempts()
         {
-            var banDate = DateTime.UtcNow.AddMinutes(-1);
-            var keys = AccessAttempts.Keys;
-
-            foreach (var k in keys)
+            var banDate = DateTime.Now.AddMinutes(-1).Ticks;
+            
+            foreach (var k in AccessAttempts.Keys)
             {
-                AccessAttempts[k] = AccessAttempts[k].Where(x => x >= banDate).ToList();
-                if (!AccessAttempts[k].Any())
+                var recentAttempts = new ConcurrentBag<long>(AccessAttempts[k].Where(x => x >= banDate));
+                if (!recentAttempts.Any())
                     AccessAttempts.TryRemove(k, out _);
+                else
+                    Interlocked.Exchange(ref recentAttempts, AccessAttempts[k]);
             }
         }
 
@@ -299,9 +273,12 @@ namespace EmbedIO.Security
             {
                 if (disposing)
                 {
-                    _whitelist?.Clear();
+                    _whitelist.Clear();
+                    _failRegex.Clear();
+                    _purger?.Dispose();
                 }
 
+                _purger = null;
                 _disposedValue = true;
             }
         }

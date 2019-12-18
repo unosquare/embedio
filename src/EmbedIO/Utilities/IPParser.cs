@@ -11,7 +11,7 @@ namespace EmbedIO.Utilities
         /// Parses the specified IP address.
         /// </summary>
         /// <param name="address">The IP address.</param>
-        /// <returns></returns>
+        /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="address"/>.</returns>
         public static IEnumerable<IPAddress> Parse(string address)
         {
             var ipList = new List<IPAddress>();
@@ -44,7 +44,14 @@ namespace EmbedIO.Utilities
             return ipList;
         }
 
-        private static bool IsCIDRNotation(string range)
+        /// <summary>
+        /// Determines whether the IP-range string is in CIDR notation.
+        /// </summary>
+        /// <param name="range">The IP-range string.</param>
+        /// <returns>
+        ///   <c>true</c> if the IP-range string is CIDR notation; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsCIDRNotation(string range)
         {
             var parts = range.Split('/');
             if (parts.Length != 2)
@@ -63,9 +70,9 @@ namespace EmbedIO.Utilities
         /// <summary>
         /// Parse IP-range string in CIDR notation. For example "12.15.0.0/16".
         /// </summary>
-        /// <param name="range">The IP range.</param>
-        /// <returns></returns>
-        private static IEnumerable<IPAddress> ParseCIDRNotation(string range)
+        /// <param name="range">The IP-range string.</param>
+        /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
+        public static IEnumerable<IPAddress> ParseCIDRNotation(string range)
         {
             var ipList = new List<IPAddress>();
 
@@ -108,7 +115,14 @@ namespace EmbedIO.Utilities
             return GetAllIP(beginIP, endIP);
         }
 
-        private static bool IsSimpleIPRange(string range)
+        /// <summary>
+        /// Determines whether the IP-range string is in simple IP range notation.
+        /// </summary>
+        /// <param name="range">The IP-range string.</param>
+        /// <returns>
+        ///   <c>true</c> if the IP-range string is in simple IP range notation; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsSimpleIPRange(string range)
         {
             var parts = range.Split('.');
             if (parts.Length != 4)
@@ -131,9 +145,9 @@ namespace EmbedIO.Utilities
         /// <summary>
         /// Tries Parse IP-range string "12.15-16.1-30.10-255"
         /// </summary>
-        /// <param name="range">The IP range.</param>
-        /// <returns></returns>
-        private static IEnumerable<IPAddress> TryParseSimpleIPRange(string range)
+        /// <param name="range">The IP-range string.</param>
+        /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
+        public static IEnumerable<IPAddress> TryParseSimpleIPRange(string range)
         {
             var ipList = new List<IPAddress>();
 
