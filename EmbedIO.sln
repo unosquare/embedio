@@ -1,13 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{97BC259A-4E78-4BA8-8F4D-2656BC78BB34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73F25F81-0412-412E-89C9-BAD33E9BCCDE}"
 	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
 		LICENSE = LICENSE
 		README.md = README.md
