@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Actions;
 using EmbedIO.Files;
+using EmbedIO.Security;
 using EmbedIO.WebApi;
 using Swan;
 using Swan.Logging;
@@ -60,6 +62,13 @@ namespace EmbedIO.Samples
             var server = new WebServer(o => o
                     .WithUrlPrefix(url)
                     .WithMode(HttpListenerMode.EmbedIO))
+                .WithIPBanning(o => o
+                    .WithWhitelist(
+                        "",
+                        "172.16.16.124",
+                        "172.16.17.1/24",
+                        "192.168.1-2.2-5")
+                    .WithRules("(404 Not Found)+"), 5,5)
                 .WithLocalSessionManager()
                 .WithCors(
                     // Origins, separated by comma without last slash

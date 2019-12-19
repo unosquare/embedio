@@ -63,6 +63,14 @@ namespace EmbedIO.Tests.TestObjects
         [Route(HttpVerbs.Get, "/" + QueryFieldTestPath)]
         public string TestQueryField([QueryField] string id) => id;
 
+        [Route(HttpVerbs.Get, "/notFound")]
+        public void GetNotFound() =>
+            throw HttpException.NotFound();
+
+        [Route(HttpVerbs.Get, "/unauthorized")]
+        public void GetUnauthorized() =>
+            throw HttpException.Unauthorized();
+
         private static Person CheckPerson(int id)
             =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
             ?? throw HttpException.NotFound();
