@@ -7125,6 +7125,260 @@ references:
   commentId: T:EmbedIO.Routing.SyncRouteHandlerCallback
   fullName: EmbedIO.Routing.SyncRouteHandlerCallback
   nameWithType: SyncRouteHandlerCallback
+- uid: EmbedIO.Security
+  name: EmbedIO.Security
+  href: api/EmbedIO.Security.html
+  commentId: N:EmbedIO.Security
+  fullName: EmbedIO.Security
+  nameWithType: EmbedIO.Security
+- uid: EmbedIO.Security.BannedInfo
+  name: BannedInfo
+  href: api/EmbedIO.Security.BannedInfo.html
+  commentId: T:EmbedIO.Security.BannedInfo
+  fullName: EmbedIO.Security.BannedInfo
+  nameWithType: BannedInfo
+- uid: EmbedIO.Security.BannedInfo.BanUntil
+  name: BanUntil
+  href: api/EmbedIO.Security.BannedInfo.html#EmbedIO_Security_BannedInfo_BanUntil
+  commentId: P:EmbedIO.Security.BannedInfo.BanUntil
+  fullName: EmbedIO.Security.BannedInfo.BanUntil
+  nameWithType: BannedInfo.BanUntil
+- uid: EmbedIO.Security.BannedInfo.BanUntil*
+  name: BanUntil
+  href: api/EmbedIO.Security.BannedInfo.html#EmbedIO_Security_BannedInfo_BanUntil_
+  commentId: Overload:EmbedIO.Security.BannedInfo.BanUntil
+  isSpec: "True"
+  fullName: EmbedIO.Security.BannedInfo.BanUntil
+  nameWithType: BannedInfo.BanUntil
+- uid: EmbedIO.Security.BannedInfo.IPAddress
+  name: IPAddress
+  href: api/EmbedIO.Security.BannedInfo.html#EmbedIO_Security_BannedInfo_IPAddress
+  commentId: P:EmbedIO.Security.BannedInfo.IPAddress
+  fullName: EmbedIO.Security.BannedInfo.IPAddress
+  nameWithType: BannedInfo.IPAddress
+- uid: EmbedIO.Security.BannedInfo.IPAddress*
+  name: IPAddress
+  href: api/EmbedIO.Security.BannedInfo.html#EmbedIO_Security_BannedInfo_IPAddress_
+  commentId: Overload:EmbedIO.Security.BannedInfo.IPAddress
+  isSpec: "True"
+  fullName: EmbedIO.Security.BannedInfo.IPAddress
+  nameWithType: BannedInfo.IPAddress
+- uid: EmbedIO.Security.BannedInfo.IsExplicit
+  name: IsExplicit
+  href: api/EmbedIO.Security.BannedInfo.html#EmbedIO_Security_BannedInfo_IsExplicit
+  commentId: P:EmbedIO.Security.BannedInfo.IsExplicit
+  fullName: EmbedIO.Security.BannedInfo.IsExplicit
+  nameWithType: BannedInfo.IsExplicit
+- uid: EmbedIO.Security.BannedInfo.IsExplicit*
+  name: IsExplicit
+  href: api/EmbedIO.Security.BannedInfo.html#EmbedIO_Security_BannedInfo_IsExplicit_
+  commentId: Overload:EmbedIO.Security.BannedInfo.IsExplicit
+  isSpec: "True"
+  fullName: EmbedIO.Security.BannedInfo.IsExplicit
+  nameWithType: BannedInfo.IsExplicit
+- uid: EmbedIO.Security.IPBanningModule
+  name: IPBanningModule
+  href: api/EmbedIO.Security.IPBanningModule.html
+  commentId: T:EmbedIO.Security.IPBanningModule
+  fullName: EmbedIO.Security.IPBanningModule
+  nameWithType: IPBanningModule
+- uid: EmbedIO.Security.IPBanningModule.#ctor(System.String,IEnumerable{System.String},System.Int32,System.Int32)
+  name: IPBanningModule(String, IEnumerable<String>, Int32, Int32)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule__ctor_System_String_IEnumerable_System_String__System_Int32_System_Int32_
+  commentId: M:EmbedIO.Security.IPBanningModule.#ctor(System.String,IEnumerable{System.String},System.Int32,System.Int32)
+  name.vb: IPBanningModule(String, IEnumerable(Of String), Int32, Int32)
+  fullName: EmbedIO.Security.IPBanningModule.IPBanningModule(System.String, IEnumerable<System.String>, System.Int32, System.Int32)
+  fullName.vb: EmbedIO.Security.IPBanningModule.IPBanningModule(System.String, IEnumerable(Of System.String), System.Int32, System.Int32)
+  nameWithType: IPBanningModule.IPBanningModule(String, IEnumerable<String>, Int32, Int32)
+  nameWithType.vb: IPBanningModule.IPBanningModule(String, IEnumerable(Of String), Int32, Int32)
+- uid: EmbedIO.Security.IPBanningModule.#ctor(System.String,System.Nullable{IEnumerable{System.String}},System.Nullable{IEnumerable{System.String}},System.Int32,System.Int32)
+  name: IPBanningModule(String, Nullable<IEnumerable<String>>, Nullable<IEnumerable<String>>, Int32, Int32)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule__ctor_System_String_System_Nullable_IEnumerable_System_String___System_Nullable_IEnumerable_System_String___System_Int32_System_Int32_
+  commentId: M:EmbedIO.Security.IPBanningModule.#ctor(System.String,System.Nullable{IEnumerable{System.String}},System.Nullable{IEnumerable{System.String}},System.Int32,System.Int32)
+  name.vb: IPBanningModule(String, Nullable(Of IEnumerable(Of String)), Nullable(Of IEnumerable(Of String)), Int32, Int32)
+  fullName: EmbedIO.Security.IPBanningModule.IPBanningModule(System.String, System.Nullable<IEnumerable<System.String>>, System.Nullable<IEnumerable<System.String>>, System.Int32, System.Int32)
+  fullName.vb: EmbedIO.Security.IPBanningModule.IPBanningModule(System.String, System.Nullable(Of IEnumerable(Of System.String)), System.Nullable(Of IEnumerable(Of System.String)), System.Int32, System.Int32)
+  nameWithType: IPBanningModule.IPBanningModule(String, Nullable<IEnumerable<String>>, Nullable<IEnumerable<String>>, Int32, Int32)
+  nameWithType.vb: IPBanningModule.IPBanningModule(String, Nullable(Of IEnumerable(Of String)), Nullable(Of IEnumerable(Of String)), Int32, Int32)
+- uid: EmbedIO.Security.IPBanningModule.#ctor*
+  name: IPBanningModule
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule__ctor_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.#ctor
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.IPBanningModule
+  nameWithType: IPBanningModule.IPBanningModule
+- uid: EmbedIO.Security.IPBanningModule.DefaultBanTime
+  name: DefaultBanTime
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_DefaultBanTime
+  commentId: F:EmbedIO.Security.IPBanningModule.DefaultBanTime
+  fullName: EmbedIO.Security.IPBanningModule.DefaultBanTime
+  nameWithType: IPBanningModule.DefaultBanTime
+- uid: EmbedIO.Security.IPBanningModule.DefaultMaxRetry
+  name: DefaultMaxRetry
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_DefaultMaxRetry
+  commentId: F:EmbedIO.Security.IPBanningModule.DefaultMaxRetry
+  fullName: EmbedIO.Security.IPBanningModule.DefaultMaxRetry
+  nameWithType: IPBanningModule.DefaultMaxRetry
+- uid: EmbedIO.Security.IPBanningModule.Dispose
+  name: Dispose()
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_Dispose
+  commentId: M:EmbedIO.Security.IPBanningModule.Dispose
+  fullName: EmbedIO.Security.IPBanningModule.Dispose()
+  nameWithType: IPBanningModule.Dispose()
+- uid: EmbedIO.Security.IPBanningModule.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_Dispose_System_Boolean_
+  commentId: M:EmbedIO.Security.IPBanningModule.Dispose(System.Boolean)
+  fullName: EmbedIO.Security.IPBanningModule.Dispose(System.Boolean)
+  nameWithType: IPBanningModule.Dispose(Boolean)
+- uid: EmbedIO.Security.IPBanningModule.Dispose*
+  name: Dispose
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_Dispose_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.Dispose
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.Dispose
+  nameWithType: IPBanningModule.Dispose
+- uid: EmbedIO.Security.IPBanningModule.GetBannedIPs
+  name: GetBannedIPs()
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_GetBannedIPs
+  commentId: M:EmbedIO.Security.IPBanningModule.GetBannedIPs
+  fullName: EmbedIO.Security.IPBanningModule.GetBannedIPs()
+  nameWithType: IPBanningModule.GetBannedIPs()
+- uid: EmbedIO.Security.IPBanningModule.GetBannedIPs*
+  name: GetBannedIPs
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_GetBannedIPs_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.GetBannedIPs
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.GetBannedIPs
+  nameWithType: IPBanningModule.GetBannedIPs
+- uid: EmbedIO.Security.IPBanningModule.IsFinalHandler
+  name: IsFinalHandler
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_IsFinalHandler
+  commentId: P:EmbedIO.Security.IPBanningModule.IsFinalHandler
+  fullName: EmbedIO.Security.IPBanningModule.IsFinalHandler
+  nameWithType: IPBanningModule.IsFinalHandler
+- uid: EmbedIO.Security.IPBanningModule.IsFinalHandler*
+  name: IsFinalHandler
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_IsFinalHandler_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.IsFinalHandler
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.IsFinalHandler
+  nameWithType: IPBanningModule.IsFinalHandler
+- uid: EmbedIO.Security.IPBanningModule.Log(LogMessageReceivedEventArgs)
+  name: Log(LogMessageReceivedEventArgs)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_Log_LogMessageReceivedEventArgs_
+  commentId: M:EmbedIO.Security.IPBanningModule.Log(LogMessageReceivedEventArgs)
+  fullName: EmbedIO.Security.IPBanningModule.Log(LogMessageReceivedEventArgs)
+  nameWithType: IPBanningModule.Log(LogMessageReceivedEventArgs)
+- uid: EmbedIO.Security.IPBanningModule.Log*
+  name: Log
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_Log_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.Log
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.Log
+  nameWithType: IPBanningModule.Log
+- uid: EmbedIO.Security.IPBanningModule.LogLevel
+  name: LogLevel
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_LogLevel
+  commentId: P:EmbedIO.Security.IPBanningModule.LogLevel
+  fullName: EmbedIO.Security.IPBanningModule.LogLevel
+  nameWithType: IPBanningModule.LogLevel
+- uid: EmbedIO.Security.IPBanningModule.LogLevel*
+  name: LogLevel
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_LogLevel_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.LogLevel
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.LogLevel
+  nameWithType: IPBanningModule.LogLevel
+- uid: EmbedIO.Security.IPBanningModule.OnRequestAsync(EmbedIO.IHttpContext)
+  name: OnRequestAsync(IHttpContext)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_OnRequestAsync_EmbedIO_IHttpContext_
+  commentId: M:EmbedIO.Security.IPBanningModule.OnRequestAsync(EmbedIO.IHttpContext)
+  fullName: EmbedIO.Security.IPBanningModule.OnRequestAsync(EmbedIO.IHttpContext)
+  nameWithType: IPBanningModule.OnRequestAsync(IHttpContext)
+- uid: EmbedIO.Security.IPBanningModule.OnRequestAsync*
+  name: OnRequestAsync
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_OnRequestAsync_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.OnRequestAsync
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.OnRequestAsync
+  nameWithType: IPBanningModule.OnRequestAsync
+- uid: EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,DateTime,System.Boolean)
+  name: TryBanIP(IPAddress, DateTime, Boolean)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_DateTime_System_Boolean_
+  commentId: M:EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,DateTime,System.Boolean)
+  fullName: EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress, DateTime, System.Boolean)
+  nameWithType: IPBanningModule.TryBanIP(IPAddress, DateTime, Boolean)
+- uid: EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,System.Int32,System.Boolean)
+  name: TryBanIP(IPAddress, Int32, Boolean)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_System_Int32_System_Boolean_
+  commentId: M:EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,System.Int32,System.Boolean)
+  fullName: EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress, System.Int32, System.Boolean)
+  nameWithType: IPBanningModule.TryBanIP(IPAddress, Int32, Boolean)
+- uid: EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,TimeSpan,System.Boolean)
+  name: TryBanIP(IPAddress, TimeSpan, Boolean)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_TimeSpan_System_Boolean_
+  commentId: M:EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,TimeSpan,System.Boolean)
+  fullName: EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress, TimeSpan, System.Boolean)
+  nameWithType: IPBanningModule.TryBanIP(IPAddress, TimeSpan, Boolean)
+- uid: EmbedIO.Security.IPBanningModule.TryBanIP*
+  name: TryBanIP
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_TryBanIP_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.TryBanIP
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.TryBanIP
+  nameWithType: IPBanningModule.TryBanIP
+- uid: EmbedIO.Security.IPBanningModule.TryUnbanIP(IPAddress)
+  name: TryUnbanIP(IPAddress)
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_TryUnbanIP_IPAddress_
+  commentId: M:EmbedIO.Security.IPBanningModule.TryUnbanIP(IPAddress)
+  fullName: EmbedIO.Security.IPBanningModule.TryUnbanIP(IPAddress)
+  nameWithType: IPBanningModule.TryUnbanIP(IPAddress)
+- uid: EmbedIO.Security.IPBanningModule.TryUnbanIP*
+  name: TryUnbanIP
+  href: api/EmbedIO.Security.IPBanningModule.html#EmbedIO_Security_IPBanningModule_TryUnbanIP_
+  commentId: Overload:EmbedIO.Security.IPBanningModule.TryUnbanIP
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModule.TryUnbanIP
+  nameWithType: IPBanningModule.TryUnbanIP
+- uid: EmbedIO.Security.IPBanningModuleExtensions
+  name: IPBanningModuleExtensions
+  href: api/EmbedIO.Security.IPBanningModuleExtensions.html
+  commentId: T:EmbedIO.Security.IPBanningModuleExtensions
+  fullName: EmbedIO.Security.IPBanningModuleExtensions
+  nameWithType: IPBanningModuleExtensions
+- uid: EmbedIO.Security.IPBanningModuleExtensions.WithRules*
+  name: WithRules
+  href: api/EmbedIO.Security.IPBanningModuleExtensions.html#EmbedIO_Security_IPBanningModuleExtensions_WithRules_
+  commentId: Overload:EmbedIO.Security.IPBanningModuleExtensions.WithRules
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModuleExtensions.WithRules
+  nameWithType: IPBanningModuleExtensions.WithRules
+- uid: EmbedIO.Security.IPBanningModuleExtensions.WithRules``1(``0,System.String[])
+  name: WithRules<TModule>(TModule, String[])
+  href: api/EmbedIO.Security.IPBanningModuleExtensions.html#EmbedIO_Security_IPBanningModuleExtensions_WithRules__1___0_System_String___
+  commentId: M:EmbedIO.Security.IPBanningModuleExtensions.WithRules``1(``0,System.String[])
+  name.vb: WithRules(Of TModule)(TModule, String())
+  fullName: EmbedIO.Security.IPBanningModuleExtensions.WithRules<TModule>(TModule, System.String[])
+  fullName.vb: EmbedIO.Security.IPBanningModuleExtensions.WithRules(Of TModule)(TModule, System.String())
+  nameWithType: IPBanningModuleExtensions.WithRules<TModule>(TModule, String[])
+  nameWithType.vb: IPBanningModuleExtensions.WithRules(Of TModule)(TModule, String())
+- uid: EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist*
+  name: WithWhitelist
+  href: api/EmbedIO.Security.IPBanningModuleExtensions.html#EmbedIO_Security_IPBanningModuleExtensions_WithWhitelist_
+  commentId: Overload:EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist
+  isSpec: "True"
+  fullName: EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist
+  nameWithType: IPBanningModuleExtensions.WithWhitelist
+- uid: EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist``1(``0,System.String[])
+  name: WithWhitelist<TModule>(TModule, String[])
+  href: api/EmbedIO.Security.IPBanningModuleExtensions.html#EmbedIO_Security_IPBanningModuleExtensions_WithWhitelist__1___0_System_String___
+  commentId: M:EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist``1(``0,System.String[])
+  name.vb: WithWhitelist(Of TModule)(TModule, String())
+  fullName: EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist<TModule>(TModule, System.String[])
+  fullName.vb: EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist(Of TModule)(TModule, System.String())
+  nameWithType: IPBanningModuleExtensions.WithWhitelist<TModule>(TModule, String[])
+  nameWithType.vb: IPBanningModuleExtensions.WithWhitelist(Of TModule)(TModule, String())
 - uid: EmbedIO.Sessions
   name: EmbedIO.Sessions
   href: api/EmbedIO.Sessions.html
@@ -7889,6 +8143,77 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.HttpDate.TryParse
   nameWithType: HttpDate.TryParse
+- uid: EmbedIO.Utilities.IPParser
+  name: IPParser
+  href: api/EmbedIO.Utilities.IPParser.html
+  commentId: T:EmbedIO.Utilities.IPParser
+  fullName: EmbedIO.Utilities.IPParser
+  nameWithType: IPParser
+- uid: EmbedIO.Utilities.IPParser.IsCIDRNotation(System.String)
+  name: IsCIDRNotation(String)
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_IsCIDRNotation_System_String_
+  commentId: M:EmbedIO.Utilities.IPParser.IsCIDRNotation(System.String)
+  fullName: EmbedIO.Utilities.IPParser.IsCIDRNotation(System.String)
+  nameWithType: IPParser.IsCIDRNotation(String)
+- uid: EmbedIO.Utilities.IPParser.IsCIDRNotation*
+  name: IsCIDRNotation
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_IsCIDRNotation_
+  commentId: Overload:EmbedIO.Utilities.IPParser.IsCIDRNotation
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IPParser.IsCIDRNotation
+  nameWithType: IPParser.IsCIDRNotation
+- uid: EmbedIO.Utilities.IPParser.IsSimpleIPRange(System.String)
+  name: IsSimpleIPRange(String)
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_IsSimpleIPRange_System_String_
+  commentId: M:EmbedIO.Utilities.IPParser.IsSimpleIPRange(System.String)
+  fullName: EmbedIO.Utilities.IPParser.IsSimpleIPRange(System.String)
+  nameWithType: IPParser.IsSimpleIPRange(String)
+- uid: EmbedIO.Utilities.IPParser.IsSimpleIPRange*
+  name: IsSimpleIPRange
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_IsSimpleIPRange_
+  commentId: Overload:EmbedIO.Utilities.IPParser.IsSimpleIPRange
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IPParser.IsSimpleIPRange
+  nameWithType: IPParser.IsSimpleIPRange
+- uid: EmbedIO.Utilities.IPParser.Parse(System.String)
+  name: Parse(String)
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_Parse_System_String_
+  commentId: M:EmbedIO.Utilities.IPParser.Parse(System.String)
+  fullName: EmbedIO.Utilities.IPParser.Parse(System.String)
+  nameWithType: IPParser.Parse(String)
+- uid: EmbedIO.Utilities.IPParser.Parse*
+  name: Parse
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_Parse_
+  commentId: Overload:EmbedIO.Utilities.IPParser.Parse
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IPParser.Parse
+  nameWithType: IPParser.Parse
+- uid: EmbedIO.Utilities.IPParser.ParseCIDRNotation(System.String)
+  name: ParseCIDRNotation(String)
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_ParseCIDRNotation_System_String_
+  commentId: M:EmbedIO.Utilities.IPParser.ParseCIDRNotation(System.String)
+  fullName: EmbedIO.Utilities.IPParser.ParseCIDRNotation(System.String)
+  nameWithType: IPParser.ParseCIDRNotation(String)
+- uid: EmbedIO.Utilities.IPParser.ParseCIDRNotation*
+  name: ParseCIDRNotation
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_ParseCIDRNotation_
+  commentId: Overload:EmbedIO.Utilities.IPParser.ParseCIDRNotation
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IPParser.ParseCIDRNotation
+  nameWithType: IPParser.ParseCIDRNotation
+- uid: EmbedIO.Utilities.IPParser.TryParseSimpleIPRange(System.String)
+  name: TryParseSimpleIPRange(String)
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_TryParseSimpleIPRange_System_String_
+  commentId: M:EmbedIO.Utilities.IPParser.TryParseSimpleIPRange(System.String)
+  fullName: EmbedIO.Utilities.IPParser.TryParseSimpleIPRange(System.String)
+  nameWithType: IPParser.TryParseSimpleIPRange(String)
+- uid: EmbedIO.Utilities.IPParser.TryParseSimpleIPRange*
+  name: TryParseSimpleIPRange
+  href: api/EmbedIO.Utilities.IPParser.html#EmbedIO_Utilities_IPParser_TryParseSimpleIPRange_
+  commentId: Overload:EmbedIO.Utilities.IPParser.TryParseSimpleIPRange
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IPParser.TryParseSimpleIPRange
+  nameWithType: IPParser.TryParseSimpleIPRange
 - uid: EmbedIO.Utilities.MimeTypeProviderStack
   name: MimeTypeProviderStack
   href: api/EmbedIO.Utilities.MimeTypeProviderStack.html
@@ -9602,6 +9927,40 @@ references:
   fullName.vb: EmbedIO.WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, System.String, System.String, Assembly, System.String, System.Nullable(Of Action(Of FileModule)))
   nameWithType: WebModuleContainerExtensions.WithEmbeddedResources<TContainer>(TContainer, String, String, Assembly, String, Nullable<Action<FileModule>>)
   nameWithType.vb: WebModuleContainerExtensions.WithEmbeddedResources(Of TContainer)(TContainer, String, String, Assembly, String, Nullable(Of Action(Of FileModule)))
+- uid: EmbedIO.WebModuleContainerExtensions.WithIPBanning*
+  name: WithIPBanning
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithIPBanning_
+  commentId: Overload:EmbedIO.WebModuleContainerExtensions.WithIPBanning
+  isSpec: "True"
+  fullName: EmbedIO.WebModuleContainerExtensions.WithIPBanning
+  nameWithType: WebModuleContainerExtensions.WithIPBanning
+- uid: EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,IEnumerable{System.String},System.Int32,System.Int32)
+  name: WithIPBanning<TContainer>(TContainer, IEnumerable<String>, Int32, Int32)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_IEnumerable_System_String__System_Int32_System_Int32_
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,IEnumerable{System.String},System.Int32,System.Int32)
+  name.vb: WithIPBanning(Of TContainer)(TContainer, IEnumerable(Of String), Int32, Int32)
+  fullName: EmbedIO.WebModuleContainerExtensions.WithIPBanning<TContainer>(TContainer, IEnumerable<System.String>, System.Int32, System.Int32)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithIPBanning(Of TContainer)(TContainer, IEnumerable(Of System.String), System.Int32, System.Int32)
+  nameWithType: WebModuleContainerExtensions.WithIPBanning<TContainer>(TContainer, IEnumerable<String>, Int32, Int32)
+  nameWithType.vb: WebModuleContainerExtensions.WithIPBanning(Of TContainer)(TContainer, IEnumerable(Of String), Int32, Int32)
+- uid: EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{Action{IPBanningModule}},System.Int32,System.Int32)
+  name: WithIPBanning<TContainer>(TContainer, Nullable<Action<IPBanningModule>>, Int32, Int32)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_System_Nullable_Action_IPBanningModule___System_Int32_System_Int32_
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{Action{IPBanningModule}},System.Int32,System.Int32)
+  name.vb: WithIPBanning(Of TContainer)(TContainer, Nullable(Of Action(Of IPBanningModule)), Int32, Int32)
+  fullName: EmbedIO.WebModuleContainerExtensions.WithIPBanning<TContainer>(TContainer, System.Nullable<Action<IPBanningModule>>, System.Int32, System.Int32)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithIPBanning(Of TContainer)(TContainer, System.Nullable(Of Action(Of IPBanningModule)), System.Int32, System.Int32)
+  nameWithType: WebModuleContainerExtensions.WithIPBanning<TContainer>(TContainer, Nullable<Action<IPBanningModule>>, Int32, Int32)
+  nameWithType.vb: WebModuleContainerExtensions.WithIPBanning(Of TContainer)(TContainer, Nullable(Of Action(Of IPBanningModule)), Int32, Int32)
+- uid: EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{IEnumerable{System.String}},System.Nullable{IEnumerable{System.String}},System.Int32,System.Int32)
+  name: WithIPBanning<TContainer>(TContainer, Nullable<IEnumerable<String>>, Nullable<IEnumerable<String>>, Int32, Int32)
+  href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_System_Nullable_IEnumerable_System_String___System_Nullable_IEnumerable_System_String___System_Int32_System_Int32_
+  commentId: M:EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{IEnumerable{System.String}},System.Nullable{IEnumerable{System.String}},System.Int32,System.Int32)
+  name.vb: WithIPBanning(Of TContainer)(TContainer, Nullable(Of IEnumerable(Of String)), Nullable(Of IEnumerable(Of String)), Int32, Int32)
+  fullName: EmbedIO.WebModuleContainerExtensions.WithIPBanning<TContainer>(TContainer, System.Nullable<IEnumerable<System.String>>, System.Nullable<IEnumerable<System.String>>, System.Int32, System.Int32)
+  fullName.vb: EmbedIO.WebModuleContainerExtensions.WithIPBanning(Of TContainer)(TContainer, System.Nullable(Of IEnumerable(Of System.String)), System.Nullable(Of IEnumerable(Of System.String)), System.Int32, System.Int32)
+  nameWithType: WebModuleContainerExtensions.WithIPBanning<TContainer>(TContainer, Nullable<IEnumerable<String>>, Nullable<IEnumerable<String>>, Int32, Int32)
+  nameWithType.vb: WebModuleContainerExtensions.WithIPBanning(Of TContainer)(TContainer, Nullable(Of IEnumerable(Of String)), Nullable(Of IEnumerable(Of String)), Int32, Int32)
 - uid: EmbedIO.WebModuleContainerExtensions.WithModule*
   name: WithModule
   href: api/EmbedIO.WebModuleContainerExtensions.html#EmbedIO_WebModuleContainerExtensions_WithModule_

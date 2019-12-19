@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace EmbedIO.Utilities
+    <title>Class BannedInfo
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace EmbedIO.Utilities
+    <meta name="title" content="Class BannedInfo
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,54 +76,128 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.Utilities">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Security.BannedInfo">
   
-  <h1 id="EmbedIO_Utilities" data-uid="EmbedIO.Utilities" class="text-break">Namespace EmbedIO.Utilities
+  
+  <h1 id="EmbedIO_Security_BannedInfo" data-uid="EmbedIO.Security.BannedInfo" class="text-break">Class BannedInfo
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Represents the info af a banned IP address.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BannedInfo</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Security.html">EmbedIO.Security</a></h6>
+  <h5 id="EmbedIO_Security_BannedInfo_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class BannedInfo</code></pre>
+  </div>
+  <h3 id="properties">Properties
   </h3>
-      <h4><a class="xref" href="EmbedIO.Utilities.HttpDate.html">HttpDate</a></h4>
-      <section><p>Provides standard methods to parse and format <see cref="!:DateTime"></see>s according to various RFCs.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.IPParser.html">IPParser</a></h4>
-      <section><p>Provides standard methods to parse IP address strings.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.MimeTypeProviderStack.html">MimeTypeProviderStack</a></h4>
-      <section><p>Manages a stack of MIME type providers.</p>
-<p>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.NameValueCollectionExtensions.html">NameValueCollectionExtensions</a></h4>
-      <section><p>Provides extension methods for <see cref="!:NameValueCollection"></see>.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.QValueList.html">QValueList</a></h4>
-      <section><p>Represents a list of names with associated quality values extracted from an HTTP header,
-e.g. <code>gzip; q=0.9, deflate</code>.</p>
-<p>See <a href="https://tools.ietf.org/html/rfc7231#section-5.3">RFC7231, section 5.3</a>.</p>
-<p>This class ignores and discards extensions (<code>accept-ext</code> in RFC7231 terminology).</p>
-<p>If a name has one or more parameters (e.g. <code>text/html;level=1</code>) it is not
-further parsed: parameters will appear as part of the name.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.QValueListExtensions.html">QValueListExtensions</a></h4>
-      <section><p>Provides extension methods for <a class="xref" href="EmbedIO.Utilities.QValueList.html">QValueList</a>.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.StringExtensions.html">StringExtensions</a></h4>
-      <section><p>Provides extension methods for <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.UniqueIdGenerator.html">UniqueIdGenerator</a></h4>
-      <section><p>Generates locally unique string IDs, mainly for logging purposes.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.UrlEncodedDataParser.html">UrlEncodedDataParser</a></h4>
-      <section><p>Parses URL queries or URL-encoded HTML forms.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.UrlPath.html">UrlPath</a></h4>
-      <section><p>Provides utility methods to work with URL paths.</p>
-</section>
-      <h4><a class="xref" href="EmbedIO.Utilities.Validate.html">Validate</a></h4>
-      <section><p>Provides validation methods for method arguments.</p>
-</section>
+  
+  
+  <a id="EmbedIO_Security_BannedInfo_BanUntil_" data-uid="EmbedIO.Security.BannedInfo.BanUntil*"></a>
+  <h4 id="EmbedIO_Security_BannedInfo_BanUntil" data-uid="EmbedIO.Security.BannedInfo.BanUntil">BanUntil</h4>
+  <div class="markdown level1 summary"><p>Gets or sets until when the IP will remain ban.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long BanUntil { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Security_BannedInfo_IPAddress_" data-uid="EmbedIO.Security.BannedInfo.IPAddress*"></a>
+  <h4 id="EmbedIO_Security_BannedInfo_IPAddress" data-uid="EmbedIO.Security.BannedInfo.IPAddress">IPAddress</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the banned IP address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPAddress IPAddress { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IPAddress</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Security_BannedInfo_IsExplicit_" data-uid="EmbedIO.Security.BannedInfo.IsExplicit*"></a>
+  <h4 id="EmbedIO_Security_BannedInfo_IsExplicit" data-uid="EmbedIO.Security.BannedInfo.IsExplicit">IsExplicit</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance was explicitly banned by user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsExplicit { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
