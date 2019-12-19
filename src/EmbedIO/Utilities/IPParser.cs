@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -17,13 +18,11 @@ namespace EmbedIO.Utilities
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="address"/>.</returns>
         public static async Task<IEnumerable<IPAddress>> Parse(string address)
         {
-            var addressList = new List<IPAddress>();
+            if (address == null)
+                return Enumerable.Empty<IPAddress>();
 
             if (IPAddress.TryParse(address, out var ip))
-            {
-                addressList.Add(ip);
-                return addressList;
-            }
+                return new List<IPAddress>() { ip };
 
             try
             {
@@ -40,7 +39,7 @@ namespace EmbedIO.Utilities
             if (IsSimpleIPRange(address))
                 return TryParseSimpleIPRange(address);
 
-            return addressList;
+            return Enumerable.Empty<IPAddress>();
         }
 
         /// <summary>
@@ -52,6 +51,9 @@ namespace EmbedIO.Utilities
         /// </returns>
         public static bool IsCIDRNotation(string range)
         {
+            if (string.IsNullOrWhiteSpace(range))
+                return false;
+
             var parts = range.Split('/');
             if (parts.Length != 2)
                 return false;
@@ -73,20 +75,23 @@ namespace EmbedIO.Utilities
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
         public static IEnumerable<IPAddress> ParseCIDRNotation(string range)
         {
-            var addressList = new List<IPAddress>();
-
             if (!IsCIDRNotation(range))
-                return addressList;
+                return Enumerable.Empty<IPAddress>();
 
             var parts = range.Split('/');
             var prefix = parts[0];
-            var prefixLen = byte.Parse(parts[1], NumberFormatInfo.InvariantInfo);
-            var prefixParts = prefix.Split('.');
             
+            if (!byte.TryParse(parts[1], out var prefixLen))
+                return Enumerable.Empty<IPAddress>();
+
+            var prefixParts = prefix.Split('.');
+            if (prefixParts.Select(x => byte.TryParse(x, out _)).Any(x => !x))
+                return Enumerable.Empty<IPAddress>();
+
             uint ip = 0;
             for (int i = 0; i < 4; i++)
             {
-                ip = ip << 8;
+                ip <<= 8;
                 ip += uint.Parse(prefixParts[i], NumberFormatInfo.InvariantInfo);
             }
 
@@ -94,7 +99,7 @@ namespace EmbedIO.Utilities
             uint ip1 = (ip >> shiftBits) << shiftBits;
 
             if ((ip1 & ip) != ip1) // Check correct subnet address
-                return addressList;
+                return Enumerable.Empty<IPAddress>();
 
             uint ip2 = ip1 >> shiftBits;
             for (int k = 0; k < shiftBits; k++)
@@ -123,6 +128,9 @@ namespace EmbedIO.Utilities
         /// </returns>
         public static bool IsSimpleIPRange(string range)
         {
+            if (string.IsNullOrWhiteSpace(range))
+                return false;
+
             var parts = range.Split('.');
             if (parts.Length != 4)
                 return false;
@@ -148,10 +156,8 @@ namespace EmbedIO.Utilities
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
         public static IEnumerable<IPAddress> TryParseSimpleIPRange(string range)
         {
-            var addressList = new List<IPAddress>();
-
             if (!IsSimpleIPRange(range))
-                return addressList;
+                return Enumerable.Empty<IPAddress>();
 
             var beginIP = new byte[4];
             var endIP = new byte[4];
@@ -169,6 +175,12 @@ namespace EmbedIO.Utilities
 
         private static IEnumerable<IPAddress> GetAllIP(byte[] beginIP, byte[] endIP)
         {
+            for (var i = 0; i < 4; i++)
+            {
+                if (endIP[i] < beginIP[i])
+                    return Enumerable.Empty<IPAddress>();
+            }
+            
             int capacity = 1;
             for (int i = 0; i < 4; i++)
                 capacity *= endIP[i] - beginIP[i] + 1;
