@@ -17,7 +17,7 @@ namespace EmbedIO.Security
     /// A module for ban IPs that show the malicious signs, based on scanning log messages.
     /// </summary>
     /// <seealso cref="WebModuleBase" />
-    public class IPBanningModule : WebModuleBase, IDisposable, ILogger
+    public class IPBanningModule : WebModuleBase, ILogger
     {
         /// <summary>
         /// The default ban time, in minutes.
@@ -35,9 +35,9 @@ namespace EmbedIO.Security
         private static readonly PeriodicTask? Purger;
 
         private readonly List<IPAddress> _whitelist = new List<IPAddress>();
-        private readonly int _banTime = 30;
-        private readonly int _maxRetry = 10;
-        private bool _disposedValue = false;
+        private readonly int _banTime;
+        private readonly int _maxRetry;
+        private bool _disposedValue;
 
         static IPBanningModule()
         {
@@ -94,45 +94,8 @@ namespace EmbedIO.Security
 
         /// <inheritdoc />
         public LogLevel LogLevel => LogLevel.Trace;
-
+        
         private IPAddress? ClientAddress { get; set; }
-
-        internal void AddRules(IEnumerable<string> patterns)
-        {
-            foreach (var pattern in patterns)
-                AddRule(pattern);
-        }
-
-        internal void AddRule(string pattern)
-        {
-            try
-            {
-                FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(IPBanningModule), $"Invalid regex - '{pattern}'.");
-            }
-        }
-
-        internal void AddToWhitelist(IEnumerable<string> whitelist) =>
-            AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
-
-        internal async Task AddToWhitelistAsync(IEnumerable<string> whitelist)
-        {
-            if (whitelist?.Any() != true)
-                return;
-
-            foreach (var address in whitelist)
-            {
-                var adresses = await IPParser.Parse(address).ConfigureAwait(false);
-                foreach (var ipAddress in adresses)
-                {
-                    if (!_whitelist.Contains(ipAddress))
-                        _whitelist.Add(ipAddress);
-                }
-            }
-        }
 
         /// <summary>
         /// Gets the list of current banned IPs.
@@ -218,13 +181,12 @@ namespace EmbedIO.Security
             {
                 try
                 {
-                    if (regex.IsMatch(logEvent.Message))
-                    {
-                        // Add to list
-                        AddAccessAttempt(ClientAddress);
-                        UpdateBlackList();
-                        break;
-                    }
+                    if (!regex.IsMatch(logEvent.Message)) continue;
+
+                    // Add to list
+                    AddAccessAttempt(ClientAddress);
+                    UpdateBlackList();
+                    break;
                 }
                 catch (RegexMatchTimeoutException ex)
                 {
@@ -232,18 +194,68 @@ namespace EmbedIO.Security
                 }
             }
         }
+        
+        /// <inheritdoc />
+        public void Dispose() =>
+            Dispose(true);
 
+        internal void AddRules(IEnumerable<string> patterns)
+        {
+            foreach (var pattern in patterns)
+                AddRule(pattern);
+        }
+
+        internal void AddRule(string pattern)
+        {
+            try
+            {
+                FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(IPBanningModule), $"Invalid regex - '{pattern}'.");
+            }
+        }
+
+        internal void AddToWhitelist(IEnumerable<string> whitelist) =>
+            AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
+
+        internal async Task AddToWhitelistAsync(IEnumerable<string> whitelist)
+        {
+            if (whitelist?.Any() != true)
+                return;
+
+            foreach (var address in whitelist)
+            {
+                var addressees = await IPParser.Parse(address).ConfigureAwait(false);
+                _whitelist.AddRange(addressees.Where(x => !_whitelist.Contains(x)));
+            }
+        }
+        
         /// <inheritdoc />
         protected override Task OnRequestAsync(IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
-            if (Blacklist.ContainsKey(ClientAddress))
+            if (!Blacklist.ContainsKey(ClientAddress)) 
+                return Task.CompletedTask;
+
+            context.SetHandled();
+            throw HttpException.Forbidden();
+        }
+        
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposedValue) return;
+            if (disposing)
             {
-                context.SetHandled();
-                throw HttpException.Forbidden();
+                _whitelist.Clear();
             }
 
-            return Task.CompletedTask;
+            _disposedValue = true;
         }
 
         private static void AddAccessAttempt(IPAddress address)
@@ -280,37 +292,10 @@ namespace EmbedIO.Security
         private void UpdateBlackList()
         {
             var time = DateTime.Now.AddMinutes(-1).Ticks;
-            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() >= _maxRetry) == true)
+            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() >= _maxRetry))
             {
                 TryBanIP(ClientAddress, _banTime, false);
             }
         }
-
-        #region IDisposable Support
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    _whitelist.Clear();
-                }
-
-                _disposedValue = true;
-            }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose() =>
-            Dispose(true);
-        
-        #endregion
     }
 }
