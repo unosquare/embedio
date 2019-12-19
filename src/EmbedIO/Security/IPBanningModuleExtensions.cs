@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EmbedIO.Security
+﻿namespace EmbedIO.Security
 {
     /// <summary>
     /// Provides extension methods for <see cref="IPBanningModule"/> and derived classes.

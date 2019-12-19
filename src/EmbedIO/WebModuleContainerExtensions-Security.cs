@@ -20,7 +20,7 @@ namespace EmbedIO
             int banTime = IPBanningModule.DefaultBanTime,
             int maxRetry = IPBanningModule.DefaultMaxRetry)
             where TContainer : class, IWebModuleContainer =>
-            WithIPBanning(@this, null, null, banTime, maxRetry, configure);
+            SetModule(@this, null, null, banTime, maxRetry, configure);
 
         /// <summary>
         /// Creates an instance of <see cref="IPBanningModule"/> and adds it to a module container.
@@ -54,9 +54,9 @@ namespace EmbedIO
             int banTime = IPBanningModule.DefaultBanTime,
             int maxRetry = IPBanningModule.DefaultMaxRetry)
             where TContainer : class, IWebModuleContainer =>
-            WithIPBanning(@this, failRegex, null, banTime, maxRetry, null);
+            SetModule(@this, failRegex, whitelist, banTime, maxRetry);
 
-        private static TContainer WithIPBanning<TContainer>(this TContainer @this,
+        private static TContainer SetModule<TContainer>(this TContainer @this,
             IEnumerable<string>? failRegex,
             IEnumerable<string>? whitelist = null,
             int banTime = IPBanningModule.DefaultBanTime,
