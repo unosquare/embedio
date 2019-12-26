@@ -64,40 +64,50 @@ namespace EmbedIO.Security
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// Initializes a new instance of the <see cref="IPBanningModule" /> class.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
         /// <param name="failRegex">A collection of regex to match log messages against.</param>
         /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
-        /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
+        /// <param name="maxRequestPerSecond">The maximum requests per second.</param>
+        /// <param name="maxMatchCount">The maximum number of regex matches before banning an IP.</param>
+        /// <param name="secondsMatchingPeriod">The matching period.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string> failRegex,
             int banMinutes = DefaultBanMinutes,
-            int maxRetry = DefaultMaxMatchCount)
-            : this(baseRoute, failRegex, null, banMinutes, maxRetry)
+            int maxRequestPerSecond = DefaultMaxRequestsPerSecond,
+            int maxMatchCount = DefaultMaxMatchCount,
+            int secondsMatchingPeriod = DefaultSecondsMatchingPeriod)
+            : this(baseRoute, failRegex, null, banMinutes, maxRequestPerSecond, maxMatchCount, secondsMatchingPeriod)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
+        /// Initializes a new instance of the <see cref="IPBanningModule" /> class.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
         /// <param name="failRegex">A collection of regex to match log messages against.</param>
         /// <param name="whitelist">A collection of valid IPs that never will be banned.</param>
         /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
-        /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
+        /// <param name="maxRequestPerSecond">The maximum requests per second.</param>
+        /// <param name="maxMatchCount">The maximum number of regex matches before banning an IP.</param>
+        /// <param name="secondsMatchingPeriod">The seconds matching period.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string>? failRegex = null,
             IEnumerable<string>? whitelist = null,
             int banMinutes = DefaultBanMinutes,
-            int maxRetry = DefaultMaxMatchCount)
+            int maxRequestPerSecond = DefaultMaxRequestsPerSecond,
+            int maxMatchCount = DefaultMaxMatchCount,
+            int secondsMatchingPeriod = DefaultSecondsMatchingPeriod)
             : base(baseRoute)
         {
             if (failRegex != null)
                 AddRules(failRegex);
 
             _banMinutes = banMinutes;
-            _maxMatchCount = maxRetry;
+            _maxRequestsPerSecond = maxRequestPerSecond;
+            _maxMatchCount = maxMatchCount;
+            SecondsMatchingPeriod = secondsMatchingPeriod;
             AddToWhitelist(whitelist);
             _innerLogger = new InnerIPBanningModuleLogger(this);
         }

@@ -68,7 +68,7 @@ namespace EmbedIO.Samples
                         "172.16.16.124",
                         "172.16.17.1/24",
                         "192.168.1-2.2-5")
-                    .WithRules("(404 Not Found)+"), 5,5)
+                    .WithRules("(404 Not Found)+"))
                 .WithLocalSessionManager()
                 .WithCors(
                     // Origins, separated by comma without last slash
