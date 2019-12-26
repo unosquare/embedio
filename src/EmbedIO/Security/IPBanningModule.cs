@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO.Security
@@ -17,7 +16,7 @@ namespace EmbedIO.Security
     /// A module to ban clients by IP address, based on TCP requests-per-second or RegEx matches on log messages.
     /// </summary>
     /// <seealso cref="WebModuleBase" />
-    public class IPBanningModule : WebModuleBase, ILogger
+    public class IPBanningModule : WebModuleBase
     {
         /// <summary>
         /// The default ban minutes.
@@ -46,11 +45,11 @@ namespace EmbedIO.Security
         private static readonly PeriodicTask? Purger;
         private static int SecondsMatchingPeriod = DefaultSecondsMatchingPeriod;
 
-        private readonly List<IPAddress> _whitelist = new List<IPAddress>();
         private readonly int _banMinutes;
         private readonly int _maxRequestsPerSecond=50;
         private readonly int _maxMatchCount;
         private bool _disposed;
+        private ILogger _innerLogger;
 
         static IPBanningModule()
         {
@@ -100,16 +99,15 @@ namespace EmbedIO.Security
             _banMinutes = banMinutes;
             _maxMatchCount = maxRetry;
             AddToWhitelist(whitelist);
-            Logger.RegisterLogger(this);
+            _innerLogger = new InnerIPBanningModuleLogger(this);
         }
 
         /// <inheritdoc />
         public override bool IsFinalHandler => false;
-
-        /// <inheritdoc />
-        public LogLevel LogLevel => LogLevel.Trace;
         
         private IPAddress? ClientAddress { get; set; }
+
+        private ConcurrentBag<IPAddress> Whitelist { get; } = new ConcurrentBag<IPAddress>();
 
         /// <summary>
         /// Gets the list of current banned IPs.
@@ -153,21 +151,30 @@ namespace EmbedIO.Security
         /// </returns>
         public static bool TryBanIP(IPAddress address, DateTime banUntil, bool isExplicit = true)
         {
-            if (Blacklist.ContainsKey(address))
+            try
             {
-                var bannedInfo = Blacklist[address];
-                bannedInfo.ExpiresAt = banUntil.Ticks;
-                bannedInfo.IsExplicit = isExplicit;
-
+                Blacklist.AddOrUpdate(address,
+                    k =>
+                        new BanInfo()
+                        {
+                            IPAddress = k,
+                            ExpiresAt = banUntil.Ticks,
+                            IsExplicit = isExplicit,
+                        },
+                    (k, v) =>
+                        new BanInfo()
+                        {
+                            IPAddress = k,
+                            ExpiresAt = banUntil.Ticks,
+                            IsExplicit = isExplicit,
+                        }
+                );
                 return true;
             }
-
-            return Blacklist.TryAdd(address, new BanInfo()
+            catch
             {
-                IPAddress = address,
-                ExpiresAt = banUntil.Ticks,
-                IsExplicit = isExplicit,
-            });
+                return false;
+            }
         }
 
         /// <summary>
@@ -179,35 +186,6 @@ namespace EmbedIO.Security
         /// </returns>
         public static bool TryUnbanIP(IPAddress address) =>
             Blacklist.TryRemove(address, out _);
-
-        /// <inheritdoc />
-        public void Log(LogMessageReceivedEventArgs logEvent)
-        {
-            // Process Log
-            if (string.IsNullOrWhiteSpace(logEvent.Message) ||
-                ClientAddress == null ||
-                !FailRegex.Any() ||
-                _whitelist.Contains(ClientAddress) ||
-                Blacklist.ContainsKey(ClientAddress))
-                return;
-
-            foreach (var regex in FailRegex.Values)
-            {
-                try
-                {
-                    if (!regex.IsMatch(logEvent.Message)) continue;
-
-                    // Add to list
-                    AddFailRegexMatch(ClientAddress);
-                    UpdateMatchBlackList();
-                    break;
-                }
-                catch (RegexMatchTimeoutException ex)
-                {
-                    $"Timeout trying to match '{ex.Input}' with pattern '{ex.Pattern}'.".Error(nameof(IPBanningModule));
-                }
-            }
-        }
         
         /// <inheritdoc />
         public void Dispose() =>
@@ -241,8 +219,11 @@ namespace EmbedIO.Security
 
             foreach (var address in whitelist)
             {
-                var addressees = await IPParser.Parse(address).ConfigureAwait(false);
-                _whitelist.AddRange(addressees.Where(x => !_whitelist.Contains(x)));
+                var addressees = await IPParser.ParseAsync(address).ConfigureAwait(false);
+                foreach (var ipAddress in addressees.Where(x => !Whitelist.Contains(x)))
+                {
+                    Whitelist.Add(ipAddress);
+                }
             }
         }
         
@@ -274,7 +255,11 @@ namespace EmbedIO.Security
             if (_disposed) return;
             if (disposing)
             {
-                _whitelist.Clear();
+                _innerLogger.Dispose();
+                while (!Whitelist.IsEmpty)
+                {
+                    Whitelist.TryTake(out _);
+                }
             }
 
             _disposed = true;
@@ -290,7 +275,8 @@ namespace EmbedIO.Security
         {
             foreach (var k in Blacklist.Keys)
             {
-                if (DateTime.Now.Ticks > Blacklist[k].ExpiresAt)
+                if (Blacklist.TryGetValue(k, out var info) &&
+                    DateTime.Now.Ticks > info.ExpiresAt)
                     Blacklist.TryRemove(k, out _);
             }
         }
@@ -300,11 +286,14 @@ namespace EmbedIO.Security
             var minTime = DateTime.Now.AddMinutes(-1).Ticks;
             foreach (var k in Requests.Keys)
             {
-                var recentRequests = new ConcurrentBag<long>(Requests[k].Where(x => x >= minTime));
-                if (!recentRequests.Any())
-                    Requests.TryRemove(k, out _);
-                else
-                    Interlocked.Exchange(ref recentRequests, Requests[k]);
+                if (Requests.TryGetValue(k, out var requests))
+                {
+                    var recentRequests = new ConcurrentBag<long>(requests.Where(x => x >= minTime));
+                    if (!recentRequests.Any())
+                        Requests.TryRemove(k, out _);
+                    else
+                        Requests.AddOrUpdate(k, recentRequests, (x, y) => recentRequests);
+                }
             }
         }
 
@@ -313,11 +302,14 @@ namespace EmbedIO.Security
             var minTime = DateTime.Now.AddSeconds(-1 * SecondsMatchingPeriod).Ticks;
             foreach (var k in FailRegexMatches.Keys)
             {
-                var recentMatches = new ConcurrentBag<long>(FailRegexMatches[k].Where(x => x >= minTime));
-                if (!recentMatches.Any())
-                    FailRegexMatches.TryRemove(k, out _);
-                else
-                    Interlocked.Exchange(ref recentMatches, FailRegexMatches[k]);
+                if (FailRegexMatches.TryGetValue(k, out var failRegexMatches))
+                {
+                    var recentMatches = new ConcurrentBag<long>(failRegexMatches.Where(x => x >= minTime));
+                    if (!recentMatches.Any())
+                        FailRegexMatches.TryRemove(k, out _);
+                    else
+                        FailRegexMatches.AddOrUpdate(k, recentMatches, (x, y) => recentMatches);
+                }
             }
         }
 
@@ -338,6 +330,65 @@ namespace EmbedIO.Security
             if (FailRegexMatches.TryGetValue(ClientAddress, out var attempts) &&
                 attempts.Where(x => x >= minTime).Count() >= _maxMatchCount)
                 TryBanIP(ClientAddress, _banMinutes, false);
+        }
+
+        private class InnerIPBanningModuleLogger : ILogger
+        {
+            private bool _disposed;
+
+            public InnerIPBanningModuleLogger(IPBanningModule parent)
+            {
+                Parent = parent;
+                Logger.RegisterLogger(this);
+            }
+
+            /// <inheritdoc />
+            public LogLevel LogLevel => LogLevel.Trace;
+
+            private IPBanningModule Parent { get; set; }
+
+            public void Dispose() =>
+                Dispose(true);
+
+            /// <inheritdoc />
+            public void Log(LogMessageReceivedEventArgs logEvent)
+            {
+                // Process Log
+                if (string.IsNullOrWhiteSpace(logEvent.Message) ||
+                    Parent.ClientAddress == null ||
+                    !FailRegex.Any() ||
+                    Parent.Whitelist.Contains(Parent.ClientAddress) ||
+                    Blacklist.ContainsKey(Parent.ClientAddress))
+                    return;
+
+                foreach (var regex in FailRegex.Values)
+                {
+                    try
+                    {
+                        if (!regex.IsMatch(logEvent.Message)) continue;
+
+                        // Add to list
+                        AddFailRegexMatch(Parent.ClientAddress);
+                        Parent.UpdateMatchBlackList();
+                        break;
+                    }
+                    catch (RegexMatchTimeoutException ex)
+                    {
+                        $"Timeout trying to match '{ex.Input}' with pattern '{ex.Pattern}'.".Error(nameof(InnerIPBanningModuleLogger));
+                    }
+                }
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (_disposed) return;
+                if (disposing)
+                {
+                    Logger.UnregisterLogger(this);
+                }
+
+                _disposed = true;
+            }
         }
     }
 }

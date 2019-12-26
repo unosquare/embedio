@@ -49,7 +49,7 @@ namespace EmbedIO.Tests.Utilities
         [TestCase("192.168.1-2.52-1")]
         [TestCase("192.168.2-1.52-1")]
         public async Task IpParseEmpty_ReturnsCorrectValue(string address)
-            => CollectionAssert.IsEmpty(await IPParser.Parse(address));
+            => CollectionAssert.IsEmpty(await IPParser.ParseAsync(address));
 
         [TestCase("")]
         [TestCase("192")]
@@ -59,7 +59,7 @@ namespace EmbedIO.Tests.Utilities
         [TestCase("192.168-169.1-2.52-53")]
         [TestCase("192-193.168-169.1-2.52-53")]
         public async Task IpParseNotEmpty_ReturnsCorrectValue(string address)
-            => CollectionAssert.IsNotEmpty(await IPParser.Parse(address));
+            => CollectionAssert.IsNotEmpty(await IPParser.ParseAsync(address));
 
         [TestCase("192", 1)]
         [TestCase("192.168", 1)]
@@ -70,6 +70,6 @@ namespace EmbedIO.Tests.Utilities
         [TestCase("192.168-169.1-2.50-53", 16)]
         [TestCase("192-193.168-169.1-2.50-53", 32)]
         public async Task IpParseCount_ReturnsCorrectValue(string address, int count)
-            => Assert.AreEqual(count, (await IPParser.Parse(address)).Count());
+            => Assert.AreEqual(count, (await IPParser.ParseAsync(address)).Count());
     }
 }
