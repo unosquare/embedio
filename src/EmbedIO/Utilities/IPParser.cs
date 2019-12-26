@@ -16,7 +16,7 @@ namespace EmbedIO.Utilities
         /// </summary>
         /// <param name="address">The IP address.</param>
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="address"/>.</returns>
-        public static async Task<IEnumerable<IPAddress>> Parse(string address)
+        public static async Task<IEnumerable<IPAddress>> ParseAsync(string address)
         {
             if (address == null)
                 return Enumerable.Empty<IPAddress>();
