@@ -14,37 +14,51 @@ using System.Threading.Tasks;
 namespace EmbedIO.Security
 {
     /// <summary>
-    /// A module for ban IPs that show the malicious signs, based on scanning log messages.
+    /// A module to ban clients by IP address, based on TCP requests-per-second or RegEx matches on log messages.
     /// </summary>
     /// <seealso cref="WebModuleBase" />
     public class IPBanningModule : WebModuleBase, ILogger
     {
         /// <summary>
-        /// The default ban time, in minutes.
+        /// The default ban minutes.
         /// </summary>
-        public const int DefaultBanTime = 30;
+        public const int DefaultBanMinutes = 30;
 
         /// <summary>
-        /// The default maximum retries per minute.
+        /// The default maximum request per second.
         /// </summary>
-        public const int DefaultMaxRetry = 10;
+        public const int DefaultMaxRequestsPerSecond = 50;
 
-        private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> AccessAttempts = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
-        private static readonly ConcurrentDictionary<IPAddress, BannedInfo> Blacklist = new ConcurrentDictionary<IPAddress, BannedInfo>();
+        /// <summary>
+        /// The default matching period.
+        /// </summary>
+        public const int DefaultSecondsMatchingPeriod = 60;
+
+        /// <summary>
+        /// The default maximum match count per period.
+        /// </summary>
+        public const int DefaultMaxMatchCount = 10;
+
+        private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> Requests = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
+        private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> FailRegexMatches = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
+        private static readonly ConcurrentDictionary<IPAddress, BanInfo> Blacklist = new ConcurrentDictionary<IPAddress, BanInfo>();
         private static readonly ConcurrentDictionary<string, Regex> FailRegex = new ConcurrentDictionary<string, Regex>();
         private static readonly PeriodicTask? Purger;
+        private static int SecondsMatchingPeriod = DefaultSecondsMatchingPeriod;
 
         private readonly List<IPAddress> _whitelist = new List<IPAddress>();
-        private readonly int _banTime;
-        private readonly int _maxRetry;
-        private bool _disposedValue;
+        private readonly int _banMinutes;
+        private readonly int _maxRequestsPerSecond=50;
+        private readonly int _maxMatchCount;
+        private bool _disposed;
 
         static IPBanningModule()
         {
             Purger = new PeriodicTask(TimeSpan.FromMinutes(1), ct =>
                 {
                     PurgeBlackList();
-                    PurgeAccessAttempts();
+                    PurgeRequests();
+                    PurgeFailRegexMatches();
 
                     return Task.CompletedTask;
                 });
@@ -54,14 +68,14 @@ namespace EmbedIO.Security
         /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A collection of regex to match the log messages against.</param>
-        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
+        /// <param name="failRegex">A collection of regex to match log messages against.</param>
+        /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
         /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string> failRegex,
-            int banTime = DefaultBanTime,
-            int maxRetry = DefaultMaxRetry)
-            : this(baseRoute, failRegex, null, banTime, maxRetry)
+            int banMinutes = DefaultBanMinutes,
+            int maxRetry = DefaultMaxMatchCount)
+            : this(baseRoute, failRegex, null, banMinutes, maxRetry)
         {
         }
 
@@ -69,22 +83,22 @@ namespace EmbedIO.Security
         /// Initializes a new instance of the <see cref="IPBanningModule"/> class.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A collection of regex to match the log messages against.</param>
+        /// <param name="failRegex">A collection of regex to match log messages against.</param>
         /// <param name="whitelist">A collection of valid IPs that never will be banned.</param>
-        /// <param name="banTime">The time that an IP will remain ban, in minutes.</param>
+        /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
         /// <param name="maxRetry">The maximum number of failed attempts before banning an IP.</param>
         public IPBanningModule(string baseRoute,
             IEnumerable<string>? failRegex = null,
             IEnumerable<string>? whitelist = null,
-            int banTime = DefaultBanTime,
-            int maxRetry = DefaultMaxRetry)
+            int banMinutes = DefaultBanMinutes,
+            int maxRetry = DefaultMaxMatchCount)
             : base(baseRoute)
         {
             if (failRegex != null)
                 AddRules(failRegex);
 
-            _banTime = banTime;
-            _maxRetry = maxRetry;
+            _banMinutes = banMinutes;
+            _maxMatchCount = maxRetry;
             AddToWhitelist(whitelist);
             Logger.RegisterLogger(this);
         }
@@ -100,40 +114,40 @@ namespace EmbedIO.Security
         /// <summary>
         /// Gets the list of current banned IPs.
         /// </summary>
-        /// <returns>A collection of <see cref="BannedInfo"/> in the blacklist.</returns>
-        public static IEnumerable<BannedInfo> GetBannedIPs() =>
+        /// <returns>A collection of <see cref="BanInfo"/> in the blacklist.</returns>
+        public static IEnumerable<BanInfo> GetBannedIPs() =>
             Blacklist.Values.ToList();
 
         /// <summary>
         /// Tries to ban an IP explicitly.
         /// </summary>
         /// <param name="address">The IP address to ban.</param>
-        /// <param name="minutes">The time in minutes that the IP will remain ban.</param>
-        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <param name="banMinutes">Minutes that the IP will remain banned.</param>
+        /// <param name="isExplicit"><c>true</c> if the IP was explicitly banned.</param>
         /// <returns>
         ///     <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
         /// </returns>
-        public static bool TryBanIP(IPAddress address, int minutes, bool isExplicit = true) =>
-            TryBanIP(address, DateTime.Now.AddMinutes(minutes), isExplicit);
+        public static bool TryBanIP(IPAddress address, int banMinutes, bool isExplicit = true) =>
+            TryBanIP(address, DateTime.Now.AddMinutes(banMinutes), isExplicit);
 
         /// <summary>
         /// Tries to ban an IP explicitly.
         /// </summary>
         /// <param name="address">The IP address to ban.</param>
-        /// <param name="banTime">An <see cref="TimeSpan"/> that sets the time the IP will remain ban.</param>
-        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <param name="banDuration">A <see cref="TimeSpan"/> specifying the duration that the IP will remain banned.</param>
+        /// <param name="isExplicit"><c>true</c> if the IP was explicitly banned.</param>
         /// <returns>
         ///     <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
         /// </returns>
-        public static bool TryBanIP(IPAddress address, TimeSpan banTime, bool isExplicit = true) =>
-            TryBanIP(address, DateTime.Now.Add(banTime), isExplicit);
+        public static bool TryBanIP(IPAddress address, TimeSpan banDuration, bool isExplicit = true) =>
+            TryBanIP(address, DateTime.Now.Add(banDuration), isExplicit);
 
         /// <summary>
         /// Tries to ban an IP explicitly.
         /// </summary>
         /// <param name="address">The IP address to ban.</param>
-        /// <param name="banUntil">A <see cref="DateTime"/> that sets until when the IP will remain ban.</param>
-        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <param name="banUntil">A <see cref="DateTime"/> specifying the expiration time of the ban.</param>
+        /// <param name="isExplicit"><c>true</c> if the IP was explicitly banned.</param>
         /// <returns>
         ///     <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
         /// </returns>
@@ -142,16 +156,16 @@ namespace EmbedIO.Security
             if (Blacklist.ContainsKey(address))
             {
                 var bannedInfo = Blacklist[address];
-                bannedInfo.BanUntil = banUntil.Ticks;
+                bannedInfo.ExpiresAt = banUntil.Ticks;
                 bannedInfo.IsExplicit = isExplicit;
 
                 return true;
             }
 
-            return Blacklist.TryAdd(address, new BannedInfo()
+            return Blacklist.TryAdd(address, new BanInfo()
             {
                 IPAddress = address,
-                BanUntil = banUntil.Ticks,
+                ExpiresAt = banUntil.Ticks,
                 IsExplicit = isExplicit,
             });
         }
@@ -184,8 +198,8 @@ namespace EmbedIO.Security
                     if (!regex.IsMatch(logEvent.Message)) continue;
 
                     // Add to list
-                    AddAccessAttempt(ClientAddress);
-                    UpdateBlackList();
+                    AddFailRegexMatch(ClientAddress);
+                    UpdateMatchBlackList();
                     break;
                 }
                 catch (RegexMatchTimeoutException ex)
@@ -236,10 +250,18 @@ namespace EmbedIO.Security
         protected override Task OnRequestAsync(IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
-            if (!Blacklist.ContainsKey(ClientAddress)) 
-                return Task.CompletedTask;
 
-            context.SetHandled();
+            if (!Blacklist.ContainsKey(ClientAddress))
+            {
+                Task.Run(() =>
+                {
+                    AddRequest(ClientAddress);
+                    UpdateRequestsBlackList();
+                });
+
+                return Task.CompletedTask;
+            }
+
             throw HttpException.Forbidden();
         }
         
@@ -249,53 +271,73 @@ namespace EmbedIO.Security
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposedValue) return;
+            if (_disposed) return;
             if (disposing)
             {
                 _whitelist.Clear();
             }
 
-            _disposedValue = true;
+            _disposed = true;
         }
 
-        private static void AddAccessAttempt(IPAddress address)
-        {
-            if (AccessAttempts.ContainsKey(address))
-                AccessAttempts[address].Add(DateTime.Now.Ticks);
-            else
-                AccessAttempts.TryAdd(address, new ConcurrentBag<long>() { DateTime.Now.Ticks });
-        }
+        private static void AddRequest(IPAddress address) =>
+            Requests.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
+        
+        private static void AddFailRegexMatch(IPAddress address) =>
+            FailRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
 
         private static void PurgeBlackList()
         {
             foreach (var k in Blacklist.Keys)
             {
-                if (DateTime.Now.Ticks > Blacklist[k].BanUntil)
+                if (DateTime.Now.Ticks > Blacklist[k].ExpiresAt)
                     Blacklist.TryRemove(k, out _);
             }
         }
 
-        private static void PurgeAccessAttempts()
+        private static void PurgeRequests()
         {
-            var banDate = DateTime.Now.AddMinutes(-1).Ticks;
-            
-            foreach (var k in AccessAttempts.Keys)
+            var minTime = DateTime.Now.AddMinutes(-1).Ticks;
+            foreach (var k in Requests.Keys)
             {
-                var recentAttempts = new ConcurrentBag<long>(AccessAttempts[k].Where(x => x >= banDate));
-                if (!recentAttempts.Any())
-                    AccessAttempts.TryRemove(k, out _);
+                var recentRequests = new ConcurrentBag<long>(Requests[k].Where(x => x >= minTime));
+                if (!recentRequests.Any())
+                    Requests.TryRemove(k, out _);
                 else
-                    Interlocked.Exchange(ref recentAttempts, AccessAttempts[k]);
+                    Interlocked.Exchange(ref recentRequests, Requests[k]);
             }
         }
 
-        private void UpdateBlackList()
+        private static void PurgeFailRegexMatches()
         {
-            var time = DateTime.Now.AddMinutes(-1).Ticks;
-            if ((AccessAttempts[ClientAddress]?.Where(x => x >= time).Count() >= _maxRetry))
+            var minTime = DateTime.Now.AddSeconds(-1 * SecondsMatchingPeriod).Ticks;
+            foreach (var k in FailRegexMatches.Keys)
             {
-                TryBanIP(ClientAddress, _banTime, false);
+                var recentMatches = new ConcurrentBag<long>(FailRegexMatches[k].Where(x => x >= minTime));
+                if (!recentMatches.Any())
+                    FailRegexMatches.TryRemove(k, out _);
+                else
+                    Interlocked.Exchange(ref recentMatches, FailRegexMatches[k]);
             }
+        }
+
+        private void UpdateRequestsBlackList()
+        {
+            var lastSecond = DateTime.Now.AddSeconds(-1).Ticks;
+            var lastMinute = DateTime.Now.AddMinutes(-1).Ticks;
+
+            if (Requests.TryGetValue(ClientAddress, out var attempts) &&
+                (attempts.Where(x => x >= lastSecond).Count() >= _maxRequestsPerSecond || 
+                 (attempts.Where(x => x >= lastMinute).Count() / 60) >= _maxRequestsPerSecond))
+                TryBanIP(ClientAddress, _banMinutes, false);
+        }
+
+        private void UpdateMatchBlackList()
+        {
+            var minTime = DateTime.Now.AddSeconds(-1 * SecondsMatchingPeriod).Ticks;
+            if (FailRegexMatches.TryGetValue(ClientAddress, out var attempts) &&
+                attempts.Where(x => x >= minTime).Count() >= _maxMatchCount)
+                TryBanIP(ClientAddress, _banMinutes, false);
         }
     }
 }

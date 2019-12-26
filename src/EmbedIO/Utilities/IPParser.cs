@@ -33,8 +33,8 @@ namespace EmbedIO.Utilities
                 // Ignore
             }
 
-            if (IsCIDRNotation(address))
-                return ParseCIDRNotation(address);
+            if (IsCidrNotation(address))
+                return ParseCidrNotation(address);
 
             return IsSimpleIPRange(address) ? TryParseSimpleIPRange(address) : Enumerable.Empty<IPAddress>();
         }
@@ -46,7 +46,7 @@ namespace EmbedIO.Utilities
         /// <returns>
         ///   <c>true</c> if the IP-range string is CIDR notation; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsCIDRNotation(string range)
+        public static bool IsCidrNotation(string range)
         {
             if (string.IsNullOrWhiteSpace(range))
                 return false;
@@ -70,9 +70,9 @@ namespace EmbedIO.Utilities
         /// </summary>
         /// <param name="range">The IP-range string.</param>
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
-        public static IEnumerable<IPAddress> ParseCIDRNotation(string range)
+        public static IEnumerable<IPAddress> ParseCidrNotation(string range)
         {
-            if (!IsCIDRNotation(range))
+            if (!IsCidrNotation(range))
                 return Enumerable.Empty<IPAddress>();
 
             var parts = range.Split('/');
@@ -113,7 +113,7 @@ namespace EmbedIO.Utilities
                 endIP[i] = (byte)((ip2 >> ((3 - i) * 8)) & 255);
             }
 
-            return GetAllIP(beginIP, endIP);
+            return GetAllIPAddresses(beginIP, endIP);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace EmbedIO.Utilities
         }
 
         /// <summary>
-        /// Tries Parse IP-range string "12.15-16.1-30.10-255"
+        /// Tries to parse IP-range string "12.15-16.1-30.10-255"
         /// </summary>
         /// <param name="range">The IP-range string.</param>
         /// <returns>A collection of <see cref="IPAddress"/> parsed correctly from <paramref name="range"/>.</returns>
@@ -167,10 +167,10 @@ namespace EmbedIO.Utilities
                 endIP[i] = (rangeParts.Length == 1) ? beginIP[i] : byte.Parse(rangeParts[1], NumberFormatInfo.InvariantInfo);
             }
 
-            return GetAllIP(beginIP, endIP);
+            return GetAllIPAddresses(beginIP, endIP);
         }
 
-        private static IEnumerable<IPAddress> GetAllIP(byte[] beginIP, byte[] endIP)
+        private static IEnumerable<IPAddress> GetAllIPAddresses(byte[] beginIP, byte[] endIP)
         {
             for (var i = 0; i < 4; i++)
             {

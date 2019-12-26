@@ -3,9 +3,9 @@
 namespace EmbedIO.Security
 {
     /// <summary>
-    /// Represents the info af a banned IP address.
+    /// Contains information about the ban of an IP address..
     /// </summary>
-    public class BannedInfo
+    public class BanInfo
     {
         /// <summary>
         /// Gets or sets the banned IP address.
@@ -13,12 +13,12 @@ namespace EmbedIO.Security
         public IPAddress IPAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets until when the IP will remain ban.
+        /// Gets or sets the expiration time of the ban.
         /// </summary>
-        public long BanUntil { get; set; }
+        public long ExpiresAt { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance was explicitly banned by user.
+        /// Gets or sets a value indicating whether this instance was explicitly banned.
         /// </summary>
         public bool IsExplicit { get; set; }
     }
