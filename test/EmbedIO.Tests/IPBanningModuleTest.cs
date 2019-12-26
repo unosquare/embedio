@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace EmbedIO.Tests
 {
@@ -16,12 +17,15 @@ namespace EmbedIO.Tests
             Server
                 .WithIPBanning(o => o
                     .WithRules("(404)+")
-                    .WithRules("(401)+"), 30, 2)
+                    .WithRules("(401)+"), 30, 50, 2)
                 .WithWebApi("/api", m => m.RegisterController<TestController>());
         }
 
         private HttpRequestMessage GetNotFoundRequest() =>
             new HttpRequestMessage(HttpMethod.Get, $"{WebServerUrl}/api/notFound");
+
+        private HttpRequestMessage GetEmptyRequest() =>
+            new HttpRequestMessage(HttpMethod.Get, $"{WebServerUrl}/api/empty");
 
         private HttpRequestMessage GetUnauthorizedRequest() =>
             new HttpRequestMessage(HttpMethod.Get, $"{WebServerUrl}/api/unauthorized");
@@ -95,6 +99,20 @@ namespace EmbedIO.Tests
 
             response = await Client.SendAsync(GetNotFoundRequest());
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Status Code NotFound");
+        }
+
+        [Test]
+        public async Task MaxRps_ReturnsForbidden()
+        {
+            IPBanningModule.TryUnbanIP(LocalHost);
+
+            foreach (var x in Enumerable.Range(0, 100))
+            {
+                await Client.SendAsync(GetEmptyRequest());
+            }
+            
+            var response = await Client.SendAsync(GetEmptyRequest());
+            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode, "Status Code Forbidden");
         }
     }
 }
