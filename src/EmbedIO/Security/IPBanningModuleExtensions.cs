@@ -26,7 +26,7 @@
         /// </summary>
         /// <typeparam name="TModule">The type of the module.</typeparam>
         /// <param name="this">The module on which this method is called.</param>
-        /// <param name="value">A collection of regex to match the log messages against.</param>
+        /// <param name="value">A collection of regex to match log messages against.</param>
         /// <returns>
         ///     <paramref name="this"/> with its fail regex configured.
         /// </returns>

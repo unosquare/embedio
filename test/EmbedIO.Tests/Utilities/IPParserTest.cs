@@ -18,7 +18,7 @@ namespace EmbedIO.Tests.Utilities
         [TestCase("192.168.1.52/24.1", false)]
         [TestCase("192.168.1.52/24", true)]
         public void IsCIDRNotation_ReturnsCorrectValue(string address, bool expectedResult)
-            => Assert.AreEqual(expectedResult, IPParser.IsCIDRNotation(address));
+            => Assert.AreEqual(expectedResult, IPParser.IsCidrNotation(address));
 
         [TestCase(null, false)]
         [TestCase("", false)]
