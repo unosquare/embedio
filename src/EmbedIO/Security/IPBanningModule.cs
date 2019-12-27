@@ -1,13 +1,11 @@
 ﻿using EmbedIO.Utilities;
 using Swan;
-using Swan.Logging;
 using Swan.Threading;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EmbedIO.Security
@@ -24,6 +22,7 @@ namespace EmbedIO.Security
         public const int DefaultBanMinutes = 30;
         private static readonly ConcurrentDictionary<IPAddress, BanInfo> Blacklist = new ConcurrentDictionary<IPAddress, BanInfo>();
         private static readonly ConcurrentBag<IPAddress> Whitelist = new ConcurrentBag<IPAddress>();
+        private static readonly ConcurrentBag<IIPBanningCriterion> BanningCriterions = new ConcurrentBag<IIPBanningCriterion>();
         private static readonly PeriodicTask? Purger;
 
         private readonly int _banMinutes;
@@ -35,8 +34,10 @@ namespace EmbedIO.Security
             Purger = new PeriodicTask(TimeSpan.FromMinutes(1), ct =>
                 {
                     PurgeBlackList();
-                    PurgeRequests();
-                    PurgeFailRegexMatches();
+                    foreach (var criterion in BanningCriterions)
+                    {
+                        criterion.PurgeData();
+                    }
 
                     return Task.CompletedTask;
                 });
@@ -46,49 +47,15 @@ namespace EmbedIO.Security
         /// Initializes a new instance of the <see cref="IPBanningModule" /> class.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A collection of regex to match log messages against.</param>
-        /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
-        /// <param name="maxRequestPerSecond">The maximum requests per second.</param>
-        /// <param name="maxMatchCount">The maximum number of regex matches before banning an IP.</param>
-        /// <param name="secondsMatchingPeriod">The matching period.</param>
-        public IPBanningModule(string baseRoute,
-            IEnumerable<string> failRegex,
-            int banMinutes = DefaultBanMinutes,
-            int maxRequestPerSecond = DefaultMaxRequestsPerSecond,
-            int maxMatchCount = DefaultMaxMatchCount,
-            int secondsMatchingPeriod = DefaultSecondsMatchingPeriod)
-            : this(baseRoute, failRegex, null, banMinutes, maxRequestPerSecond, maxMatchCount, secondsMatchingPeriod)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPBanningModule" /> class.
-        /// </summary>
-        /// <param name="baseRoute">The base route.</param>
-        /// <param name="failRegex">A collection of regex to match log messages against.</param>
         /// <param name="whitelist">A collection of valid IPs that never will be banned.</param>
         /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
-        /// <param name="maxRequestPerSecond">The maximum requests per second.</param>
-        /// <param name="maxMatchCount">The maximum number of regex matches before banning an IP.</param>
-        /// <param name="secondsMatchingPeriod">The seconds matching period.</param>
         public IPBanningModule(string baseRoute,
-            IEnumerable<string>? failRegex = null,
             IEnumerable<string>? whitelist = null,
-            int banMinutes = DefaultBanMinutes,
-            int maxRequestPerSecond = DefaultMaxRequestsPerSecond,
-            int maxMatchCount = DefaultMaxMatchCount,
-            int secondsMatchingPeriod = DefaultSecondsMatchingPeriod)
+            int banMinutes = DefaultBanMinutes)
             : base(baseRoute)
         {
-            if (failRegex != null)
-                AddRules(failRegex);
-
             _banMinutes = banMinutes;
-            _maxRequestsPerSecond = maxRequestPerSecond;
-            _maxMatchCount = maxMatchCount;
-            SecondsMatchingPeriod = secondsMatchingPeriod;
             AddToWhitelist(whitelist);
-            
         }
 
         /// <inheritdoc />
@@ -178,24 +145,6 @@ namespace EmbedIO.Security
         public void Dispose() =>
             Dispose(true);
 
-        internal void AddRules(IEnumerable<string> patterns)
-        {
-            foreach (var pattern in patterns)
-                AddRule(pattern);
-        }
-
-        internal void AddRule(string pattern)
-        {
-            try
-            {
-                FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(IPBanningModule), $"Invalid regex - '{pattern}'.");
-            }
-        }
-
         internal void AddToWhitelist(IEnumerable<string> whitelist) =>
             AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
 
@@ -215,22 +164,20 @@ namespace EmbedIO.Security
         }
         
         /// <inheritdoc />
-        protected override Task OnRequestAsync(IHttpContext context)
+        protected override async Task OnRequestAsync(IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
 
-            if (!Blacklist.ContainsKey(ClientAddress))
-            {
-                Task.Run(() =>
-                {
-                    AddRequest(ClientAddress);
-                    UpdateRequestsBlackList();
-                });
+            if (Whitelist.Contains(ClientAddress))
+                return;
 
-                return Task.CompletedTask;
+            foreach (var criterion in BanningCriterions)
+            {
+                await criterion.UpdateData(ClientAddress);
             }
 
-            throw HttpException.Forbidden();
+            if (Blacklist.ContainsKey(ClientAddress))
+                throw HttpException.Forbidden();
         }
         
         /// <summary>
@@ -242,11 +189,7 @@ namespace EmbedIO.Security
             if (_disposed) return;
             if (disposing)
             {
-                _innerLogger.Dispose();
-                while (!Whitelist.IsEmpty)
-                {
-                    Whitelist.TryTake(out _);
-                }
+                
             }
 
             _disposed = true;

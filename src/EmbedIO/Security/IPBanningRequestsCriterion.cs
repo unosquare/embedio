@@ -22,7 +22,7 @@ namespace EmbedIO.Security
         private static void AddRequest(IPAddress address) =>
             Requests.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
 
-        public Task UpdateBlacklist(IPAddress address)
+        public Task UpdateData(IPAddress address)
         {
             var lastSecond = DateTime.Now.AddSeconds(-1).Ticks;
             var lastMinute = DateTime.Now.AddMinutes(-1).Ticks;

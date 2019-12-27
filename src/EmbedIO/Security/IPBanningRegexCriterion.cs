@@ -38,12 +38,12 @@ namespace EmbedIO.Security
         private static void AddFailRegexMatch(IPAddress address) =>
             FailRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
         
-        public Task UpdateBlacklist(IPAddress address)
+        public Task UpdateData(IPAddress address)
         {
             var minTime = DateTime.Now.AddSeconds(-1 * SecondsMatchingPeriod).Ticks;
-            if (FailRegexMatches.TryGetValue(ClientAddress, out var attempts) &&
+            if (FailRegexMatches.TryGetValue(address, out var attempts) &&
                 attempts.Where(x => x >= minTime).Count() >= _maxMatchCount)
-                TryBanIP(ClientAddress, _banMinutes, false);
+                TryBanIP(address, _banMinutes, false);
         }
 
         public void PurgeData()
@@ -61,6 +61,25 @@ namespace EmbedIO.Security
                 }
             }
         }
+
+        internal void AddRules(IEnumerable<string> patterns)
+        {
+            foreach (var pattern in patterns)
+                AddRule(pattern);
+        }
+
+        internal void AddRule(string pattern)
+        {
+            try
+            {
+                FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(IPBanningModule), $"Invalid regex - '{pattern}'.");
+            }
+        }
+
 
         private class InnerRegexCriterionLogger : ILogger
         {
@@ -99,7 +118,7 @@ namespace EmbedIO.Security
 
                         // Add to list
                         AddFailRegexMatch(Parent.ClientAddress);
-                        Parent.UpdateMatchBlackList();
+                        Parent.UpdateBlacklist();
                         break;
                     }
                     catch (RegexMatchTimeoutException ex)
