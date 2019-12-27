@@ -22,35 +22,14 @@ namespace EmbedIO.Security
         /// The default ban minutes.
         /// </summary>
         public const int DefaultBanMinutes = 30;
-
-        /// <summary>
-        /// The default maximum request per second.
-        /// </summary>
-        public const int DefaultMaxRequestsPerSecond = 50;
-
-        /// <summary>
-        /// The default matching period.
-        /// </summary>
-        public const int DefaultSecondsMatchingPeriod = 60;
-
-        /// <summary>
-        /// The default maximum match count per period.
-        /// </summary>
-        public const int DefaultMaxMatchCount = 10;
-
-        private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> Requests = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
-        private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> FailRegexMatches = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
         private static readonly ConcurrentDictionary<IPAddress, BanInfo> Blacklist = new ConcurrentDictionary<IPAddress, BanInfo>();
-        private static readonly ConcurrentDictionary<string, Regex> FailRegex = new ConcurrentDictionary<string, Regex>();
+        private static readonly ConcurrentBag<IPAddress> Whitelist = new ConcurrentBag<IPAddress>();
         private static readonly PeriodicTask? Purger;
-        private static int SecondsMatchingPeriod = DefaultSecondsMatchingPeriod;
 
         private readonly int _banMinutes;
-        private readonly int _maxRequestsPerSecond=50;
-        private readonly int _maxMatchCount;
-        private bool _disposed;
-        private ILogger _innerLogger;
 
+        private bool _disposed;
+        
         static IPBanningModule()
         {
             Purger = new PeriodicTask(TimeSpan.FromMinutes(1), ct =>
@@ -109,15 +88,13 @@ namespace EmbedIO.Security
             _maxMatchCount = maxMatchCount;
             SecondsMatchingPeriod = secondsMatchingPeriod;
             AddToWhitelist(whitelist);
-            _innerLogger = new InnerIPBanningModuleLogger(this);
+            
         }
 
         /// <inheritdoc />
         public override bool IsFinalHandler => false;
         
         private IPAddress? ClientAddress { get; set; }
-
-        private ConcurrentBag<IPAddress> Whitelist { get; } = new ConcurrentBag<IPAddress>();
 
         /// <summary>
         /// Gets the list of current banned IPs.
@@ -275,12 +252,6 @@ namespace EmbedIO.Security
             _disposed = true;
         }
 
-        private static void AddRequest(IPAddress address) =>
-            Requests.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
-        
-        private static void AddFailRegexMatch(IPAddress address) =>
-            FailRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
-
         private static void PurgeBlackList()
         {
             foreach (var k in Blacklist.Keys)
@@ -288,116 +259,6 @@ namespace EmbedIO.Security
                 if (Blacklist.TryGetValue(k, out var info) &&
                     DateTime.Now.Ticks > info.ExpiresAt)
                     Blacklist.TryRemove(k, out _);
-            }
-        }
-
-        private static void PurgeRequests()
-        {
-            var minTime = DateTime.Now.AddMinutes(-1).Ticks;
-            foreach (var k in Requests.Keys)
-            {
-                if (Requests.TryGetValue(k, out var requests))
-                {
-                    var recentRequests = new ConcurrentBag<long>(requests.Where(x => x >= minTime));
-                    if (!recentRequests.Any())
-                        Requests.TryRemove(k, out _);
-                    else
-                        Requests.AddOrUpdate(k, recentRequests, (x, y) => recentRequests);
-                }
-            }
-        }
-
-        private static void PurgeFailRegexMatches()
-        {
-            var minTime = DateTime.Now.AddSeconds(-1 * SecondsMatchingPeriod).Ticks;
-            foreach (var k in FailRegexMatches.Keys)
-            {
-                if (FailRegexMatches.TryGetValue(k, out var failRegexMatches))
-                {
-                    var recentMatches = new ConcurrentBag<long>(failRegexMatches.Where(x => x >= minTime));
-                    if (!recentMatches.Any())
-                        FailRegexMatches.TryRemove(k, out _);
-                    else
-                        FailRegexMatches.AddOrUpdate(k, recentMatches, (x, y) => recentMatches);
-                }
-            }
-        }
-
-        private void UpdateRequestsBlackList()
-        {
-            var lastSecond = DateTime.Now.AddSeconds(-1).Ticks;
-            var lastMinute = DateTime.Now.AddMinutes(-1).Ticks;
-
-            if (Requests.TryGetValue(ClientAddress, out var attempts) &&
-                (attempts.Where(x => x >= lastSecond).Count() >= _maxRequestsPerSecond || 
-                 (attempts.Where(x => x >= lastMinute).Count() / 60) >= _maxRequestsPerSecond))
-                TryBanIP(ClientAddress, _banMinutes, false);
-        }
-
-        private void UpdateMatchBlackList()
-        {
-            var minTime = DateTime.Now.AddSeconds(-1 * SecondsMatchingPeriod).Ticks;
-            if (FailRegexMatches.TryGetValue(ClientAddress, out var attempts) &&
-                attempts.Where(x => x >= minTime).Count() >= _maxMatchCount)
-                TryBanIP(ClientAddress, _banMinutes, false);
-        }
-
-        private class InnerIPBanningModuleLogger : ILogger
-        {
-            private bool _disposed;
-
-            public InnerIPBanningModuleLogger(IPBanningModule parent)
-            {
-                Parent = parent;
-                Logger.RegisterLogger(this);
-            }
-
-            /// <inheritdoc />
-            public LogLevel LogLevel => LogLevel.Trace;
-
-            private IPBanningModule Parent { get; set; }
-
-            public void Dispose() =>
-                Dispose(true);
-
-            /// <inheritdoc />
-            public void Log(LogMessageReceivedEventArgs logEvent)
-            {
-                // Process Log
-                if (string.IsNullOrWhiteSpace(logEvent.Message) ||
-                    Parent.ClientAddress == null ||
-                    !FailRegex.Any() ||
-                    Parent.Whitelist.Contains(Parent.ClientAddress) ||
-                    Blacklist.ContainsKey(Parent.ClientAddress))
-                    return;
-
-                foreach (var regex in FailRegex.Values)
-                {
-                    try
-                    {
-                        if (!regex.IsMatch(logEvent.Message)) continue;
-
-                        // Add to list
-                        AddFailRegexMatch(Parent.ClientAddress);
-                        Parent.UpdateMatchBlackList();
-                        break;
-                    }
-                    catch (RegexMatchTimeoutException ex)
-                    {
-                        $"Timeout trying to match '{ex.Input}' with pattern '{ex.Pattern}'.".Error(nameof(InnerIPBanningModuleLogger));
-                    }
-                }
-            }
-
-            protected virtual void Dispose(bool disposing)
-            {
-                if (_disposed) return;
-                if (disposing)
-                {
-                    Logger.UnregisterLogger(this);
-                }
-
-                _disposed = true;
             }
         }
     }
