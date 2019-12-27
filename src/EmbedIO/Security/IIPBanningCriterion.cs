@@ -5,7 +5,7 @@ namespace EmbedIO.Security
 {
     public interface IIPBanningCriterion
     {
-        Task UpdateBlacklist(IPAddress address);
+        Task UpdateData(IPAddress address);
 
         void PurgeData();
     }
