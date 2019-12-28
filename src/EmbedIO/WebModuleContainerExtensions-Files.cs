@@ -42,6 +42,9 @@ namespace EmbedIO
         /// a <seealso cref="FileModule"/>, and adds the latter to a module container,
         /// giving it the specified <paramref name="name"/> if not <see langword="null"/>.
         /// </summary>
+        /// <remarks>
+        /// OSX doesn't support <see cref="FileSystemWatcher" />, the parameter <paramref name="isImmutable" /> will be always <see langword="true"/>.
+        /// </remarks>
         /// <typeparam name="TContainer">The type of the module container.</typeparam>
         /// <param name="this">The <typeparamref name="TContainer"/> on which this method is called.</param>
         /// <param name="name">The name.</param>
