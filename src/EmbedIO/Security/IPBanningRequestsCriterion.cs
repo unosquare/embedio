@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmbedIO.Security
@@ -17,7 +15,14 @@ namespace EmbedIO.Security
 
         private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> Requests = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
 
-        private readonly int _maxRequestsPerSecond = DefaultMaxRequestsPerSecond;
+        readonly IPBanningModule _parent;
+        private readonly int _maxRequestsPerSecond;
+
+        public IPBanningRequestsCriterion(IPBanningModule module, int maxRequestsPerSecond = DefaultMaxRequestsPerSecond)
+        {
+            _parent = module;
+            _maxRequestsPerSecond = maxRequestsPerSecond;
+        }
 
         private static void AddRequest(IPAddress address) =>
             Requests.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
@@ -28,24 +33,26 @@ namespace EmbedIO.Security
             var lastMinute = DateTime.Now.AddMinutes(-1).Ticks;
 
             if (Requests.TryGetValue(address, out var attempts) &&
-                (attempts.Where(x => x >= lastSecond).Count() >= _maxRequestsPerSecond ||
-                 (attempts.Where(x => x >= lastMinute).Count() / 60) >= _maxRequestsPerSecond))
-                TryBanIP(address, _banMinutes, false);
+                (attempts.Count(x => x >= lastSecond) >= _maxRequestsPerSecond ||
+                 (attempts.Count(x => x >= lastMinute) / 60) >= _maxRequestsPerSecond))
+                _parent.TryBanIP(address, false);
+
+            return Task.CompletedTask;
         }
 
         public void PurgeData()
         {
             var minTime = DateTime.Now.AddMinutes(-1).Ticks;
+
             foreach (var k in Requests.Keys)
             {
-                if (Requests.TryGetValue(k, out var requests))
-                {
-                    var recentRequests = new ConcurrentBag<long>(requests.Where(x => x >= minTime));
-                    if (!recentRequests.Any())
-                        Requests.TryRemove(k, out _);
-                    else
-                        Requests.AddOrUpdate(k, recentRequests, (x, y) => recentRequests);
-                }
+                if (!Requests.TryGetValue(k, out var requests)) continue;
+
+                var recentRequests = new ConcurrentBag<long>(requests.Where(x => x >= minTime));
+                if (!recentRequests.Any())
+                    Requests.TryRemove(k, out _);
+                else
+                    Requests.AddOrUpdate(k, recentRequests, (x, y) => recentRequests);
             }
         }
     }

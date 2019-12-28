@@ -33,7 +33,7 @@
         public static TModule WithRules<TModule>(this TModule @this, params string[] value)
             where TModule : IPBanningModule
         {
-            @this.AddRules(value);
+            @this.RegisterCriterion(new IPBanningRegexCriterion(@this, value));
             return @this;
         }
     }

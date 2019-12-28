@@ -17,8 +17,6 @@ namespace EmbedIO.Security
         /// </summary>
         public const int DefaultBanMinutes = 30;
 
-        private readonly IPBanningConfiguration _configuration;
-
         private bool _disposed;
 
         /// <summary>
@@ -32,14 +30,16 @@ namespace EmbedIO.Security
                                int banMinutes = DefaultBanMinutes)
             : base(baseRoute)
         {
-            _configuration = IPBanningExecutor.RetrieveInstance(baseRoute);
-            _configuration.BanTime = banMinutes;
+            Configuration = IPBanningExecutor.RetrieveInstance(baseRoute);
+            Configuration.BanTime = banMinutes;
 
             AddToWhitelist(whitelist);
         }
 
         /// <inheritdoc />
         public override bool IsFinalHandler => false;
+
+        internal IPBanningConfiguration Configuration { get; }
 
         private IPAddress? ClientAddress { get; set; }
 
@@ -49,17 +49,19 @@ namespace EmbedIO.Security
         /// <param name="criterion">The criterion.</param>
         public void RegisterCriterion(IIPBanningCriterion criterion)
         {
-            _configuration.RegisterCriterion(criterion);
+            Configuration.RegisterCriterion(criterion);
         }
 
         /// <inheritdoc />
         public void Dispose() =>
             Dispose(true);
 
+        internal bool TryBanIP(IPAddress address, bool isExplicit) => TryBanIP(address, DateTime.Now.AddMinutes(Configuration.BanTime), isExplicit, Configuration);
+
         /// <inheritdoc />
         protected override void OnStart(CancellationToken cancellationToken)
         {
-            _configuration.Lock();
+            Configuration.Lock();
 
             base.OnStart(cancellationToken);
         }
@@ -67,7 +69,11 @@ namespace EmbedIO.Security
         /// <summary>
         /// Gets the list of current banned IPs.
         /// </summary>
-        /// <returns>A collection of <see cref="BanInfo"/> in the blacklist.</returns>
+        /// <param name="baseRoute">The base route.</param>
+        /// <returns>
+        /// A collection of <see cref="BanInfo" /> in the blacklist.
+        /// </returns>
+        /// <exception cref="ArgumentException">baseRoute</exception>
         public static IEnumerable<BanInfo> GetBannedIPs(string baseRoute = "/")
             => IPBanningExecutor.TryGetInstance(baseRoute, out var instance) ? instance.BlackList : throw new ArgumentException(nameof(baseRoute));
 
@@ -113,22 +119,28 @@ namespace EmbedIO.Security
             if (!IPBanningExecutor.TryGetInstance(baseRoute, out var instance))
                 throw new ArgumentException(nameof(baseRoute));
 
+            return TryBanIP(address, banUntil, isExplicit, instance);
+        }
+
+        static bool TryBanIP(IPAddress address, DateTime banUntil, bool isExplicit, IPBanningConfiguration instance)
+        {
             try
             {
                 instance.AddOrUpdateBlackList(address,
                     k =>
-                        new BanInfo() {
+                        new BanInfo
+                        {
                             IPAddress = k,
                             ExpiresAt = banUntil.Ticks,
                             IsExplicit = isExplicit,
                         },
                     (k, v) =>
-                        new BanInfo() {
+                        new BanInfo
+                        {
                             IPAddress = k,
                             ExpiresAt = banUntil.Ticks,
                             IsExplicit = isExplicit,
-                        }
-                );
+                        });
 
                 return true;
             }
@@ -151,13 +163,13 @@ namespace EmbedIO.Security
             => IPBanningExecutor.TryGetInstance(baseRoute, out var instance) ? instance.TryRemoveBlackList(address) : throw new ArgumentException(nameof(baseRoute));
 
         internal void AddToWhitelist(IEnumerable<string> whitelist) =>
-            _configuration.AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
+            Configuration.AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
 
         /// <inheritdoc />
         protected override async Task OnRequestAsync(IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
-            await _configuration.CheckClient(ClientAddress);
+            await Configuration.CheckClient(ClientAddress).ConfigureAwait(false);
         }
 
         /// <summary>
