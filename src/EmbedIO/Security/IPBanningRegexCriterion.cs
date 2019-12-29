@@ -74,7 +74,7 @@ namespace EmbedIO.Security
                     _failRegexMatches.AddOrUpdate(k, recentMatches, (x, y) => recentMatches);
             }
         }
-        
+
         private void MatchIP(IPAddress address, string message)
         {
             if (!_parent.Configuration.ShouldContinue(address))
@@ -135,8 +135,9 @@ namespace EmbedIO.Security
             /// <inheritdoc />
             public void Log(LogMessageReceivedEventArgs logEvent)
             {
-                if (!(logEvent.ExtendedData is IPAddress clientAddress) ||
-                    string.IsNullOrWhiteSpace(logEvent.Message))
+                var clientAddress = _parent._parent.ClientAddress;
+
+                if (clientAddress == null || string.IsNullOrWhiteSpace(logEvent.Message))
                     return;
 
                 _parent.MatchIP(clientAddress, logEvent.Message);
@@ -145,10 +146,7 @@ namespace EmbedIO.Security
             private void Dispose(bool disposing)
             {
                 if (_disposed) return;
-                if (disposing)
-                {
-                    Logger.UnregisterLogger(this);
-                }
+                if (disposing) Logger.UnregisterLogger(this);
 
                 _disposed = true;
             }

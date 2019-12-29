@@ -70,7 +70,7 @@ namespace EmbedIO.Security
 
                 if (!result) continue;
 
-                TryBanIP(clientAddress, true);
+                TryBanIP(clientAddress, false);
                 break;
             }
 
