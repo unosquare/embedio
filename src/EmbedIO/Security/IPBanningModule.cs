@@ -38,6 +38,14 @@ namespace EmbedIO.Security
         /// <inheritdoc />
         public override bool IsFinalHandler => false;
 
+        /// <summary>
+        /// Gets the client address.
+        /// </summary>
+        /// <value>
+        /// The client address.
+        /// </value>
+        public IPAddress? ClientAddress { get; private set; }
+
         internal IPBanningConfiguration Configuration { get; }
 
         /// <summary>
@@ -141,7 +149,11 @@ namespace EmbedIO.Security
             Configuration.AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
 
         /// <inheritdoc />
-        protected override Task OnRequestAsync(IHttpContext context) => Configuration.CheckClient(context.Request.RemoteEndPoint.Address);
+        protected override Task OnRequestAsync(IHttpContext context)
+        {
+            ClientAddress = context.Request.RemoteEndPoint.Address;
+            return Configuration.CheckClient(ClientAddress);
+        }
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
