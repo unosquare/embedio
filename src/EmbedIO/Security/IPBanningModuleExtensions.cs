@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// Add a collection of regex to match the log messages against.
+        /// Add a collection of Regex to match the log messages against.
         /// </summary>
         /// <typeparam name="TModule">The type of the module.</typeparam>
         /// <param name="this">The module on which this method is called.</param>
@@ -30,10 +30,17 @@
         /// <returns>
         ///     <paramref name="this"/> with its fail regex configured.
         /// </returns>
-        public static TModule WithRules<TModule>(this TModule @this, params string[] value)
+        public static TModule WithRegexRules<TModule>(this TModule @this, params string[] value)
             where TModule : IPBanningModule
         {
             @this.RegisterCriterion(new IPBanningRegexCriterion(@this, value));
+            return @this;
+        }
+
+        public static TModule WithMaxRequestsPerSecond<TModule>(this TModule @this, int maxRequests = IPBanningRequestsCriterion.DefaultMaxRequestsPerSecond)
+            where TModule : IPBanningModule
+        {
+            @this.RegisterCriterion(new IPBanningRequestsCriterion(maxRequests));
             return @this;
         }
     }

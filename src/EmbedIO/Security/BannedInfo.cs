@@ -3,7 +3,7 @@
 namespace EmbedIO.Security
 {
     /// <summary>
-    /// Contains information about the ban of an IP address..
+    /// Contains information about the ban of an IP address.
     /// </summary>
     public class BanInfo
     {

@@ -12,8 +12,6 @@ namespace EmbedIO.Security
 {
     public class IPBanningRegexCriterion : IIPBanningCriterion
     {
-        readonly IPBanningModule _parent;
-
         /// <summary>
         /// The default matching period.
         /// </summary>
@@ -24,51 +22,78 @@ namespace EmbedIO.Security
         /// </summary>
         public const int DefaultMaxMatchCount = 10;
 
-        private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> FailRegexMatches = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
-        private static readonly ConcurrentDictionary<string, Regex> FailRegex = new ConcurrentDictionary<string, Regex>();
-
+        private readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> _failRegexMatches = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
+        private readonly ConcurrentDictionary<string, Regex> _failRegex = new ConcurrentDictionary<string, Regex>();
+        private readonly IPBanningModule _parent;
         private readonly int _secondsMatchingPeriod;
         private readonly int _maxMatchCount;
-        private ILogger _innerLogger;
+        private readonly ILogger _innerLogger;
 
-        public IPBanningRegexCriterion(IPBanningModule parent, IEnumerable<string> rules, int secondsMatchingPeriod = DefaultSecondsMatchingPeriod)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPBanningRegexCriterion"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="rules">The rules.</param>
+        /// <param name="maxMatchCount">The maximum match count.</param>
+        /// <param name="secondsMatchingPeriod">The seconds matching period.</param>
+        public IPBanningRegexCriterion(IPBanningModule parent, IEnumerable<string> rules, int maxMatchCount = DefaultMaxMatchCount, int secondsMatchingPeriod = DefaultSecondsMatchingPeriod)
         {
             _secondsMatchingPeriod = secondsMatchingPeriod;
+            _maxMatchCount = maxMatchCount;
             _parent = parent;
 
             AddRules(rules);
 
-            if (FailRegex.Any())
+            if (_failRegex.Any())
                 _innerLogger = new InnerRegexCriterionLogger(this);
         }
 
-        private static void AddFailRegexMatch(IPAddress address) =>
-            FailRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
-
         /// <inheritdoc />
-        public Task UpdateData(IPAddress address)
+        public Task<bool> ValidateIPAddress(IPAddress address)
         {
             var minTime = DateTime.Now.AddSeconds(-1 * _secondsMatchingPeriod).Ticks;
-            if (FailRegexMatches.TryGetValue(address, out var attempts) &&
-                attempts.Count(x => x >= minTime) >= _maxMatchCount)
-                _parent.TryBanIP(address, false);
+            var shouldBan = _failRegexMatches.TryGetValue(address, out var attempts) &&
+                            attempts.Count(x => x >= minTime) >= _maxMatchCount;
 
-            return Task.CompletedTask;
+            return Task.FromResult(shouldBan);
         }
 
+        /// <inheritdoc />
         public void PurgeData()
         {
             var minTime = DateTime.Now.AddSeconds(-1 * _secondsMatchingPeriod).Ticks;
 
-            foreach (var k in FailRegexMatches.Keys)
+            foreach (var k in _failRegexMatches.Keys)
             {
-                if (!FailRegexMatches.TryGetValue(k, out var failRegexMatches)) continue;
+                if (!_failRegexMatches.TryGetValue(k, out var failRegexMatches)) continue;
 
                 var recentMatches = new ConcurrentBag<long>(failRegexMatches.Where(x => x >= minTime));
                 if (!recentMatches.Any())
-                    FailRegexMatches.TryRemove(k, out _);
+                    _failRegexMatches.TryRemove(k, out _);
                 else
-                    FailRegexMatches.AddOrUpdate(k, recentMatches, (x, y) => recentMatches);
+                    _failRegexMatches.AddOrUpdate(k, recentMatches, (x, y) => recentMatches);
+            }
+        }
+        
+        private void MatchIP(IPAddress address, string message)
+        {
+            if (!_parent.Configuration.ShouldContinue(address))
+                return;
+
+            foreach (var regex in _failRegex.Values)
+            {
+                try
+                {
+                    if (regex.IsMatch(message))
+                    {
+                        _failRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
+                        break;
+                    }
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    $"Timeout trying to match '{ex.Input}' with pattern '{ex.Pattern}'.".Error(nameof(InnerRegexCriterionLogger));
+                }
             }
         }
 
@@ -82,7 +107,7 @@ namespace EmbedIO.Security
         {
             try
             {
-                FailRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
+                _failRegex.TryAdd(pattern, new Regex(pattern, RegexOptions.Compiled | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(500)));
             }
             catch (Exception ex)
             {
@@ -90,20 +115,19 @@ namespace EmbedIO.Security
             }
         }
 
-        private class InnerRegexCriterionLogger : ILogger
+        private sealed class InnerRegexCriterionLogger : ILogger
         {
+            private readonly IPBanningRegexCriterion _parent;
             private bool _disposed;
 
             public InnerRegexCriterionLogger(IPBanningRegexCriterion parent)
             {
-                Parent = parent;
+                _parent = parent;
                 Logger.RegisterLogger(this);
             }
 
             /// <inheritdoc />
             public LogLevel LogLevel => LogLevel.Trace;
-
-            private IPBanningRegexCriterion Parent { get; set; }
 
             public void Dispose() =>
                 Dispose(true);
@@ -111,30 +135,14 @@ namespace EmbedIO.Security
             /// <inheritdoc />
             public void Log(LogMessageReceivedEventArgs logEvent)
             {
-                if (string.IsNullOrWhiteSpace(logEvent.Message) ||
-                    Parent.ClientAddress == null ||
-                    Parent.Blacklist.Contains(Parent.ClientAddress))
+                if (!(logEvent.ExtendedData is IPAddress clientAddress) ||
+                    string.IsNullOrWhiteSpace(logEvent.Message))
                     return;
 
-                foreach (var regex in FailRegex.Values)
-                {
-                    try
-                    {
-                        if (!regex.IsMatch(logEvent.Message)) continue;
-
-                        // Add to list
-                        AddFailRegexMatch(Parent.ClientAddress);
-                        Parent.UpdateBlacklist();
-                        break;
-                    }
-                    catch (RegexMatchTimeoutException ex)
-                    {
-                        $"Timeout trying to match '{ex.Input}' with pattern '{ex.Pattern}'.".Error(nameof(InnerRegexCriterionLogger));
-                    }
-                }
+                _parent.MatchIP(clientAddress, logEvent.Message);
             }
 
-            protected virtual void Dispose(bool disposing)
+            private void Dispose(bool disposing)
             {
                 if (_disposed) return;
                 if (disposing)
@@ -145,7 +153,5 @@ namespace EmbedIO.Security
                 _disposed = true;
             }
         }
-
-        public List<BanInfo> Blacklist => _parent.Configuration.BlackList;
     }
 }

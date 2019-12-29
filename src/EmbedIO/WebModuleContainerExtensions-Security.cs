@@ -30,7 +30,6 @@ namespace EmbedIO
         /// <param name="configure">The configure.</param>
         /// <param name="whiteList">A collection of valid IPs that never will be banned.</param>
         /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
-        /// <param name="">The .</param>
         /// <returns>
         ///   <paramref name="this" /> with a <see cref="IPBanningModule" /> added.
         /// </returns>
