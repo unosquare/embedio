@@ -16,8 +16,7 @@ namespace EmbedIO.Tests
         {
             Server
                 .WithIPBanning(o => o
-                    .WithRules("(404)+")
-                    .WithRules("(401)+"), 30, 50, 2)
+                    .WithRegexRules("(404)+", "(401)+"))
                 .WithWebApi("/api", m => m.RegisterController<TestController>());
         }
 
@@ -94,6 +93,7 @@ namespace EmbedIO.Tests
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode, "Status Code Forbidden");
 
             var bannedIps = IPBanningModule.GetBannedIPs();
+
             foreach (var address in bannedIps)
                 IPBanningModule.TryUnbanIP(address.IPAddress);
 
@@ -106,7 +106,7 @@ namespace EmbedIO.Tests
         {
             IPBanningModule.TryUnbanIP(LocalHost);
 
-            foreach (var x in Enumerable.Range(0, 100))
+            foreach (var _ in Enumerable.Range(0, 100))
             {
                 await Client.SendAsync(GetEmptyRequest());
             }

@@ -30,8 +30,7 @@ namespace EmbedIO.Security
                                int banMinutes = DefaultBanMinutes)
             : base(baseRoute)
         {
-            Configuration = IPBanningExecutor.RetrieveInstance(baseRoute);
-            Configuration.BanTime = banMinutes;
+            Configuration = IPBanningExecutor.RetrieveInstance(baseRoute, banMinutes);
 
             AddToWhitelist(whitelist);
         }
@@ -41,22 +40,26 @@ namespace EmbedIO.Security
 
         internal IPBanningConfiguration Configuration { get; }
 
-        private IPAddress? ClientAddress { get; set; }
-
         /// <summary>
         /// Registers the criterion.
         /// </summary>
         /// <param name="criterion">The criterion.</param>
-        public void RegisterCriterion(IIPBanningCriterion criterion)
-        {
-            Configuration.RegisterCriterion(criterion);
-        }
+        public void RegisterCriterion(IIPBanningCriterion criterion) => Configuration.RegisterCriterion(criterion);
 
         /// <inheritdoc />
         public void Dispose() =>
             Dispose(true);
 
-        internal bool TryBanIP(IPAddress address, bool isExplicit) => TryBanIP(address, DateTime.Now.AddMinutes(Configuration.BanTime), isExplicit, Configuration);
+        /// <summary>
+        /// Tries to ban an IP explicitly.
+        /// </summary>
+        /// <param name="address">The address.</param>
+        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
+        /// <returns>
+        ///   <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
+        /// </returns>
+        public bool TryBanIP(IPAddress address, bool isExplicit = true)
+            => Configuration.TryBanIP(address, isExplicit);
 
         /// <inheritdoc />
         protected override void OnStart(CancellationToken cancellationToken)
@@ -119,35 +122,7 @@ namespace EmbedIO.Security
             if (!IPBanningExecutor.TryGetInstance(baseRoute, out var instance))
                 throw new ArgumentException(nameof(baseRoute));
 
-            return TryBanIP(address, banUntil, isExplicit, instance);
-        }
-
-        static bool TryBanIP(IPAddress address, DateTime banUntil, bool isExplicit, IPBanningConfiguration instance)
-        {
-            try
-            {
-                instance.AddOrUpdateBlackList(address,
-                    k =>
-                        new BanInfo
-                        {
-                            IPAddress = k,
-                            ExpiresAt = banUntil.Ticks,
-                            IsExplicit = isExplicit,
-                        },
-                    (k, v) =>
-                        new BanInfo
-                        {
-                            IPAddress = k,
-                            ExpiresAt = banUntil.Ticks,
-                            IsExplicit = isExplicit,
-                        });
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return instance.TryBanIP(address, isExplicit, banUntil);
         }
 
         /// <summary>
@@ -166,11 +141,7 @@ namespace EmbedIO.Security
             Configuration.AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
 
         /// <inheritdoc />
-        protected override async Task OnRequestAsync(IHttpContext context)
-        {
-            ClientAddress = context.Request.RemoteEndPoint.Address;
-            await Configuration.CheckClient(ClientAddress).ConfigureAwait(false);
-        }
+        protected override Task OnRequestAsync(IHttpContext context) => Configuration.CheckClient(context.Request.RemoteEndPoint.Address);
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -179,7 +150,10 @@ namespace EmbedIO.Security
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
-            if (disposing) { }
+            if (disposing)
+            {
+                Configuration.Dispose();
+            }
 
             _disposed = true;
         }

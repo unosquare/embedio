@@ -9,55 +9,78 @@ using System.Threading.Tasks;
 
 namespace EmbedIO.Security
 {
-    public class IPBanningConfiguration : ConfiguredObject
+    /// <summary>
+    /// Represents a configuration object for <see cref="IPBanningModule"/>.
+    /// </summary>
+    /// <seealso cref="ConfiguredObject" />
+    public class IPBanningConfiguration : ConfiguredObject, IDisposable
     {
         private readonly List<IIPBanningCriterion> _criterions = new List<IIPBanningCriterion>();
         private readonly ConcurrentDictionary<IPAddress, BanInfo> _blacklistDictionary = new ConcurrentDictionary<IPAddress, BanInfo>();
         private readonly ConcurrentBag<IPAddress> _whiteListBag = new ConcurrentBag<IPAddress>();
-        private int _banTime;
+        private readonly int _banTime;
+        private bool _disposed;
 
-        public int BanTime
+        internal IPBanningConfiguration(int banTime)
         {
-            get => _banTime;
-            set
-            {
-                EnsureConfigurationNotLocked();
-                _banTime = value;
-            }
+            _banTime = banTime;
         }
-        
+
+        /// <summary>
+        /// Gets the black list.
+        /// </summary>
+        /// <value>
+        /// The black list.
+        /// </value>
         public List<BanInfo> BlackList => _blacklistDictionary.Values.ToList();
 
-        public void RegisterCriterion(IIPBanningCriterion criterion)
-        {
-            EnsureConfigurationNotLocked();
-            _criterions.Add(criterion);
-        }
+        /// <summary>
+        /// Check if a Criterion should continue testing an IP Address.
+        /// </summary>
+        /// <param name="address">The address.</param>
+        /// <returns><c>true</c> if the Criterion should continue, otherwise <c>false</c>.</returns>
+        public bool ShouldContinue(IPAddress address) => !_whiteListBag.Contains(address) || !_blacklistDictionary.Any(x => x.Value.IPAddress.Equals(address));
 
-
+        /// <summary>
+        /// Purges this instance.
+        /// </summary>
         public void Purge()
         {
             PurgeBlackList();
+
             foreach (var criterion in _criterions)
             {
                 criterion.PurgeData();
             }
         }
 
-        public void PurgeBlackList()
+        /// <summary>
+        /// Checks the client.
+        /// </summary>
+        /// <param name="clientAddress">The client address.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task CheckClient(IPAddress clientAddress)
         {
-            foreach (var k in _blacklistDictionary.Keys)
+            if (_whiteListBag.Contains(clientAddress))
+                return;
+
+            foreach (var criterion in _criterions)
             {
-                if (_blacklistDictionary.TryGetValue(k, out var info) &&
-                    DateTime.Now.Ticks > info.ExpiresAt)
-                    _blacklistDictionary.TryRemove(k, out _);
+                var result = await criterion.ValidateIPAddress(clientAddress).ConfigureAwait(false);
+
+                if (!result) continue;
+
+                TryBanIP(clientAddress, true);
+                break;
             }
+
+            if (_blacklistDictionary.ContainsKey(clientAddress))
+                throw HttpException.Forbidden();
         }
-
-        public void Lock() => LockConfiguration();
-
-        public void AddOrUpdateBlackList(IPAddress address, Func<IPAddress, BanInfo> addValueFactory, Func<IPAddress, BanInfo, BanInfo> updateValueFactory)
-            => _blacklistDictionary.AddOrUpdate(address, addValueFactory, updateValueFactory);
+        
+        /// <inheritdoc />
+        public void Dispose() =>
+            Dispose(true);
 
         internal async Task AddToWhitelistAsync(IEnumerable<string> whitelist)
         {
@@ -74,21 +97,69 @@ namespace EmbedIO.Security
                 }
             }
         }
+        
+        internal void Lock() => LockConfiguration();
 
-        public async Task CheckClient(IPAddress clientAddress)
+        internal bool TryRemoveBlackList(IPAddress address) => _blacklistDictionary.TryRemove(address, out _);
+
+        internal void RegisterCriterion(IIPBanningCriterion criterion)
         {
-            if (_whiteListBag.Contains(clientAddress))
-                return;
-
-            foreach (var criterion in _criterions)
-            {
-                await criterion.UpdateData(clientAddress);
-            }
-
-            if (_blacklistDictionary.ContainsKey(clientAddress))
-                throw HttpException.Forbidden();
+            EnsureConfigurationNotLocked();
+            _criterions.Add(criterion);
         }
 
-        public bool TryRemoveBlackList(IPAddress address) => _blacklistDictionary.TryRemove(address, out _);
+        internal bool TryBanIP(IPAddress address, bool isExplicit, DateTime? banUntil = null)
+        {
+            try
+            {
+                _blacklistDictionary.AddOrUpdate(address,
+                    k =>
+                        new BanInfo
+                        {
+                            IPAddress = k,
+                            ExpiresAt = banUntil?.Ticks ?? DateTime.Now.AddMinutes(_banTime).Ticks,
+                            IsExplicit = isExplicit,
+                        },
+                    (k, v) =>
+                        new BanInfo
+                        {
+                            IPAddress = k,
+                            ExpiresAt = banUntil?.Ticks ?? DateTime.Now.AddMinutes(_banTime).Ticks,
+                            IsExplicit = isExplicit,
+                        });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void PurgeBlackList()
+        {
+            foreach (var k in _blacklistDictionary.Keys)
+            {
+                if (_blacklistDictionary.TryGetValue(k, out var info) &&
+                    DateTime.Now.Ticks > info.ExpiresAt)
+                    _blacklistDictionary.TryRemove(k, out _);
+            }
+        }
+        
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                _blacklistDictionary.Clear();
+                _criterions.Clear();
+            }
+
+            _disposed = true;
+        }
     }
 }

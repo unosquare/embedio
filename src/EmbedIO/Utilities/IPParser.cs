@@ -2,7 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
+using Swan.Logging;
 
 namespace EmbedIO.Utilities
 {
@@ -27,6 +29,10 @@ namespace EmbedIO.Utilities
             try
             {
                 return await Dns.GetHostAddressesAsync(address).ConfigureAwait(false);
+            }
+            catch (SocketException socketEx)
+            {
+                socketEx.Log(nameof(IPParser));
             }
             catch
             {

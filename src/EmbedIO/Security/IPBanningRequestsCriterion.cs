@@ -15,31 +15,27 @@ namespace EmbedIO.Security
 
         private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> Requests = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
 
-        readonly IPBanningModule _parent;
         private readonly int _maxRequestsPerSecond;
 
-        public IPBanningRequestsCriterion(IPBanningModule module, int maxRequestsPerSecond = DefaultMaxRequestsPerSecond)
+        internal IPBanningRequestsCriterion(int maxRequestsPerSecond)
         {
-            _parent = module;
             _maxRequestsPerSecond = maxRequestsPerSecond;
         }
 
-        private static void AddRequest(IPAddress address) =>
-            Requests.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
-
-        public Task UpdateData(IPAddress address)
+        /// <inheritdoc />
+        public Task<bool> ValidateIPAddress(IPAddress address)
         {
             var lastSecond = DateTime.Now.AddSeconds(-1).Ticks;
             var lastMinute = DateTime.Now.AddMinutes(-1).Ticks;
 
-            if (Requests.TryGetValue(address, out var attempts) &&
+            var shouldBan = Requests.TryGetValue(address, out var attempts) &&
                 (attempts.Count(x => x >= lastSecond) >= _maxRequestsPerSecond ||
-                 (attempts.Count(x => x >= lastMinute) / 60) >= _maxRequestsPerSecond))
-                _parent.TryBanIP(address, false);
+                 (attempts.Count(x => x >= lastMinute) / 60) >= _maxRequestsPerSecond);
 
-            return Task.CompletedTask;
+            return Task.FromResult(shouldBan);
         }
 
+        /// <inheritdoc />
         public void PurgeData()
         {
             var minTime = DateTime.Now.AddMinutes(-1).Ticks;
@@ -55,5 +51,8 @@ namespace EmbedIO.Security
                     Requests.AddOrUpdate(k, recentRequests, (x, y) => recentRequests);
             }
         }
+        
+        private static void AddRequest(IPAddress address) =>
+            Requests.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
     }
 }
