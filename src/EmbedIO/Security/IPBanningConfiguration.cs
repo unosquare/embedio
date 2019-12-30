@@ -39,7 +39,8 @@ namespace EmbedIO.Security
         /// </summary>
         /// <param name="address">The address.</param>
         /// <returns><c>true</c> if the Criterion should continue, otherwise <c>false</c>.</returns>
-        public bool ShouldContinue(IPAddress address) => !_whiteListBag.Contains(address) || !_blacklistDictionary.Any(x => x.Value.IPAddress.Equals(address));
+        public bool ShouldContinue(IPAddress address) => 
+            !_whiteListBag.Contains(address) || !_blacklistDictionary.ContainsKey(address);
 
         /// <summary>
         /// Purges this instance.
@@ -82,25 +83,32 @@ namespace EmbedIO.Security
         public void Dispose() =>
             Dispose(true);
 
-        internal async Task AddToWhitelistAsync(IEnumerable<string> whitelist)
+        internal async Task AddToWhitelistAsync(IEnumerable<string>? whitelist)
         {
             if (whitelist?.Any() != true)
                 return;
 
-            foreach (var address in whitelist)
+            foreach (var whiteAddress in whitelist)
             {
-                var addressees = await IPParser.ParseAsync(address).ConfigureAwait(false);
-
-                foreach (var ipAddress in addressees.Where(x => !_whiteListBag.Contains(x)))
+                var parsedAddresses = await IPParser.ParseAsync(whiteAddress).ConfigureAwait(false);
+                foreach (var address in parsedAddresses.Where(x => !_whiteListBag.Contains(x)))
                 {
-                    _whiteListBag.Add(ipAddress);
+                    _whiteListBag.Add(address);
                 }
             }
         }
         
         internal void Lock() => LockConfiguration();
 
-        internal bool TryRemoveBlackList(IPAddress address) => _blacklistDictionary.TryRemove(address, out _);
+        internal bool TryRemoveBlackList(IPAddress address)
+        {
+            foreach (var criterion in _criterions)
+            {
+                criterion.ClearIPAddress(address);
+            }
+
+            return _blacklistDictionary.TryRemove(address, out _);
+        }
 
         internal void RegisterCriterion(IIPBanningCriterion criterion)
         {
@@ -136,16 +144,6 @@ namespace EmbedIO.Security
             }
         }
 
-        private void PurgeBlackList()
-        {
-            foreach (var k in _blacklistDictionary.Keys)
-            {
-                if (_blacklistDictionary.TryGetValue(k, out var info) &&
-                    DateTime.Now.Ticks > info.ExpiresAt)
-                    _blacklistDictionary.TryRemove(k, out _);
-            }
-        }
-        
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -156,10 +154,22 @@ namespace EmbedIO.Security
             if (disposing)
             {
                 _blacklistDictionary.Clear();
+
+                _criterions.ForEach(x => x.Dispose());
                 _criterions.Clear();
             }
 
             _disposed = true;
+        }
+
+        private void PurgeBlackList()
+        {
+            foreach (var k in _blacklistDictionary.Keys)
+            {
+                if (_blacklistDictionary.TryGetValue(k, out var info) &&
+                    DateTime.Now.Ticks > info.ExpiresAt)
+                    _blacklistDictionary.TryRemove(k, out _);
+            }
         }
     }
 }

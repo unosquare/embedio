@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace EmbedIO.Security
 {
+    /// <summary>
+    /// Represents a maximun requests per second criterion for <see cref="IPBanningModule"/>.
+    /// </summary>
+    /// <seealso cref="IIPBanningCriterion" />
     public class IPBanningRequestsCriterion : IIPBanningCriterion
     {
         /// <summary>
@@ -16,6 +20,8 @@ namespace EmbedIO.Security
         private static readonly ConcurrentDictionary<IPAddress, ConcurrentBag<long>> Requests = new ConcurrentDictionary<IPAddress, ConcurrentBag<long>>();
 
         private readonly int _maxRequestsPerSecond;
+
+        private bool _disposed;
 
         internal IPBanningRequestsCriterion(int maxRequestsPerSecond)
         {
@@ -38,6 +44,10 @@ namespace EmbedIO.Security
         }
 
         /// <inheritdoc />
+        public void ClearIPAddress(IPAddress address) =>
+            Requests.TryRemove(address, out _);
+
+        /// <inheritdoc />
         public void PurgeData()
         {
             var minTime = DateTime.Now.AddMinutes(-1).Ticks;
@@ -52,6 +62,21 @@ namespace EmbedIO.Security
                 else
                     Requests.AddOrUpdate(k, recentRequests, (x, y) => recentRequests);
             }
+        }
+
+        /// <inheritdoc />
+        public void Dispose() =>
+            Dispose(true);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                Requests.Clear();
+            }
+
+            _disposed = true;
         }
     }
 }

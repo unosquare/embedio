@@ -17,6 +17,8 @@ namespace EmbedIO.Security
         /// </summary>
         public const int DefaultBanMinutes = 30;
 
+        private const string NoConfigurationFound = "No configuration was found for the base route provided.";
+
         private bool _disposed;
 
         /// <summary>
@@ -52,7 +54,8 @@ namespace EmbedIO.Security
         /// Registers the criterion.
         /// </summary>
         /// <param name="criterion">The criterion.</param>
-        public void RegisterCriterion(IIPBanningCriterion criterion) => Configuration.RegisterCriterion(criterion);
+        public void RegisterCriterion(IIPBanningCriterion criterion) => 
+            Configuration.RegisterCriterion(criterion);
 
         /// <inheritdoc />
         public void Dispose() =>
@@ -66,16 +69,8 @@ namespace EmbedIO.Security
         /// <returns>
         ///   <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
         /// </returns>
-        public bool TryBanIP(IPAddress address, bool isExplicit = true)
-            => Configuration.TryBanIP(address, isExplicit);
-
-        /// <inheritdoc />
-        protected override void OnStart(CancellationToken cancellationToken)
-        {
-            Configuration.Lock();
-
-            base.OnStart(cancellationToken);
-        }
+        public bool TryBanIP(IPAddress address, bool isExplicit = true) => 
+            Configuration.TryBanIP(address, isExplicit);
 
         /// <summary>
         /// Gets the list of current banned IPs.
@@ -85,8 +80,10 @@ namespace EmbedIO.Security
         /// A collection of <see cref="BanInfo" /> in the blacklist.
         /// </returns>
         /// <exception cref="ArgumentException">baseRoute</exception>
-        public static IEnumerable<BanInfo> GetBannedIPs(string baseRoute = "/")
-            => IPBanningExecutor.TryGetInstance(baseRoute, out var instance) ? instance.BlackList : throw new ArgumentException(nameof(baseRoute));
+        public static IEnumerable<BanInfo> GetBannedIPs(string baseRoute = "/") => 
+            IPBanningExecutor.TryGetInstance(baseRoute, out var instance) 
+            ? instance.BlackList 
+            : throw new ArgumentException(NoConfigurationFound, nameof(baseRoute));
 
         /// <summary>
         /// Tries to ban an IP explicitly.
@@ -128,7 +125,7 @@ namespace EmbedIO.Security
         public static bool TryBanIP(IPAddress address, DateTime banUntil, string baseRoute = "/", bool isExplicit = true)
         {
             if (!IPBanningExecutor.TryGetInstance(baseRoute, out var instance))
-                throw new ArgumentException(nameof(baseRoute));
+                throw new ArgumentException(NoConfigurationFound, nameof(baseRoute));
 
             return instance.TryBanIP(address, isExplicit, banUntil);
         }
@@ -142,11 +139,21 @@ namespace EmbedIO.Security
         ///   <c>true</c> if the IP was removed from the blacklist; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="ArgumentException">baseRoute</exception>
-        public static bool TryUnbanIP(IPAddress address, string baseRoute = "/")
-            => IPBanningExecutor.TryGetInstance(baseRoute, out var instance) ? instance.TryRemoveBlackList(address) : throw new ArgumentException(nameof(baseRoute));
+        public static bool TryUnbanIP(IPAddress address, string baseRoute = "/") => 
+            IPBanningExecutor.TryGetInstance(baseRoute, out var instance) 
+            ? instance.TryRemoveBlackList(address) 
+            : throw new ArgumentException(NoConfigurationFound, nameof(baseRoute));
 
-        internal void AddToWhitelist(IEnumerable<string> whitelist) =>
+        internal void AddToWhitelist(IEnumerable<string>? whitelist) =>
             Configuration.AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
+
+        /// <inheritdoc />
+        protected override void OnStart(CancellationToken cancellationToken)
+        {
+            Configuration.Lock();
+
+            base.OnStart(cancellationToken);
+        }
 
         /// <inheritdoc />
         protected override Task OnRequestAsync(IHttpContext context)
@@ -164,6 +171,7 @@ namespace EmbedIO.Security
             if (_disposed) return;
             if (disposing)
             {
+                IPBanningExecutor.TryRemoveInstance(BaseRoute);
                 Configuration.Dispose();
             }
 

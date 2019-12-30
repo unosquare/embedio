@@ -16,7 +16,8 @@ namespace EmbedIO.Tests
         {
             Server
                 .WithIPBanning(o => o
-                    .WithRegexRules("(404)+", "(401)+"))
+                    .WithRegexRules(2, 60, "(404)+", "(401)+")
+                    .WithMaxRequestsPerSecond())
                 .WithWebApi("/api", m => m.RegisterController<TestController>());
         }
 
@@ -34,6 +35,8 @@ namespace EmbedIO.Tests
         [Test]
         public async Task RequestFailRegex_ReturnsForbidden()
         {
+            IPBanningModule.TryUnbanIP(LocalHost);
+
             _ = await Client.SendAsync(GetNotFoundRequest());
             _ = await Client.SendAsync(GetUnauthorizedRequest());
             var response = await Client.SendAsync(GetNotFoundRequest());
@@ -86,6 +89,8 @@ namespace EmbedIO.Tests
         [Test]
         public async Task RequestFailRegex_UnbanIp_ReturnsNotFound()
         {
+            IPBanningModule.TryUnbanIP(LocalHost);
+
             _ = await Client.SendAsync(GetNotFoundRequest());
             _ = await Client.SendAsync(GetNotFoundRequest());
             var response = await Client.SendAsync(GetNotFoundRequest());

@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace EmbedIO.Security
 {
+    /// <summary>
+    /// Represents a log message regex matching criterion for <see cref="IPBanningModule"/>.
+    /// </summary>
+    /// <seealso cref="IIPBanningCriterion" />
     public class IPBanningRegexCriterion : IIPBanningCriterion
     {
         /// <summary>
@@ -27,7 +31,8 @@ namespace EmbedIO.Security
         private readonly IPBanningModule _parent;
         private readonly int _secondsMatchingPeriod;
         private readonly int _maxMatchCount;
-        private readonly ILogger _innerLogger;
+        private readonly ILogger? _innerLogger;
+        private bool _disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IPBanningRegexCriterion"/> class.
@@ -59,6 +64,10 @@ namespace EmbedIO.Security
         }
 
         /// <inheritdoc />
+        public void ClearIPAddress(IPAddress address) =>
+            _failRegexMatches.TryRemove(address, out _);
+
+        /// <inheritdoc />
         public void PurgeData()
         {
             var minTime = DateTime.Now.AddSeconds(-1 * _secondsMatchingPeriod).Ticks;
@@ -73,6 +82,23 @@ namespace EmbedIO.Security
                 else
                     _failRegexMatches.AddOrUpdate(k, recentMatches, (x, y) => recentMatches);
             }
+        }
+
+        /// <inheritdoc />
+        public void Dispose() =>
+            Dispose(true);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                _failRegexMatches.Clear();
+                _failRegex.Clear();
+                _innerLogger?.Dispose();
+            }
+
+            _disposed = true;
         }
 
         private void MatchIP(IPAddress address, string message)
