@@ -4,6 +4,15 @@ body {
     margin: 0 auto;
 }
 
+.space-between {
+    justify-content: space-between;
+}
+
+.footer-container {
+    width: 1100px;
+    margin: auto;
+}
+
 .ng-dirty.ng-invalid {
     border-color: red;
 }
@@ -28,10 +37,10 @@ body {
     bottom: 0px;
     left: 0px;
     padding-top: 0px !important;
+    height: 60px;
 }
 
 .logo {
-    width: 70%;
     display: block;
     margin: auto;
 }
