@@ -19,9 +19,13 @@ namespace EmbedIO.Security
             return Task.CompletedTask;
         });
 
-        public static IPBanningConfiguration RetrieveInstance(string baseRoute, int banMinutes)
-            => Configurations.GetOrAdd(baseRoute, x => new IPBanningConfiguration(banMinutes));
+        public static IPBanningConfiguration RetrieveInstance(string baseRoute, int banMinutes) => 
+            Configurations.GetOrAdd(baseRoute, x => new IPBanningConfiguration(banMinutes));
 
-        public static bool TryGetInstance(string baseRoute, out IPBanningConfiguration configuration) => Configurations.TryGetValue(baseRoute, out configuration);
+        public static bool TryGetInstance(string baseRoute, out IPBanningConfiguration configuration) => 
+            Configurations.TryGetValue(baseRoute, out configuration);
+
+        public static bool TryRemoveInstance(string baseRoute) =>
+            Configurations.TryRemove(baseRoute, out _);
     }
 }
