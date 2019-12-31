@@ -110,11 +110,10 @@ namespace EmbedIO.Security
             {
                 try
                 {
-                    if (regex.IsMatch(message))
-                    {
-                        _failRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
-                        break;
-                    }
+                    if (!regex.IsMatch(message)) continue;
+
+                    _failRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
+                    break;
                 }
                 catch (RegexMatchTimeoutException ex)
                 {
