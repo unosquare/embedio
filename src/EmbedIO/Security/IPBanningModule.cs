@@ -62,17 +62,6 @@ namespace EmbedIO.Security
             Dispose(true);
 
         /// <summary>
-        /// Tries to ban an IP explicitly.
-        /// </summary>
-        /// <param name="address">The address.</param>
-        /// <param name="isExplicit">if set to <c>true</c> [is explicit].</param>
-        /// <returns>
-        ///   <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
-        /// </returns>
-        public bool TryBanIP(IPAddress address, bool isExplicit = true) => 
-            Configuration.TryBanIP(address, isExplicit);
-
-        /// <summary>
         /// Gets the list of current banned IPs.
         /// </summary>
         /// <param name="baseRoute">The base route.</param>
