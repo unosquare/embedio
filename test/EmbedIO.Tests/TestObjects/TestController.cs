@@ -72,7 +72,7 @@ namespace EmbedIO.Tests.TestObjects
             throw HttpException.Unauthorized();
 
         private static Person CheckPerson(int id)
-            =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
+            => PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
             ?? throw HttpException.NotFound();
     }
 }

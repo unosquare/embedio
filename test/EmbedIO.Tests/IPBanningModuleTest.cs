@@ -30,12 +30,12 @@ namespace EmbedIO.Tests
         private HttpRequestMessage GetUnauthorizedRequest() =>
             new HttpRequestMessage(HttpMethod.Get, $"{WebServerUrl}/api/unauthorized");
 
-        private IPAddress LocalHost { get; } = IPAddress.Parse("127.0.0.1");
+        private IPAddress Localhost { get; } = IPAddress.Parse("127.0.0.1");
 
         [Test]
         public async Task RequestFailRegex_ReturnsForbidden()
         {
-            IPBanningModule.TryUnbanIP(LocalHost);
+            IPBanningModule.TryUnbanIP(Localhost);
 
             _ = await Client.SendAsync(GetNotFoundRequest());
             _ = await Client.SendAsync(GetUnauthorizedRequest());
@@ -51,12 +51,12 @@ namespace EmbedIO.Tests
         [Test]
         public async Task BanIpMinutes_ReturnsForbidden()
         {
-            IPBanningModule.TryUnbanIP(LocalHost);
+            IPBanningModule.TryUnbanIP(Localhost);
 
             var response = await Client.SendAsync(GetNotFoundRequest());
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Status Code NotFound");
 
-            IPBanningModule.TryBanIP(LocalHost, 10);
+            IPBanningModule.TryBanIP(Localhost, 10);
 
             response = await Client.SendAsync(GetNotFoundRequest());
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode, "Status Code Forbidden");
@@ -65,12 +65,12 @@ namespace EmbedIO.Tests
         [Test]
         public async Task BanIpTimeSpan_ReturnsForbidden()
         {
-            IPBanningModule.TryUnbanIP(LocalHost);
+            IPBanningModule.TryUnbanIP(Localhost);
 
             var response = await Client.SendAsync(GetNotFoundRequest());
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Status Code NotFound");
 
-            IPBanningModule.TryBanIP(LocalHost, TimeSpan.FromMinutes(10));
+            IPBanningModule.TryBanIP(Localhost, TimeSpan.FromMinutes(10));
 
             response = await Client.SendAsync(GetNotFoundRequest());
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode, "Status Code Forbidden");
@@ -79,12 +79,12 @@ namespace EmbedIO.Tests
         [Test]
         public async Task BanIpDateTime_ReturnsForbidden()
         {
-            IPBanningModule.TryUnbanIP(LocalHost);
+            IPBanningModule.TryUnbanIP(Localhost);
 
             var response = await Client.SendAsync(GetNotFoundRequest());
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Status Code NotFound");
 
-            IPBanningModule.TryBanIP(LocalHost, DateTime.Now.AddMinutes(10));
+            IPBanningModule.TryBanIP(Localhost, DateTime.Now.AddMinutes(10));
 
             response = await Client.SendAsync(GetNotFoundRequest());
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode, "Status Code Forbidden");
@@ -93,7 +93,7 @@ namespace EmbedIO.Tests
         [Test]
         public async Task RequestFailRegex_UnbanIp_ReturnsNotFound()
         {
-            IPBanningModule.TryUnbanIP(LocalHost);
+            IPBanningModule.TryUnbanIP(Localhost);
 
             _ = await Client.SendAsync(GetNotFoundRequest());
             _ = await Client.SendAsync(GetNotFoundRequest());
@@ -117,7 +117,7 @@ namespace EmbedIO.Tests
         [Test]
         public async Task MaxRps_ReturnsForbidden()
         {
-            IPBanningModule.TryUnbanIP(LocalHost);
+            IPBanningModule.TryUnbanIP(Localhost);
 
             foreach (var _ in Enumerable.Range(0, 100))
             {
