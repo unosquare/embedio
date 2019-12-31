@@ -1859,13 +1859,13 @@ to form the name of a manifest resource in <code data-dev-comment-type="paramref
   
   
   <a id="EmbedIO_WebModuleContainerExtensions_WithIPBanning_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_IEnumerable_System_String__System_Int32_System_Int32_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,IEnumerable{System.String},System.Int32,System.Int32)">WithIPBanning&lt;TContainer&gt;(TContainer, IEnumerable&lt;String&gt;, Int32, Int32)</h4>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_System_Nullable_Action_IPBanningModule___System_Nullable_IEnumerable_System_String___System_Int32_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{Action{IPBanningModule}},System.Nullable{IEnumerable{System.String}},System.Int32)">WithIPBanning&lt;TContainer&gt;(TContainer, Nullable&lt;Action&lt;IPBanningModule&gt;&gt;, Nullable&lt;IEnumerable&lt;String&gt;&gt;, Int32)</h4>
   <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:IPBanningModule"></see> and adds it to a module container.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithIPBanning&lt;TContainer&gt;(this TContainer this, IEnumerable&lt;string&gt; failRegex, int banTime = default(int), int maxRetry = default(int))
+    <pre><code class="lang-csharp hljs">public static TContainer WithIPBanning&lt;TContainer&gt;(this TContainer this, Action&lt;IPBanningModule&gt;? configure, IEnumerable&lt;string&gt;? whiteList = default(IEnumerable&lt;string&gt;? ), int banMinutes = default(int))
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1885,21 +1885,21 @@ to form the name of a manifest resource in <code data-dev-comment-type="paramref
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">failRegex</span></td>
-        <td><p>A collection of regex to match the log messages against.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">IPBanningModule</span>&gt;&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td><p>The configure.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td><span class="parametername">whiteList</span></td>
+        <td><p>A collection of valid IPs that never will be banned.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">banTime</span></td>
-        <td><p>The time that an IP will remain ban, in minutes.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxRetry</span></td>
-        <td><p>The maximum number of failed attempts before banning an IP.</p>
+        <td><span class="parametername">banMinutes</span></td>
+        <td><p>Minutes that an IP will remain banned.</p>
 </td>
       </tr>
     </tbody>
@@ -1939,93 +1939,13 @@ to form the name of a manifest resource in <code data-dev-comment-type="paramref
   
   
   <a id="EmbedIO_WebModuleContainerExtensions_WithIPBanning_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_System_Nullable_Action_IPBanningModule___System_Int32_System_Int32_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{Action{IPBanningModule}},System.Int32,System.Int32)">WithIPBanning&lt;TContainer&gt;(TContainer, Nullable&lt;Action&lt;IPBanningModule&gt;&gt;, Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>Withes the ip banning.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithIPBanning&lt;TContainer&gt;(this TContainer this, Action&lt;IPBanningModule&gt;? configure = default(Action&lt;IPBanningModule&gt;? ), int banTime = default(int), int maxRetry = default(int))
-    where TContainer : class, IWebModuleContainer</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TContainer</code> on which this method is called.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Action</span>&lt;<span class="xref">IPBanningModule</span>&gt;&gt;</td>
-        <td><span class="parametername">configure</span></td>
-        <td><p>A callback used to configure the module.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">banTime</span></td>
-        <td><p>The time that an IP will remain ban, in minutes.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxRetry</span></td>
-        <td><p>The maximum number of failed attempts before banning an IP.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TContainer</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a <see cref="!:IPBanningModule"></see> added.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TContainer</span></td>
-        <td><p>The type of the container.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="EmbedIO_WebModuleContainerExtensions_WithIPBanning_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_System_Nullable_IEnumerable_System_String___System_Nullable_IEnumerable_System_String___System_Int32_System_Int32_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{IEnumerable{System.String}},System.Nullable{IEnumerable{System.String}},System.Int32,System.Int32)">WithIPBanning&lt;TContainer&gt;(TContainer, Nullable&lt;IEnumerable&lt;String&gt;&gt;, Nullable&lt;IEnumerable&lt;String&gt;&gt;, Int32, Int32)</h4>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithIPBanning__1___0_System_Nullable_IEnumerable_System_String___System_Int32_" data-uid="EmbedIO.WebModuleContainerExtensions.WithIPBanning``1(``0,System.Nullable{IEnumerable{System.String}},System.Int32)">WithIPBanning&lt;TContainer&gt;(TContainer, Nullable&lt;IEnumerable&lt;String&gt;&gt;, Int32)</h4>
   <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:IPBanningModule"></see> and adds it to a module container.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithIPBanning&lt;TContainer&gt;(this TContainer this, IEnumerable&lt;string&gt;? failRegex, IEnumerable&lt;string&gt;? whitelist = default(IEnumerable&lt;string&gt;? ), int banTime = default(int), int maxRetry = default(int))
+    <pre><code class="lang-csharp hljs">public static TContainer WithIPBanning&lt;TContainer&gt;(this TContainer this, IEnumerable&lt;string&gt;? whiteList = default(IEnumerable&lt;string&gt;? ), int banMinutes = default(int))
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -2046,26 +1966,14 @@ to form the name of a manifest resource in <code data-dev-comment-type="paramref
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
-        <td><span class="parametername">failRegex</span></td>
-        <td><p>A collection of regex to match the log messages against.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
-        <td><span class="parametername">whitelist</span></td>
+        <td><span class="parametername">whiteList</span></td>
         <td><p>A collection of valid IPs that never will be banned.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">banTime</span></td>
-        <td><p>The time that an IP will remain ban, in minutes.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxRetry</span></td>
-        <td><p>The maximum number of failed attempts before banning an IP.</p>
+        <td><span class="parametername">banMinutes</span></td>
+        <td><p>Minutes that an IP will remain banned.</p>
 </td>
       </tr>
     </tbody>

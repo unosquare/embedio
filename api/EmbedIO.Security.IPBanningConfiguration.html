@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class BannedInfo
+    <title>Class IPBanningConfiguration
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class BannedInfo
+    <meta name="title" content="Class IPBanningConfiguration
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,60 +76,40 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.Security.BannedInfo">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Security.IPBanningConfiguration">
   
   
-  <h1 id="EmbedIO_Security_BannedInfo" data-uid="EmbedIO.Security.BannedInfo" class="text-break">Class BannedInfo
+  <h1 id="EmbedIO_Security_IPBanningConfiguration" data-uid="EmbedIO.Security.IPBanningConfiguration" class="text-break">Class IPBanningConfiguration
   </h1>
-  <div class="markdown level0 summary"><p>Represents the info af a banned IP address.</p>
+  <div class="markdown level0 summary"><p>Represents a configuration object for <a class="xref" href="EmbedIO.Security.IPBanningModule.html">IPBanningModule</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">BannedInfo</span></div>
+    <div class="level1"><span class="xref">IPBanningConfiguration</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Security.html">EmbedIO.Security</a></h6>
-  <h5 id="EmbedIO_Security_BannedInfo_syntax">Syntax</h5>
+  <h5 id="EmbedIO_Security_IPBanningConfiguration_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BannedInfo</code></pre>
+    <pre><code class="lang-csharp hljs">public class IPBanningConfiguration : ConfiguredObject, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="EmbedIO_Security_BannedInfo_BanUntil_" data-uid="EmbedIO.Security.BannedInfo.BanUntil*"></a>
-  <h4 id="EmbedIO_Security_BannedInfo_BanUntil" data-uid="EmbedIO.Security.BannedInfo.BanUntil">BanUntil</h4>
-  <div class="markdown level1 summary"><p>Gets or sets until when the IP will remain ban.</p>
+  <a id="EmbedIO_Security_IPBanningConfiguration_BlackList_" data-uid="EmbedIO.Security.IPBanningConfiguration.BlackList*"></a>
+  <h4 id="EmbedIO_Security_IPBanningConfiguration_BlackList" data-uid="EmbedIO.Security.IPBanningConfiguration.BlackList">BlackList</h4>
+  <div class="markdown level1 summary"><p>Gets the black list.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public long BanUntil { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;BanInfo&gt; BlackList { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -141,49 +121,139 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
-        <td></td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="EmbedIO.Security.BanInfo.html">BanInfo</a>&gt;</td>
+        <td><p>The black list.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h3 id="methods">Methods
+  </h3>
   
   
-  <a id="EmbedIO_Security_BannedInfo_IPAddress_" data-uid="EmbedIO.Security.BannedInfo.IPAddress*"></a>
-  <h4 id="EmbedIO_Security_BannedInfo_IPAddress" data-uid="EmbedIO.Security.BannedInfo.IPAddress">IPAddress</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the banned IP address.</p>
+  <a id="EmbedIO_Security_IPBanningConfiguration_CheckClient_" data-uid="EmbedIO.Security.IPBanningConfiguration.CheckClient*"></a>
+  <h4 id="EmbedIO_Security_IPBanningConfiguration_CheckClient_IPAddress_" data-uid="EmbedIO.Security.IPBanningConfiguration.CheckClient(IPAddress)">CheckClient(IPAddress)</h4>
+  <div class="markdown level1 summary"><p>Checks the client.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IPAddress IPAddress { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Task CheckClient(IPAddress clientAddress)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><span class="xref">IPAddress</span></td>
-        <td></td>
+        <td><span class="parametername">clientAddress</span></td>
+        <td><p>The client address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the asynchronous operation.</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="EmbedIO_Security_BannedInfo_IsExplicit_" data-uid="EmbedIO.Security.BannedInfo.IsExplicit*"></a>
-  <h4 id="EmbedIO_Security_BannedInfo_IsExplicit" data-uid="EmbedIO.Security.BannedInfo.IsExplicit">IsExplicit</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance was explicitly banned by user.</p>
+  <a id="EmbedIO_Security_IPBanningConfiguration_Dispose_" data-uid="EmbedIO.Security.IPBanningConfiguration.Dispose*"></a>
+  <h4 id="EmbedIO_Security_IPBanningConfiguration_Dispose" data-uid="EmbedIO.Security.IPBanningConfiguration.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_Security_IPBanningConfiguration_Dispose_" data-uid="EmbedIO.Security.IPBanningConfiguration.Dispose*"></a>
+  <h4 id="EmbedIO_Security_IPBanningConfiguration_Dispose_System_Boolean_" data-uid="EmbedIO.Security.IPBanningConfiguration.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsExplicit { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Security_IPBanningConfiguration_Purge_" data-uid="EmbedIO.Security.IPBanningConfiguration.Purge*"></a>
+  <h4 id="EmbedIO_Security_IPBanningConfiguration_Purge" data-uid="EmbedIO.Security.IPBanningConfiguration.Purge">Purge()</h4>
+  <div class="markdown level1 summary"><p>Purges this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Purge()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_Security_IPBanningConfiguration_ShouldContinue_" data-uid="EmbedIO.Security.IPBanningConfiguration.ShouldContinue*"></a>
+  <h4 id="EmbedIO_Security_IPBanningConfiguration_ShouldContinue_IPAddress_" data-uid="EmbedIO.Security.IPBanningConfiguration.ShouldContinue(IPAddress)">ShouldContinue(IPAddress)</h4>
+  <div class="markdown level1 summary"><p>Check if a Criterion should continue testing an IP Address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShouldContinue(IPAddress address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IPAddress</span></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -194,10 +264,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p><code>true</code> if the Criterion should continue, otherwise <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

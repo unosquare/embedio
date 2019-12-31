@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class IPBanningModuleExtensions
+    <title>Class IPBanningRegexCriterion
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class IPBanningModuleExtensions
+    <meta name="title" content="Class IPBanningRegexCriterion
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,18 +76,23 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.Security.IPBanningModuleExtensions">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Security.IPBanningRegexCriterion">
   
   
-  <h1 id="EmbedIO_Security_IPBanningModuleExtensions" data-uid="EmbedIO.Security.IPBanningModuleExtensions" class="text-break">Class IPBanningModuleExtensions
+  <h1 id="EmbedIO_Security_IPBanningRegexCriterion" data-uid="EmbedIO.Security.IPBanningRegexCriterion" class="text-break">Class IPBanningRegexCriterion
   </h1>
-  <div class="markdown level0 summary"><p>Provides extension methods for <a class="xref" href="EmbedIO.Security.IPBanningModule.html">IPBanningModule</a> and derived classes.</p>
+  <div class="markdown level0 summary"><p>Represents a log message regex matching criterion for <a class="xref" href="EmbedIO.Security.IPBanningModule.html">IPBanningModule</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">IPBanningModuleExtensions</span></div>
+    <div class="level1"><span class="xref">IPBanningRegexCriterion</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="EmbedIO.Security.IIPBanningCriterion.html">IIPBanningCriterion</a></div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -114,23 +119,22 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Security.html">EmbedIO.Security</a></h6>
-  <h5 id="EmbedIO_Security_IPBanningModuleExtensions_syntax">Syntax</h5>
+  <h5 id="EmbedIO_Security_IPBanningRegexCriterion_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class IPBanningModuleExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public class IPBanningRegexCriterion : IIPBanningCriterion, IDisposable</code></pre>
   </div>
-  <h3 id="methods">Methods
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="EmbedIO_Security_IPBanningModuleExtensions_WithMaxRequestsPerSecond_" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithMaxRequestsPerSecond*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModuleExtensions_WithMaxRequestsPerSecond__1___0_System_Int32_" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithMaxRequestsPerSecond``1(``0,System.Int32)">WithMaxRequestsPerSecond&lt;TModule&gt;(TModule, Int32)</h4>
-  <div class="markdown level1 summary"><p>Sets a maximum amount of requests per second as a criterion for banning IP addresses.</p>
+  <a id="EmbedIO_Security_IPBanningRegexCriterion__ctor_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.#ctor*"></a>
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion__ctor_EmbedIO_Security_IPBanningModule_IEnumerable_System_String__System_Int32_System_Int32_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.#ctor(EmbedIO.Security.IPBanningModule,IEnumerable{System.String},System.Int32,System.Int32)">IPBanningRegexCriterion(IPBanningModule, IEnumerable&lt;String&gt;, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Security.IPBanningRegexCriterion.html">IPBanningRegexCriterion</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TModule WithMaxRequestsPerSecond&lt;TModule&gt;(this TModule this, int maxRequests = 50)
-    where TModule : IPBanningModule</code></pre>
+    <pre><code class="lang-csharp hljs">public IPBanningRegexCriterion(IPBanningModule parent, IEnumerable&lt;string&gt; rules, int maxMatchCount = 10, int secondsMatchingPeriod = 60)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -143,77 +147,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The module on which this method is called.</p>
+        <td><a class="xref" href="EmbedIO.Security.IPBanningModule.html">IPBanningModule</a></td>
+        <td><span class="parametername">parent</span></td>
+        <td><p>The parent.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxRequests</span></td>
-        <td><p>The maximum requests per second.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a maximum requests per second configured.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TModule</span></td>
-        <td><p>The type of the module.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="EmbedIO_Security_IPBanningModuleExtensions_WithRegexRules_" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithRegexRules*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModuleExtensions_WithRegexRules__1___0_System_Int32_System_Int32_System_String___" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithRegexRules``1(``0,System.Int32,System.Int32,System.String[])">WithRegexRules&lt;TModule&gt;(TModule, Int32, Int32, String[])</h4>
-  <div class="markdown level1 summary"><p>Add a collection of Regex to match the log messages against as a criterion for banning IP addresses.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TModule WithRegexRules&lt;TModule&gt;(this TModule this, int maxMatchCount, int secondsMatchingPeriod, params string[] value)
-    where TModule : IPBanningModule</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The module on which this method is called.</p>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">rules</span></td>
+        <td><p>The rules.</p>
 </td>
       </tr>
       <tr>
@@ -228,15 +170,21 @@
         <td><p>The seconds matching period.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">value</span></td>
-        <td><p>A collection of regex to match log messages against.</p>
-</td>
-      </tr>
     </tbody>
   </table>
-  <h5 class="returns">Returns</h5>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion_DefaultMaxMatchCount" data-uid="EmbedIO.Security.IPBanningRegexCriterion.DefaultMaxMatchCount">DefaultMaxMatchCount</h4>
+  <div class="markdown level1 summary"><p>The default maximum match count per period.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int DefaultMaxMatchCount = 10</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -246,39 +194,48 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a fail regex criterion configured.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
+  
+  
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion_DefaultSecondsMatchingPeriod" data-uid="EmbedIO.Security.IPBanningRegexCriterion.DefaultSecondsMatchingPeriod">DefaultSecondsMatchingPeriod</h4>
+  <div class="markdown level1 summary"><p>The default matching period.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int DefaultSecondsMatchingPeriod = 60</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
-        <th>Name</th>
+        <th>Type</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TModule</span></td>
-        <td><p>The type of the module.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h3 id="methods">Methods
+  </h3>
   
   
-  <a id="EmbedIO_Security_IPBanningModuleExtensions_WithRegexRules_" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithRegexRules*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModuleExtensions_WithRegexRules__1___0_System_String___" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithRegexRules``1(``0,System.String[])">WithRegexRules&lt;TModule&gt;(TModule, String[])</h4>
-  <div class="markdown level1 summary"><p>Add a collection of Regex to match the log messages against as a criterion for banning IP addresses.</p>
+  <a id="EmbedIO_Security_IPBanningRegexCriterion_ClearIPAddress_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.ClearIPAddress*"></a>
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion_ClearIPAddress_IPAddress_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.ClearIPAddress(IPAddress)">ClearIPAddress(IPAddress)</h4>
+  <div class="markdown level1 summary"><p>Clears the data generated by an IP address.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TModule WithRegexRules&lt;TModule&gt;(this TModule this, params string[] value)
-    where TModule : IPBanningModule</code></pre>
+    <pre><code class="lang-csharp hljs">public void ClearIPAddress(IPAddress address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -291,62 +248,32 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The module on which this method is called.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">value</span></td>
-        <td><p>A collection of regex to match log messages against.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with a fail regex criterion configured.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TModule</span></td>
-        <td><p>The type of the module.</p>
+        <td><span class="xref">IPAddress</span></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The address.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="EmbedIO_Security_IPBanningModuleExtensions_WithWhitelist_" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModuleExtensions_WithWhitelist__1___0_System_String___" data-uid="EmbedIO.Security.IPBanningModuleExtensions.WithWhitelist``1(``0,System.String[])">WithWhitelist&lt;TModule&gt;(TModule, String[])</h4>
-  <div class="markdown level1 summary"><p>Adds a collection of valid IPs that never will be banned.</p>
-</div>
+  <a id="EmbedIO_Security_IPBanningRegexCriterion_Dispose_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.Dispose*"></a>
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion_Dispose" data-uid="EmbedIO.Security.IPBanningRegexCriterion.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TModule WithWhitelist&lt;TModule&gt;(this TModule this, params string[] value)
-    where TModule : IPBanningModule</code></pre>
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_Security_IPBanningRegexCriterion_Dispose_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.Dispose*"></a>
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion_Dispose_System_Boolean_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -359,15 +286,48 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><span class="parametername">this</span></td>
-        <td><p>The module on which this method is called.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td></td>
       </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Security_IPBanningRegexCriterion_PurgeData_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.PurgeData*"></a>
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion_PurgeData" data-uid="EmbedIO.Security.IPBanningRegexCriterion.PurgeData">PurgeData()</h4>
+  <div class="markdown level1 summary"><p>Purges the data of the Criterion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PurgeData()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_Security_IPBanningRegexCriterion_ValidateIPAddress_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.ValidateIPAddress*"></a>
+  <h4 id="EmbedIO_Security_IPBanningRegexCriterion_ValidateIPAddress_IPAddress_" data-uid="EmbedIO.Security.IPBanningRegexCriterion.ValidateIPAddress(IPAddress)">ValidateIPAddress(IPAddress)</h4>
+  <div class="markdown level1 summary"><p>Validates the IP address should be banned or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; ValidateIPAddress(IPAddress address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">value</span></td>
-        <td><p>A collection of valid IPs that never will be banned.</p>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IPAddress</span></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The address.</p>
 </td>
       </tr>
     </tbody>
@@ -382,28 +342,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TModule</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with its whitelist configured.</p>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p><code>true</code> if the IP Address should be banned, otherwise <code>false</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TModule</span></td>
-        <td><p>The type of the module.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="EmbedIO.Security.IIPBanningCriterion.html">IIPBanningCriterion</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Security.IIPBanningCriterion.html">IIPBanningCriterion</a></div>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

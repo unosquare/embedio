@@ -81,7 +81,7 @@
   
   <h1 id="EmbedIO_Security_IPBanningModule" data-uid="EmbedIO.Security.IPBanningModule" class="text-break">Class IPBanningModule
   </h1>
-  <div class="markdown level0 summary"><p>A module for ban IPs that show the malicious signs, based on scanning log messages.</p>
+  <div class="markdown level0 summary"><p>A module to ban clients by IP address, based on TCP requests-per-second or RegEx matches on log messages.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -93,7 +93,7 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a></div>
-    <div><span class="xref">ILogger</span></div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -118,27 +118,24 @@
     <div>
       <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_HandleRequestAsync_EmbedIO_IHttpContext_">WebModuleBase.HandleRequestAsync(IHttpContext)</a>
     </div>
-    <div>
-      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnStart_CancellationToken_">WebModuleBase.OnStart(CancellationToken)</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Security.html">EmbedIO.Security</a></h6>
   <h5 id="EmbedIO_Security_IPBanningModule_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class IPBanningModule : WebModuleBase, IWebModule, ILogger</code></pre>
+    <pre><code class="lang-csharp hljs">public class IPBanningModule : WebModuleBase, IWebModule, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
   <a id="EmbedIO_Security_IPBanningModule__ctor_" data-uid="EmbedIO.Security.IPBanningModule.#ctor*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule__ctor_System_String_IEnumerable_System_String__System_Int32_System_Int32_" data-uid="EmbedIO.Security.IPBanningModule.#ctor(System.String,IEnumerable{System.String},System.Int32,System.Int32)">IPBanningModule(String, IEnumerable&lt;String&gt;, Int32, Int32)</h4>
+  <h4 id="EmbedIO_Security_IPBanningModule__ctor_System_String_System_Nullable_IEnumerable_System_String___System_Int32_" data-uid="EmbedIO.Security.IPBanningModule.#ctor(System.String,System.Nullable{IEnumerable{System.String}},System.Int32)">IPBanningModule(String, Nullable&lt;IEnumerable&lt;String&gt;&gt;, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Security.IPBanningModule.html">IPBanningModule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IPBanningModule(string baseRoute, IEnumerable&lt;string&gt; failRegex, int banTime = 30, int maxRetry = 10)</code></pre>
+    <pre><code class="lang-csharp hljs">public IPBanningModule(string baseRoute = &quot;/&quot;, IEnumerable&lt;string&gt;? whitelist = default(IEnumerable&lt;string&gt;? ), int banMinutes = 30)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,59 +151,6 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">baseRoute</span></td>
         <td><p>The base route.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">failRegex</span></td>
-        <td><p>A collection of regex to match the log messages against.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">banTime</span></td>
-        <td><p>The time that an IP will remain ban, in minutes.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxRetry</span></td>
-        <td><p>The maximum number of failed attempts before banning an IP.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="EmbedIO_Security_IPBanningModule__ctor_" data-uid="EmbedIO.Security.IPBanningModule.#ctor*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule__ctor_System_String_System_Nullable_IEnumerable_System_String___System_Nullable_IEnumerable_System_String___System_Int32_System_Int32_" data-uid="EmbedIO.Security.IPBanningModule.#ctor(System.String,System.Nullable{IEnumerable{System.String}},System.Nullable{IEnumerable{System.String}},System.Int32,System.Int32)">IPBanningModule(String, Nullable&lt;IEnumerable&lt;String&gt;&gt;, Nullable&lt;IEnumerable&lt;String&gt;&gt;, Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Security.IPBanningModule.html">IPBanningModule</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IPBanningModule(string baseRoute, IEnumerable&lt;string&gt;? failRegex = default(IEnumerable&lt;string&gt;? ), IEnumerable&lt;string&gt;? whitelist = default(IEnumerable&lt;string&gt;? ), int banTime = 30, int maxRetry = 10)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseRoute</span></td>
-        <td><p>The base route.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
-        <td><span class="parametername">failRegex</span></td>
-        <td><p>A collection of regex to match the log messages against.</p>
 </td>
       </tr>
       <tr>
@@ -217,14 +161,8 @@
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">banTime</span></td>
-        <td><p>The time that an IP will remain ban, in minutes.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">maxRetry</span></td>
-        <td><p>The maximum number of failed attempts before banning an IP.</p>
+        <td><span class="parametername">banMinutes</span></td>
+        <td><p>Minutes that an IP will remain banned.</p>
 </td>
       </tr>
     </tbody>
@@ -233,38 +171,13 @@
   </h3>
   
   
-  <h4 id="EmbedIO_Security_IPBanningModule_DefaultBanTime" data-uid="EmbedIO.Security.IPBanningModule.DefaultBanTime">DefaultBanTime</h4>
-  <div class="markdown level1 summary"><p>The default ban time, in minutes.</p>
+  <h4 id="EmbedIO_Security_IPBanningModule_DefaultBanMinutes" data-uid="EmbedIO.Security.IPBanningModule.DefaultBanMinutes">DefaultBanMinutes</h4>
+  <div class="markdown level1 summary"><p>The default ban minutes.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultBanTime = 30</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="EmbedIO_Security_IPBanningModule_DefaultMaxRetry" data-uid="EmbedIO.Security.IPBanningModule.DefaultMaxRetry">DefaultMaxRetry</h4>
-  <div class="markdown level1 summary"><p>The default maximum retries per minute.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultMaxRetry = 10</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultBanMinutes = 30</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -283,6 +196,33 @@
   </table>
   <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="EmbedIO_Security_IPBanningModule_ClientAddress_" data-uid="EmbedIO.Security.IPBanningModule.ClientAddress*"></a>
+  <h4 id="EmbedIO_Security_IPBanningModule_ClientAddress" data-uid="EmbedIO.Security.IPBanningModule.ClientAddress">ClientAddress</h4>
+  <div class="markdown level1 summary"><p>Gets the client address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPAddress? ClientAddress { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IPAddress</span>&gt;</td>
+        <td><p>The client address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="EmbedIO_Security_IPBanningModule_IsFinalHandler_" data-uid="EmbedIO.Security.IPBanningModule.IsFinalHandler*"></a>
@@ -324,31 +264,6 @@ the context from being passed further along to other modules.</p>
       <div><a class="xref" href="EmbedIO.IHttpContext.html#EmbedIO_IHttpContext_IsHandled">IsHandled</a></div>
       <div><a class="xref" href="EmbedIO.IHttpContext.html#EmbedIO_IHttpContext_SetHandled">SetHandled</a>()</div>
   </div>
-  
-  
-  <a id="EmbedIO_Security_IPBanningModule_LogLevel_" data-uid="EmbedIO.Security.IPBanningModule.LogLevel*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule_LogLevel" data-uid="EmbedIO.Security.IPBanningModule.LogLevel">LogLevel</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LogLevel LogLevel { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">LogLevel</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -393,39 +308,13 @@ the context from being passed further along to other modules.</p>
   
   
   <a id="EmbedIO_Security_IPBanningModule_GetBannedIPs_" data-uid="EmbedIO.Security.IPBanningModule.GetBannedIPs*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule_GetBannedIPs" data-uid="EmbedIO.Security.IPBanningModule.GetBannedIPs">GetBannedIPs()</h4>
+  <h4 id="EmbedIO_Security_IPBanningModule_GetBannedIPs_System_String_" data-uid="EmbedIO.Security.IPBanningModule.GetBannedIPs(System.String)">GetBannedIPs(String)</h4>
   <div class="markdown level1 summary"><p>Gets the list of current banned IPs.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;BannedInfo&gt; GetBannedIPs()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="EmbedIO.Security.BannedInfo.html">BannedInfo</a>&gt;</td>
-        <td><p>A collection of <a class="xref" href="EmbedIO.Security.BannedInfo.html">BannedInfo</a> in the blacklist.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="EmbedIO_Security_IPBanningModule_Log_" data-uid="EmbedIO.Security.IPBanningModule.Log*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule_Log_LogMessageReceivedEventArgs_" data-uid="EmbedIO.Security.IPBanningModule.Log(LogMessageReceivedEventArgs)">Log(LogMessageReceivedEventArgs)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Log(LogMessageReceivedEventArgs logEvent)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;BanInfo&gt; GetBannedIPs(string baseRoute = &quot;/&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -438,9 +327,26 @@ the context from being passed further along to other modules.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">LogMessageReceivedEventArgs</span></td>
-        <td><span class="parametername">logEvent</span></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="EmbedIO.Security.BanInfo.html">BanInfo</a>&gt;</td>
+        <td><p>A collection of <a class="xref" href="EmbedIO.Security.BanInfo.html">BanInfo</a> in the blacklist.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -493,14 +399,74 @@ the context from being passed further along to other modules.</p>
   <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnRequestAsync_EmbedIO_IHttpContext_">WebModuleBase.OnRequestAsync(IHttpContext)</a></div>
   
   
+  <a id="EmbedIO_Security_IPBanningModule_OnStart_" data-uid="EmbedIO.Security.IPBanningModule.OnStart*"></a>
+  <h4 id="EmbedIO_Security_IPBanningModule_OnStart_CancellationToken_" data-uid="EmbedIO.Security.IPBanningModule.OnStart(CancellationToken)">OnStart(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Called when a module is started, immediately before locking the module&apos;s configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnStart(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A <see cref="!:CancellationToken"></see> used to stop the web server.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnStart_CancellationToken_">WebModuleBase.OnStart(CancellationToken)</a></div>
+  
+  
+  <a id="EmbedIO_Security_IPBanningModule_RegisterCriterion_" data-uid="EmbedIO.Security.IPBanningModule.RegisterCriterion*"></a>
+  <h4 id="EmbedIO_Security_IPBanningModule_RegisterCriterion_EmbedIO_Security_IIPBanningCriterion_" data-uid="EmbedIO.Security.IPBanningModule.RegisterCriterion(EmbedIO.Security.IIPBanningCriterion)">RegisterCriterion(IIPBanningCriterion)</h4>
+  <div class="markdown level1 summary"><p>Registers the criterion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RegisterCriterion(IIPBanningCriterion criterion)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Security.IIPBanningCriterion.html">IIPBanningCriterion</a></td>
+        <td><span class="parametername">criterion</span></td>
+        <td><p>The criterion.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_Security_IPBanningModule_TryBanIP_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_DateTime_System_Boolean_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,DateTime,System.Boolean)">TryBanIP(IPAddress, DateTime, Boolean)</h4>
+  <h4 id="EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_DateTime_System_String_System_Boolean_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,DateTime,System.String,System.Boolean)">TryBanIP(IPAddress, DateTime, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Tries to ban an IP explicitly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryBanIP(IPAddress address, DateTime banUntil, bool isExplicit = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryBanIP(IPAddress address, DateTime banUntil, string baseRoute = &quot;/&quot;, bool isExplicit = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -521,13 +487,19 @@ the context from being passed further along to other modules.</p>
       <tr>
         <td><span class="xref">DateTime</span></td>
         <td><span class="parametername">banUntil</span></td>
-        <td><p>A <see cref="!:DateTime"></see> that sets until when the IP will remain ban.</p>
+        <td><p>A <see cref="!:DateTime"></see> specifying the expiration time of the ban.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">isExplicit</span></td>
-        <td><p>if set to <code>true</code> [is explicit].</p>
+        <td><p><code>true</code> if the IP was explicitly banned.</p>
 </td>
       </tr>
     </tbody>
@@ -551,13 +523,13 @@ the context from being passed further along to other modules.</p>
   
   
   <a id="EmbedIO_Security_IPBanningModule_TryBanIP_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_System_Int32_System_Boolean_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,System.Int32,System.Boolean)">TryBanIP(IPAddress, Int32, Boolean)</h4>
+  <h4 id="EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_System_Int32_System_String_System_Boolean_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,System.Int32,System.String,System.Boolean)">TryBanIP(IPAddress, Int32, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Tries to ban an IP explicitly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryBanIP(IPAddress address, int minutes, bool isExplicit = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryBanIP(IPAddress address, int banMinutes, string baseRoute = &quot;/&quot;, bool isExplicit = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -577,14 +549,20 @@ the context from being passed further along to other modules.</p>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">minutes</span></td>
-        <td><p>The time in minutes that the IP will remain ban.</p>
+        <td><span class="parametername">banMinutes</span></td>
+        <td><p>Minutes that the IP will remain banned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">isExplicit</span></td>
-        <td><p>if set to <code>true</code> [is explicit].</p>
+        <td><p><code>true</code> if the IP was explicitly banned.</p>
 </td>
       </tr>
     </tbody>
@@ -608,13 +586,13 @@ the context from being passed further along to other modules.</p>
   
   
   <a id="EmbedIO_Security_IPBanningModule_TryBanIP_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_TimeSpan_System_Boolean_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,TimeSpan,System.Boolean)">TryBanIP(IPAddress, TimeSpan, Boolean)</h4>
+  <h4 id="EmbedIO_Security_IPBanningModule_TryBanIP_IPAddress_TimeSpan_System_String_System_Boolean_" data-uid="EmbedIO.Security.IPBanningModule.TryBanIP(IPAddress,TimeSpan,System.String,System.Boolean)">TryBanIP(IPAddress, TimeSpan, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Tries to ban an IP explicitly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryBanIP(IPAddress address, TimeSpan banTime, bool isExplicit = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryBanIP(IPAddress address, TimeSpan banDuration, string baseRoute = &quot;/&quot;, bool isExplicit = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -634,14 +612,20 @@ the context from being passed further along to other modules.</p>
       </tr>
       <tr>
         <td><span class="xref">TimeSpan</span></td>
-        <td><span class="parametername">banTime</span></td>
-        <td><p>An <see cref="!:TimeSpan"></see> that sets the time the IP will remain ban.</p>
+        <td><span class="parametername">banDuration</span></td>
+        <td><p>A <see cref="!:TimeSpan"></see> specifying the duration that the IP will remain banned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">isExplicit</span></td>
-        <td><p>if set to <code>true</code> [is explicit].</p>
+        <td><p><code>true</code> if the IP was explicitly banned.</p>
 </td>
       </tr>
     </tbody>
@@ -665,13 +649,13 @@ the context from being passed further along to other modules.</p>
   
   
   <a id="EmbedIO_Security_IPBanningModule_TryUnbanIP_" data-uid="EmbedIO.Security.IPBanningModule.TryUnbanIP*"></a>
-  <h4 id="EmbedIO_Security_IPBanningModule_TryUnbanIP_IPAddress_" data-uid="EmbedIO.Security.IPBanningModule.TryUnbanIP(IPAddress)">TryUnbanIP(IPAddress)</h4>
+  <h4 id="EmbedIO_Security_IPBanningModule_TryUnbanIP_IPAddress_System_String_" data-uid="EmbedIO.Security.IPBanningModule.TryUnbanIP(IPAddress,System.String)">TryUnbanIP(IPAddress, String)</h4>
   <div class="markdown level1 summary"><p>Tries to unban an IP explicitly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryUnbanIP(IPAddress address)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryUnbanIP(IPAddress address, string baseRoute = &quot;/&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -687,6 +671,12 @@ the context from being passed further along to other modules.</p>
         <td><span class="xref">IPAddress</span></td>
         <td><span class="parametername">address</span></td>
         <td><p>The IP address.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">baseRoute</span></td>
+        <td><p>The base route.</p>
 </td>
       </tr>
     </tbody>
@@ -712,7 +702,7 @@ the context from being passed further along to other modules.</p>
       <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>
   </div>
   <div>
-      <span class="xref">ILogger</span>
+      <span class="xref">IDisposable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
