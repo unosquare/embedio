@@ -95,7 +95,18 @@ namespace EmbedIO.Security
             {
                 _failRegexMatches.Clear();
                 _failRegex.Clear();
-                _innerLogger?.Dispose();
+                if (_innerLogger != null)
+                {
+                    try
+                    {
+                        Logger.UnregisterLogger(_innerLogger);
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
+                    _innerLogger.Dispose();
+                }
             }
 
             _disposed = true;
@@ -171,7 +182,9 @@ namespace EmbedIO.Security
             private void Dispose(bool disposing)
             {
                 if (_disposed) return;
-                if (disposing) Logger.UnregisterLogger(this);
+                if (disposing)
+                {
+                }
 
                 _disposed = true;
             }

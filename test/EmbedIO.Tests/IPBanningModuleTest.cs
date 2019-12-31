@@ -39,6 +39,10 @@ namespace EmbedIO.Tests
 
             _ = await Client.SendAsync(GetNotFoundRequest());
             _ = await Client.SendAsync(GetUnauthorizedRequest());
+            _ = await Client.SendAsync(GetNotFoundRequest());
+
+            // Giving some time for logging
+            await Task.Delay(200);
             var response = await Client.SendAsync(GetNotFoundRequest());
 
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode, "Status Code Forbidden");
@@ -93,6 +97,10 @@ namespace EmbedIO.Tests
 
             _ = await Client.SendAsync(GetNotFoundRequest());
             _ = await Client.SendAsync(GetNotFoundRequest());
+            _ = await Client.SendAsync(GetNotFoundRequest());
+            
+            // Giving some time for logging
+            await Task.Delay(200);
             var response = await Client.SendAsync(GetNotFoundRequest());
 
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode, "Status Code Forbidden");
