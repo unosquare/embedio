@@ -7,6 +7,7 @@ namespace EmbedIO.Forms.Sample
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = new ViewModel();
         }
     }
 }
