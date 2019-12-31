@@ -105,6 +105,7 @@ namespace EmbedIO.Security
                     {
                         // ignore
                     }
+
                     _innerLogger.Dispose();
                 }
             }
@@ -154,7 +155,6 @@ namespace EmbedIO.Security
         private sealed class InnerRegexCriterionLogger : ILogger
         {
             private readonly IPBanningRegexCriterion _parent;
-            private bool _disposed;
 
             public InnerRegexCriterionLogger(IPBanningRegexCriterion parent)
             {
@@ -165,8 +165,10 @@ namespace EmbedIO.Security
             /// <inheritdoc />
             public LogLevel LogLevel => LogLevel.Trace;
 
-            public void Dispose() =>
-                Dispose(true);
+            public void Dispose() 
+            { 
+                // DO nothing
+            }
 
             /// <inheritdoc />
             public void Log(LogMessageReceivedEventArgs logEvent)
@@ -177,16 +179,6 @@ namespace EmbedIO.Security
                     return;
 
                 _parent.MatchIP(clientAddress, logEvent.Message);
-            }
-
-            private void Dispose(bool disposing)
-            {
-                if (_disposed) return;
-                if (disposing)
-                {
-                }
-
-                _disposed = true;
             }
         }
     }
