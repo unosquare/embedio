@@ -137,6 +137,10 @@ namespace EmbedIO
                 await handler(context, exception)
                     .ConfigureAwait(false);
             }
+            catch (HttpException)
+            {
+                throw;
+            }
             catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
             {
                 throw;
