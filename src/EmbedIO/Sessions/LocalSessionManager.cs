@@ -20,9 +20,9 @@ namespace EmbedIO.Sessions
         public const string DefaultCookieName = "__session";
 
         /// <summary>
-        /// The default path for session cookies, i.e. the empty string.
+        /// The default path for session cookies, i.e. <c>"/"</c>.
         /// </summary>
-        public const string DefaultCookiePath = "";
+        public const string DefaultCookiePath = "/";
 
         /// <summary>
         /// The default HTTP-only flag for session cookies, i.e. <see langword="true"/>.
