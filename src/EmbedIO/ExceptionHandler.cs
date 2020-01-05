@@ -145,7 +145,7 @@ namespace EmbedIO
             {
                 throw;
             }
-            catch (Exception exception) when (exception is IHttpException)
+            catch (Exception httpException) when (httpException is IHttpException)
             {
                 throw;
             }
