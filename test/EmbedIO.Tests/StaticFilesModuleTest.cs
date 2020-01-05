@@ -17,12 +17,7 @@ namespace EmbedIO.Tests
     [TestFixture]
     public class StaticFilesModuleTest : EndToEndFixtureBase
     {
-        protected StaticFilesModuleTest()
-        {
-            ServedFolder = new StaticFolder.WithDataFiles(nameof(StaticFilesModuleTest));
-        }
-
-        protected StaticFolder.WithDataFiles ServedFolder { get; }
+        protected StaticFolder.WithDataFiles ServedFolder { get; } = new StaticFolder.WithDataFiles(nameof(StaticFilesModuleTest));
 
         protected override void Dispose(bool disposing)
         {
