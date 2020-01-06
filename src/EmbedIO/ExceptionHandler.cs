@@ -51,7 +51,7 @@ namespace EmbedIO
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task EmptyResponse(IHttpContext context, Exception exception)
         {
-            context.Response.SetEmptyResponse((int) HttpStatusCode.InternalServerError);
+            context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
             return Task.CompletedTask;
         }
 
@@ -98,7 +98,8 @@ namespace EmbedIO
         public static Task HtmlResponse(IHttpContext context, Exception exception)
             => context.SendStandardHtmlAsync(
                 (int)HttpStatusCode.InternalServerError,
-                text => {
+                text =>
+                {
                     text.Write("<p>The server has encountered an error and was not able to process your request.</p>");
                     text.Write("<p>Please contact the server administrator");
 
@@ -120,7 +121,7 @@ namespace EmbedIO
                     }
                 });
 
-        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, ExceptionHandlerCallback? handler)
+        internal static async Task Handle(string logSource, IHttpContext context, Exception exception, ExceptionHandlerCallback? handler, HttpExceptionHandlerCallback? httpHandler)
         {
             if (handler == null)
             {
@@ -144,6 +145,13 @@ namespace EmbedIO
             catch (HttpListenerException)
             {
                 throw;
+            }
+            catch (Exception httpException) when (httpException is IHttpException httpException1)
+            {
+                if (httpHandler == null)
+                    throw;
+
+                await httpHandler(context, httpException1).ConfigureAwait(false);
             }
             catch (Exception exception2)
             {
