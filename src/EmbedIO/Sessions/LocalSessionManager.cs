@@ -202,7 +202,7 @@ namespace EmbedIO.Sessions
         /// <inheritdoc />
         public ISession Create(IHttpContext context)
         {
-            var id = context.Request.Cookies.FirstOrDefault(IsSessionCookie)?.Value.Trim();
+            var id = GetSessionId(context);
 
             SessionImpl session;
             lock (_sessions)
@@ -237,6 +237,18 @@ namespace EmbedIO.Sessions
 
             context.Request.Cookies.Add(BuildSessionCookie(string.Empty));
             context.Response.Cookies.Add(BuildSessionCookie(string.Empty));
+        }
+
+        /// <inheritdoc />
+        public void Delete(IHttpContext context)
+        {
+            var id = GetSessionId(context);
+
+            lock (_sessions)
+            {
+                if (!string.IsNullOrEmpty(id) && _sessions.TryGetValue(id!, out _))
+                    Delete(context, id);
+            }
         }
 
         /// <inheritdoc />
@@ -299,5 +311,7 @@ namespace EmbedIO.Sessions
                 }
             }
         }
+
+        private string GetSessionId(IHttpContext context) => context.Request.Cookies.FirstOrDefault(IsSessionCookie)?.Value.Trim();
     }
 }

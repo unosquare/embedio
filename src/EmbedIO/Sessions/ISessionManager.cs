@@ -33,6 +33,13 @@ namespace EmbedIO.Sessions
         /// <param name="id">The unique ID of the session.</param>
         /// <seealso cref="ISession.Id"/>
         void Delete(IHttpContext context, string id);
+        
+        /// <summary>
+        /// Deletes the session (if any) associated with the specified context.
+        /// </summary>
+        /// <param name="context">The HTTP context.</param>
+        /// <seealso cref="ISession.Id"/>
+        void Delete(IHttpContext context);
 
         /// <summary>
         /// <para>Called by a session proxy when a session has been obtained
