@@ -90,8 +90,7 @@ namespace EmbedIO.Sessions
         /// <inheritdoc/>
         public void Regenerate()
         {
-            if (_session != null)
-                _sessionManager!.Delete(_context, _session.Id);
+            _sessionManager!.Delete(_context);
 
             EnsureSessionManagerExists();
             _session = _sessionManager!.Create(_context);
