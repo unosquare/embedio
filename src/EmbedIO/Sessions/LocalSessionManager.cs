@@ -225,30 +225,21 @@ namespace EmbedIO.Sessions
         }
 
         /// <inheritdoc />
-        public void Delete(IHttpContext context, string id)
-        {
-            lock (_sessions)
-            {
-                if (_sessions.TryGetValue(id, out var session))
-                {
-                    session.EndUse(() => _sessions.TryRemove(id, out _));
-                }
-            }
-
-            context.Request.Cookies.Add(BuildSessionCookie(string.Empty));
-            context.Response.Cookies.Add(BuildSessionCookie(string.Empty));
-        }
-
-        /// <inheritdoc />
         public void Delete(IHttpContext context)
         {
             var id = GetSessionId(context);
 
+            if (string.IsNullOrEmpty(id))
+                return;
+
             lock (_sessions)
             {
-                if (!string.IsNullOrEmpty(id) && _sessions.TryGetValue(id!, out _))
-                    Delete(context, id);
+                if (_sessions.TryGetValue(id!, out var session))
+                    session.EndUse(() => _sessions.TryRemove(id, out _));
             }
+            
+            context.Request.Cookies.Add(BuildSessionCookie(string.Empty));
+            context.Response.Cookies.Add(BuildSessionCookie(string.Empty));
         }
 
         /// <inheritdoc />
