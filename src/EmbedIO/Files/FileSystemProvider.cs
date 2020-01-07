@@ -20,7 +20,7 @@ namespace EmbedIO.Files
         /// Initializes a new instance of the <see cref="FileSystemProvider"/> class.
         /// </summary>
         /// <remarks>
-        /// OSX and Linux don't support <see cref="FileSystemWatcher" />, the parameter <paramref name="isImmutable" /> will be always <see langword="true"/>.
+        /// OSX doesn't support <see cref="FileSystemWatcher" />, the parameter <paramref name="isImmutable" /> will be always <see langword="true"/>.
         /// </remarks>
         /// <param name="fileSystemPath">The file system path.</param>
         /// <param name="isImmutable"><see langword="true"/> if files and directories in
@@ -32,7 +32,7 @@ namespace EmbedIO.Files
         public FileSystemProvider(string fileSystemPath, bool isImmutable)
         {
             FileSystemPath = Validate.LocalPath(nameof(fileSystemPath), fileSystemPath, true);
-            IsImmutable = isImmutable || !RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            IsImmutable = isImmutable || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
             if (!IsImmutable)
                 _watcher = new FileSystemWatcher(FileSystemPath);
