@@ -267,7 +267,7 @@ namespace EmbedIO
                     }
                     catch (Exception exception)
                     {
-                        await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException)
+                        await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, _onHttpException)
                             .ConfigureAwait(false);
                     }
                 }

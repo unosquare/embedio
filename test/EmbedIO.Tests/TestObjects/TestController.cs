@@ -70,9 +70,12 @@ namespace EmbedIO.Tests.TestObjects
         [Route(HttpVerbs.Get, "/unauthorized")]
         public void GetUnauthorized() =>
             throw HttpException.Unauthorized();
+        
+        [Route(HttpVerbs.Get, "/exception")]
+        public void GetException() => throw new Exception("This is an exception");
 
         private static Person CheckPerson(int id)
-            =>PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
+            => PeopleRepository.Database.FirstOrDefault(p => p.Key == id)
             ?? throw HttpException.NotFound();
     }
 }

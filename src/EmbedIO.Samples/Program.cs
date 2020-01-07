@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -63,12 +62,8 @@ namespace EmbedIO.Samples
                     .WithUrlPrefix(url)
                     .WithMode(HttpListenerMode.EmbedIO))
                 .WithIPBanning(o => o
-                    .WithWhitelist(
-                        "",
-                        "172.16.16.124",
-                        "172.16.17.1/24",
-                        "192.168.1-2.2-5")
-                    .WithRules("(404 Not Found)+"), 5,5)
+                    .WithMaxRequestsPerSecond()
+                    .WithRegexRules("HTTP exception 404"))
                 .WithLocalSessionManager()
                 .WithCors(
                     // Origins, separated by comma without last slash
@@ -95,10 +90,8 @@ namespace EmbedIO.Samples
         // Create and run a web server.
         private static async Task RunWebServerAsync(string url, CancellationToken cancellationToken)
         {
-            using (var server = CreateWebServer(url))
-            {
-                await server.RunAsync(cancellationToken).ConfigureAwait(false);
-            }
+            using var server = CreateWebServer(url);
+            await server.RunAsync(cancellationToken).ConfigureAwait(false);
         }
 
         // Open the default browser on the web server's home page.
@@ -108,13 +101,11 @@ namespace EmbedIO.Samples
             await Task.Yield();
 
             // Fire up the browser to show the content!
-            using (var browser = new Process())
-            {
-                browser.StartInfo = new ProcessStartInfo(url) {
-                    UseShellExecute = true
-                };
-                browser.Start();
-            }
+            using var browser = new Process();
+            browser.StartInfo = new ProcessStartInfo(url) {
+                UseShellExecute = true
+            };
+            browser.Start();
         }
 
         // Prompt the user to press any key; when a key is next pressed,

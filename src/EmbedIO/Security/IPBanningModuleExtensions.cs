@@ -22,18 +22,52 @@
         }
 
         /// <summary>
-        /// Add a collection of regex to match the log messages against.
+        /// Add a collection of Regex to match the log messages against as a criterion for banning IP addresses.
         /// </summary>
         /// <typeparam name="TModule">The type of the module.</typeparam>
         /// <param name="this">The module on which this method is called.</param>
-        /// <param name="value">A collection of regex to match the log messages against.</param>
+        /// <param name="value">A collection of regex to match log messages against.</param>
         /// <returns>
-        ///     <paramref name="this"/> with its fail regex configured.
+        ///     <paramref name="this"/> with a fail regex criterion configured.
         /// </returns>
-        public static TModule WithRules<TModule>(this TModule @this, params string[] value)
+        public static TModule WithRegexRules<TModule>(this TModule @this, params string[] value)
+            where TModule : IPBanningModule =>
+        WithRegexRules(@this, IPBanningRegexCriterion.DefaultMaxMatchCount, IPBanningRegexCriterion.DefaultSecondsMatchingPeriod, value);
+
+        /// <summary>
+        /// Add a collection of Regex to match the log messages against as a criterion for banning IP addresses.
+        /// </summary>
+        /// <typeparam name="TModule">The type of the module.</typeparam>
+        /// <param name="this">The module on which this method is called.</param>
+        /// <param name="maxMatchCount">The maximum match count.</param>
+        /// <param name="secondsMatchingPeriod">The seconds matching period.</param>
+        /// <param name="value">A collection of regex to match log messages against.</param>
+        /// <returns>
+        ///   <paramref name="this" /> with a fail regex criterion configured.
+        /// </returns>
+        public static TModule WithRegexRules<TModule>(this TModule @this,
+            int maxMatchCount, 
+            int secondsMatchingPeriod,
+            params string[] value)
             where TModule : IPBanningModule
         {
-            @this.AddRules(value);
+            @this.RegisterCriterion(new IPBanningRegexCriterion(@this, value, maxMatchCount, secondsMatchingPeriod));
+            return @this;
+        }
+
+        /// <summary>
+        /// Sets a maximum amount of requests per second as a criterion for banning IP addresses.
+        /// </summary>
+        /// <typeparam name="TModule">The type of the module.</typeparam>
+        /// <param name="this">The module on which this method is called.</param>
+        /// <param name="maxRequests">The maximum requests per second.</param>
+        /// <returns>
+        ///     <paramref name="this"/> with a maximum requests per second configured.
+        /// </returns>
+        public static TModule WithMaxRequestsPerSecond<TModule>(this TModule @this, int maxRequests = IPBanningRequestsCriterion.DefaultMaxRequestsPerSecond)
+            where TModule : IPBanningModule
+        {
+            @this.RegisterCriterion(new IPBanningRequestsCriterion(maxRequests));
             return @this;
         }
     }
