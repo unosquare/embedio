@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using EmbedIO.Utilities;
 
@@ -18,6 +19,9 @@ namespace EmbedIO.Files
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSystemProvider"/> class.
         /// </summary>
+        /// <remarks>
+        /// OSX doesn't support <see cref="FileSystemWatcher" />, the parameter <paramref name="isImmutable" /> will be always <see langword="true"/>.
+        /// </remarks>
         /// <param name="fileSystemPath">The file system path.</param>
         /// <param name="isImmutable"><see langword="true"/> if files and directories in
         /// <paramref name="fileSystemPath"/> are not expected to change during a web server's
@@ -28,10 +32,17 @@ namespace EmbedIO.Files
         public FileSystemProvider(string fileSystemPath, bool isImmutable)
         {
             FileSystemPath = Validate.LocalPath(nameof(fileSystemPath), fileSystemPath, true);
-            IsImmutable = isImmutable;
+            IsImmutable = isImmutable || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
-            if (!IsImmutable)
-                _watcher = new FileSystemWatcher(FileSystemPath);
+            try
+            {
+                if (!IsImmutable)
+                    _watcher = new FileSystemWatcher(FileSystemPath);
+            }
+            catch (PlatformNotSupportedException)
+            {
+                IsImmutable = true;
+            }
         }
 
         /// <summary>
@@ -84,7 +95,7 @@ namespace EmbedIO.Files
             {
                 // Unescape the url before continue
                 urlPath = Uri.UnescapeDataString(urlPath);
-                
+
                 // Bail out early if the path is a rooted path,
                 // as Path.Combine would ignore our base path.
                 // See https://docs.microsoft.com/en-us/dotnet/api/system.io.path.combine
@@ -165,10 +176,10 @@ namespace EmbedIO.Files
 
         private static MappedResourceInfo GetMappedFileInfo(IMimeTypeProvider mimeTypeProvider, FileInfo info)
             => MappedResourceInfo.ForFile(
-                info.FullName, 
-                info.Name, 
-                info.LastWriteTimeUtc, 
-                info.Length, 
+                info.FullName,
+                info.Name,
+                info.LastWriteTimeUtc,
+                info.Length,
                 mimeTypeProvider.GetMimeType(info.Extension));
 
         private static MappedResourceInfo GetMappedDirectoryInfo(string localPath)
@@ -180,7 +191,7 @@ namespace EmbedIO.Files
         private static MappedResourceInfo GetMappedResourceInfo(IMimeTypeProvider mimeTypeProvider, FileSystemInfo info)
             => info is DirectoryInfo directoryInfo
                 ? GetMappedDirectoryInfo(directoryInfo)
-                : GetMappedFileInfo(mimeTypeProvider, (FileInfo)info);
+                : GetMappedFileInfo(mimeTypeProvider, (FileInfo) info);
 
         private void Watcher_ChangedOrDeleted(object sender, FileSystemEventArgs e)
             => ResourceChanged?.Invoke(e.FullPath);
