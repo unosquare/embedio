@@ -3703,6 +3703,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.IHttpContextImpl.SupportCompressedRequests
   nameWithType: IHttpContextImpl.SupportCompressedRequests
+- uid: EmbedIO.IHttpContextImpl.User
+  name: User
+  href: api/EmbedIO.IHttpContextImpl.html#EmbedIO_IHttpContextImpl_User
+  commentId: P:EmbedIO.IHttpContextImpl.User
+  fullName: EmbedIO.IHttpContextImpl.User
+  nameWithType: IHttpContextImpl.User
+- uid: EmbedIO.IHttpContextImpl.User*
+  name: User
+  href: api/EmbedIO.IHttpContextImpl.html#EmbedIO_IHttpContextImpl_User_
+  commentId: Overload:EmbedIO.IHttpContextImpl.User
+  isSpec: "True"
+  fullName: EmbedIO.IHttpContextImpl.User
+  nameWithType: IHttpContextImpl.User
 - uid: EmbedIO.IHttpException
   name: IHttpException
   href: api/EmbedIO.IHttpException.html
