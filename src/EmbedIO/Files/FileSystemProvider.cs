@@ -34,8 +34,15 @@ namespace EmbedIO.Files
             FileSystemPath = Validate.LocalPath(nameof(fileSystemPath), fileSystemPath, true);
             IsImmutable = isImmutable || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
-            if (!IsImmutable)
-                _watcher = new FileSystemWatcher(FileSystemPath);
+            try
+            {
+                if (!IsImmutable)
+                    _watcher = new FileSystemWatcher(FileSystemPath);
+            }
+            catch (PlatformNotSupportedException)
+            {
+                IsImmutable = true;
+            }
         }
 
         /// <summary>

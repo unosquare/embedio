@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using EmbedIO.Testing;
 using EmbedIO.Utilities;
@@ -84,6 +85,9 @@ namespace EmbedIO.Tests
             [Test]
             public async Task FileWritable()
             {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    Assert.Ignore("OSX doesn't support FileSystemWatcher");
+
                 var root = Path.GetTempPath();
                 var file = Path.Combine(root, "index.html");
                 File.WriteAllText(file, Resources.Index);
