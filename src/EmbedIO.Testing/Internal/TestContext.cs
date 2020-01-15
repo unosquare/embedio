@@ -51,7 +51,7 @@ namespace EmbedIO.Testing.Internal
 
         internal TestResponse TestResponse { get; }
 
-        public IPrincipal? User { get; }
+        public IPrincipal? User { get; set; }
 
         public ISessionProxy Session { get; set; }
 
