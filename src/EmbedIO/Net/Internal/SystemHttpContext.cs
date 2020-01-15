@@ -54,7 +54,7 @@ namespace EmbedIO.Net.Internal
 
         public IHttpResponse Response { get; }
 
-        public IPrincipal User { get; }
+        public IPrincipal User { get; set; }
 
         public ISessionProxy? Session { get; set; }
 

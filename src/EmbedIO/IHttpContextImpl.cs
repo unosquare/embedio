@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
@@ -35,6 +36,12 @@ namespace EmbedIO
         /// A <see cref="ISessionProxy"/> interface.
         /// </value>
         new ISessionProxy Session { get; set; }
+
+        /// <summary>
+        /// <para>Gets or sets the user.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
+        /// </summary>
+        new IPrincipal User { get; set; }
 
         /// <summary>
         /// <para>Gets or sets a value indicating whether compressed request bodies are supported.</para>
