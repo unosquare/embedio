@@ -38,7 +38,8 @@ namespace EmbedIO
         new ISessionProxy Session { get; set; }
 
         /// <summary>
-        /// Gets or sets the user.
+        /// <para></para>Gets or sets the user.</para>
+        /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         new IPrincipal User { get; set; }
 
