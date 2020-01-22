@@ -1,4 +1,6 @@
-﻿namespace EmbedIO.Routing
+﻿using System;
+
+namespace EmbedIO.Routing
 {
     /// <summary>
     /// Handles a HTTP request by matching it against a route,
@@ -9,9 +11,12 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteVerbResolver"/> class.
         /// </summary>
-        /// <param name="route">The route to match URL paths against.</param>
-        public RouteVerbResolver(string route)
-            : base(route)
+        /// <param name="matcher">The <see cref="RouteMatcher"/> to match URL paths against.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="matcher"/> is <see langword="null"/>.</para>
+        /// </exception>
+        public RouteVerbResolver(RouteMatcher matcher)
+            : base(matcher)
         {
         }
 

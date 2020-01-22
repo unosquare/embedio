@@ -72,7 +72,7 @@ namespace EmbedIO.Routing
         };
 
         /// <inheritdoc />
-        protected override RouteVerbResolver CreateResolver(string route) => new RouteVerbResolver(route);
+        protected override RouteVerbResolver CreateResolver(RouteMatcher matcher) => new RouteVerbResolver(matcher);
 
         /// <inheritdoc />
         protected override void OnResolverCalled(IHttpContext context, RouteVerbResolver resolver, RouteResolutionResult result)
@@ -112,7 +112,7 @@ namespace EmbedIO.Routing
             if (!IsHandlerCompatibleMethod(method, out var isSynchronous))
                 return 0;
 
-            var attributes = method.GetCustomAttributes(typeof(RouteAttribute), true).OfType<RouteAttribute>().ToArray();
+            var attributes = method.GetCustomAttributes(true).OfType<RouteAttribute>().ToArray();
             if (attributes.Length == 0)
                 return 0;
 
@@ -131,7 +131,7 @@ namespace EmbedIO.Routing
             var handler = Expression.Lambda<RouteHandlerCallback>(body, parameters).Compile();
             foreach (var attribute in attributes)
             {
-                Add(attribute.Verb, attribute.Route, handler);
+                Add(attribute.Verb, attribute.Matcher, handler);
             }
 
             return attributes.Length;

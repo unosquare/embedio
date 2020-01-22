@@ -265,7 +265,7 @@ namespace EmbedIO.WebApi
                 throw new ArgumentException($"Type {controllerType.Name} contains no controller methods.");
         }
 
-        private static int IndexOfRouteParameter(RouteMatcher? matcher, string name)
+        private static int IndexOfRouteParameter(RouteMatcher matcher, string name)
         {
             var names = matcher.ParameterNames;
             for (var i = 0; i < names.Count; i++)
@@ -291,11 +291,8 @@ namespace EmbedIO.WebApi
         // - serializes the returned object (or the result of the returned task),
         //   unless the return type of the controller method is void or Task;
         // - if the controller implements IDisposable, disposes it.
-        private RouteHandlerCallback CompileHandler(Expression factoryExpression, MethodInfo method, string route)
+        private RouteHandlerCallback CompileHandler(Expression factoryExpression, MethodInfo method, RouteMatcher matcher)
         {
-            // Parse the route
-            var matcher = RouteMatcher.Parse(route, false);
-
             // Lambda parameters
             var contextInLambda = Expression.Parameter(typeof(IHttpContext), "context");
             var routeInLambda = Expression.Parameter(typeof(RouteMatch), "route");
@@ -566,7 +563,7 @@ namespace EmbedIO.WebApi
 
             foreach (var method in methods)
             {
-                var attributes = method.GetCustomAttributes(typeof(RouteAttribute))
+                var attributes = method.GetCustomAttributes()
                     .OfType<RouteAttribute>()
                     .ToArray();
                 if (attributes.Length < 1)
@@ -574,7 +571,7 @@ namespace EmbedIO.WebApi
 
                 foreach (var attribute in attributes)
                 {
-                    AddHandler(attribute.Verb, attribute.Route, CompileHandler(factoryExpression, method, attribute.Route));
+                    AddHandler(attribute.Verb, attribute.Matcher, CompileHandler(factoryExpression, method, attribute.Matcher));
                     handlerCount++;
                 }
             }

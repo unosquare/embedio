@@ -27,23 +27,23 @@ namespace EmbedIO.Routing
         /// </summary>
         /// <param name="data">Data used to determine which contexts are
         /// suitable to be handled by <paramref name="handler"/>.</param>
-        /// <param name="route">The route to match URL paths against.</param>
+        /// <param name="matcher">The <see cref="RouteMatcher"/>to match URL paths against.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="route"/> is <see langword="null"/>.</para>
+        /// <para><paramref name="matcher"/> is <see langword="null"/>.</para>
         /// <para>- or -</para>
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
-        /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
         /// <exception cref="InvalidOperationException">The <see cref="CreateResolver"/> method
         /// returned <see langword="null"/>.</exception>
         /// <seealso cref="ResolveAsync"/>
-        /// <seealso cref="Add(TData,string,SyncRouteHandlerCallback)"/>
+        /// <seealso cref="Add(TData,RouteMatcher,SyncRouteHandlerCallback)"/>
         /// <seealso cref="RouteResolverBase{TData}.Add(TData,RouteHandlerCallback)"/>
-        public void Add(TData data, string route, RouteHandlerCallback handler)
+        public void Add(TData data, RouteMatcher matcher, RouteHandlerCallback handler)
         {
+            matcher = Validate.NotNull(nameof(matcher), matcher);
             handler = Validate.NotNull(nameof(handler), handler);
-            GetResolver(route).Add(data, handler);
+            GetResolver(matcher).Add(data, handler);
         }
 
         /// <summary>
@@ -51,23 +51,23 @@ namespace EmbedIO.Routing
         /// </summary>
         /// <param name="data">Data used to determine which contexts are
         /// suitable to be handled by <paramref name="handler"/>.</param>
-        /// <param name="route">The route to match URL paths against.</param>
+        /// <param name="matcher">The <see cref="RouteMatcher"/>to match URL paths against.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="route"/> is <see langword="null"/>.</para>
+        /// <para><paramref name="matcher"/> is <see langword="null"/>.</para>
         /// <para>- or -</para>
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
-        /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
         /// <exception cref="InvalidOperationException">The <see cref="CreateResolver"/> method
         /// returned <see langword="null"/>.</exception>
         /// <seealso cref="ResolveAsync"/>
-        /// <seealso cref="Add(TData,string,RouteHandlerCallback)"/>
+        /// <seealso cref="Add(TData,RouteMatcher,RouteHandlerCallback)"/>
         /// <seealso cref="RouteResolverBase{TData}.Add(TData,SyncRouteHandlerCallback)"/>
-        public void Add(TData data, string route, SyncRouteHandlerCallback handler)
+        public void Add(TData data, RouteMatcher matcher, SyncRouteHandlerCallback handler)
         {
+            matcher = Validate.NotNull(nameof(matcher), matcher);
             handler = Validate.NotNull(nameof(handler), handler);
-            GetResolver(route).Add(data, handler);
+            GetResolver(matcher).Add(data, handler);
         }
 
         /// <summary>
@@ -112,16 +112,16 @@ namespace EmbedIO.Routing
         }
 
         /// <summary>
-        /// <para>Called by <see cref="Add(TData,string,RouteHandlerCallback)"/>
-        /// and <see cref="Add(TData,string,SyncRouteHandlerCallback)"/> to create an instance
+        /// <para>Called by <see cref="Add(TData,RouteMatcher,RouteHandlerCallback)"/>
+        /// and <see cref="Add(TData,RouteMatcher,SyncRouteHandlerCallback)"/> to create an instance
         /// of <typeparamref name="TResolver"/> that can resolve the specified route.</para>
         /// <para>If this method returns <see langword="null"/>, an <see cref="InvalidOperationException"/>
         /// is thrown by the calling method.</para>
         /// </summary>
-        /// <param name="route">The route to resolve.</param>
+        /// <param name="matcher">The <see cref="RouteMatcher"/>to match URL paths against.</param>
         /// <returns>A newly-constructed instance of <typeparamref name="TResolver"/>.</returns>
-        protected abstract TResolver CreateResolver(string route);
-
+        protected abstract TResolver CreateResolver(RouteMatcher matcher);
+        
         /// <summary>
         /// <para>Called by <see cref="ResolveAsync"/> when a resolver's
         /// <see cref="RouteResolverBase{TData}.ResolveAsync">ResolveAsync</see> method has been called
@@ -135,17 +135,14 @@ namespace EmbedIO.Routing
         {
         }
 
-        private TResolver GetResolver(string route)
+        private TResolver GetResolver(RouteMatcher matcher)
         {
-            var resolver = _resolvers.FirstOrDefault(r => r.Route == route);
-            if (resolver == null)
-            {
-                resolver = CreateResolver(route);
-                SelfCheck.Assert(resolver != null, $"{nameof(CreateResolver)} returned null.");
+            var resolver = _resolvers.FirstOrDefault(r => r.Matcher.Equals(matcher));
+            if (resolver != null)
+                return resolver;
 
-                _resolvers.Add(resolver);
-            }
-
+            resolver = CreateResolver(matcher);
+            _resolvers.Add(resolver ?? throw SelfCheck.Failure($"{nameof(CreateResolver)} returned null."));
             return resolver;
         }
     }
