@@ -10,7 +10,7 @@ namespace EmbedIO.Routing
     /// <summary>
     /// Matches URL paths against a route.
     /// </summary>
-    public sealed class RouteMatcher
+    public sealed class RouteMatcher : IEquatable<RouteMatcher>
     {
         private static readonly object SyncRoot = new object();
         private static readonly Dictionary<(bool, string), RouteMatcher> Cache = new Dictionary<(bool, string), RouteMatcher>();
@@ -93,6 +93,32 @@ namespace EmbedIO.Routing
                 Cache.Clear();
             }
         }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms
+        /// and data structures like a hash table.</returns>
+        public override int GetHashCode() => CompositeHashCode.Using(Route, IsBaseRoute);
+
+        /// <summary>
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+        /// <returns><see langword="true"/> if <paramref name="obj"/> is equal to this instance;
+        /// otherwise, <see langword="false"/>.</returns>
+        public override bool Equals(object? obj) => obj is RouteMatcher other && Equals(other);
+
+        /// <summary>
+        /// Indicates whether this instance is equal to another instance of <see cref="RouteMatcher"/>.
+        /// </summary>
+        /// <param name="other">A <see cref="RouteMatcher"/> to compare with this instance.</param>
+        /// <returns><see langword="true"/> if this instance is equal to <paramref name="other"/>;
+        /// otherwise, <see langword="false"/>.</returns>
+        public bool Equals(RouteMatcher? other)
+            => other != null
+            && other.Route == Route
+            && other.IsBaseRoute == IsBaseRoute;
 
         /// <summary>
         /// Matches the specified URL path against <see cref="Route"/>
