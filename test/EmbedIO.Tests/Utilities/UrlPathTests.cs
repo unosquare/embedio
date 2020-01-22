@@ -22,7 +22,7 @@ namespace EmbedIO.Tests.Utilities
         [TestCase(true)]
         [TestCase(false)]
         public void Normalize_OnEmptyUrlPath_ThrowsArgumentException(bool isBasePath)
-            => Assert.Throws<ArgumentException>(() => UrlPath.Normalize("", isBasePath));
+            => Assert.Throws<ArgumentException>(() => UrlPath.Normalize(string.Empty, isBasePath));
 
         [TestCase(true)]
         [TestCase(false)]
