@@ -16,23 +16,35 @@ namespace EmbedIO.Routing
     /// <seealso cref="ConfiguredObject" />
     public abstract class RouteResolverBase<TData> : ConfiguredObject
     {
-        private readonly RouteMatcher _matcher;
         private readonly List<(TData data, RouteHandlerCallback handler)> _dataHandlerPairs
             = new List<(TData data, RouteHandlerCallback handler)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteResolverBase{TData}"/> class.
         /// </summary>
-        /// <param name="route">The route to match URL paths against.</param>
-        protected RouteResolverBase(string route)
+        /// <param name="matcher">The <see cref="RouteMatcher"/> to match URL paths against.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="matcher"/> is <see langword="null"/>.</para>
+        /// </exception>
+        protected RouteResolverBase(RouteMatcher matcher)
         {
-            _matcher = RouteMatcher.Parse(route, false);
+            Matcher = Validate.NotNull(nameof(matcher), matcher);
         }
+
+        /// <summary>
+        /// Gets the <see cref="RouteMatcher"/> used to match routes.
+        /// </summary>
+        public RouteMatcher Matcher { get; }
 
         /// <summary>
         /// Gets the route this resolver matches URL paths against.
         /// </summary>
-        public string Route => _matcher.Route;
+        public string Route => Matcher.Route;
+
+        /// <summary>
+        /// Gets a value indicating whether <see cref="Route"/> is a base route.
+        /// </summary>
+        public bool IsBaseRoute => Matcher.IsBaseRoute;
 
         /// <summary>
         /// <para>Associates some data to a handler.</para>
@@ -105,7 +117,7 @@ namespace EmbedIO.Routing
         {
             LockConfiguration();
 
-            var match = _matcher.Match(context.RequestedPath);
+            var match = Matcher.Match(context.RequestedPath);
             if (match == null)
                 return RouteResolutionResult.RouteNotMatched;
 
