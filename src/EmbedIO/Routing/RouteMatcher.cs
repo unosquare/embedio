@@ -17,7 +17,7 @@ namespace EmbedIO.Routing
 
         private readonly Regex _regex;
 
-        private RouteMatcher(bool isBaseRoute, string route, string? pattern, IReadOnlyList<string> parameterNames)
+        private RouteMatcher(bool isBaseRoute, string route, string pattern, IReadOnlyList<string> parameterNames)
         {
             IsBaseRoute = isBaseRoute;
             Route = route;
@@ -173,7 +173,7 @@ namespace EmbedIO.Routing
                 if (Cache.TryGetValue((isBaseRoute, route), out result))
                     return null;
 
-                result = new RouteMatcher(isBaseRoute, route, pattern, parameterNames);
+                result = new RouteMatcher(isBaseRoute, route, pattern!, parameterNames);
                 Cache.Add((isBaseRoute, route), result);
                 return null;
             }
