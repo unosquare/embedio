@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -202,6 +203,18 @@ namespace EmbedIO.Tests
             {
                 var person = PeopleRepository.Database.First();
                 return ValidatePersonAsync($"/api/regexthree/{person.MainSkill}");
+            }
+        }
+
+        public class TestBaseRoute : WebApiModuleTest
+        {
+            [Test]
+            public async Task ControllerMethodWithBaseRoute_ReturnsCorrectSubPath()
+            {
+                var subPath = "/" + Guid.NewGuid().ToString("D", CultureInfo.InvariantCulture);
+                var receivedSubPath = await Client.GetStringAsync("/api/testBaseRoute" + subPath);
+
+                Assert.AreEqual(subPath, receivedSubPath);
             }
         }
     }
