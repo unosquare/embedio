@@ -25,7 +25,11 @@ namespace EmbedIO.Authentication
         protected BasicAuthenticationModuleBase(string baseRoute, string? realm)
             : base(baseRoute)
         {
-            Realm = string.IsNullOrEmpty(realm) ? BaseRoute : realm;
+            realm ??= BaseRoute;
+            if (realm.Length == 0)
+                realm = BaseRoute;
+
+            Realm = realm;
 
             _wwwAuthenticateHeaderValue = $"Basic realm=\"{Realm}\" charset=UTF-8";
         }
