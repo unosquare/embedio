@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EmbedIO.Sessions.Internal;
 
 namespace EmbedIO.Sessions
 {
@@ -25,6 +26,15 @@ namespace EmbedIO.Sessions
             _context = context;
             _sessionManager = sessionManager;
         }
+
+        /// <summary>
+        /// Returns a "dummy" <see cref="ISessionProxy"/> interface that will always behave as if no session manager has been defined.
+        /// </summary>
+        /// <remarks>
+        /// <para>The returned <see cref="ISessionProxy"/> interface is only useful
+        /// to initialize a non-nullable property of type <see cref="ISessionProxy"/>.</para>
+        /// </remarks>
+        public static ISessionProxy None => DummySessionProxy.Instance;
 
         /// <inheritdoc/>
         public bool Exists => _session != null;

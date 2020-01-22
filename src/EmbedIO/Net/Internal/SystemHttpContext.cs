@@ -35,6 +35,7 @@ namespace EmbedIO.Net.Internal
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
             Route = RouteMatch.None;
+            Session = SessionProxy.None;
         }
         
         public string Id { get; }
@@ -57,7 +58,7 @@ namespace EmbedIO.Net.Internal
 
         public IPrincipal User { get; set; }
 
-        public ISessionProxy? Session { get; set; }
+        public ISessionProxy Session { get; set; }
 
         public bool SupportCompressedRequests { get; set; }
 
