@@ -20,6 +20,7 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="value"/> does not comply with route syntax.</para>
         /// </exception>
+        /// <seealso cref="Routing.Route.IsValid"/>
         public static string Route(string argumentName, string value, bool isBaseRoute)
         {
             var exception = Routing.Route.ValidateInternal(argumentName, value, isBaseRoute);
