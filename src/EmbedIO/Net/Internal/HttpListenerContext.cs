@@ -36,6 +36,7 @@ namespace EmbedIO.Net.Internal
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
             Route = RouteMatch.None;
+            Session = SessionProxy.None;
         }
 
         public string Id { get; }
