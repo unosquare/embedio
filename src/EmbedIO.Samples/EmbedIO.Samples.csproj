@@ -21,7 +21,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Tubular.ServerSide" Version="2.0.2" />
+    <PackageReference Include="Tubular.ServerSide" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
