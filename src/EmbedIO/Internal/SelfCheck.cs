@@ -4,11 +4,11 @@ namespace EmbedIO.Internal
 {
     internal static class SelfCheck
     {
-        public static void Fail(string message)
-            => throw new EmbedIOInternalErrorException(message);
+        public static Exception Failure(string message)
+            => new EmbedIOInternalErrorException(message);
 
-        public static void Fail(string message, Exception exception)
-            => throw new EmbedIOInternalErrorException(message, exception);
+        public static Exception Failure(string message, Exception exception)
+            => new EmbedIOInternalErrorException(message, exception);
 
         public static void Assert(bool condition, string message)
         {

@@ -120,12 +120,10 @@ namespace EmbedIO
                     return null;
 
                 case null:
-                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is null.");
-                    return null;
+                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is null.");
 
                 default:
-                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}");
-                    return null;
+                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}");
             }
         }
 
@@ -170,12 +168,10 @@ namespace EmbedIO
                     return null;
 
                 case null:
-                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is null.");
-                    return null;
+                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is null.");
 
                 default:
-                    SelfCheck.Fail($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is of unexpected type {previousResult.GetType().FullName}");
-                    return null;
+                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is of unexpected type {previousResult.GetType().FullName}");
             }
         }
     }

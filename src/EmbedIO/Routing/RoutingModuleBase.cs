@@ -40,8 +40,7 @@ namespace EmbedIO.Routing
                 case RouteResolutionResult.Success:
                     return;
                 default:
-                    SelfCheck.Fail($"Internal error: unknown route resolution result {result}.");
-                    return;
+                    throw SelfCheck.Failure($"Internal error: unknown route resolution result {result}.");
             }
         }
 
