@@ -23,16 +23,15 @@ namespace EmbedIO.Routing
         /// <param name="verb">A <see cref="HttpVerbs"/> constant representing the HTTP method
         /// to associate with <paramref name="handler"/>, or <see cref="HttpVerbs.Any"/>
         /// if <paramref name="handler"/> can handle all HTTP methods.</param>
-        /// <param name="route">The route to match URL paths against.</param>
+        /// <param name="matcher">The <see cref="RouteMatcher"/> used to match URL paths.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="route"/> is <see langword="null"/>.</para>
+        /// <para><paramref name="matcher"/> is <see langword="null"/>.</para>
         /// <para>- or -</para>
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
-        /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        public void Add(HttpVerbs verb, string route, RouteHandlerCallback handler)
-            => AddHandler(verb, route, handler);
+        public void Add(HttpVerbs verb, RouteMatcher matcher, RouteHandlerCallback handler)
+            => AddHandler(verb, matcher, handler);
 
         /// <summary>
         /// Associates a HTTP method and a route to a synchronous handler.
@@ -40,16 +39,15 @@ namespace EmbedIO.Routing
         /// <param name="verb">A <see cref="HttpVerbs"/> constant representing the HTTP method
         /// to associate with <paramref name="handler"/>, or <see cref="HttpVerbs.Any"/>
         /// if <paramref name="handler"/> can handle all HTTP methods.</param>
-        /// <param name="route">The route to match URL paths against.</param>
+        /// <param name="matcher">The <see cref="RouteMatcher"/> used to match URL paths.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
         /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="route"/> is <see langword="null"/>.</para>
+        /// <para><paramref name="matcher"/> is <see langword="null"/>.</para>
         /// <para>- or -</para>
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
-        /// <exception cref="FormatException"><paramref name="route"/> is not a valid route.</exception>
-        public void Add(HttpVerbs verb, string route, SyncRouteHandlerCallback handler)
-            => AddHandler(verb, route, handler);
+        public void Add(HttpVerbs verb, RouteMatcher matcher, SyncRouteHandlerCallback handler)
+            => AddHandler(verb, matcher, handler);
 
         /// <summary>
         /// <para>Adds handlers, associating them with HTTP method / route pairs by means
