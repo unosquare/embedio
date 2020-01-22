@@ -236,7 +236,9 @@ namespace EmbedIO
                 $"[{context.Id}] {context.Request.SafeGetRemoteEndpointStr()}: {context.Request.HttpMethod} {context.Request.Url.PathAndQuery} - {context.Request.UserAgent}"
                     .Debug(LogSource);
 
-                context.Session = new SessionProxy(context, SessionManager);
+                if (SessionManager != null)
+                    context.Session = new SessionProxy(context, SessionManager);
+
                 try
                 {
                     if (context.CancellationToken.IsCancellationRequested)
