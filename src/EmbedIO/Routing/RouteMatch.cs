@@ -33,6 +33,27 @@ namespace EmbedIO.Routing
         }
 
         /// <summary>
+        /// Gets a <see cref="RouteMatch"/> instance that represents no match at all.
+        /// </summary>
+        /// <remarks>
+        /// <para>The <see cref="RouteMatch"/> instance returned by this property
+        /// has the following specifications:</para>
+        /// <list type="bullet">
+        /// <item><description>its <see cref="Path">Path</see> property is the empty string;</description></item>
+        /// <item><description>it has no parameters;</description></item>
+        /// <item><description>its <see cref="SubPath">SubPath</see> property is <see langword="null"/>.</description></item>
+        /// </list>
+        /// <para>This <see cref="RouteMatch"/> instance is only useful to initialize
+        /// a non-nullable property of type <see cref="RouteMatch"/>, provided that it is subsequently
+        /// set to a meaningful value before being used.</para>
+        /// </remarks>
+        public static RouteMatch None { get; } = new RouteMatch(
+            string.Empty,
+            Array.Empty<string>(),
+            Array.Empty<string>(),
+            null);
+
+        /// <summary>
         /// Gets the URL path that was successfully matched against the route.
         /// </summary>
         public string Path { get; }

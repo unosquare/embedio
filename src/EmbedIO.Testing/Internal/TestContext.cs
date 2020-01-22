@@ -29,6 +29,7 @@ namespace EmbedIO.Testing.Internal
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
+            Route = RouteMatch.None;
         }
 
         public string Id { get; }
