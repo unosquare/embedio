@@ -185,9 +185,7 @@ namespace EmbedIO.WebSockets
                 return;
             }
 
-            if (!(context is IHttpContextImpl contextImpl))
-                throw new InvalidOperationException($"HTTP context must implement {nameof(IHttpContextImpl)}.");
-
+            var contextImpl = context.GetImplementation();
             $"{BaseRoute} - Accepting WebSocket connection with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
             var webSocketContext = await contextImpl.AcceptWebSocketAsync(
                     requestedProtocols, 
