@@ -63,7 +63,7 @@ namespace EmbedIO
         /// <summary>
         /// Gets the user.
         /// </summary>
-        IPrincipal? User { get; }
+        IPrincipal User { get; }
 
         /// <summary>
         /// Gets the session proxy associated with this context.

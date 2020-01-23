@@ -4,6 +4,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Authentication;
 using EmbedIO.Internal;
 using EmbedIO.Routing;
 using EmbedIO.Sessions;
@@ -24,7 +25,7 @@ namespace EmbedIO.Testing.Internal
         internal TestContext(IHttpRequest request)
         {
             Request = request;
-            User = null;
+            User = Auth.NoUser;
             TestResponse = new TestResponse();
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
@@ -53,7 +54,7 @@ namespace EmbedIO.Testing.Internal
 
         internal TestResponse TestResponse { get; }
 
-        public IPrincipal? User { get; set; }
+        public IPrincipal User { get; set; }
 
         public ISessionProxy Session { get; set; }
 
