@@ -114,7 +114,7 @@ namespace EmbedIO.Net.Internal
 
         public async Task<IWebSocketContext> AcceptWebSocketAsync(
             IEnumerable<string> requestedProtocols,
-            string? acceptedProtocol,
+            string acceptedProtocol,
             int receiveBufferSize,
             TimeSpan keepAliveInterval,
             CancellationToken cancellationToken)

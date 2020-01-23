@@ -160,16 +160,16 @@ namespace EmbedIO.WebSockets
                                          .Where(s => s.Length > 0)
                                          .ToArray()
                                   ?? Array.Empty<string>();
-            string? acceptedProtocol;
+            string acceptedProtocol;
             bool acceptConnection;
             if (_protocols.Count > 0)
             {
-                acceptedProtocol = requestedProtocols.FirstOrDefault(p => _protocols.Contains(p));
-                acceptConnection = acceptedProtocol != null;
+                acceptedProtocol = requestedProtocols.FirstOrDefault(p => _protocols.Contains(p)) ?? string.Empty;
+                acceptConnection = acceptedProtocol.Length > 0;
             }
             else
             {
-                acceptedProtocol = null;
+                acceptedProtocol = string.Empty;
                 acceptConnection = requestedProtocols.Length == 0;
             }
 
@@ -186,7 +186,7 @@ namespace EmbedIO.WebSockets
             }
 
             var contextImpl = context.GetImplementation();
-            $"{BaseRoute} - Accepting WebSocket connection with subprotocol {acceptedProtocol ?? "<null>"}".Debug(nameof(WebSocketModule));
+            $"{BaseRoute} - Accepting WebSocket connection with subprotocol \"{acceptedProtocol}\"".Debug(nameof(WebSocketModule));
             var webSocketContext = await contextImpl.AcceptWebSocketAsync(
                     requestedProtocols, 
                     acceptedProtocol, 
