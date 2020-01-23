@@ -69,7 +69,8 @@ namespace EmbedIO
         /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <param name="requestedProtocols">The requested WebSocket sub-protocols.</param>
-        /// <param name="acceptedProtocol">The accepted WebSocket sub-protocol.</param>
+        /// <param name="acceptedProtocol">The accepted WebSocket sub-protocol,
+        /// or the empty string is no sub-protocol has been agreed upon.</param>
         /// <param name="receiveBufferSize">Size of the receive buffer.</param>
         /// <param name="keepAliveInterval">The keep-alive interval.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the server.</param>
@@ -78,7 +79,7 @@ namespace EmbedIO
         /// </returns>
         Task<IWebSocketContext> AcceptWebSocketAsync(
             IEnumerable<string> requestedProtocols, 
-            string? acceptedProtocol, 
+            string acceptedProtocol, 
             int receiveBufferSize, 
             TimeSpan keepAliveInterval,
             CancellationToken cancellationToken);

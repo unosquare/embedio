@@ -170,7 +170,7 @@ namespace EmbedIO.WebSockets.Internal
             GC.SuppressFinalize(this);
         }
 
-        internal static async Task<WebSocket> AcceptAsync(HttpListenerContext httpContext, string? acceptedProtocol)
+        internal static async Task<WebSocket> AcceptAsync(HttpListenerContext httpContext, string acceptedProtocol)
         {
             string CreateResponseKey(string clientKey)
             {
@@ -199,7 +199,7 @@ namespace EmbedIO.WebSockets.Internal
 
             handshakeResponse.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
 
-            if (acceptedProtocol != null)
+            if (acceptedProtocol.Length > 0)
                 handshakeResponse.Headers[HttpHeaderNames.SecWebSocketProtocol] = acceptedProtocol;
 
             var bytes = Encoding.UTF8.GetBytes(handshakeResponse.ToString());
