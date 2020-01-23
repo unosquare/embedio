@@ -34,7 +34,7 @@ namespace EmbedIO.WebSockets.Internal
             WebSocketVersion = webSocketVersion;
             Cookies = httpContext.Request.Cookies;
             User = httpContext.User;
-            IsAuthenticated = httpContext.Request.IsAuthenticated;
+            IsAuthenticated = httpContext.User.Identity.IsAuthenticated;
             IsLocal = httpContext.Request.IsLocal;
             IsSecureConnection = httpContext.Request.IsSecureConnection;
             WebSocket = webSocket;
