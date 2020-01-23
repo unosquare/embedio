@@ -4,6 +4,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Authentication;
 using EmbedIO.Internal;
 using EmbedIO.Routing;
 using EmbedIO.Sessions;
@@ -30,8 +31,8 @@ namespace EmbedIO.Net.Internal
         {
             Connection = cnc;
             Request = new HttpListenerRequest(this);
+            User = Auth.NoUser;
             Response = new HttpListenerResponse(this);
-            User = null;
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
@@ -57,7 +58,7 @@ namespace EmbedIO.Net.Internal
 
         public IHttpResponse Response { get; }
 
-        public IPrincipal? User { get; set;  }
+        public IPrincipal User { get; set;  }
 
         public ISessionProxy Session { get; set; }
 

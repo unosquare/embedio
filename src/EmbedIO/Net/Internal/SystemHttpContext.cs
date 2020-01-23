@@ -4,6 +4,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Authentication;
 using EmbedIO.Internal;
 using EmbedIO.Routing;
 using EmbedIO.Sessions;
@@ -29,7 +30,7 @@ namespace EmbedIO.Net.Internal
             _context = context;
 
             Request = new SystemHttpRequest(_context);
-            User = _context.User;
+            User = _context.User ?? Auth.NoUser;
             Response = new SystemHttpResponse(_context);
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
