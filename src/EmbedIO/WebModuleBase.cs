@@ -97,7 +97,7 @@ namespace EmbedIO
         /// <inheritdoc />
         public async Task HandleRequestAsync(IHttpContext context)
         {
-            var contextImpl = context as IHttpContextImpl;
+            var contextImpl = context.GetImplementation();
             var mimeTypeProvider = this as IMimeTypeProvider;
             if (mimeTypeProvider != null)
                 contextImpl?.MimeTypeProviders.Push(mimeTypeProvider);
