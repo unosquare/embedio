@@ -81,13 +81,13 @@ namespace EmbedIO.Net.Internal
 
         public async Task<IWebSocketContext> AcceptWebSocketAsync(
             IEnumerable<string> requestedProtocols,
-            string? acceptedProtocol,
+            string acceptedProtocol,
             int receiveBufferSize,
             TimeSpan keepAliveInterval,
             CancellationToken cancellationToken)
         {
             var context = await _context.AcceptWebSocketAsync(
-                acceptedProtocol,
+                acceptedProtocol.NullIfEmpty(), // Empty string would throw; use null to signify "no subprotocol" here.
                 receiveBufferSize,
                 keepAliveInterval)
                 .ConfigureAwait(false);
