@@ -35,8 +35,8 @@ namespace EmbedIO.Internal
                 if (routeMatch == null)
                     continue;
 
-                $"[{context.Id}] Processing with {name}.".Debug(_logSource);
-                (context as IHttpContextImpl).Route = routeMatch;
+                $"[{context.Id}] Processing with {name}.".Debug(_logSource); 
+                context.GetImplementation().Route = routeMatch;
                 await module.HandleRequestAsync(context).ConfigureAwait(false);
                 if (context.IsHandled)
                     break;
