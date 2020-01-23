@@ -41,5 +41,15 @@ namespace EmbedIO.Utilities
         /// <seealso cref="SplitByComma(string)"/>
         public static string[] SplitByComma(this string @this, StringSplitOptions options) =>
             @this.Split(CommaSplitChars, options);
+
+        /// <summary>
+        /// Ensures that a <see cref="string"/> is never empty,
+        /// by transforming empty strings into <see langword="null"/>.
+        /// </summary>
+        /// <param name="this">The <see cref="string"/> on which this method is called.</param>
+        /// <returns>If <paramref name="this"/> is the empty string, <see langword="null"/>;
+        /// otherwise, <paramref name="this."/></returns>
+        public static string? NullIfEmpty(this string @this)
+            => string.IsNullOrEmpty(@this) ? null : @this;
     }
 }
