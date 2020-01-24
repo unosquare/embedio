@@ -102,6 +102,7 @@ available to clients under the <code>/download/docs/</code> URL.</p>
     <h5>Implements</h5>
     <div><a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a></div>
     <div><a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a></div>
+    <div><span class="xref">IDisposable</span></div>
     <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>
     <div><a class="xref" href="EmbedIO.IMimeTypeCustomizer.html">IMimeTypeCustomizer</a></div>
     <div><a class="xref" href="EmbedIO.IMimeTypeProvider.html">IMimeTypeProvider</a></div>
@@ -139,7 +140,7 @@ available to clients under the <code>/download/docs/</code> URL.</p>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
   <h5 id="EmbedIO_ModuleGroup_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ModuleGroup : WebModuleBase, IWebModuleImpl, IWebModule, IWebModuleContainer, IMimeTypeCustomizer, IMimeTypeProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class ModuleGroup : WebModuleBase, IWebModuleImpl, IWebModule, IDisposable, IWebModuleContainer, IMimeTypeCustomizer, IMimeTypeProvider</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -593,6 +594,9 @@ the specified media range.</p>
   </div>
   <div>
       <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
   </div>
   <div>
       <a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a>

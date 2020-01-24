@@ -358,11 +358,12 @@ to <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
   
   <a id="EmbedIO_Files_ZipFileProvider_OpenFile_" data-uid="EmbedIO.Files.ZipFileProvider.OpenFile*"></a>
   <h4 id="EmbedIO_Files_ZipFileProvider_OpenFile_System_String_" data-uid="EmbedIO.Files.ZipFileProvider.OpenFile(System.String)">OpenFile(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Opens a file for reading.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Stream? OpenFile(string path)</code></pre>
+    <pre><code class="lang-csharp hljs">public Stream OpenFile(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,7 +378,8 @@ to <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">path</span></td>
-        <td></td>
+        <td><p>The provider-specific path for the file.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -391,8 +393,9 @@ to <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Stream</span>&gt;</td>
-        <td></td>
+        <td><span class="xref">Stream</span></td>
+        <td><p>A readable <see cref="!:Stream"></see> of the file&apos;s contents.</p>
+</td>
       </tr>
     </tbody>
   </table>
