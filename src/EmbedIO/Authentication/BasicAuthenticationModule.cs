@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmbedIO.Authentication
 {
     /// <summary>
-    /// Simple HTTP basic authentication module that stores credentials
-    /// in a <seealso cref="ConcurrentDictionary{TKey,TValue}"/>.
+    /// Simple HTTP basic authentication module that stores user names and passwords
+    /// in a <seealso cref="ConcurrentDictionary{TKey,TValue}"/>, and has no user roles.
     /// </summary>
     public class BasicAuthenticationModule : BasicAuthenticationModuleBase
     {
@@ -29,18 +30,14 @@ namespace EmbedIO.Authentication
         /// <summary>
         /// Gets a dictionary of valid user names and passwords.
         /// </summary>
-        /// <value>
-        /// The accounts.
-        /// </value>
         public ConcurrentDictionary<string, string> Accounts { get; } = new ConcurrentDictionary<string, string>(StringComparer.InvariantCulture);
 
         /// <inheritdoc />
-        protected override Task<bool> VerifyCredentialsAsync(string path, string userName, string password, CancellationToken cancellationToken)
+        protected sealed override Task<bool> VerifyCredentialsAsync(string path, string userName, string password, IList<string> roles, CancellationToken cancellationToken)
             => Task.FromResult(VerifyCredentialsInternal(userName, password));
 
         private bool VerifyCredentialsInternal(string userName, string password)
-            => userName != null
-            && Accounts.TryGetValue(userName, out var storedPassword)
+            => Accounts.TryGetValue(userName, out var storedPassword)
             && string.Equals(password, storedPassword, StringComparison.Ordinal);
     }
 }
