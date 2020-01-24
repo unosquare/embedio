@@ -24,10 +24,11 @@ namespace EmbedIO
     /// <item><description>implementation of the <see cref="OnUnhandledException"/> callback property.</description></item>
     /// </list>
     /// </summary>
-    public abstract class WebModuleBase : ConfiguredObject, IWebModule
+    public abstract class WebModuleBase : ConfiguredObject, IWebModuleImpl
     {
         private readonly RouteMatcher _routeMatcher;
-        
+
+        private IWebModuleContainer _container = WebModuleContainer.None;
         private ExceptionHandlerCallback? _onUnhandledException;
         private HttpExceptionHandlerCallback? _onHttpException;
 
@@ -44,6 +45,18 @@ namespace EmbedIO
             BaseRoute = Validate.Route(nameof(baseRoute), baseRoute, true);
             _routeMatcher = RouteMatcher.Parse(baseRoute, true);
             LogSource = GetType().Name;
+        }
+
+        /// <inheritdoc />
+        public IWebModuleContainer Container => GetContainer();
+
+        /// <inheritdoc />
+        IWebModuleContainer IWebModuleImpl.Container
+        {
+            get => GetContainer();
+            set => _container = _container is DummyWebModuleContainer
+                ? value
+                : throw new InvalidOperationException($"Cannot add a {GetType().Name} to more than one container.");
         }
 
         /// <inheritdoc />
@@ -149,5 +162,10 @@ namespace EmbedIO
         protected virtual void OnStart(CancellationToken cancellationToken)
         {
         }
+
+        private IWebModuleContainer GetContainer()
+            => _container is DummyWebModuleContainer
+                ? throw new InvalidOperationException($"Cannot retrieve the container of a {GetType().Name} that has not been added to one yet.")
+                : _container;
     }
 }

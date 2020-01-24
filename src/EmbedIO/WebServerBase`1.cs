@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Net;
 using System.Threading;
@@ -66,7 +67,7 @@ namespace EmbedIO
         {
             Options = options;
             LogSource = GetType().Name;
-            _modules = new WebModuleCollection(LogSource);
+            _modules = new WebModuleCollection(LogSource, this);
 
             configure?.Invoke(Options);
             Options.Lock();
@@ -85,6 +86,10 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public IComponentCollection<IWebModule> Modules => _modules;
+
+        /// <inheritdoc />
+        public ConcurrentDictionary<object, object> SharedItems { get; }
+            = new ConcurrentDictionary<object, object>();
 
         /// <summary>
         /// Gets the options object used to configure this instance.

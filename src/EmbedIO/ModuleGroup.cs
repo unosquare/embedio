@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
@@ -37,7 +38,7 @@ namespace EmbedIO
             : base(baseRoute)
         {
             IsFinalHandler = isFinalHandler;
-            _modules = new WebModuleCollection(nameof(ModuleGroup));
+            _modules = new WebModuleCollection(nameof(ModuleGroup), this);
         }
 
         /// <summary>
@@ -53,6 +54,10 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public IComponentCollection<IWebModule> Modules => _modules;
+
+        /// <inheritdoc />
+        public ConcurrentDictionary<object, object> SharedItems { get; }
+            = new ConcurrentDictionary<object, object>();
 
         /// <inheritdoc />
         public void Dispose()
