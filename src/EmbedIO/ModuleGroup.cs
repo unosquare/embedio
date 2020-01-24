@@ -21,7 +21,7 @@ namespace EmbedIO
     /// <seealso cref="WebModuleBase" />
     /// <seealso cref="IDisposable" />
     /// <seealso cref="IWebModuleContainer" />
-    public class ModuleGroup : WebModuleBase, IWebModuleContainer, IMimeTypeCustomizer
+    public class ModuleGroup : WebModuleBase, IDisposable, IWebModuleContainer, IMimeTypeCustomizer
     {
         private readonly WebModuleCollection _modules;
         private readonly MimeTypeCustomizer _mimeTypeCustomizer = new MimeTypeCustomizer();
