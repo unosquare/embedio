@@ -3,7 +3,7 @@
 namespace EmbedIO.Files
 {
     /// <summary>
-    /// Contains information about a resource served via a <see cref="IFileProvider"/>.
+    /// Contains information about a resource served via an <see cref="IFileProvider"/>.
     /// </summary>
     public sealed class MappedResourceInfo
     {

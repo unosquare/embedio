@@ -5,7 +5,7 @@ namespace EmbedIO
     /// <summary>
     /// A callback used to build the contents of the response for an <see cref="IHttpException" />.
     /// </summary>
-    /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+    /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
     /// <param name="httpException">An <see cref="IHttpException" /> interface.</param>
     /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
     /// <remarks>

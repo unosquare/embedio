@@ -11,7 +11,7 @@ using EmbedIO.Utilities;
 namespace EmbedIO.Files
 {
     /// <summary>
-    /// A module serving files and directory listings from a <see cref="IFileProvider"/>.
+    /// A module serving files and directory listings from an <see cref="IFileProvider"/>.
     /// </summary>
     /// <seealso cref="WebModuleBase" />
     public class FileModule : WebModuleBase, IDisposable, IMimeTypeCustomizer

@@ -15,14 +15,14 @@ namespace EmbedIO.Sessions
         void Start(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Returns the session associated with a <see cref="IHttpContext"/>.
+        /// Returns the session associated with an <see cref="IHttpContext"/>.
         /// If a session ID can be retrieved for the context and stored session data
         /// are available, the returned <see cref="ISession"/> will contain those data;
         /// otherwise, a new session is created and its ID is stored in the response
         /// to be retrieved by subsequent requests.
         /// </summary>
         /// <param name="context">The HTTP context.</param>
-        /// <returns>A <see cref="ISession"/> interface.</returns>
+        /// <returns>An <see cref="ISession"/> interface.</returns>
         ISession Create(IHttpContext context);
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace EmbedIO.Sessions
 
         /// <summary>
         /// <para>Called by a session proxy when a session has been obtained
-        /// for a <see cref="IHttpContext"/> and the context is closed,
+        /// for an <see cref="IHttpContext"/> and the context is closed,
         /// even if the session was subsequently deleted.</para>
         /// <para>This method can be used to save session data to a storage medium.</para>
         /// </summary>

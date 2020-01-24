@@ -14,7 +14,7 @@ namespace EmbedIO
         /// <param name="whiteList">A collection of valid IPs that never will be banned.</param>
         /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
         /// <returns>
-        ///   <paramref name="this" /> with a <see cref="IPBanningModule" /> added.
+        ///   <paramref name="this" /> with an <see cref="IPBanningModule" /> added.
         /// </returns>
         public static TContainer WithIPBanning<TContainer>(this TContainer @this,
             IEnumerable<string>? whiteList = null,
@@ -31,7 +31,7 @@ namespace EmbedIO
         /// <param name="whiteList">A collection of valid IPs that never will be banned.</param>
         /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
         /// <returns>
-        ///   <paramref name="this" /> with a <see cref="IPBanningModule" /> added.
+        ///   <paramref name="this" /> with an <see cref="IPBanningModule" /> added.
         /// </returns>
         public static TContainer WithIPBanning<TContainer>(this TContainer @this,
             Action<IPBanningModule>? configure,

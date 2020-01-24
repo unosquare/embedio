@@ -33,7 +33,7 @@ namespace EmbedIO
         /// <para>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</para>
         /// </summary>
         /// <value>
-        /// A <see cref="ISessionProxy"/> interface.
+        /// An <see cref="ISessionProxy"/> interface.
         /// </value>
         new ISessionProxy Session { get; set; }
 
@@ -75,7 +75,7 @@ namespace EmbedIO
         /// <param name="keepAliveInterval">The keep-alive interval.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to stop the server.</param>
         /// <returns>
-        /// A <see cref="IWebSocketContext"/> interface.
+        /// An <see cref="IWebSocketContext"/> interface.
         /// </returns>
         Task<IWebSocketContext> AcceptWebSocketAsync(
             IEnumerable<string> requestedProtocols, 
