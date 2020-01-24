@@ -8,7 +8,7 @@ namespace EmbedIO.Testing
 {
     /// <summary>
     /// A <see cref="HttpClient"/> that can send requests
-    /// either to a <see cref="ITestWebServer"/> interface,
+    /// either to an <see cref="ITestWebServer"/> interface,
     /// or to a web server on the network.
     /// </summary>
     public sealed class TestHttpClient : HttpClient

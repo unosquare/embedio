@@ -42,7 +42,7 @@ namespace EmbedIO
         /// sending non-compressed data; otherwise, <see langword="false"/>.</param>
         /// <param name="compressionMethod">When this method returns, the compression method to use for the response,
         /// if content negotiation is successful. This parameter is passed uninitialized.</param>
-        /// <param name="prepareResponse">When this method returns, a callback that prepares data in a <see cref="IHttpResponse"/>
+        /// <param name="prepareResponse">When this method returns, a callback that prepares data in an <see cref="IHttpResponse"/>
         /// according to the result of content negotiation. This parameter is passed uninitialized.</param>
         /// <returns><see langword="true"/> if content negotiation is successful;
         /// otherwise, <see langword="false"/>.</returns>

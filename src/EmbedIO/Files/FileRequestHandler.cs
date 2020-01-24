@@ -12,7 +12,7 @@ namespace EmbedIO.Files
         /// <summary>
         /// <para>Unconditionally passes a request down the module chain.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws an exception instead.</returns>
@@ -22,7 +22,7 @@ namespace EmbedIO.Files
         /// <summary>
         /// <para>Unconditionally sends a <c>403 Unauthorized</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
@@ -32,7 +32,7 @@ namespace EmbedIO.Files
         /// <summary>
         /// <para>Unconditionally sends a <c>404 Not Found</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>
@@ -42,7 +42,7 @@ namespace EmbedIO.Files
         /// <summary>
         /// <para>Unconditionally sends a <c>405 Method Not Allowed</c> response.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext"/> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="info">If the requested path has been successfully mapped to a resource (file or directory), the result of the mapping;
         /// otherwise, <see langword="null"/>.</param>
         /// <returns>This method never returns; it throws a <see cref="HttpException"/> instead.</returns>

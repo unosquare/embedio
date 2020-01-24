@@ -46,7 +46,7 @@ namespace EmbedIO
         /// <summary>
         /// Sends an empty <c>500 Internal Server Error</c> response.
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task EmptyResponse(IHttpContext context, Exception exception)
@@ -75,7 +75,7 @@ namespace EmbedIO
         /// <para>The aforementioned header names are available as the <see cref="ExceptionTypeHeaderName" /> and
         /// <see cref="ExceptionMessageHeaderName" /> properties, respectively.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task EmptyResponseWithHeaders(IHttpContext context, Exception exception)
@@ -92,7 +92,7 @@ namespace EmbedIO
         /// if specified via the <see cref="ContactInformation"/> and <see cref="IncludeStackTraces"/>
         /// properties, respectively.
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task HtmlResponse(IHttpContext context, Exception exception)
