@@ -87,8 +87,8 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public Stream? OpenFile(string path)
-            => _zipArchive.GetEntry(path)?.Open();
+        public Stream OpenFile(string path)
+            => _zipArchive.GetEntry(path)?.Open() ?? throw new FileNotFoundException($"\"{path}\" cannot be found in Zip archive.");
 
         /// <inheritdoc />
         public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
