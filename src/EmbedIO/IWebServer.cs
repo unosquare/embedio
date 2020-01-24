@@ -14,7 +14,7 @@ namespace EmbedIO
     /// <item><description>call <see cref="RunAsync"/> to respond to incoming requests.</description></item>
     /// </list>
     /// </summary>
-    public interface IWebServer : IWebModuleContainer, IMimeTypeCustomizer
+    public interface IWebServer : IDisposable, IWebModuleContainer, IMimeTypeCustomizer
     {
         /// <summary>
         /// Occurs when the <see cref="State"/> property changes.
