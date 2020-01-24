@@ -85,15 +85,32 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="EmbedIO.Authentication.Auth.html">Auth</a></h4>
+      <section><p>Provides useful authentication-related constants.</p>
+</section>
+      <h4><a class="xref" href="EmbedIO.Authentication.AuthenticationHandler.html">AuthenticationHandler</a></h4>
+      <section><p>Provides standard handler callbacks for authentication modules.</p>
+</section>
+      <h4><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html">AuthenticationModuleBase</a></h4>
+      <section><p>Base class for authentication modules.</p>
+</section>
+      <h4><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBaseExtensions.html">AuthenticationModuleBaseExtensions</a></h4>
+      <section><p>Provides extension methods for classes derived from <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html">AuthenticationModuleBase</a>.</p>
+</section>
       <h4><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a></h4>
-      <section><p>Simple HTTP basic authentication module that stores credentials
-in a <seealso cref="!:ConcurrentDictionary&lt;TKey,TValue>"></seealso>.</p>
+      <section><p>Simple HTTP basic authentication module that stores user names and passwords
+in a <seealso cref="!:ConcurrentDictionary&lt;TKey,TValue>"></seealso>, and has no user roles.</p>
 </section>
       <h4><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.html">BasicAuthenticationModuleBase</a></h4>
-      <section><p>Implements <a href="https://tools.ietf.org/html/rfc7617">HTTP basic authentication</a>.</p>
+      <section><p>Base class for authentication modules using <a href="https://tools.ietf.org/html/rfc7617">HTTP basic authentication</a>.</p>
 </section>
       <h4><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleExtensions.html">BasicAuthenticationModuleExtensions</a></h4>
       <section><p>Provides extension methods for <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a>.</p>
+</section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a></h4>
+      <section><p>A callback used to handle events in authentication modules.</p>
 </section>
 
 <h3 id="disqus_thread">Comments</h3>

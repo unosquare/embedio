@@ -118,13 +118,13 @@ for the context.</p>
   
   
   <a id="EmbedIO_Routing_RouteResolverBase_1__ctor_" data-uid="EmbedIO.Routing.RouteResolverBase`1.#ctor*"></a>
-  <h4 id="EmbedIO_Routing_RouteResolverBase_1__ctor_System_String_" data-uid="EmbedIO.Routing.RouteResolverBase`1.#ctor(System.String)">RouteResolverBase(String)</h4>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_1__ctor_EmbedIO_Routing_RouteMatcher_" data-uid="EmbedIO.Routing.RouteResolverBase`1.#ctor(EmbedIO.Routing.RouteMatcher)">RouteResolverBase(RouteMatcher)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html">RouteResolverBase&lt;TData&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected RouteResolverBase(string route)</code></pre>
+    <pre><code class="lang-csharp hljs">protected RouteResolverBase(RouteMatcher matcher)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -137,15 +137,67 @@ for the context.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> to match URL paths against.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute_" data-uid="EmbedIO.Routing.RouteResolverBase`1.IsBaseRoute*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute" data-uid="EmbedIO.Routing.RouteResolverBase`1.IsBaseRoute">IsBaseRoute</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Route">Route</a> is a base route.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsBaseRoute { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RouteResolverBase_1_Matcher_" data-uid="EmbedIO.Routing.RouteResolverBase`1.Matcher*"></a>
+  <h4 id="EmbedIO_Routing_RouteResolverBase_1_Matcher" data-uid="EmbedIO.Routing.RouteResolverBase`1.Matcher">Matcher</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match routes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RouteMatcher Matcher { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="EmbedIO_Routing_RouteResolverBase_1_Route_" data-uid="EmbedIO.Routing.RouteResolverBase`1.Route*"></a>

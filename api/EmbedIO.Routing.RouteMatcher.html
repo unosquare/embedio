@@ -89,34 +89,10 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">RouteMatcher</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
   <h5 id="EmbedIO_Routing_RouteMatcher_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class RouteMatcher</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class RouteMatcher : IEquatable&lt;RouteMatcher&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -217,6 +193,126 @@ is a base route.</p>
       <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_Parse_System_String_System_Boolean_">Parse(String, Boolean)</a></div>
       <div><a class="xref" href="EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_TryParse_System_String_System_Boolean_EmbedIO_Routing_RouteMatcher__">TryParse(String, Boolean, out RouteMatcher)</a></div>
   </div>
+  
+  
+  <a id="EmbedIO_Routing_RouteMatcher_Equals_" data-uid="EmbedIO.Routing.RouteMatcher.Equals*"></a>
+  <h4 id="EmbedIO_Routing_RouteMatcher_Equals_EmbedIO_Routing_RouteMatcher_" data-uid="EmbedIO.Routing.RouteMatcher.Equals(EmbedIO.Routing.RouteMatcher)">Equals(RouteMatcher)</h4>
+  <div class="markdown level1 summary"><p>Indicates whether this instance is equal to another instance of <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(RouteMatcher other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>A <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> to compare with this instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if this instance is equal to <code data-dev-comment-type="paramref" class="paramref">other</code>;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RouteMatcher_Equals_" data-uid="EmbedIO.Routing.RouteMatcher.Equals*"></a>
+  <h4 id="EmbedIO_Routing_RouteMatcher_Equals_System_Object_" data-uid="EmbedIO.Routing.RouteMatcher.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a> to compare with this instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">obj</code> is equal to this instance;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RouteMatcher_GetHashCode_" data-uid="EmbedIO.Routing.RouteMatcher.GetHashCode*"></a>
+  <h4 id="EmbedIO_Routing_RouteMatcher_GetHashCode" data-uid="EmbedIO.Routing.RouteMatcher.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Returns a hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>A hash code for this instance, suitable for use in hashing algorithms
+and data structures like a hash table.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="EmbedIO_Routing_RouteMatcher_Match_" data-uid="EmbedIO.Routing.RouteMatcher.Match*"></a>

@@ -94,8 +94,8 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a></div>
-    <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>
     <div><span class="xref">IDisposable</span></div>
+    <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>
     <div><a class="xref" href="EmbedIO.IMimeTypeCustomizer.html">IMimeTypeCustomizer</a></div>
     <div><a class="xref" href="EmbedIO.IMimeTypeProvider.html">IMimeTypeProvider</a></div>
     <div><a class="xref" href="EmbedIO.IHttpContextHandler.html">IHttpContextHandler</a></div>
@@ -107,6 +107,9 @@
     </div>
     <div>
       <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_Modules">WebServerBase&lt;WebServerOptions&gt;.Modules</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_SharedItems">WebServerBase&lt;WebServerOptions&gt;.SharedItems</a>
     </div>
     <div>
       <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_Options">WebServerBase&lt;WebServerOptions&gt;.Options</a>
@@ -157,7 +160,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
   <h5 id="EmbedIO_WebServer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WebServer : WebServerBase&lt;WebServerOptions&gt;, IWebServer, IWebModuleContainer, IDisposable, IMimeTypeCustomizer, IMimeTypeProvider, IHttpContextHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class WebServer : WebServerBase&lt;WebServerOptions&gt;, IWebServer, IDisposable, IWebModuleContainer, IMimeTypeCustomizer, IMimeTypeProvider, IHttpContextHandler</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -547,10 +550,10 @@ with the specified URL prefixes.</p>
       <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>
   </div>
   <div>
-      <a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a>
+      <span class="xref">IDisposable</span>
   </div>
   <div>
-      <span class="xref">IDisposable</span>
+      <a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a>
   </div>
   <div>
       <a class="xref" href="EmbedIO.IMimeTypeCustomizer.html">IMimeTypeCustomizer</a>

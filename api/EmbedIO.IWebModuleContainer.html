@@ -87,7 +87,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
   <h5 id="EmbedIO_IWebModuleContainer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IWebModuleContainer : IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IWebModuleContainer</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -115,6 +115,34 @@
         <td><span class="xref">IComponentCollection</span>&lt;<a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>&gt;</td>
         <td><p>The modules.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_IWebModuleContainer_SharedItems_" data-uid="EmbedIO.IWebModuleContainer.SharedItems*"></a>
+  <h4 id="EmbedIO_IWebModuleContainer_SharedItems" data-uid="EmbedIO.IWebModuleContainer.SharedItems">SharedItems</h4>
+  <div class="markdown level1 summary"><p>Gets a dictionary of data shared among the modules in a container.</p>
+<p>This API mainly supports the EmbedIO infrastructure; it is not intended to be used
+directly from your code, unless to address specific needs in module development.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ConcurrentDictionary&lt;object, object&gt; SharedItems { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ConcurrentDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class BasicAuthenticationModuleBase
+    <title>Class AuthenticationModuleBase
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class BasicAuthenticationModuleBase
+    <meta name="title" content="Class AuthenticationModuleBase
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,21 +76,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Authentication.AuthenticationModuleBase">
   
   
-  <h1 id="EmbedIO_Authentication_BasicAuthenticationModuleBase" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase" class="text-break">Class BasicAuthenticationModuleBase
+  <h1 id="EmbedIO_Authentication_AuthenticationModuleBase" data-uid="EmbedIO.Authentication.AuthenticationModuleBase" class="text-break">Class AuthenticationModuleBase
   </h1>
-  <div class="markdown level0 summary"><p>Base class for authentication modules using <a href="https://tools.ietf.org/html/rfc7617">HTTP basic authentication</a>.</p>
+  <div class="markdown level0 summary"><p>Base class for authentication modules.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="EmbedIO.WebModuleBase.html">WebModuleBase</a></div>
-    <div class="level2"><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html">AuthenticationModuleBase</a></div>
-    <div class="level3"><span class="xref">BasicAuthenticationModuleBase</span></div>
-      <div class="level4"><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a></div>
+    <div class="level2"><span class="xref">AuthenticationModuleBase</span></div>
+      <div class="level3"><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.html">BasicAuthenticationModuleBase</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -99,18 +98,6 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_IsFinalHandler">AuthenticationModuleBase.IsFinalHandler</a>
-    </div>
-    <div>
-      <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnRequestAsync_EmbedIO_IHttpContext_">AuthenticationModuleBase.OnRequestAsync(IHttpContext)</a>
-    </div>
-    <div>
-      <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials">AuthenticationModuleBase.OnMissingCredentials</a>
-    </div>
-    <div>
-      <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials">AuthenticationModuleBase.OnInvalidCredentials</a>
-    </div>
     <div>
       <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Container">WebModuleBase.Container</a>
     </div>
@@ -143,22 +130,22 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Authentication.html">EmbedIO.Authentication</a></h6>
-  <h5 id="EmbedIO_Authentication_BasicAuthenticationModuleBase_syntax">Syntax</h5>
+  <h5 id="EmbedIO_Authentication_AuthenticationModuleBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class BasicAuthenticationModuleBase : AuthenticationModuleBase, IWebModuleImpl, IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class AuthenticationModuleBase : WebModuleBase, IWebModuleImpl, IWebModule</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor*"></a>
-  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_String_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.#ctor(System.String,System.String)">BasicAuthenticationModuleBase(String, String)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.html">BasicAuthenticationModuleBase</a> class.</p>
+  <a id="EmbedIO_Authentication_AuthenticationModuleBase__ctor_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.#ctor*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBase__ctor_System_String_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.#ctor(System.String)">AuthenticationModuleBase(String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html">AuthenticationModuleBase</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected BasicAuthenticationModuleBase(string baseRoute, string realm)</code></pre>
+    <pre><code class="lang-csharp hljs">protected AuthenticationModuleBase(string baseRoute)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,45 +160,6 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">baseRoute</span></td>
-        <td><p>The base URL path.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">realm</span></td>
-        <td><p>The authentication realm.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="EmbedIO_Authentication_BasicAuthenticationModuleBase__ctor_System_String_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">realm</code> is <span class="xref">null</span> or the empty string,
-the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_Realm">Realm</a> property will be set equal to
-<a class="xref" href="EmbedIO.IWebModule.html#EmbedIO_IWebModule_BaseRoute">BaseRoute</a>.</p>
-</div>
-  <h3 id="fields">Fields
-  </h3>
-  
-  
-  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleBase_AuthenticationType" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticationType">AuthenticationType</h4>
-  <div class="markdown level1 summary"><p>The authentication type used by this module.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AuthenticationType = &quot;Basic&quot;</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -220,14 +168,15 @@ the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.h
   </h3>
   
   
-  <a id="EmbedIO_Authentication_BasicAuthenticationModuleBase_Realm_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.Realm*"></a>
-  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleBase_Realm" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.Realm">Realm</h4>
-  <div class="markdown level1 summary"><p>Gets the authentication realm.</p>
+  <a id="EmbedIO_Authentication_AuthenticationModuleBase_IsFinalHandler_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBase_IsFinalHandler" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler">IsFinalHandler</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether processing of a request should stop
+after a module has handled it.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Realm { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override sealed bool IsFinalHandler { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -239,17 +188,100 @@ the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.h
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_IsFinalHandler">WebModuleBase.IsFinalHandler</a></div>
+  <h5 id="EmbedIO_Authentication_AuthenticationModuleBase_IsFinalHandler_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Authentication modules, i.e. modules derived from
+<a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html">AuthenticationModuleBase</a>, always have this property
+set to <span class="xref">false</span>.</p>
+</div>
+  <h5 id="EmbedIO_Authentication_AuthenticationModuleBase_IsFinalHandler_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IHttpContext.html#EmbedIO_IHttpContext_IsHandled">IsHandled</a></div>
+      <div><a class="xref" href="EmbedIO.IHttpContext.html#EmbedIO_IHttpContext_SetHandled">SetHandled</a>()</div>
+  </div>
+  
+  
+  <a id="EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials">OnInvalidCredentials</h4>
+  <div class="markdown level1 summary"><p>Gets or sets an <a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a> that is called if
+a request contains invalid credentials.</p>
+<p>The default is
+<a class="xref" href="EmbedIO.Authentication.AuthenticationHandler.html#EmbedIO_Authentication_AuthenticationHandler_Unauthorized_EmbedIO_IHttpContext_EmbedIO_Authentication_AuthenticationModuleBase_">Unauthorized(IHttpContext, AuthenticationModuleBase)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AuthenticationHandlerCallback OnInvalidCredentials { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext_">AuthenticateAsync(IHttpContext)</a></div>
+      <div><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials">OnMissingCredentials</a></div>
+      <div><a class="xref" href="EmbedIO.Authentication.AuthenticationHandler.html">AuthenticationHandler</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials">OnMissingCredentials</h4>
+  <div class="markdown level1 summary"><p>Gets or sets an <a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a> that is called if
+authentication could not take place. For example, <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModuleBase.html">BasicAuthenticationModuleBase</a>
+calls this handler if the request has no <code>Authorization</code> header.</p>
+<p>The default is
+<a class="xref" href="EmbedIO.Authentication.AuthenticationHandler.html#EmbedIO_Authentication_AuthenticationHandler_Unauthorized_EmbedIO_IHttpContext_EmbedIO_Authentication_AuthenticationModuleBase_">Unauthorized(IHttpContext, AuthenticationModuleBase)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AuthenticationHandlerCallback OnMissingCredentials { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext_">AuthenticateAsync(IHttpContext)</a></div>
+      <div><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials">OnInvalidCredentials</a></div>
+      <div><a class="xref" href="EmbedIO.Authentication.AuthenticationHandler.html">AuthenticationHandler</a></div>
+  </div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="EmbedIO_Authentication_BasicAuthenticationModuleBase_AuthenticateAsync_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync*"></a>
-  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)">AuthenticateAsync(IHttpContext)</h4>
+  <a id="EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)">AuthenticateAsync(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Asynchronously authenticates a user, based on a request&apos;s contents,
 yielding an <see cref="!:IPrincipal"></see> interface that will be assigned to
 the HTTP context&apos;s <a class="xref" href="EmbedIO.IHttpContext.html#EmbedIO_IHttpContext_User">User</a> property
@@ -258,7 +290,7 @@ for use by other modules.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override sealed Task&lt;IPrincipal&gt; AuthenticateAsync(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract Task&lt;IPrincipal&gt; AuthenticateAsync(IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -306,9 +338,7 @@ non-empty strings.</td></tr></tbody></table></p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext_">AuthenticationModuleBase.AuthenticateAsync(IHttpContext)</a></div>
-  <h5 id="EmbedIO_Authentication_BasicAuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext__remarks">Remarks</h5>
+  <h5 id="EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>this method will not be called if the <see cref="!:IPrincipal"></see> property assigned to the
 <a class="xref" href="EmbedIO.IHttpContext.html#EmbedIO_IHttpContext_User">User</a> property of <code data-dev-comment-type="paramref" class="paramref">context</code> has an
 <see cref="!:IPrincipal.Identity">Identity</see> with a non-empty
@@ -319,14 +349,14 @@ will cause subsequent authentication modules to skip processing the HTTP context
 </div>
   
   
-  <a id="EmbedIO_Authentication_BasicAuthenticationModuleBase_VerifyCredentialsAsync_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync*"></a>
-  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleBase_VerifyCredentialsAsync_System_String_System_String_System_String_IList_System_String__CancellationToken_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String,System.String,System.String,IList{System.String},CancellationToken)">VerifyCredentialsAsync(String, String, String, IList&lt;String&gt;, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Verifies the credentials given in the <code>Authentication</code> request header.</p>
+  <a id="EmbedIO_Authentication_AuthenticationModuleBase_OnRequestAsync_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBase_OnRequestAsync_EmbedIO_IHttpContext_" data-uid="EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync(EmbedIO.IHttpContext)">OnRequestAsync(IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Called to handle a request from a client.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract Task&lt;bool&gt; VerifyCredentialsAsync(string path, string userName, string password, IList&lt;string&gt; roles, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override sealed Task OnRequestAsync(IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -339,34 +369,9 @@ will cause subsequent authentication modules to skip processing the HTTP context
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">path</span></td>
-        <td><p>The URL path requested by the client. Note that this is relative
-to the module&apos;s <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_BaseRoute">BaseRoute</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">userName</span></td>
-        <td><p>The user name.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">password</span></td>
-        <td><p>The password, or the empty string if none has been given.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">IList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">roles</span></td>
-        <td><p>A list to which the user&apos;s roles can be added.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>A <see cref="!:CancellationToken"></see> use to cancel the operation.</p>
+        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context of the request being handled.</p>
 </td>
       </tr>
     </tbody>
@@ -381,13 +386,14 @@ to the module&apos;s <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_We
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
-        <td><p>A <see cref="!:Task&lt;TResult>"></see> whose result will be <span class="xref">true</span> if the given credentials
-are valid, <span class="xref">false</span> if they are not.</p>
+        <td><span class="xref">Task</span></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnRequestAsync_EmbedIO_IHttpContext_">WebModuleBase.OnRequestAsync(IHttpContext)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a>

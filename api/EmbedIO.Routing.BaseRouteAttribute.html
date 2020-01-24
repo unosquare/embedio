@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class WebSocketException
+    <title>Class BaseRouteAttribute
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class WebSocketException
+    <meta name="title" content="Class BaseRouteAttribute
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,54 +76,82 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.WebSockets.WebSocketException">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Routing.BaseRouteAttribute">
   
   
-  <h1 id="EmbedIO_WebSockets_WebSocketException" data-uid="EmbedIO.WebSockets.WebSocketException" class="text-break">Class WebSocketException
+  <h1 id="EmbedIO_Routing_BaseRouteAttribute" data-uid="EmbedIO.Routing.BaseRouteAttribute" class="text-break">Class BaseRouteAttribute
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a WebSocket gets a fatal error.</p>
+  <div class="markdown level0 summary"><p>Decorate methods within controllers with this attribute in order to make them callable from the Web API Module
+Method Must match the WebServerModule.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">WebSocketException</span></div>
+    <div class="level1"><a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a></div>
+    <div class="level2"><span class="xref">BaseRouteAttribute</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.WebSockets.html">EmbedIO.WebSockets</a></h6>
-  <h5 id="EmbedIO_WebSockets_WebSocketException_syntax">Syntax</h5>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_Verb">RouteAttribute.Verb</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_Matcher">RouteAttribute.Matcher</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_Route">RouteAttribute.Route</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_IsBaseRoute">RouteAttribute.IsBaseRoute</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
+  <h5 id="EmbedIO_Routing_BaseRouteAttribute_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WebSocketException : Exception</code></pre>
+    <pre><code class="lang-csharp hljs">public class BaseRouteAttribute : RouteAttribute</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="EmbedIO_WebSockets_WebSocketException_Code_" data-uid="EmbedIO.WebSockets.WebSocketException.Code*"></a>
-  <h4 id="EmbedIO_WebSockets_WebSocketException_Code" data-uid="EmbedIO.WebSockets.WebSocketException.Code">Code</h4>
-  <div class="markdown level1 summary"><p>Gets the status code indicating the cause of the exception.</p>
+  <a id="EmbedIO_Routing_BaseRouteAttribute__ctor_" data-uid="EmbedIO.Routing.BaseRouteAttribute.#ctor*"></a>
+  <h4 id="EmbedIO_Routing_BaseRouteAttribute__ctor_EmbedIO_HttpVerbs_System_String_" data-uid="EmbedIO.Routing.BaseRouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String)">BaseRouteAttribute(HttpVerbs, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Routing.BaseRouteAttribute.html">BaseRouteAttribute</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CloseStatusCode Code { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public BaseRouteAttribute(HttpVerbs verb, string route)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.WebSockets.CloseStatusCode.html">CloseStatusCode</a></td>
-        <td><p>One of the <a class="xref" href="EmbedIO.WebSockets.CloseStatusCode.html">CloseStatusCode</a> enum values, represents the status code
-indicating the cause of the exception.</p>
+        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>The verb.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 id="EmbedIO_Routing_BaseRouteAttribute__ctor_EmbedIO_HttpVerbs_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.Route.html#EmbedIO_Routing_Route_IsValid_System_String_System_Boolean_">IsValid(String, Boolean)</a></div>
+  </div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

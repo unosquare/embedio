@@ -123,13 +123,13 @@ for a context.</p>
   
   
   <a id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.Add*"></a>
-  <h4 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,System.String,EmbedIO.Routing.RouteHandlerCallback)">Add(TData, String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">Add(TData, RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates some data and a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Add(TData data, string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Add(TData data, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -149,9 +149,9 @@ suitable to be handled by <code data-dev-comment-type="paramref" class="paramref
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>to match URL paths against.</p>
 </td>
       </tr>
       <tr>
@@ -162,22 +162,22 @@ suitable to be handled by <code data-dev-comment-type="paramref" class="paramref
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_RouteHandlerCallback__seealso">See Also</h5>
+  <h5 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync(IHttpContext)</a></div>
-      <div><a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_">Add(TData, String, SyncRouteHandlerCallback)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_">Add(TData, RouteMatcher, SyncRouteHandlerCallback)</a></div>
       <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_RouteHandlerCallback_">Add</a>(TData, <a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a>)</div>
   </div>
   
   
   <a id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.Add*"></a>
-  <h4 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">Add(TData, String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">Add(TData, RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates some data and a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Add(TData data, string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Add(TData data, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,9 +197,9 @@ suitable to be handled by <code data-dev-comment-type="paramref" class="paramref
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>to match URL paths against.</p>
 </td>
       </tr>
       <tr>
@@ -210,18 +210,18 @@ suitable to be handled by <code data-dev-comment-type="paramref" class="paramref
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_SyncRouteHandlerCallback__seealso">See Also</h5>
+  <h5 id="EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync(IHttpContext)</a></div>
-      <div><a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_RouteHandlerCallback_">Add(TData, String, RouteHandlerCallback)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(TData, RouteMatcher, RouteHandlerCallback)</a></div>
       <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_SyncRouteHandlerCallback_">Add</a>(TData, <a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a>)</div>
   </div>
   
   
   <a id="EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver*"></a>
-  <h4 id="EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_System_String_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver(System.String)">CreateResolver(String)</h4>
-  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_RouteHandlerCallback_">Add(TData, String, RouteHandlerCallback)</a>
-and <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_">Add(TData, String, SyncRouteHandlerCallback)</a> to create an instance
+  <h4 id="EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_EmbedIO_Routing_RouteMatcher_" data-uid="EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver(EmbedIO.Routing.RouteMatcher)">CreateResolver(RouteMatcher)</h4>
+  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(TData, RouteMatcher, RouteHandlerCallback)</a>
+and <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_">Add(TData, RouteMatcher, SyncRouteHandlerCallback)</a> to create an instance
 of <code data-dev-comment-type="typeparamref" class="typeparamref">TResolver</code> that can resolve the specified route.</p>
 <p>If this method returns <span class="xref">null</span>, an <see cref="!:InvalidOperationException"></see>
 is thrown by the calling method.</p>
@@ -229,7 +229,7 @@ is thrown by the calling method.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract TResolver CreateResolver(string route)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract TResolver CreateResolver(RouteMatcher matcher)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -242,9 +242,9 @@ is thrown by the calling method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to resolve.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>to match URL paths against.</p>
 </td>
       </tr>
     </tbody>

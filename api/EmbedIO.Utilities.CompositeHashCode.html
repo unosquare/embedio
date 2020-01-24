@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class RouteVerbResolver
+    <title>Class CompositeHashCode
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class RouteVerbResolver
+    <meta name="title" content="Class CompositeHashCode
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,92 +76,118 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.Routing.RouteVerbResolver">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Utilities.CompositeHashCode">
   
   
-  <h1 id="EmbedIO_Routing_RouteVerbResolver" data-uid="EmbedIO.Routing.RouteVerbResolver" class="text-break">Class RouteVerbResolver
+  <h1 id="EmbedIO_Utilities_CompositeHashCode" data-uid="EmbedIO.Utilities.CompositeHashCode" class="text-break">Class CompositeHashCode
   </h1>
-  <div class="markdown level0 summary"><p>Handles a HTTP request by matching it against a route,
-possibly handling different HTTP methods via different handlers.</p>
+  <div class="markdown level0 summary"><p>Provides a way for types that override <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">GetHashCode()</a>
+to correctly generate a hash code from the actual status of an instance.</p>
+<p><code>CompositeHashCode</code> must be used ONLY as a helper when implementing
+<see cref="!:IEquatable&lt;T>">IEquatable&lt;T&gt;</see> in a STANDARD way, i.e. when:</p>
+<ul><li>two instances having the same hash code are actually
+    interchangeable, i.e. they represent exactly the same object (for instance,
+    they should not coexist in a
+<see cref="!:SortedSet&lt;T>">SortedSet</see>);</li><li><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">GetHashCode()</a> and
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Equals(Object)</a> are BOTH overridden, and the <code>Equals</code>
+override either calls to the <see cref="!:IEquatable&lt;T>.Equals(T)">IEquatable&lt;T&gt;.Equals</see>
+(recommended) or performs exactly the same equality checks;</li><li>only &quot;standard&quot; equality checks are performed, i.e. by means of the
+<code>==</code> operator, <see cref="!:IEquatable&lt;T>">IEquatable&lt;T&gt;</see> interfaces, and
+the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Equals(Object)</a> method (for instance, this excludes case-insensitive
+and/or culture-dependent string comparisons);
+</li><li>the hash code is constructed (via <code>Using</code> calls) from the very same
+fields and / or properties that are checked for equality.</li></ul>
+<p>For hashing to work correctly, all fields and/or properties involved in hashing must either
+be immutable, or at least not change while an object is referenced in a hashtable.
+This does not refer just to <code>System.Collections.Hashtable</code>; the .NET
+Framework makes a fairly extensive use of hashing, for example in
+<see cref="!:SortedSet&lt;T>">SortedSet&lt;T&gt;</see>
+and in various parts of LINQ. As a thumb rule, an object must stay the same during the execution of a
+LINQ query on an <see cref="!:IEnumerable&lt;T>">IEnumerable</see>
+in which it is contained, as well as all the time it is referenced in a <code>Hashtable</code> or <code>SortedSet</code>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html">RouteResolverBase</a>&lt;<a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a>&gt;</div>
-    <div class="level2"><span class="xref">RouteVerbResolver</span></div>
+    <div class="level1"><span class="xref">CompositeHashCode</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Matcher">RouteResolverBase&lt;HttpVerbs&gt;.Matcher</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Route">RouteResolverBase&lt;HttpVerbs&gt;.Route</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute">RouteResolverBase&lt;HttpVerbs&gt;.IsBaseRoute</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_RouteHandlerCallback_">RouteResolverBase&lt;HttpVerbs&gt;.Add(HttpVerbs, RouteHandlerCallback)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_SyncRouteHandlerCallback_">RouteResolverBase&lt;HttpVerbs&gt;.Add(HttpVerbs, SyncRouteHandlerCallback)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Lock">RouteResolverBase&lt;HttpVerbs&gt;.Lock()</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">RouteResolverBase&lt;HttpVerbs&gt;.ResolveAsync(IHttpContext)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
-  <h5 id="EmbedIO_Routing_RouteVerbResolver_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Utilities.html">EmbedIO.Utilities</a></h6>
+  <h5 id="EmbedIO_Utilities_CompositeHashCode_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class RouteVerbResolver : RouteResolverBase&lt;HttpVerbs&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public static class CompositeHashCode</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="EmbedIO_Routing_RouteVerbResolver__ctor_" data-uid="EmbedIO.Routing.RouteVerbResolver.#ctor*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolver__ctor_EmbedIO_Routing_RouteMatcher_" data-uid="EmbedIO.Routing.RouteVerbResolver.#ctor(EmbedIO.Routing.RouteMatcher)">RouteVerbResolver(RouteMatcher)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Routing.RouteVerbResolver.html">RouteVerbResolver</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouteVerbResolver(RouteMatcher matcher)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
-        <td><span class="parametername">matcher</span></td>
-        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> to match URL paths against.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
+  <h5 id="EmbedIO_Utilities_CompositeHashCode_examples"><strong>Examples</strong></h5>
+  <p><p>The following code constitutes a minimal use case for <code>CompositeHashCode</code>, as well
+as a reference for standard <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable&lt;T&gt;</a> implementation.</p>
+<p>Notice that all relevant properties are immutable; this is not, as stated in the summary,
+an absolute requirement, but it surely helps and should be done every time it makes sense.</p></p>
+<pre><code>using System;
+using EmbedIO.Utilities;
+
+namespace Example
+{
+    public class Person : IEquatable&lt;Person>
+    {
+        public string Name { get; private set; }
+
+        public int Age { get; private set; }
+
+        public Person(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+
+        public override int GetHashCode() => CompositeHashCode.Using(Name, Age);
+
+        public override bool Equals(object obj) => obj is Person other &amp;&amp; Equals(other);
+
+        public bool Equals(Person other)
+            => other != null
+            &amp;&amp; other.Name == Name
+            &amp;&amp; other.Age == Age;
+    }
+}</code></pre>
+
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="EmbedIO_Routing_RouteVerbResolver_GetContextData_" data-uid="EmbedIO.Routing.RouteVerbResolver.GetContextData*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolver_GetContextData_EmbedIO_IHttpContext_" data-uid="EmbedIO.Routing.RouteVerbResolver.GetContextData(EmbedIO.IHttpContext)">GetContextData(IHttpContext)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="EmbedIO_Utilities_CompositeHashCode_Using_" data-uid="EmbedIO.Utilities.CompositeHashCode.Using*"></a>
+  <h4 id="EmbedIO_Utilities_CompositeHashCode_Using_System_Object___" data-uid="EmbedIO.Utilities.CompositeHashCode.Using(System.Object[])">Using(Object[])</h4>
+  <div class="markdown level1 summary"><p>Computes a hash code, taking into consideration the values of the specified
+fields and/oror properties as part of an object&apos;s state. See the
+<a class="xref" href="EmbedIO.Utilities.CompositeHashCode.html">CompositeHashCode</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override HttpVerbs GetContextData(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static int Using(params object[] fields)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,9 +200,10 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td><span class="parametername">fields</span></td>
+        <td><p>The values of the fields and/or properties.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -190,62 +217,12 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The computed has code.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerbs&gt;.GetContextData(EmbedIO.IHttpContext)</span></div>
-  
-  
-  <a id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_EmbedIO_HttpVerbs_EmbedIO_HttpVerbs_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData(EmbedIO.HttpVerbs,EmbedIO.HttpVerbs)">MatchContextData(HttpVerbs, HttpVerbs)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override bool MatchContextData(HttpVerbs contextVerb, HttpVerbs handlerVerb)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">contextVerb</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">handlerVerb</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerbs&gt;.MatchContextData(EmbedIO.HttpVerbs, EmbedIO.HttpVerbs)</span></div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

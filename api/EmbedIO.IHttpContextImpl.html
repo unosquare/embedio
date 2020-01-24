@@ -82,7 +82,8 @@
   <h1 id="EmbedIO_IHttpContextImpl" data-uid="EmbedIO.IHttpContextImpl" class="text-break">Interface IHttpContextImpl
   </h1>
   <div class="markdown level0 summary"><p>Represents a HTTP context implementation, i.e. a HTTP context as seen internally by EmbedIO.</p>
-<p>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</p>
+<p>This API mainly supports the EmbedIO infrastructure; it is not intended to be used directly from your code,
+unless to address specific needs in the implementation of EmbedIO plug-ins (e.g. modules).</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -237,7 +238,7 @@
     <tbody>
       <tr>
         <td><span class="xref">ISessionProxy</span></td>
-        <td><p>A <see cref="!:ISessionProxy"></see> interface.</p>
+        <td><p>An <see cref="!:ISessionProxy"></see> interface.</p>
 </td>
       </tr>
     </tbody>
@@ -334,7 +335,8 @@ and returns a newly-created <seealso cref="!:IWebSocketContext"></seealso> inter
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">acceptedProtocol</span></td>
-        <td><p>The accepted WebSocket sub-protocol.</p>
+        <td><p>The accepted WebSocket sub-protocol,
+or the empty string is no sub-protocol has been agreed upon.</p>
 </td>
       </tr>
       <tr>
@@ -368,7 +370,7 @@ and returns a newly-created <seealso cref="!:IWebSocketContext"></seealso> inter
     <tbody>
       <tr>
         <td><span class="xref">Task</span>&lt;<span class="xref">IWebSocketContext</span>&gt;</td>
-        <td><p>A <see cref="!:IWebSocketContext"></see> interface.</p>
+        <td><p>An <see cref="!:IWebSocketContext"></see> interface.</p>
 </td>
       </tr>
     </tbody>

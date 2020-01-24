@@ -179,14 +179,14 @@ most probably caused by an error in EmbedIO.</p>
   
   
   <a id="EmbedIO_EmbedIOInternalErrorException__ctor_" data-uid="EmbedIO.EmbedIOInternalErrorException.#ctor*"></a>
-  <h4 id="EmbedIO_EmbedIOInternalErrorException__ctor_System_String_Exception_" data-uid="EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,Exception)">EmbedIOInternalErrorException(String, Exception)</h4>
+  <h4 id="EmbedIO_EmbedIOInternalErrorException__ctor_System_String_System_Nullable_Exception__" data-uid="EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,System.Nullable{Exception})">EmbedIOInternalErrorException(String, Nullable&lt;Exception&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.EmbedIOInternalErrorException.html">EmbedIOInternalErrorException</a> class.</p>
 <p>This API supports the EmbedIO infrastructure and is not intended to be used directly from your code.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public EmbedIOInternalErrorException(string message, Exception innerException)</code></pre>
+    <pre><code class="lang-csharp hljs">public EmbedIOInternalErrorException(string message, Exception? innerException)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -205,10 +205,10 @@ most probably caused by an error in EmbedIO.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Exception</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Exception</span>&gt;</td>
         <td><span class="parametername">innerException</span></td>
         <td><p>The exception that is the cause of the current exception,
-or <span class="xref">null</span>  if no inner exception is specified.</p>
+or <span class="xref">null</span> if no inner exception is specified.</p>
 </td>
       </tr>
     </tbody>

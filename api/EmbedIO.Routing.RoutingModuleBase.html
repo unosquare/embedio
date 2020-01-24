@@ -93,10 +93,17 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a></div>
     <div><a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Container">WebModuleBase.Container</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container">WebModuleBase.IWebModuleImpl.Container</a>
+    </div>
     <div>
       <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_BaseRoute">WebModuleBase.BaseRoute</a>
     </div>
@@ -125,7 +132,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
   <h5 id="EmbedIO_Routing_RoutingModuleBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class RoutingModuleBase : WebModuleBase, IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class RoutingModuleBase : WebModuleBase, IWebModuleImpl, IWebModule</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -205,13 +212,13 @@ the context from being passed further along to other modules.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_AddHandler_" data-uid="EmbedIO.Routing.RoutingModuleBase.AddHandler*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.RouteHandlerCallback)">AddHandler(HttpVerbs, String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">AddHandler(HttpVerbs, RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates a HTTP method and a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void AddHandler(HttpVerbs verb, string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void AddHandler(HttpVerbs verb, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,9 +239,9 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -248,13 +255,13 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_AddHandler_" data-uid="EmbedIO.Routing.RoutingModuleBase.AddHandler*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">AddHandler(HttpVerbs, String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">AddHandler(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates a HTTP method and a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void AddHandler(HttpVerbs verb, string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void AddHandler(HttpVerbs verb, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -275,9 +282,9 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -338,13 +345,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnAny_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnAny*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnAny_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnAny(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnAny(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnAny_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnAny(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates all requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnAny(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnAny(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -357,9 +364,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -373,13 +380,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnAny_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnAny*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnAny_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnAny(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnAny(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnAny_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnAny(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates all requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnAny(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnAny(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -392,9 +399,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -408,13 +415,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnDelete_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnDelete*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnDelete_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnDelete(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnDelete_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnDelete(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>DELETE</code> requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnDelete(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnDelete(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -427,9 +434,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -443,13 +450,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnDelete_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnDelete*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnDelete_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnDelete(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnDelete_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnDelete(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>DELETE</code> requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnDelete(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnDelete(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -462,9 +469,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -478,13 +485,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnGet_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnGet*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnGet_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnGet(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnGet(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnGet_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnGet(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>GET</code> requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnGet(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnGet(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -497,9 +504,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -513,13 +520,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnGet_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnGet*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnGet_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnGet(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnGet(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnGet_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnGet(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>GET</code> requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnGet(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnGet(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -532,9 +539,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -548,13 +555,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnHead_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnHead*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnHead_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnHead(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnHead(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnHead_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnHead(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>HEAD</code> requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnHead(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnHead(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -567,9 +574,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -583,13 +590,13 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnHead_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnHead*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnHead_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnHead(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnHead(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnHead_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnHead(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>HEAD</code> requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnHead(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnHead(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -602,9 +609,9 @@ of <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -665,13 +672,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnOptions_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnOptions*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnOptions_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnOptions(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnOptions_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnOptions(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>OPTIONS</code> requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnOptions(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnOptions(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -684,9 +691,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -700,13 +707,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnOptions_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnOptions*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnOptions_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnOptions(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnOptions_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnOptions(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>OPTIONS</code> requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnOptions(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnOptions(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -719,9 +726,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -735,13 +742,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnPatch_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPatch*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPatch_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnPatch(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPatch_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnPatch(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>PATCH</code> requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnPatch(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnPatch(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -754,9 +761,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -770,13 +777,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnPatch_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPatch*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPatch_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPatch(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPatch_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPatch(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>PATCH</code> requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnPatch(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnPatch(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -789,9 +796,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -851,13 +858,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnPost_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPost*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPost_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPost(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnPost(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPost_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnPost(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>POST</code> requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnPost(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnPost(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -870,9 +877,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -886,13 +893,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnPost_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPost*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPost_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPost(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPost(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPost_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPost(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>POST</code> requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnPost(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnPost(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -905,9 +912,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -921,13 +928,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnPut_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPut*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPut_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPut(System.String,EmbedIO.Routing.RouteHandlerCallback)">OnPut(String, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPut_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnPut(RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>PUT</code> requests matching a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnPut(string route, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnPut(RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -940,9 +947,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -956,13 +963,13 @@ but none of them is associated with the HTTP method of the request.</p>
   
   
   <a id="EmbedIO_Routing_RoutingModuleBase_OnPut_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPut*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPut_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPut(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPut(String, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModuleBase_OnPut_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPut(RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>PUT</code> requests matching a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnPut(string route, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void OnPut(RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -975,9 +982,9 @@ but none of them is associated with the HTTP method of the request.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
-        <td><p>The route to match URL paths against.</p>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -1036,6 +1043,9 @@ but none of them is associated with the HTTP method of the request.</p>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnRequestAsync_EmbedIO_IHttpContext_">WebModuleBase.OnRequestAsync(IHttpContext)</a></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a>
+  </div>
   <div>
       <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>
   </div>

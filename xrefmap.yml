@@ -150,6 +150,204 @@ references:
   commentId: N:EmbedIO.Authentication
   fullName: EmbedIO.Authentication
   nameWithType: EmbedIO.Authentication
+- uid: EmbedIO.Authentication.Auth
+  name: Auth
+  href: api/EmbedIO.Authentication.Auth.html
+  commentId: T:EmbedIO.Authentication.Auth
+  fullName: EmbedIO.Authentication.Auth
+  nameWithType: Auth
+- uid: EmbedIO.Authentication.Auth.CreateUnauthenticatedPrincipal(System.String)
+  name: CreateUnauthenticatedPrincipal(String)
+  href: api/EmbedIO.Authentication.Auth.html#EmbedIO_Authentication_Auth_CreateUnauthenticatedPrincipal_System_String_
+  commentId: M:EmbedIO.Authentication.Auth.CreateUnauthenticatedPrincipal(System.String)
+  fullName: EmbedIO.Authentication.Auth.CreateUnauthenticatedPrincipal(System.String)
+  nameWithType: Auth.CreateUnauthenticatedPrincipal(String)
+- uid: EmbedIO.Authentication.Auth.CreateUnauthenticatedPrincipal*
+  name: CreateUnauthenticatedPrincipal
+  href: api/EmbedIO.Authentication.Auth.html#EmbedIO_Authentication_Auth_CreateUnauthenticatedPrincipal_
+  commentId: Overload:EmbedIO.Authentication.Auth.CreateUnauthenticatedPrincipal
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.Auth.CreateUnauthenticatedPrincipal
+  nameWithType: Auth.CreateUnauthenticatedPrincipal
+- uid: EmbedIO.Authentication.Auth.NoUser
+  name: NoUser
+  href: api/EmbedIO.Authentication.Auth.html#EmbedIO_Authentication_Auth_NoUser
+  commentId: P:EmbedIO.Authentication.Auth.NoUser
+  fullName: EmbedIO.Authentication.Auth.NoUser
+  nameWithType: Auth.NoUser
+- uid: EmbedIO.Authentication.Auth.NoUser*
+  name: NoUser
+  href: api/EmbedIO.Authentication.Auth.html#EmbedIO_Authentication_Auth_NoUser_
+  commentId: Overload:EmbedIO.Authentication.Auth.NoUser
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.Auth.NoUser
+  nameWithType: Auth.NoUser
+- uid: EmbedIO.Authentication.AuthenticationHandler
+  name: AuthenticationHandler
+  href: api/EmbedIO.Authentication.AuthenticationHandler.html
+  commentId: T:EmbedIO.Authentication.AuthenticationHandler
+  fullName: EmbedIO.Authentication.AuthenticationHandler
+  nameWithType: AuthenticationHandler
+- uid: EmbedIO.Authentication.AuthenticationHandler.PassThrough(EmbedIO.IHttpContext,EmbedIO.Authentication.AuthenticationModuleBase)
+  name: PassThrough(IHttpContext, AuthenticationModuleBase)
+  href: api/EmbedIO.Authentication.AuthenticationHandler.html#EmbedIO_Authentication_AuthenticationHandler_PassThrough_EmbedIO_IHttpContext_EmbedIO_Authentication_AuthenticationModuleBase_
+  commentId: M:EmbedIO.Authentication.AuthenticationHandler.PassThrough(EmbedIO.IHttpContext,EmbedIO.Authentication.AuthenticationModuleBase)
+  fullName: EmbedIO.Authentication.AuthenticationHandler.PassThrough(EmbedIO.IHttpContext, EmbedIO.Authentication.AuthenticationModuleBase)
+  nameWithType: AuthenticationHandler.PassThrough(IHttpContext, AuthenticationModuleBase)
+- uid: EmbedIO.Authentication.AuthenticationHandler.PassThrough*
+  name: PassThrough
+  href: api/EmbedIO.Authentication.AuthenticationHandler.html#EmbedIO_Authentication_AuthenticationHandler_PassThrough_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationHandler.PassThrough
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationHandler.PassThrough
+  nameWithType: AuthenticationHandler.PassThrough
+- uid: EmbedIO.Authentication.AuthenticationHandler.Unauthorized(EmbedIO.IHttpContext,EmbedIO.Authentication.AuthenticationModuleBase)
+  name: Unauthorized(IHttpContext, AuthenticationModuleBase)
+  href: api/EmbedIO.Authentication.AuthenticationHandler.html#EmbedIO_Authentication_AuthenticationHandler_Unauthorized_EmbedIO_IHttpContext_EmbedIO_Authentication_AuthenticationModuleBase_
+  commentId: M:EmbedIO.Authentication.AuthenticationHandler.Unauthorized(EmbedIO.IHttpContext,EmbedIO.Authentication.AuthenticationModuleBase)
+  fullName: EmbedIO.Authentication.AuthenticationHandler.Unauthorized(EmbedIO.IHttpContext, EmbedIO.Authentication.AuthenticationModuleBase)
+  nameWithType: AuthenticationHandler.Unauthorized(IHttpContext, AuthenticationModuleBase)
+- uid: EmbedIO.Authentication.AuthenticationHandler.Unauthorized(System.String,System.Object)
+  name: Unauthorized(String, Object)
+  href: api/EmbedIO.Authentication.AuthenticationHandler.html#EmbedIO_Authentication_AuthenticationHandler_Unauthorized_System_String_System_Object_
+  commentId: M:EmbedIO.Authentication.AuthenticationHandler.Unauthorized(System.String,System.Object)
+  fullName: EmbedIO.Authentication.AuthenticationHandler.Unauthorized(System.String, System.Object)
+  nameWithType: AuthenticationHandler.Unauthorized(String, Object)
+- uid: EmbedIO.Authentication.AuthenticationHandler.Unauthorized*
+  name: Unauthorized
+  href: api/EmbedIO.Authentication.AuthenticationHandler.html#EmbedIO_Authentication_AuthenticationHandler_Unauthorized_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationHandler.Unauthorized
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationHandler.Unauthorized
+  nameWithType: AuthenticationHandler.Unauthorized
+- uid: EmbedIO.Authentication.AuthenticationHandlerCallback
+  name: AuthenticationHandlerCallback
+  href: api/EmbedIO.Authentication.AuthenticationHandlerCallback.html
+  commentId: T:EmbedIO.Authentication.AuthenticationHandlerCallback
+  fullName: EmbedIO.Authentication.AuthenticationHandlerCallback
+  nameWithType: AuthenticationHandlerCallback
+- uid: EmbedIO.Authentication.AuthenticationModuleBase
+  name: AuthenticationModuleBase
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html
+  commentId: T:EmbedIO.Authentication.AuthenticationModuleBase
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase
+  nameWithType: AuthenticationModuleBase
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.#ctor(System.String)
+  name: AuthenticationModuleBase(String)
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase__ctor_System_String_
+  commentId: M:EmbedIO.Authentication.AuthenticationModuleBase.#ctor(System.String)
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.AuthenticationModuleBase(System.String)
+  nameWithType: AuthenticationModuleBase.AuthenticationModuleBase(String)
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.#ctor*
+  name: AuthenticationModuleBase
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase__ctor_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBase.#ctor
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.AuthenticationModuleBase
+  nameWithType: AuthenticationModuleBase.AuthenticationModuleBase
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)
+  name: AuthenticateAsync(IHttpContext)
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext_
+  commentId: M:EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)
+  nameWithType: AuthenticationModuleBase.AuthenticateAsync(IHttpContext)
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync*
+  name: AuthenticateAsync
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_AuthenticateAsync_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.AuthenticateAsync
+  nameWithType: AuthenticationModuleBase.AuthenticateAsync
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler
+  name: IsFinalHandler
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_IsFinalHandler
+  commentId: P:EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler
+  nameWithType: AuthenticationModuleBase.IsFinalHandler
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler*
+  name: IsFinalHandler
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_IsFinalHandler_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.IsFinalHandler
+  nameWithType: AuthenticationModuleBase.IsFinalHandler
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials
+  name: OnInvalidCredentials
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials
+  commentId: P:EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials
+  nameWithType: AuthenticationModuleBase.OnInvalidCredentials
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials*
+  name: OnInvalidCredentials
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.OnInvalidCredentials
+  nameWithType: AuthenticationModuleBase.OnInvalidCredentials
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials
+  name: OnMissingCredentials
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials
+  commentId: P:EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials
+  nameWithType: AuthenticationModuleBase.OnMissingCredentials
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials*
+  name: OnMissingCredentials
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.OnMissingCredentials
+  nameWithType: AuthenticationModuleBase.OnMissingCredentials
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync(EmbedIO.IHttpContext)
+  name: OnRequestAsync(IHttpContext)
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnRequestAsync_EmbedIO_IHttpContext_
+  commentId: M:EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync(EmbedIO.IHttpContext)
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync(EmbedIO.IHttpContext)
+  nameWithType: AuthenticationModuleBase.OnRequestAsync(IHttpContext)
+- uid: EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync*
+  name: OnRequestAsync
+  href: api/EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnRequestAsync_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBase.OnRequestAsync
+  nameWithType: AuthenticationModuleBase.OnRequestAsync
+- uid: EmbedIO.Authentication.AuthenticationModuleBaseExtensions
+  name: AuthenticationModuleBaseExtensions
+  href: api/EmbedIO.Authentication.AuthenticationModuleBaseExtensions.html
+  commentId: T:EmbedIO.Authentication.AuthenticationModuleBaseExtensions
+  fullName: EmbedIO.Authentication.AuthenticationModuleBaseExtensions
+  nameWithType: AuthenticationModuleBaseExtensions
+- uid: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials*
+  name: HandleInvalidCredentials
+  href: api/EmbedIO.Authentication.AuthenticationModuleBaseExtensions.html#EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleInvalidCredentials_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials
+  nameWithType: AuthenticationModuleBaseExtensions.HandleInvalidCredentials
+- uid: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials``1(``0,EmbedIO.Authentication.AuthenticationHandlerCallback)
+  name: HandleInvalidCredentials<TModule>(TModule, AuthenticationHandlerCallback)
+  href: api/EmbedIO.Authentication.AuthenticationModuleBaseExtensions.html#EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleInvalidCredentials__1___0_EmbedIO_Authentication_AuthenticationHandlerCallback_
+  commentId: M:EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials``1(``0,EmbedIO.Authentication.AuthenticationHandlerCallback)
+  name.vb: HandleInvalidCredentials(Of TModule)(TModule, AuthenticationHandlerCallback)
+  fullName: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials<TModule>(TModule, EmbedIO.Authentication.AuthenticationHandlerCallback)
+  fullName.vb: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials(Of TModule)(TModule, EmbedIO.Authentication.AuthenticationHandlerCallback)
+  nameWithType: AuthenticationModuleBaseExtensions.HandleInvalidCredentials<TModule>(TModule, AuthenticationHandlerCallback)
+  nameWithType.vb: AuthenticationModuleBaseExtensions.HandleInvalidCredentials(Of TModule)(TModule, AuthenticationHandlerCallback)
+- uid: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials*
+  name: HandleMissingCredentials
+  href: api/EmbedIO.Authentication.AuthenticationModuleBaseExtensions.html#EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleMissingCredentials_
+  commentId: Overload:EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials
+  nameWithType: AuthenticationModuleBaseExtensions.HandleMissingCredentials
+- uid: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials``1(``0,EmbedIO.Authentication.AuthenticationHandlerCallback)
+  name: HandleMissingCredentials<TModule>(TModule, AuthenticationHandlerCallback)
+  href: api/EmbedIO.Authentication.AuthenticationModuleBaseExtensions.html#EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleMissingCredentials__1___0_EmbedIO_Authentication_AuthenticationHandlerCallback_
+  commentId: M:EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials``1(``0,EmbedIO.Authentication.AuthenticationHandlerCallback)
+  name.vb: HandleMissingCredentials(Of TModule)(TModule, AuthenticationHandlerCallback)
+  fullName: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials<TModule>(TModule, EmbedIO.Authentication.AuthenticationHandlerCallback)
+  fullName.vb: EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials(Of TModule)(TModule, EmbedIO.Authentication.AuthenticationHandlerCallback)
+  nameWithType: AuthenticationModuleBaseExtensions.HandleMissingCredentials<TModule>(TModule, AuthenticationHandlerCallback)
+  nameWithType.vb: AuthenticationModuleBaseExtensions.HandleMissingCredentials(Of TModule)(TModule, AuthenticationHandlerCallback)
 - uid: EmbedIO.Authentication.BasicAuthenticationModule
   name: BasicAuthenticationModule
   href: api/EmbedIO.Authentication.BasicAuthenticationModule.html
@@ -182,12 +380,15 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Authentication.BasicAuthenticationModule.Accounts
   nameWithType: BasicAuthenticationModule.Accounts
-- uid: EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync(System.String,System.String,System.String,CancellationToken)
-  name: VerifyCredentialsAsync(String, String, String, CancellationToken)
-  href: api/EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_VerifyCredentialsAsync_System_String_System_String_System_String_CancellationToken_
-  commentId: M:EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync(System.String,System.String,System.String,CancellationToken)
-  fullName: EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync(System.String, System.String, System.String, CancellationToken)
-  nameWithType: BasicAuthenticationModule.VerifyCredentialsAsync(String, String, String, CancellationToken)
+- uid: EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync(System.String,System.String,System.String,IList{System.String},CancellationToken)
+  name: VerifyCredentialsAsync(String, String, String, IList<String>, CancellationToken)
+  href: api/EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_VerifyCredentialsAsync_System_String_System_String_System_String_IList_System_String__CancellationToken_
+  commentId: M:EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync(System.String,System.String,System.String,IList{System.String},CancellationToken)
+  name.vb: VerifyCredentialsAsync(String, String, String, IList(Of String), CancellationToken)
+  fullName: EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync(System.String, System.String, System.String, IList<System.String>, CancellationToken)
+  fullName.vb: EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync(System.String, System.String, System.String, IList(Of System.String), CancellationToken)
+  nameWithType: BasicAuthenticationModule.VerifyCredentialsAsync(String, String, String, IList<String>, CancellationToken)
+  nameWithType.vb: BasicAuthenticationModule.VerifyCredentialsAsync(String, String, String, IList(Of String), CancellationToken)
 - uid: EmbedIO.Authentication.BasicAuthenticationModule.VerifyCredentialsAsync*
   name: VerifyCredentialsAsync
   href: api/EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_VerifyCredentialsAsync_
@@ -214,32 +415,25 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.BasicAuthenticationModuleBase
   nameWithType: BasicAuthenticationModuleBase.BasicAuthenticationModuleBase
-- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.IsFinalHandler
-  name: IsFinalHandler
-  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_IsFinalHandler
-  commentId: P:EmbedIO.Authentication.BasicAuthenticationModuleBase.IsFinalHandler
-  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.IsFinalHandler
-  nameWithType: BasicAuthenticationModuleBase.IsFinalHandler
-- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.IsFinalHandler*
-  name: IsFinalHandler
-  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_IsFinalHandler_
-  commentId: Overload:EmbedIO.Authentication.BasicAuthenticationModuleBase.IsFinalHandler
+- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)
+  name: AuthenticateAsync(IHttpContext)
+  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_AuthenticateAsync_EmbedIO_IHttpContext_
+  commentId: M:EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)
+  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync(EmbedIO.IHttpContext)
+  nameWithType: BasicAuthenticationModuleBase.AuthenticateAsync(IHttpContext)
+- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync*
+  name: AuthenticateAsync
+  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_AuthenticateAsync_
+  commentId: Overload:EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync
   isSpec: "True"
-  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.IsFinalHandler
-  nameWithType: BasicAuthenticationModuleBase.IsFinalHandler
-- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.OnRequestAsync(EmbedIO.IHttpContext)
-  name: OnRequestAsync(IHttpContext)
-  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_OnRequestAsync_EmbedIO_IHttpContext_
-  commentId: M:EmbedIO.Authentication.BasicAuthenticationModuleBase.OnRequestAsync(EmbedIO.IHttpContext)
-  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.OnRequestAsync(EmbedIO.IHttpContext)
-  nameWithType: BasicAuthenticationModuleBase.OnRequestAsync(IHttpContext)
-- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.OnRequestAsync*
-  name: OnRequestAsync
-  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_OnRequestAsync_
-  commentId: Overload:EmbedIO.Authentication.BasicAuthenticationModuleBase.OnRequestAsync
-  isSpec: "True"
-  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.OnRequestAsync
-  nameWithType: BasicAuthenticationModuleBase.OnRequestAsync
+  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticateAsync
+  nameWithType: BasicAuthenticationModuleBase.AuthenticateAsync
+- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticationType
+  name: AuthenticationType
+  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_AuthenticationType
+  commentId: F:EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticationType
+  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.AuthenticationType
+  nameWithType: BasicAuthenticationModuleBase.AuthenticationType
 - uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.Realm
   name: Realm
   href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_Realm
@@ -253,12 +447,15 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.Realm
   nameWithType: BasicAuthenticationModuleBase.Realm
-- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String,System.String,System.String,CancellationToken)
-  name: VerifyCredentialsAsync(String, String, String, CancellationToken)
-  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_VerifyCredentialsAsync_System_String_System_String_System_String_CancellationToken_
-  commentId: M:EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String,System.String,System.String,CancellationToken)
-  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String, System.String, System.String, CancellationToken)
-  nameWithType: BasicAuthenticationModuleBase.VerifyCredentialsAsync(String, String, String, CancellationToken)
+- uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String,System.String,System.String,IList{System.String},CancellationToken)
+  name: VerifyCredentialsAsync(String, String, String, IList<String>, CancellationToken)
+  href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_VerifyCredentialsAsync_System_String_System_String_System_String_IList_System_String__CancellationToken_
+  commentId: M:EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String,System.String,System.String,IList{System.String},CancellationToken)
+  name.vb: VerifyCredentialsAsync(String, String, String, IList(Of String), CancellationToken)
+  fullName: EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String, System.String, System.String, IList<System.String>, CancellationToken)
+  fullName.vb: EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync(System.String, System.String, System.String, IList(Of System.String), CancellationToken)
+  nameWithType: BasicAuthenticationModuleBase.VerifyCredentialsAsync(String, String, String, IList<String>, CancellationToken)
+  nameWithType.vb: BasicAuthenticationModuleBase.VerifyCredentialsAsync(String, String, String, IList(Of String), CancellationToken)
 - uid: EmbedIO.Authentication.BasicAuthenticationModuleBase.VerifyCredentialsAsync*
   name: VerifyCredentialsAsync
   href: api/EmbedIO.Authentication.BasicAuthenticationModuleBase.html#EmbedIO_Authentication_BasicAuthenticationModuleBase_VerifyCredentialsAsync_
@@ -285,6 +482,22 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccount
   nameWithType: BasicAuthenticationModuleExtensions.WithAccount
+- uid: EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts(EmbedIO.Authentication.BasicAuthenticationModule,IEnumerable{KeyValuePair{System.String,System.String}})
+  name: WithAccounts(BasicAuthenticationModule, IEnumerable<KeyValuePair<String, String>>)
+  href: api/EmbedIO.Authentication.BasicAuthenticationModuleExtensions.html#EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccounts_EmbedIO_Authentication_BasicAuthenticationModule_IEnumerable_KeyValuePair_System_String_System_String___
+  commentId: M:EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts(EmbedIO.Authentication.BasicAuthenticationModule,IEnumerable{KeyValuePair{System.String,System.String}})
+  name.vb: WithAccounts(BasicAuthenticationModule, IEnumerable(Of KeyValuePair(Of String, String)))
+  fullName: EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts(EmbedIO.Authentication.BasicAuthenticationModule, IEnumerable<KeyValuePair<System.String, System.String>>)
+  fullName.vb: EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts(EmbedIO.Authentication.BasicAuthenticationModule, IEnumerable(Of KeyValuePair(Of System.String, System.String)))
+  nameWithType: BasicAuthenticationModuleExtensions.WithAccounts(BasicAuthenticationModule, IEnumerable<KeyValuePair<String, String>>)
+  nameWithType.vb: BasicAuthenticationModuleExtensions.WithAccounts(BasicAuthenticationModule, IEnumerable(Of KeyValuePair(Of String, String)))
+- uid: EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts*
+  name: WithAccounts
+  href: api/EmbedIO.Authentication.BasicAuthenticationModuleExtensions.html#EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccounts_
+  commentId: Overload:EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts
+  isSpec: "True"
+  fullName: EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts
+  nameWithType: BasicAuthenticationModuleExtensions.WithAccounts
 - uid: EmbedIO.CompressionMethod
   name: CompressionMethod
   href: api/EmbedIO.CompressionMethod.html
@@ -414,12 +627,15 @@ references:
   commentId: M:EmbedIO.EmbedIOInternalErrorException.#ctor(System.String)
   fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(System.String)
   nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException(String)
-- uid: EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,Exception)
-  name: EmbedIOInternalErrorException(String, Exception)
-  href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor_System_String_Exception_
-  commentId: M:EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,Exception)
-  fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(System.String, Exception)
-  nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException(String, Exception)
+- uid: EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,System.Nullable{Exception})
+  name: EmbedIOInternalErrorException(String, Nullable<Exception>)
+  href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor_System_String_System_Nullable_Exception__
+  commentId: M:EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,System.Nullable{Exception})
+  name.vb: EmbedIOInternalErrorException(String, Nullable(Of Exception))
+  fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(System.String, System.Nullable<Exception>)
+  fullName.vb: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(System.String, System.Nullable(Of Exception))
+  nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException(String, Nullable<Exception>)
+  nameWithType.vb: EmbedIOInternalErrorException.EmbedIOInternalErrorException(String, Nullable(Of Exception))
 - uid: EmbedIO.EmbedIOInternalErrorException.#ctor*
   name: EmbedIOInternalErrorException
   href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor_
@@ -1811,6 +2027,19 @@ references:
   commentId: T:EmbedIO.HttpContextExtensions
   fullName: EmbedIO.HttpContextExtensions
   nameWithType: HttpContextExtensions
+- uid: EmbedIO.HttpContextExtensions.GetImplementation(EmbedIO.IHttpContext)
+  name: GetImplementation(IHttpContext)
+  href: api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_GetImplementation_EmbedIO_IHttpContext_
+  commentId: M:EmbedIO.HttpContextExtensions.GetImplementation(EmbedIO.IHttpContext)
+  fullName: EmbedIO.HttpContextExtensions.GetImplementation(EmbedIO.IHttpContext)
+  nameWithType: HttpContextExtensions.GetImplementation(IHttpContext)
+- uid: EmbedIO.HttpContextExtensions.GetImplementation*
+  name: GetImplementation
+  href: api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_GetImplementation_
+  commentId: Overload:EmbedIO.HttpContextExtensions.GetImplementation
+  isSpec: "True"
+  fullName: EmbedIO.HttpContextExtensions.GetImplementation
+  nameWithType: HttpContextExtensions.GetImplementation
 - uid: EmbedIO.HttpContextExtensions.GetItem*
   name: GetItem
   href: api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_GetItem_
@@ -4468,6 +4697,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.IWebModule.BaseRoute
   nameWithType: IWebModule.BaseRoute
+- uid: EmbedIO.IWebModule.Container
+  name: Container
+  href: api/EmbedIO.IWebModule.html#EmbedIO_IWebModule_Container
+  commentId: P:EmbedIO.IWebModule.Container
+  fullName: EmbedIO.IWebModule.Container
+  nameWithType: IWebModule.Container
+- uid: EmbedIO.IWebModule.Container*
+  name: Container
+  href: api/EmbedIO.IWebModule.html#EmbedIO_IWebModule_Container_
+  commentId: Overload:EmbedIO.IWebModule.Container
+  isSpec: "True"
+  fullName: EmbedIO.IWebModule.Container
+  nameWithType: IWebModule.Container
 - uid: EmbedIO.IWebModule.HandleRequestAsync(EmbedIO.IHttpContext)
   name: HandleRequestAsync(IHttpContext)
   href: api/EmbedIO.IWebModule.html#EmbedIO_IWebModule_HandleRequestAsync_EmbedIO_IHttpContext_
@@ -4565,6 +4807,38 @@ references:
   isSpec: "True"
   fullName: EmbedIO.IWebModuleContainer.Modules
   nameWithType: IWebModuleContainer.Modules
+- uid: EmbedIO.IWebModuleContainer.SharedItems
+  name: SharedItems
+  href: api/EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_SharedItems
+  commentId: P:EmbedIO.IWebModuleContainer.SharedItems
+  fullName: EmbedIO.IWebModuleContainer.SharedItems
+  nameWithType: IWebModuleContainer.SharedItems
+- uid: EmbedIO.IWebModuleContainer.SharedItems*
+  name: SharedItems
+  href: api/EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_SharedItems_
+  commentId: Overload:EmbedIO.IWebModuleContainer.SharedItems
+  isSpec: "True"
+  fullName: EmbedIO.IWebModuleContainer.SharedItems
+  nameWithType: IWebModuleContainer.SharedItems
+- uid: EmbedIO.IWebModuleImpl
+  name: IWebModuleImpl
+  href: api/EmbedIO.IWebModuleImpl.html
+  commentId: T:EmbedIO.IWebModuleImpl
+  fullName: EmbedIO.IWebModuleImpl
+  nameWithType: IWebModuleImpl
+- uid: EmbedIO.IWebModuleImpl.Container
+  name: Container
+  href: api/EmbedIO.IWebModuleImpl.html#EmbedIO_IWebModuleImpl_Container
+  commentId: P:EmbedIO.IWebModuleImpl.Container
+  fullName: EmbedIO.IWebModuleImpl.Container
+  nameWithType: IWebModuleImpl.Container
+- uid: EmbedIO.IWebModuleImpl.Container*
+  name: Container
+  href: api/EmbedIO.IWebModuleImpl.html#EmbedIO_IWebModuleImpl_Container_
+  commentId: Overload:EmbedIO.IWebModuleImpl.Container
+  isSpec: "True"
+  fullName: EmbedIO.IWebModuleImpl.Container
+  nameWithType: IWebModuleImpl.Container
 - uid: EmbedIO.IWebServer
   name: IWebServer
   href: api/EmbedIO.IWebServer.html
@@ -4977,6 +5251,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.ModuleGroup.PreferCompression
   nameWithType: ModuleGroup.PreferCompression
+- uid: EmbedIO.ModuleGroup.SharedItems
+  name: SharedItems
+  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_SharedItems
+  commentId: P:EmbedIO.ModuleGroup.SharedItems
+  fullName: EmbedIO.ModuleGroup.SharedItems
+  nameWithType: ModuleGroup.SharedItems
+- uid: EmbedIO.ModuleGroup.SharedItems*
+  name: SharedItems
+  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_SharedItems_
+  commentId: Overload:EmbedIO.ModuleGroup.SharedItems
+  isSpec: "True"
+  fullName: EmbedIO.ModuleGroup.SharedItems
+  nameWithType: ModuleGroup.SharedItems
 - uid: EmbedIO.Net
   name: EmbedIO.Net
   href: api/EmbedIO.Net.html
@@ -5888,6 +6175,25 @@ references:
   commentId: N:EmbedIO.Routing
   fullName: EmbedIO.Routing
   nameWithType: EmbedIO.Routing
+- uid: EmbedIO.Routing.BaseRouteAttribute
+  name: BaseRouteAttribute
+  href: api/EmbedIO.Routing.BaseRouteAttribute.html
+  commentId: T:EmbedIO.Routing.BaseRouteAttribute
+  fullName: EmbedIO.Routing.BaseRouteAttribute
+  nameWithType: BaseRouteAttribute
+- uid: EmbedIO.Routing.BaseRouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String)
+  name: BaseRouteAttribute(HttpVerbs, String)
+  href: api/EmbedIO.Routing.BaseRouteAttribute.html#EmbedIO_Routing_BaseRouteAttribute__ctor_EmbedIO_HttpVerbs_System_String_
+  commentId: M:EmbedIO.Routing.BaseRouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String)
+  fullName: EmbedIO.Routing.BaseRouteAttribute.BaseRouteAttribute(EmbedIO.HttpVerbs, System.String)
+  nameWithType: BaseRouteAttribute.BaseRouteAttribute(HttpVerbs, String)
+- uid: EmbedIO.Routing.BaseRouteAttribute.#ctor*
+  name: BaseRouteAttribute
+  href: api/EmbedIO.Routing.BaseRouteAttribute.html#EmbedIO_Routing_BaseRouteAttribute__ctor_
+  commentId: Overload:EmbedIO.Routing.BaseRouteAttribute.#ctor
+  isSpec: "True"
+  fullName: EmbedIO.Routing.BaseRouteAttribute.BaseRouteAttribute
+  nameWithType: BaseRouteAttribute.BaseRouteAttribute
 - uid: EmbedIO.Routing.Route
   name: Route
   href: api/EmbedIO.Routing.Route.html
@@ -5926,12 +6232,12 @@ references:
   commentId: T:EmbedIO.Routing.RouteAttribute
   fullName: EmbedIO.Routing.RouteAttribute
   nameWithType: RouteAttribute
-- uid: EmbedIO.Routing.RouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String)
-  name: RouteAttribute(HttpVerbs, String)
-  href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute__ctor_EmbedIO_HttpVerbs_System_String_
-  commentId: M:EmbedIO.Routing.RouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String)
-  fullName: EmbedIO.Routing.RouteAttribute.RouteAttribute(EmbedIO.HttpVerbs, System.String)
-  nameWithType: RouteAttribute.RouteAttribute(HttpVerbs, String)
+- uid: EmbedIO.Routing.RouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String,System.Boolean)
+  name: RouteAttribute(HttpVerbs, String, Boolean)
+  href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute__ctor_EmbedIO_HttpVerbs_System_String_System_Boolean_
+  commentId: M:EmbedIO.Routing.RouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String,System.Boolean)
+  fullName: EmbedIO.Routing.RouteAttribute.RouteAttribute(EmbedIO.HttpVerbs, System.String, System.Boolean)
+  nameWithType: RouteAttribute.RouteAttribute(HttpVerbs, String, Boolean)
 - uid: EmbedIO.Routing.RouteAttribute.#ctor*
   name: RouteAttribute
   href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute__ctor_
@@ -5939,6 +6245,32 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteAttribute.RouteAttribute
   nameWithType: RouteAttribute.RouteAttribute
+- uid: EmbedIO.Routing.RouteAttribute.IsBaseRoute
+  name: IsBaseRoute
+  href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_IsBaseRoute
+  commentId: P:EmbedIO.Routing.RouteAttribute.IsBaseRoute
+  fullName: EmbedIO.Routing.RouteAttribute.IsBaseRoute
+  nameWithType: RouteAttribute.IsBaseRoute
+- uid: EmbedIO.Routing.RouteAttribute.IsBaseRoute*
+  name: IsBaseRoute
+  href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_IsBaseRoute_
+  commentId: Overload:EmbedIO.Routing.RouteAttribute.IsBaseRoute
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteAttribute.IsBaseRoute
+  nameWithType: RouteAttribute.IsBaseRoute
+- uid: EmbedIO.Routing.RouteAttribute.Matcher
+  name: Matcher
+  href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_Matcher
+  commentId: P:EmbedIO.Routing.RouteAttribute.Matcher
+  fullName: EmbedIO.Routing.RouteAttribute.Matcher
+  nameWithType: RouteAttribute.Matcher
+- uid: EmbedIO.Routing.RouteAttribute.Matcher*
+  name: Matcher
+  href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_Matcher_
+  commentId: Overload:EmbedIO.Routing.RouteAttribute.Matcher
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteAttribute.Matcher
+  nameWithType: RouteAttribute.Matcher
 - uid: EmbedIO.Routing.RouteAttribute.Route
   name: Route
   href: api/EmbedIO.Routing.RouteAttribute.html#EmbedIO_Routing_RouteAttribute_Route
@@ -6067,6 +6399,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteMatch.Names
   nameWithType: RouteMatch.Names
+- uid: EmbedIO.Routing.RouteMatch.None
+  name: None
+  href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_None
+  commentId: P:EmbedIO.Routing.RouteMatch.None
+  fullName: EmbedIO.Routing.RouteMatch.None
+  nameWithType: RouteMatch.None
+- uid: EmbedIO.Routing.RouteMatch.None*
+  name: None
+  href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_None_
+  commentId: Overload:EmbedIO.Routing.RouteMatch.None
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteMatch.None
+  nameWithType: RouteMatch.None
 - uid: EmbedIO.Routing.RouteMatch.Pairs
   name: Pairs
   href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_Pairs
@@ -6180,6 +6525,38 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteMatcher.ClearCache
   nameWithType: RouteMatcher.ClearCache
+- uid: EmbedIO.Routing.RouteMatcher.Equals(EmbedIO.Routing.RouteMatcher)
+  name: Equals(RouteMatcher)
+  href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_Equals_EmbedIO_Routing_RouteMatcher_
+  commentId: M:EmbedIO.Routing.RouteMatcher.Equals(EmbedIO.Routing.RouteMatcher)
+  fullName: EmbedIO.Routing.RouteMatcher.Equals(EmbedIO.Routing.RouteMatcher)
+  nameWithType: RouteMatcher.Equals(RouteMatcher)
+- uid: EmbedIO.Routing.RouteMatcher.Equals(System.Object)
+  name: Equals(Object)
+  href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_Equals_System_Object_
+  commentId: M:EmbedIO.Routing.RouteMatcher.Equals(System.Object)
+  fullName: EmbedIO.Routing.RouteMatcher.Equals(System.Object)
+  nameWithType: RouteMatcher.Equals(Object)
+- uid: EmbedIO.Routing.RouteMatcher.Equals*
+  name: Equals
+  href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_Equals_
+  commentId: Overload:EmbedIO.Routing.RouteMatcher.Equals
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteMatcher.Equals
+  nameWithType: RouteMatcher.Equals
+- uid: EmbedIO.Routing.RouteMatcher.GetHashCode
+  name: GetHashCode()
+  href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_GetHashCode
+  commentId: M:EmbedIO.Routing.RouteMatcher.GetHashCode
+  fullName: EmbedIO.Routing.RouteMatcher.GetHashCode()
+  nameWithType: RouteMatcher.GetHashCode()
+- uid: EmbedIO.Routing.RouteMatcher.GetHashCode*
+  name: GetHashCode
+  href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_GetHashCode_
+  commentId: Overload:EmbedIO.Routing.RouteMatcher.GetHashCode
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteMatcher.GetHashCode
+  nameWithType: RouteMatcher.GetHashCode
 - uid: EmbedIO.Routing.RouteMatcher.IsBaseRoute
   name: IsBaseRoute
   href: api/EmbedIO.Routing.RouteMatcher.html#EmbedIO_Routing_RouteMatcher_IsBaseRoute
@@ -6300,14 +6677,14 @@ references:
   fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData)
   nameWithType: RouteResolverBase<TData>
   nameWithType.vb: RouteResolverBase(Of TData)
-- uid: EmbedIO.Routing.RouteResolverBase`1.#ctor(System.String)
-  name: RouteResolverBase(String)
-  href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1__ctor_System_String_
-  commentId: M:EmbedIO.Routing.RouteResolverBase`1.#ctor(System.String)
-  fullName: EmbedIO.Routing.RouteResolverBase<TData>.RouteResolverBase(System.String)
-  fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).RouteResolverBase(System.String)
-  nameWithType: RouteResolverBase<TData>.RouteResolverBase(String)
-  nameWithType.vb: RouteResolverBase(Of TData).RouteResolverBase(String)
+- uid: EmbedIO.Routing.RouteResolverBase`1.#ctor(EmbedIO.Routing.RouteMatcher)
+  name: RouteResolverBase(RouteMatcher)
+  href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1__ctor_EmbedIO_Routing_RouteMatcher_
+  commentId: M:EmbedIO.Routing.RouteResolverBase`1.#ctor(EmbedIO.Routing.RouteMatcher)
+  fullName: EmbedIO.Routing.RouteResolverBase<TData>.RouteResolverBase(EmbedIO.Routing.RouteMatcher)
+  fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).RouteResolverBase(EmbedIO.Routing.RouteMatcher)
+  nameWithType: RouteResolverBase<TData>.RouteResolverBase(RouteMatcher)
+  nameWithType.vb: RouteResolverBase(Of TData).RouteResolverBase(RouteMatcher)
 - uid: EmbedIO.Routing.RouteResolverBase`1.#ctor*
   name: RouteResolverBase
   href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1__ctor_
@@ -6359,6 +6736,23 @@ references:
   fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).GetContextData
   nameWithType: RouteResolverBase<TData>.GetContextData
   nameWithType.vb: RouteResolverBase(Of TData).GetContextData
+- uid: EmbedIO.Routing.RouteResolverBase`1.IsBaseRoute
+  name: IsBaseRoute
+  href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute
+  commentId: P:EmbedIO.Routing.RouteResolverBase`1.IsBaseRoute
+  fullName: EmbedIO.Routing.RouteResolverBase<TData>.IsBaseRoute
+  fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).IsBaseRoute
+  nameWithType: RouteResolverBase<TData>.IsBaseRoute
+  nameWithType.vb: RouteResolverBase(Of TData).IsBaseRoute
+- uid: EmbedIO.Routing.RouteResolverBase`1.IsBaseRoute*
+  name: IsBaseRoute
+  href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute_
+  commentId: Overload:EmbedIO.Routing.RouteResolverBase`1.IsBaseRoute
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteResolverBase<TData>.IsBaseRoute
+  fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).IsBaseRoute
+  nameWithType: RouteResolverBase<TData>.IsBaseRoute
+  nameWithType.vb: RouteResolverBase(Of TData).IsBaseRoute
 - uid: EmbedIO.Routing.RouteResolverBase`1.Lock
   name: Lock()
   href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Lock
@@ -6393,6 +6787,23 @@ references:
   fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).MatchContextData
   nameWithType: RouteResolverBase<TData>.MatchContextData
   nameWithType.vb: RouteResolverBase(Of TData).MatchContextData
+- uid: EmbedIO.Routing.RouteResolverBase`1.Matcher
+  name: Matcher
+  href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Matcher
+  commentId: P:EmbedIO.Routing.RouteResolverBase`1.Matcher
+  fullName: EmbedIO.Routing.RouteResolverBase<TData>.Matcher
+  fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).Matcher
+  nameWithType: RouteResolverBase<TData>.Matcher
+  nameWithType.vb: RouteResolverBase(Of TData).Matcher
+- uid: EmbedIO.Routing.RouteResolverBase`1.Matcher*
+  name: Matcher
+  href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Matcher_
+  commentId: Overload:EmbedIO.Routing.RouteResolverBase`1.Matcher
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteResolverBase<TData>.Matcher
+  fullName.vb: EmbedIO.Routing.RouteResolverBase(Of TData).Matcher
+  nameWithType: RouteResolverBase<TData>.Matcher
+  nameWithType.vb: RouteResolverBase(Of TData).Matcher
 - uid: EmbedIO.Routing.RouteResolverBase`1.ResolveAsync(EmbedIO.IHttpContext)
   name: ResolveAsync(IHttpContext)
   href: api/EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_
@@ -6436,22 +6847,22 @@ references:
   fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver)
   nameWithType: RouteResolverCollectionBase<TData, TResolver>
   nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver)
-- uid: EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: Add(TData, String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RouteResolverCollectionBase<TData, TResolver>.Add(TData, System.String, EmbedIO.Routing.RouteHandlerCallback)
-  fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver).Add(TData, System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RouteResolverCollectionBase<TData, TResolver>.Add(TData, String, RouteHandlerCallback)
-  nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver).Add(TData, String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: Add(TData, String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RouteResolverCollectionBase<TData, TResolver>.Add(TData, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver).Add(TData, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RouteResolverCollectionBase<TData, TResolver>.Add(TData, String, SyncRouteHandlerCallback)
-  nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver).Add(TData, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: Add(TData, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RouteResolverCollectionBase<TData, TResolver>.Add(TData, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver).Add(TData, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RouteResolverCollectionBase<TData, TResolver>.Add(TData, RouteMatcher, RouteHandlerCallback)
+  nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver).Add(TData, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: Add(TData, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RouteResolverCollectionBase`2.Add(`0,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RouteResolverCollectionBase<TData, TResolver>.Add(TData, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver).Add(TData, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RouteResolverCollectionBase<TData, TResolver>.Add(TData, RouteMatcher, SyncRouteHandlerCallback)
+  nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver).Add(TData, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RouteResolverCollectionBase`2.Add*
   name: Add
   href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add_
@@ -6461,14 +6872,14 @@ references:
   fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver).Add
   nameWithType: RouteResolverCollectionBase<TData, TResolver>.Add
   nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver).Add
-- uid: EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver(System.String)
-  name: CreateResolver(String)
-  href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_System_String_
-  commentId: M:EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver(System.String)
-  fullName: EmbedIO.Routing.RouteResolverCollectionBase<TData, TResolver>.CreateResolver(System.String)
-  fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver).CreateResolver(System.String)
-  nameWithType: RouteResolverCollectionBase<TData, TResolver>.CreateResolver(String)
-  nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver).CreateResolver(String)
+- uid: EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver(EmbedIO.Routing.RouteMatcher)
+  name: CreateResolver(RouteMatcher)
+  href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_EmbedIO_Routing_RouteMatcher_
+  commentId: M:EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver(EmbedIO.Routing.RouteMatcher)
+  fullName: EmbedIO.Routing.RouteResolverCollectionBase<TData, TResolver>.CreateResolver(EmbedIO.Routing.RouteMatcher)
+  fullName.vb: EmbedIO.Routing.RouteResolverCollectionBase(Of TData, TResolver).CreateResolver(EmbedIO.Routing.RouteMatcher)
+  nameWithType: RouteResolverCollectionBase<TData, TResolver>.CreateResolver(RouteMatcher)
+  nameWithType.vb: RouteResolverCollectionBase(Of TData, TResolver).CreateResolver(RouteMatcher)
 - uid: EmbedIO.Routing.RouteResolverCollectionBase`2.CreateResolver*
   name: CreateResolver
   href: api/EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_
@@ -6552,12 +6963,12 @@ references:
   commentId: T:EmbedIO.Routing.RouteVerbResolver
   fullName: EmbedIO.Routing.RouteVerbResolver
   nameWithType: RouteVerbResolver
-- uid: EmbedIO.Routing.RouteVerbResolver.#ctor(System.String)
-  name: RouteVerbResolver(String)
-  href: api/EmbedIO.Routing.RouteVerbResolver.html#EmbedIO_Routing_RouteVerbResolver__ctor_System_String_
-  commentId: M:EmbedIO.Routing.RouteVerbResolver.#ctor(System.String)
-  fullName: EmbedIO.Routing.RouteVerbResolver.RouteVerbResolver(System.String)
-  nameWithType: RouteVerbResolver.RouteVerbResolver(String)
+- uid: EmbedIO.Routing.RouteVerbResolver.#ctor(EmbedIO.Routing.RouteMatcher)
+  name: RouteVerbResolver(RouteMatcher)
+  href: api/EmbedIO.Routing.RouteVerbResolver.html#EmbedIO_Routing_RouteVerbResolver__ctor_EmbedIO_Routing_RouteMatcher_
+  commentId: M:EmbedIO.Routing.RouteVerbResolver.#ctor(EmbedIO.Routing.RouteMatcher)
+  fullName: EmbedIO.Routing.RouteVerbResolver.RouteVerbResolver(EmbedIO.Routing.RouteMatcher)
+  nameWithType: RouteVerbResolver.RouteVerbResolver(RouteMatcher)
 - uid: EmbedIO.Routing.RouteVerbResolver.#ctor*
   name: RouteVerbResolver
   href: api/EmbedIO.Routing.RouteVerbResolver.html#EmbedIO_Routing_RouteVerbResolver__ctor_
@@ -6610,12 +7021,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteVerbResolverCollection.AddFrom
   nameWithType: RouteVerbResolverCollection.AddFrom
-- uid: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(System.String)
-  name: CreateResolver(String)
-  href: api/EmbedIO.Routing.RouteVerbResolverCollection.html#EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_System_String_
-  commentId: M:EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(System.String)
-  fullName: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(System.String)
-  nameWithType: RouteVerbResolverCollection.CreateResolver(String)
+- uid: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(EmbedIO.Routing.RouteMatcher)
+  name: CreateResolver(RouteMatcher)
+  href: api/EmbedIO.Routing.RouteVerbResolverCollection.html#EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_EmbedIO_Routing_RouteMatcher_
+  commentId: M:EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(EmbedIO.Routing.RouteMatcher)
+  fullName: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(EmbedIO.Routing.RouteMatcher)
+  nameWithType: RouteVerbResolverCollection.CreateResolver(RouteMatcher)
 - uid: EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver*
   name: CreateResolver
   href: api/EmbedIO.Routing.RouteVerbResolverCollection.html#EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_
@@ -6655,18 +7066,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModule.RoutingModule
   nameWithType: RoutingModule.RoutingModule
-- uid: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: Add(HttpVerbs, String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs, System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModule.Add(HttpVerbs, String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: Add(HttpVerbs, String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModule.Add(HttpVerbs, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModule.Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: Add(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModule.Add(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModule.Add*
   name: Add
   href: api/EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_
@@ -6706,18 +7117,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.RoutingModuleBase
   nameWithType: RoutingModuleBase.RoutingModuleBase
-- uid: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: AddHandler(HttpVerbs, String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs, System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.AddHandler(HttpVerbs, String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: AddHandler(HttpVerbs, String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.AddHandler(HttpVerbs, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: AddHandler(HttpVerbs, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.AddHandler(HttpVerbs, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: AddHandler(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.AddHandler(EmbedIO.HttpVerbs, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.AddHandler(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.AddHandler*
   name: AddHandler
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_
@@ -6751,18 +7162,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.IsFinalHandler
   nameWithType: RoutingModuleBase.IsFinalHandler
-- uid: EmbedIO.Routing.RoutingModuleBase.OnAny(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnAny(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnAny_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnAny(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnAny(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnAny(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnAny(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnAny(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnAny_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnAny(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnAny(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnAny(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnAny(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnAny_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnAny(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnAny(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnAny_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnAny(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnAny(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnAny*
   name: OnAny
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnAny_
@@ -6770,18 +7181,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.OnAny
   nameWithType: RoutingModuleBase.OnAny
-- uid: EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnDelete(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnDelete_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnDelete(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnDelete(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnDelete_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnDelete(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnDelete(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnDelete(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnDelete_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnDelete(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnDelete(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnDelete_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnDelete(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnDelete(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnDelete*
   name: OnDelete
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnDelete_
@@ -6789,18 +7200,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.OnDelete
   nameWithType: RoutingModuleBase.OnDelete
-- uid: EmbedIO.Routing.RoutingModuleBase.OnGet(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnGet(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnGet_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnGet(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnGet(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnGet(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnGet(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnGet(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnGet_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnGet(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnGet(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnGet(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnGet(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnGet_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnGet(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnGet(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnGet_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnGet(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnGet(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnGet*
   name: OnGet
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnGet_
@@ -6808,18 +7219,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.OnGet
   nameWithType: RoutingModuleBase.OnGet
-- uid: EmbedIO.Routing.RoutingModuleBase.OnHead(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnHead(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnHead_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnHead(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnHead(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnHead(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnHead(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnHead(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnHead_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnHead(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnHead(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnHead(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnHead(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnHead_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnHead(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnHead(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnHead_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnHead(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnHead(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnHead*
   name: OnHead
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnHead_
@@ -6840,18 +7251,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.OnMethodNotAllowedAsync
   nameWithType: RoutingModuleBase.OnMethodNotAllowedAsync
-- uid: EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnOptions(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnOptions_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnOptions(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnOptions(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnOptions_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnOptions(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnOptions(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnOptions(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnOptions_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnOptions(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnOptions(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnOptions_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnOptions(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnOptions(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnOptions*
   name: OnOptions
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnOptions_
@@ -6859,18 +7270,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.OnOptions
   nameWithType: RoutingModuleBase.OnOptions
-- uid: EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnPatch(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPatch_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnPatch(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnPatch(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPatch_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnPatch(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnPatch(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPatch(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPatch_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnPatch(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPatch(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPatch_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnPatch(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnPatch(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnPatch*
   name: OnPatch
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPatch_
@@ -6891,18 +7302,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.OnPathNotFoundAsync
   nameWithType: RoutingModuleBase.OnPathNotFoundAsync
-- uid: EmbedIO.Routing.RoutingModuleBase.OnPost(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnPost(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPost_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPost(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnPost(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnPost(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnPost(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnPost(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPost_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPost(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnPost(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnPost(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPost(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPost_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnPost(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPost(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPost_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnPost(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnPost(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnPost*
   name: OnPost
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPost_
@@ -6910,18 +7321,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleBase.OnPost
   nameWithType: RoutingModuleBase.OnPost
-- uid: EmbedIO.Routing.RoutingModuleBase.OnPut(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  name: OnPut(String, RouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPut_System_String_EmbedIO_Routing_RouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPut(System.String,EmbedIO.Routing.RouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnPut(System.String, EmbedIO.Routing.RouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnPut(String, RouteHandlerCallback)
-- uid: EmbedIO.Routing.RoutingModuleBase.OnPut(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  name: OnPut(String, SyncRouteHandlerCallback)
-  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPut_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_
-  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPut(System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
-  fullName: EmbedIO.Routing.RoutingModuleBase.OnPut(System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
-  nameWithType: RoutingModuleBase.OnPut(String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPut(RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPut_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnPut(RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPut(RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPut_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleBase.OnPut(EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleBase.OnPut(RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleBase.OnPut*
   name: OnPut
   href: api/EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnPut_
@@ -6948,6 +7359,18 @@ references:
   commentId: T:EmbedIO.Routing.RoutingModuleExtensions
   fullName: EmbedIO.Routing.RoutingModuleExtensions
   nameWithType: RoutingModuleExtensions
+- uid: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: Handle(RoutingModule, HttpVerbs, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule, EmbedIO.HttpVerbs, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.Handle(RoutingModule, HttpVerbs, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: Handle(RoutingModule, HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule, EmbedIO.HttpVerbs, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.Handle(RoutingModule, HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: Handle(RoutingModule, HttpVerbs, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -6960,6 +7383,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule, EmbedIO.HttpVerbs, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.Handle(RoutingModule, HttpVerbs, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: Handle(RoutingModule, HttpVerbs, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule, EmbedIO.HttpVerbs, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.Handle(RoutingModule, HttpVerbs, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: Handle(RoutingModule, HttpVerbs, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule, EmbedIO.HttpVerbs, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.Handle(RoutingModule, HttpVerbs, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.Handle*
   name: Handle
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_Handle_
@@ -6967,6 +7402,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.Handle
   nameWithType: RoutingModuleExtensions.Handle
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnAny(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnAny(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnAny(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnAny(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnAny(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -6979,6 +7426,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnAny(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnAny(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnAny(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnAny(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnAny(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnAny*
   name: OnAny
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnAny_
@@ -6986,6 +7445,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnAny
   nameWithType: RoutingModuleExtensions.OnAny
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnDelete(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnDelete(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnDelete(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnDelete(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnDelete(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -6998,6 +7469,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnDelete(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnDelete(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnDelete(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnDelete(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnDelete(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnDelete*
   name: OnDelete
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnDelete_
@@ -7005,6 +7488,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnDelete
   nameWithType: RoutingModuleExtensions.OnDelete
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnGet(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnGet(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnGet(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnGet(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnGet(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -7017,6 +7512,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnGet(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnGet(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnGet(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnGet(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnGet(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnGet*
   name: OnGet
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnGet_
@@ -7024,6 +7531,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnGet
   nameWithType: RoutingModuleExtensions.OnGet
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnHead(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnHead(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnHead(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnHead(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnHead(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -7036,6 +7555,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnHead(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnHead(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnHead(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnHead(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnHead(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnHead*
   name: OnHead
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnHead_
@@ -7043,6 +7574,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnHead
   nameWithType: RoutingModuleExtensions.OnHead
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnOptions(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnOptions(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnOptions(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnOptions(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnOptions(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -7055,6 +7598,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnOptions(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnOptions(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnOptions(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnOptions(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnOptions(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnOptions*
   name: OnOptions
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnOptions_
@@ -7062,6 +7617,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnOptions
   nameWithType: RoutingModuleExtensions.OnOptions
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPatch(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPatch(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPatch(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPatch(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnPatch(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -7074,6 +7641,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnPatch(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPatch(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPatch(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPatch(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPatch(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnPatch*
   name: OnPatch
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPatch_
@@ -7081,6 +7660,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPatch
   nameWithType: RoutingModuleExtensions.OnPatch
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPost(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPost(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPost(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPost(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnPost(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -7093,6 +7684,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnPost(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPost(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPost(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPost(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPost(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnPost*
   name: OnPost
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPost_
@@ -7100,6 +7703,18 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPost
   nameWithType: RoutingModuleExtensions.OnPost
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPut(RoutingModule, RouteMatcher, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPut(RoutingModule, RouteMatcher, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPut(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule, EmbedIO.Routing.RouteMatcher, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPut(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)
   name: OnPut(RoutingModule, String, RouteHandlerCallback)
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_
@@ -7112,6 +7727,18 @@ references:
   commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.SyncRouteHandlerCallback)
   fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule, System.String, EmbedIO.Routing.SyncRouteHandlerCallback)
   nameWithType: RoutingModuleExtensions.OnPut(RoutingModule, String, SyncRouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  name: OnPut(RoutingModule, String, Boolean, RouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.RouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPut(RoutingModule, String, Boolean, RouteHandlerCallback)
+- uid: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  name: OnPut(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
+  href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_
+  commentId: M:EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)
+  fullName: EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule, System.String, System.Boolean, EmbedIO.Routing.SyncRouteHandlerCallback)
+  nameWithType: RoutingModuleExtensions.OnPut(RoutingModule, String, Boolean, SyncRouteHandlerCallback)
 - uid: EmbedIO.Routing.RoutingModuleExtensions.OnPut*
   name: OnPut
   href: api/EmbedIO.Routing.RoutingModuleExtensions.html#EmbedIO_Routing_RoutingModuleExtensions_OnPut_
@@ -7882,12 +8509,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Sessions.ISessionManager.Create
   nameWithType: ISessionManager.Create
-- uid: EmbedIO.Sessions.ISessionManager.Delete(EmbedIO.IHttpContext,System.String)
-  name: Delete(IHttpContext, String)
-  href: api/EmbedIO.Sessions.ISessionManager.html#EmbedIO_Sessions_ISessionManager_Delete_EmbedIO_IHttpContext_System_String_
-  commentId: M:EmbedIO.Sessions.ISessionManager.Delete(EmbedIO.IHttpContext,System.String)
-  fullName: EmbedIO.Sessions.ISessionManager.Delete(EmbedIO.IHttpContext, System.String)
-  nameWithType: ISessionManager.Delete(IHttpContext, String)
+- uid: EmbedIO.Sessions.ISessionManager.Delete(EmbedIO.IHttpContext)
+  name: Delete(IHttpContext)
+  href: api/EmbedIO.Sessions.ISessionManager.html#EmbedIO_Sessions_ISessionManager_Delete_EmbedIO_IHttpContext_
+  commentId: M:EmbedIO.Sessions.ISessionManager.Delete(EmbedIO.IHttpContext)
+  fullName: EmbedIO.Sessions.ISessionManager.Delete(EmbedIO.IHttpContext)
+  nameWithType: ISessionManager.Delete(IHttpContext)
 - uid: EmbedIO.Sessions.ISessionManager.Delete*
   name: Delete
   href: api/EmbedIO.Sessions.ISessionManager.html#EmbedIO_Sessions_ISessionManager_Delete_
@@ -8086,12 +8713,12 @@ references:
   commentId: F:EmbedIO.Sessions.LocalSessionManager.DefaultSessionDuration
   fullName: EmbedIO.Sessions.LocalSessionManager.DefaultSessionDuration
   nameWithType: LocalSessionManager.DefaultSessionDuration
-- uid: EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext,System.String)
-  name: Delete(IHttpContext, String)
-  href: api/EmbedIO.Sessions.LocalSessionManager.html#EmbedIO_Sessions_LocalSessionManager_Delete_EmbedIO_IHttpContext_System_String_
-  commentId: M:EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext,System.String)
-  fullName: EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext, System.String)
-  nameWithType: LocalSessionManager.Delete(IHttpContext, String)
+- uid: EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext)
+  name: Delete(IHttpContext)
+  href: api/EmbedIO.Sessions.LocalSessionManager.html#EmbedIO_Sessions_LocalSessionManager_Delete_EmbedIO_IHttpContext_
+  commentId: M:EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext)
+  fullName: EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext)
+  nameWithType: LocalSessionManager.Delete(IHttpContext)
 - uid: EmbedIO.Sessions.LocalSessionManager.Delete*
   name: Delete
   href: api/EmbedIO.Sessions.LocalSessionManager.html#EmbedIO_Sessions_LocalSessionManager_Delete_
@@ -8358,6 +8985,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Sessions.SessionProxy.LastActivity
   nameWithType: SessionProxy.LastActivity
+- uid: EmbedIO.Sessions.SessionProxy.None
+  name: None
+  href: api/EmbedIO.Sessions.SessionProxy.html#EmbedIO_Sessions_SessionProxy_None
+  commentId: P:EmbedIO.Sessions.SessionProxy.None
+  fullName: EmbedIO.Sessions.SessionProxy.None
+  nameWithType: SessionProxy.None
+- uid: EmbedIO.Sessions.SessionProxy.None*
+  name: None
+  href: api/EmbedIO.Sessions.SessionProxy.html#EmbedIO_Sessions_SessionProxy_None_
+  commentId: Overload:EmbedIO.Sessions.SessionProxy.None
+  isSpec: "True"
+  fullName: EmbedIO.Sessions.SessionProxy.None
+  nameWithType: SessionProxy.None
 - uid: EmbedIO.Sessions.SessionProxy.Regenerate
   name: Regenerate()
   href: api/EmbedIO.Sessions.SessionProxy.html#EmbedIO_Sessions_SessionProxy_Regenerate
@@ -8422,6 +9062,28 @@ references:
   commentId: N:EmbedIO.Utilities
   fullName: EmbedIO.Utilities
   nameWithType: EmbedIO.Utilities
+- uid: EmbedIO.Utilities.CompositeHashCode
+  name: CompositeHashCode
+  href: api/EmbedIO.Utilities.CompositeHashCode.html
+  commentId: T:EmbedIO.Utilities.CompositeHashCode
+  fullName: EmbedIO.Utilities.CompositeHashCode
+  nameWithType: CompositeHashCode
+- uid: EmbedIO.Utilities.CompositeHashCode.Using(System.Object[])
+  name: Using(Object[])
+  href: api/EmbedIO.Utilities.CompositeHashCode.html#EmbedIO_Utilities_CompositeHashCode_Using_System_Object___
+  commentId: M:EmbedIO.Utilities.CompositeHashCode.Using(System.Object[])
+  name.vb: Using(Object())
+  fullName: EmbedIO.Utilities.CompositeHashCode.Using(System.Object[])
+  fullName.vb: EmbedIO.Utilities.CompositeHashCode.Using(System.Object())
+  nameWithType: CompositeHashCode.Using(Object[])
+  nameWithType.vb: CompositeHashCode.Using(Object())
+- uid: EmbedIO.Utilities.CompositeHashCode.Using*
+  name: Using
+  href: api/EmbedIO.Utilities.CompositeHashCode.html#EmbedIO_Utilities_CompositeHashCode_Using_
+  commentId: Overload:EmbedIO.Utilities.CompositeHashCode.Using
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.CompositeHashCode.Using
+  nameWithType: CompositeHashCode.Using
 - uid: EmbedIO.Utilities.HttpDate
   name: HttpDate
   href: api/EmbedIO.Utilities.HttpDate.html
@@ -8833,12 +9495,53 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding
   nameWithType: QValueListExtensions.TryNegotiateContentEncoding
+- uid: EmbedIO.Utilities.SelfCheck
+  name: SelfCheck
+  href: api/EmbedIO.Utilities.SelfCheck.html
+  commentId: T:EmbedIO.Utilities.SelfCheck
+  fullName: EmbedIO.Utilities.SelfCheck
+  nameWithType: SelfCheck
+- uid: EmbedIO.Utilities.SelfCheck.Failure(System.String)
+  name: Failure(String)
+  href: api/EmbedIO.Utilities.SelfCheck.html#EmbedIO_Utilities_SelfCheck_Failure_System_String_
+  commentId: M:EmbedIO.Utilities.SelfCheck.Failure(System.String)
+  fullName: EmbedIO.Utilities.SelfCheck.Failure(System.String)
+  nameWithType: SelfCheck.Failure(String)
+- uid: EmbedIO.Utilities.SelfCheck.Failure(System.String,System.Nullable{Exception})
+  name: Failure(String, Nullable<Exception>)
+  href: api/EmbedIO.Utilities.SelfCheck.html#EmbedIO_Utilities_SelfCheck_Failure_System_String_System_Nullable_Exception__
+  commentId: M:EmbedIO.Utilities.SelfCheck.Failure(System.String,System.Nullable{Exception})
+  name.vb: Failure(String, Nullable(Of Exception))
+  fullName: EmbedIO.Utilities.SelfCheck.Failure(System.String, System.Nullable<Exception>)
+  fullName.vb: EmbedIO.Utilities.SelfCheck.Failure(System.String, System.Nullable(Of Exception))
+  nameWithType: SelfCheck.Failure(String, Nullable<Exception>)
+  nameWithType.vb: SelfCheck.Failure(String, Nullable(Of Exception))
+- uid: EmbedIO.Utilities.SelfCheck.Failure*
+  name: Failure
+  href: api/EmbedIO.Utilities.SelfCheck.html#EmbedIO_Utilities_SelfCheck_Failure_
+  commentId: Overload:EmbedIO.Utilities.SelfCheck.Failure
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.SelfCheck.Failure
+  nameWithType: SelfCheck.Failure
 - uid: EmbedIO.Utilities.StringExtensions
   name: StringExtensions
   href: api/EmbedIO.Utilities.StringExtensions.html
   commentId: T:EmbedIO.Utilities.StringExtensions
   fullName: EmbedIO.Utilities.StringExtensions
   nameWithType: StringExtensions
+- uid: EmbedIO.Utilities.StringExtensions.NullIfEmpty(System.String)
+  name: NullIfEmpty(String)
+  href: api/EmbedIO.Utilities.StringExtensions.html#EmbedIO_Utilities_StringExtensions_NullIfEmpty_System_String_
+  commentId: M:EmbedIO.Utilities.StringExtensions.NullIfEmpty(System.String)
+  fullName: EmbedIO.Utilities.StringExtensions.NullIfEmpty(System.String)
+  nameWithType: StringExtensions.NullIfEmpty(String)
+- uid: EmbedIO.Utilities.StringExtensions.NullIfEmpty*
+  name: NullIfEmpty
+  href: api/EmbedIO.Utilities.StringExtensions.html#EmbedIO_Utilities_StringExtensions_NullIfEmpty_
+  commentId: Overload:EmbedIO.Utilities.StringExtensions.NullIfEmpty
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.StringExtensions.NullIfEmpty
+  nameWithType: StringExtensions.NullIfEmpty
 - uid: EmbedIO.Utilities.StringExtensions.SplitByAny(System.String,System.Char[])
   name: SplitByAny(String, Char[])
   href: api/EmbedIO.Utilities.StringExtensions.html#EmbedIO_Utilities_StringExtensions_SplitByAny_System_String_System_Char___
@@ -9849,6 +10552,36 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleBase.BaseRoute
   nameWithType: WebModuleBase.BaseRoute
+- uid: EmbedIO.WebModuleBase.Container
+  name: Container
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Container
+  commentId: P:EmbedIO.WebModuleBase.Container
+  fullName: EmbedIO.WebModuleBase.Container
+  nameWithType: WebModuleBase.Container
+- uid: EmbedIO.WebModuleBase.Container*
+  name: Container
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Container_
+  commentId: Overload:EmbedIO.WebModuleBase.Container
+  isSpec: "True"
+  fullName: EmbedIO.WebModuleBase.Container
+  nameWithType: WebModuleBase.Container
+- uid: EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container
+  name: IWebModuleImpl.Container
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container
+  commentId: P:EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container
+  name.vb: EmbedIO.IWebModuleImpl.Container
+  fullName: EmbedIO.WebModuleBase.EmbedIO.IWebModuleImpl.Container
+  nameWithType: WebModuleBase.IWebModuleImpl.Container
+  nameWithType.vb: WebModuleBase.EmbedIO.IWebModuleImpl.Container
+- uid: EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container*
+  name: IWebModuleImpl.Container
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container_
+  commentId: Overload:EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container
+  isSpec: "True"
+  name.vb: EmbedIO.IWebModuleImpl.Container
+  fullName: EmbedIO.WebModuleBase.EmbedIO.IWebModuleImpl.Container
+  nameWithType: WebModuleBase.IWebModuleImpl.Container
+  nameWithType.vb: WebModuleBase.EmbedIO.IWebModuleImpl.Container
 - uid: EmbedIO.WebModuleBase.HandleRequestAsync(EmbedIO.IHttpContext)
   name: HandleRequestAsync(IHttpContext)
   href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_HandleRequestAsync_EmbedIO_IHttpContext_
@@ -9966,6 +10699,25 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleBase.Start
   nameWithType: WebModuleBase.Start
+- uid: EmbedIO.WebModuleContainer
+  name: WebModuleContainer
+  href: api/EmbedIO.WebModuleContainer.html
+  commentId: T:EmbedIO.WebModuleContainer
+  fullName: EmbedIO.WebModuleContainer
+  nameWithType: WebModuleContainer
+- uid: EmbedIO.WebModuleContainer.None
+  name: None
+  href: api/EmbedIO.WebModuleContainer.html#EmbedIO_WebModuleContainer_None
+  commentId: P:EmbedIO.WebModuleContainer.None
+  fullName: EmbedIO.WebModuleContainer.None
+  nameWithType: WebModuleContainer.None
+- uid: EmbedIO.WebModuleContainer.None*
+  name: None
+  href: api/EmbedIO.WebModuleContainer.html#EmbedIO_WebModuleContainer_None_
+  commentId: Overload:EmbedIO.WebModuleContainer.None
+  isSpec: "True"
+  fullName: EmbedIO.WebModuleContainer.None
+  nameWithType: WebModuleContainer.None
 - uid: EmbedIO.WebModuleContainerExtensions
   name: WebModuleContainerExtensions
   href: api/EmbedIO.WebModuleContainerExtensions.html
@@ -10464,6 +11216,19 @@ references:
   commentId: T:EmbedIO.WebModuleExtensions
   fullName: EmbedIO.WebModuleExtensions
   nameWithType: WebModuleExtensions
+- uid: EmbedIO.WebModuleExtensions.GetImplementation(EmbedIO.IWebModule)
+  name: GetImplementation(IWebModule)
+  href: api/EmbedIO.WebModuleExtensions.html#EmbedIO_WebModuleExtensions_GetImplementation_EmbedIO_IWebModule_
+  commentId: M:EmbedIO.WebModuleExtensions.GetImplementation(EmbedIO.IWebModule)
+  fullName: EmbedIO.WebModuleExtensions.GetImplementation(EmbedIO.IWebModule)
+  nameWithType: WebModuleExtensions.GetImplementation(IWebModule)
+- uid: EmbedIO.WebModuleExtensions.GetImplementation*
+  name: GetImplementation
+  href: api/EmbedIO.WebModuleExtensions.html#EmbedIO_WebModuleExtensions_GetImplementation_
+  commentId: Overload:EmbedIO.WebModuleExtensions.GetImplementation
+  isSpec: "True"
+  fullName: EmbedIO.WebModuleExtensions.GetImplementation
+  nameWithType: WebModuleExtensions.GetImplementation
 - uid: EmbedIO.WebModuleExtensions.HandleHttpException*
   name: HandleHttpException
   href: api/EmbedIO.WebModuleExtensions.html#EmbedIO_WebModuleExtensions_HandleHttpException_
@@ -11012,6 +11777,23 @@ references:
   fullName.vb: EmbedIO.WebServerBase(Of TOptions).SessionManager
   nameWithType: WebServerBase<TOptions>.SessionManager
   nameWithType.vb: WebServerBase(Of TOptions).SessionManager
+- uid: EmbedIO.WebServerBase`1.SharedItems
+  name: SharedItems
+  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_SharedItems
+  commentId: P:EmbedIO.WebServerBase`1.SharedItems
+  fullName: EmbedIO.WebServerBase<TOptions>.SharedItems
+  fullName.vb: EmbedIO.WebServerBase(Of TOptions).SharedItems
+  nameWithType: WebServerBase<TOptions>.SharedItems
+  nameWithType.vb: WebServerBase(Of TOptions).SharedItems
+- uid: EmbedIO.WebServerBase`1.SharedItems*
+  name: SharedItems
+  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_SharedItems_
+  commentId: Overload:EmbedIO.WebServerBase`1.SharedItems
+  isSpec: "True"
+  fullName: EmbedIO.WebServerBase<TOptions>.SharedItems
+  fullName.vb: EmbedIO.WebServerBase(Of TOptions).SharedItems
+  nameWithType: WebServerBase<TOptions>.SharedItems
+  nameWithType.vb: WebServerBase(Of TOptions).SharedItems
 - uid: EmbedIO.WebServerBase`1.State
   name: State
   href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_State

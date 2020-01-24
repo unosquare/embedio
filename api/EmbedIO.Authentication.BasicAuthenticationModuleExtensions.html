@@ -124,7 +124,8 @@
   
   <a id="EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccount_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccount*"></a>
   <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccount_EmbedIO_Authentication_BasicAuthenticationModule_System_String_System_String_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccount(EmbedIO.Authentication.BasicAuthenticationModule,System.String,System.String)">WithAccount(BasicAuthenticationModule, String, String)</h4>
-  <div class="markdown level1 summary"><p>Adds a username and password to the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_Accounts">Accounts</a> dictionary.</p>
+  <div class="markdown level1 summary"><p>Adds a user name and password to the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_Accounts">Accounts</a> dictionary
+of a <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -172,12 +173,71 @@
     <tbody>
       <tr>
         <td><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code>, with the user name and password added.</p>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code>, with the user name and password added to the
+<a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_Accounts">Accounts</a> dictionary.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccount_EmbedIO_Authentication_BasicAuthenticationModule_System_String_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If a <code data-dev-comment-type="paramref" class="paramref">userName</code> account already exists,
+its password is replaced with <code data-dev-comment-type="paramref" class="paramref">password</code>.</p>
+</div>
+  
+  
+  <a id="EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccounts_" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts*"></a>
+  <h4 id="EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccounts_EmbedIO_Authentication_BasicAuthenticationModule_IEnumerable_KeyValuePair_System_String_System_String___" data-uid="EmbedIO.Authentication.BasicAuthenticationModuleExtensions.WithAccounts(EmbedIO.Authentication.BasicAuthenticationModule,IEnumerable{KeyValuePair{System.String,System.String}})">WithAccounts(BasicAuthenticationModule, IEnumerable&lt;KeyValuePair&lt;String, String&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a dictionary of user names and passwords to the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_Accounts">Accounts</a> dictionary
+of a <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BasicAuthenticationModule WithAccounts(this BasicAuthenticationModule this, IEnumerable&lt;KeyValuePair&lt;string, string&gt;&gt; accounts)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">KeyValuePair</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td><span class="parametername">accounts</span></td>
+        <td><p>An enumeration of key / value pairs
+representing the user names and passwords to add..</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html">BasicAuthenticationModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code>, with the user names and passwords in <code data-dev-comment-type="paramref" class="paramref">accounts</code>
+    added to the <a class="xref" href="EmbedIO.Authentication.BasicAuthenticationModule.html#EmbedIO_Authentication_BasicAuthenticationModule_Accounts">Accounts</a> dictionary.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Authentication_BasicAuthenticationModuleExtensions_WithAccounts_EmbedIO_Authentication_BasicAuthenticationModule_IEnumerable_KeyValuePair_System_String_System_String____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If a <code data-dev-comment-type="paramref" class="paramref">userName</code> account already exists,
 its password is replaced with <code data-dev-comment-type="paramref" class="paramref">password</code>.</p>
 </div>

@@ -122,6 +122,53 @@
   </h3>
   
   
+  <a id="EmbedIO_Utilities_StringExtensions_NullIfEmpty_" data-uid="EmbedIO.Utilities.StringExtensions.NullIfEmpty*"></a>
+  <h4 id="EmbedIO_Utilities_StringExtensions_NullIfEmpty_System_String_" data-uid="EmbedIO.Utilities.StringExtensions.NullIfEmpty(System.String)">NullIfEmpty(String)</h4>
+  <div class="markdown level1 summary"><p>Ensures that a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> is never empty,
+by transforming empty strings into <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string NullIfEmpty(this string this)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> on which this method is called.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>If <code data-dev-comment-type="paramref" class="paramref">this</code> is the empty string, <span class="xref">null</span>;
+otherwise, <code data-dev-comment-type="paramref" class="paramref">this..</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_Utilities_StringExtensions_SplitByAny_" data-uid="EmbedIO.Utilities.StringExtensions.SplitByAny*"></a>
   <h4 id="EmbedIO_Utilities_StringExtensions_SplitByAny_System_String_System_Char___" data-uid="EmbedIO.Utilities.StringExtensions.SplitByAny(System.String,System.Char[])">SplitByAny(String, Char[])</h4>
   <div class="markdown level1 summary"><p>Splits a string into substrings based on the specified <code data-dev-comment-type="paramref" class="paramref">delimiters</code>.

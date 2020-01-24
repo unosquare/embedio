@@ -123,6 +123,144 @@
   
   
   <a id="EmbedIO_Routing_RoutingModuleExtensions_Handle_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">Handle(RoutingModule, HttpVerbs, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Adds a handler to a <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule Handle(this RoutingModule this, HttpVerbs verb, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>A <a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a> constant representing the HTTP method
+to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerbs.html#EmbedIO_HttpVerbs_Any">Any</a>
+if <code data-dev-comment-type="paramref" class="paramref">handler</code> can handle all HTTP methods.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_Handle_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">Handle(RoutingModule, HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Adds a synchronous handler to a <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule Handle(this RoutingModule this, HttpVerbs verb, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>A <a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a> constant representing the HTTP method
+to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerbs.html#EmbedIO_HttpVerbs_Any">Any</a>
+if <code data-dev-comment-type="paramref" class="paramref">handler</code> can handle all HTTP methods.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_">Add(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_Handle_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle*"></a>
   <h4 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,EmbedIO.Routing.RouteHandlerCallback)">Handle(RoutingModule, HttpVerbs, String, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Adds a handler to a <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a>.</p>
 </div>
@@ -187,7 +325,7 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   </table>
   <h5 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_RouteHandlerCallback__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_RouteHandlerCallback_">Add(HttpVerbs, String, RouteHandlerCallback)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)</a></div>
   </div>
   
   
@@ -256,8 +394,276 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   </table>
   <h5 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_SyncRouteHandlerCallback__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_">Add(HttpVerbs, String, SyncRouteHandlerCallback)</a></div>
+      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)</a></div>
   </div>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_Handle_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">Handle(RoutingModule, HttpVerbs, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Adds a handler to a <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule Handle(this RoutingModule this, HttpVerbs verb, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>A <a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a> constant representing the HTTP method
+to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerbs.html#EmbedIO_HttpVerbs_Any">Any</a>
+if <code data-dev-comment-type="paramref" class="paramref">handler</code> can handle all HTTP methods.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_Handle_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.Handle(EmbedIO.Routing.RoutingModule,EmbedIO.HttpVerbs,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">Handle(RoutingModule, HttpVerbs, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Adds a synchronous handler to a <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule Handle(this RoutingModule this, HttpVerbs verb, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><span class="parametername">verb</span></td>
+        <td><p>A <a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a> constant representing the HTTP method
+to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerbs.html#EmbedIO_HttpVerbs_Any">Any</a>
+if <code data-dev-comment-type="paramref" class="paramref">handler</code> can handle all HTTP methods.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RoutingModuleExtensions_Handle_EmbedIO_Routing_RoutingModule_EmbedIO_HttpVerbs_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RoutingModule.html#EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)</a></div>
+  </div>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnAny(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates all requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnAny(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnAny(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates all requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnAny(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny*"></a>
@@ -346,6 +752,250 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">route</span></td>
         <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnAny(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates all requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnAny(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnAny_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnAny(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnAny(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates all requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnAny(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnDelete(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>DELETE</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnDelete(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnDelete(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>DELETE</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnDelete(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -488,6 +1138,250 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   </table>
   
   
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnDelete(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>DELETE</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnDelete(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnDelete_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnDelete(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnDelete(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>DELETE</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnDelete(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnGet(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>GET</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnGet(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnGet(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>GET</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnGet(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet*"></a>
   <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)">OnGet(RoutingModule, String, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>GET</code> requests matching a route to a handler.</p>
@@ -574,6 +1468,250 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">route</span></td>
         <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnGet(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>GET</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnGet(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnGet_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnGet(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnGet(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>GET</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnGet(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnHead(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>HEAD</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnHead(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnHead(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>HEAD</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnHead(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -716,6 +1854,250 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   </table>
   
   
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnHead(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>HEAD</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnHead(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnHead_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnHead(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnHead(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>HEAD</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnHead(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnOptions(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>OPTIONS</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnOptions(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnOptions(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>OPTIONS</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnOptions(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions*"></a>
   <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)">OnOptions(RoutingModule, String, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>OPTIONS</code> requests matching a route to a handler.</p>
@@ -802,6 +2184,250 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">route</span></td>
         <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnOptions(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>OPTIONS</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnOptions(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnOptions_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnOptions(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnOptions(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>OPTIONS</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnOptions(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnPatch(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PATCH</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPatch(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPatch(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PATCH</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPatch(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
 </td>
       </tr>
       <tr>
@@ -944,6 +2570,250 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   </table>
   
   
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnPatch(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PATCH</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPatch(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPatch_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPatch(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPatch(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PATCH</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPatch(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnPost(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>POST</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPost(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPost(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>POST</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPost(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost*"></a>
   <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)">OnPost(RoutingModule, String, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>POST</code> requests matching a route to a handler.</p>
@@ -1058,6 +2928,250 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   </table>
   
   
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnPost(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>POST</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPost(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPost_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPost(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPost(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>POST</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPost(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">OnPut(RoutingModule, RouteMatcher, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PUT</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPut(this RoutingModule this, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPut(RoutingModule, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PUT</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPut(this RoutingModule this, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> used to match URL paths.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut*"></a>
   <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_System_String_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,EmbedIO.Routing.RouteHandlerCallback)">OnPut(RoutingModule, String, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates <code>PUT</code> requests matching a route to a handler.</p>
@@ -1144,6 +3258,136 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">route</span></td>
         <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.SyncRouteHandlerCallback.html">SyncRouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.RouteHandlerCallback)">OnPut(RoutingModule, String, Boolean, RouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PUT</code> requests matching a route to a handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPut(this RoutingModule this, string route, bool isBaseRoute, RouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteHandlerCallback.html">RouteHandlerCallback</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>A callback used to handle matching contexts.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with the handler added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut*"></a>
+  <h4 id="EmbedIO_Routing_RoutingModuleExtensions_OnPut_EmbedIO_Routing_RoutingModule_System_String_System_Boolean_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModuleExtensions.OnPut(EmbedIO.Routing.RoutingModule,System.String,System.Boolean,EmbedIO.Routing.SyncRouteHandlerCallback)">OnPut(RoutingModule, String, Boolean, SyncRouteHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Associates <code>PUT</code> requests matching a route to a synchronous handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RoutingModule OnPut(this RoutingModule this, string route, bool isBaseRoute, SyncRouteHandlerCallback handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RoutingModule.html">RoutingModule</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">route</span></td>
+        <td><p>The route to match URL paths against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a base route; <span class="xref">false</span> if <code data-dev-comment-type="paramref" class="paramref">route</code>
+    is a terminal (non-base) route.</p>
 </td>
       </tr>
       <tr>

@@ -92,10 +92,17 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a></div>
     <div><a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Container">WebModuleBase.Container</a>
+    </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container">WebModuleBase.IWebModuleImpl.Container</a>
+    </div>
     <div>
       <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_BaseRoute">WebModuleBase.BaseRoute</a>
     </div>
@@ -124,7 +131,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Actions.html">EmbedIO.Actions</a></h6>
   <h5 id="EmbedIO_Actions_ActionModule_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ActionModule : WebModuleBase, IWebModule</code></pre>
+    <pre><code class="lang-csharp hljs">public class ActionModule : WebModuleBase, IWebModuleImpl, IWebModule</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -295,6 +302,9 @@ the context from being passed further along to other modules.</p>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnRequestAsync_EmbedIO_IHttpContext_">WebModuleBase.OnRequestAsync(IHttpContext)</a></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a>
+  </div>
   <div>
       <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>
   </div>

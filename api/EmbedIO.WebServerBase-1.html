@@ -93,8 +93,8 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a></div>
-    <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>
     <div><span class="xref">IDisposable</span></div>
+    <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>
     <div><a class="xref" href="EmbedIO.IMimeTypeCustomizer.html">IMimeTypeCustomizer</a></div>
     <div><a class="xref" href="EmbedIO.IMimeTypeProvider.html">IMimeTypeProvider</a></div>
     <div><a class="xref" href="EmbedIO.IHttpContextHandler.html">IHttpContextHandler</a></div>
@@ -102,7 +102,7 @@
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
   <h5 id="EmbedIO_WebServerBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class WebServerBase&lt;TOptions&gt; : ConfiguredObject, IWebServer, IWebModuleContainer, IDisposable, IMimeTypeCustomizer, IMimeTypeProvider, IHttpContextHandler where TOptions : WebServerOptionsBase, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class WebServerBase&lt;TOptions&gt; : ConfiguredObject, IWebServer, IDisposable, IWebModuleContainer, IMimeTypeCustomizer, IMimeTypeProvider, IHttpContextHandler where TOptions : WebServerOptionsBase, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -371,6 +371,34 @@ If it is still </p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">ISessionManager</span>&gt;</td>
         <td><p>The session manager, or <span class="xref">null</span> if no session manager is present.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServerBase_1_SharedItems_" data-uid="EmbedIO.WebServerBase`1.SharedItems*"></a>
+  <h4 id="EmbedIO_WebServerBase_1_SharedItems" data-uid="EmbedIO.WebServerBase`1.SharedItems">SharedItems</h4>
+  <div class="markdown level1 summary"><p>Gets a dictionary of data shared among the modules in a container.</p>
+<p>This API mainly supports the EmbedIO infrastructure; it is not intended to be used
+directly from your code, unless to address specific needs in module development.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConcurrentDictionary&lt;object, object&gt; SharedItems { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ConcurrentDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -886,10 +914,10 @@ the specified media range.</p>
       <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>
   </div>
   <div>
-      <a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a>
+      <span class="xref">IDisposable</span>
   </div>
   <div>
-      <span class="xref">IDisposable</span>
+      <a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a>
   </div>
   <div>
       <a class="xref" href="EmbedIO.IMimeTypeCustomizer.html">IMimeTypeCustomizer</a>

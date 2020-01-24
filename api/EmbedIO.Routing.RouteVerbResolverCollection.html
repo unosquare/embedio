@@ -94,10 +94,10 @@ possibly handling different HTTP methods via different handlers.</p>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_RouteHandlerCallback_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.Add(HttpVerbs, String, RouteHandlerCallback)</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_System_String_EmbedIO_Routing_SyncRouteHandlerCallback_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.Add(HttpVerbs, String, SyncRouteHandlerCallback)</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.Add(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)</a>
     </div>
     <div>
       <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_ResolveAsync_EmbedIO_IHttpContext_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.ResolveAsync(IHttpContext)</a>
@@ -109,7 +109,7 @@ possibly handling different HTTP methods via different handlers.</p>
       <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_OnBeforeLockConfiguration">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.OnBeforeLockConfiguration()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_System_String_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.CreateResolver(String)</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_CreateResolver_EmbedIO_Routing_RouteMatcher_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.CreateResolver(RouteMatcher)</a>
     </div>
     <div>
       <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_OnResolverCalled_EmbedIO_IHttpContext__1_EmbedIO_Routing_RouteResolutionResult_">RouteResolverCollectionBase&lt;HttpVerbs, RouteVerbResolver&gt;.OnResolverCalled(IHttpContext, RouteVerbResolver, RouteResolutionResult)</a>
@@ -193,12 +193,12 @@ will count as one for each attribute.</p>
   
   
   <a id="EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_System_String_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(System.String)">CreateResolver(String)</h4>
+  <h4 id="EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_EmbedIO_Routing_RouteMatcher_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(EmbedIO.Routing.RouteMatcher)">CreateResolver(RouteMatcher)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override RouteVerbResolver CreateResolver(string route)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override RouteVerbResolver CreateResolver(RouteMatcher matcher)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -211,8 +211,8 @@ will count as one for each attribute.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">route</span></td>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td><span class="parametername">matcher</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -233,7 +233,7 @@ will count as one for each attribute.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">EmbedIO.Routing.RouteResolverCollectionBase&lt;EmbedIO.HttpVerbs, EmbedIO.Routing.RouteVerbResolver&gt;.CreateResolver(System.String)</span></div>
+  <div><span class="xref">EmbedIO.Routing.RouteResolverCollectionBase&lt;EmbedIO.HttpVerbs, EmbedIO.Routing.RouteVerbResolver&gt;.CreateResolver(EmbedIO.Routing.RouteMatcher)</span></div>
   
   
   <a id="EmbedIO_Routing_RouteVerbResolverCollection_OnResolverCalled_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled*"></a>

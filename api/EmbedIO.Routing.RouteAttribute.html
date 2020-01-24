@@ -89,6 +89,7 @@ Method Must match the WebServerModule.</p>
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">RouteAttribute</span></div>
+      <div class="level2"><a class="xref" href="EmbedIO.Routing.BaseRouteAttribute.html">BaseRouteAttribute</a></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
   <h5 id="EmbedIO_Routing_RouteAttribute_syntax">Syntax</h5>
@@ -100,13 +101,13 @@ Method Must match the WebServerModule.</p>
   
   
   <a id="EmbedIO_Routing_RouteAttribute__ctor_" data-uid="EmbedIO.Routing.RouteAttribute.#ctor*"></a>
-  <h4 id="EmbedIO_Routing_RouteAttribute__ctor_EmbedIO_HttpVerbs_System_String_" data-uid="EmbedIO.Routing.RouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String)">RouteAttribute(HttpVerbs, String)</h4>
+  <h4 id="EmbedIO_Routing_RouteAttribute__ctor_EmbedIO_HttpVerbs_System_String_System_Boolean_" data-uid="EmbedIO.Routing.RouteAttribute.#ctor(EmbedIO.HttpVerbs,System.String,System.Boolean)">RouteAttribute(HttpVerbs, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Routing.RouteAttribute.html">RouteAttribute</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouteAttribute(HttpVerbs verb, string route)</code></pre>
+    <pre><code class="lang-csharp hljs">public RouteAttribute(HttpVerbs verb, string route, bool isBaseRoute = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -130,10 +131,73 @@ Method Must match the WebServerModule.</p>
         <td><p>The route.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isBaseRoute</span></td>
+        <td><p><span class="xref">true</span> if this attribute represents a base route;
+<span class="xref">false</span> (the default) if it represents a terminal (non-base) route.</p>
+</td>
+      </tr>
     </tbody>
   </table>
+  <h5 id="EmbedIO_Routing_RouteAttribute__ctor_EmbedIO_HttpVerbs_System_String_System_Boolean__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.Route.html#EmbedIO_Routing_Route_IsValid_System_String_System_Boolean_">IsValid(String, Boolean)</a></div>
+  </div>
   <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="EmbedIO_Routing_RouteAttribute_IsBaseRoute_" data-uid="EmbedIO.Routing.RouteAttribute.IsBaseRoute*"></a>
+  <h4 id="EmbedIO_Routing_RouteAttribute_IsBaseRoute" data-uid="EmbedIO.Routing.RouteAttribute.IsBaseRoute">IsBaseRoute</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this attribute represents a base route.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsBaseRoute { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RouteAttribute_Matcher_" data-uid="EmbedIO.Routing.RouteAttribute.Matcher*"></a>
+  <h4 id="EmbedIO_Routing_RouteAttribute_Matcher" data-uid="EmbedIO.Routing.RouteAttribute.Matcher">Matcher</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> that will match URLs against this attribute&apos;s data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RouteMatcher Matcher { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="EmbedIO_Routing_RouteAttribute_Route_" data-uid="EmbedIO.Routing.RouteAttribute.Route*"></a>

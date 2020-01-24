@@ -122,9 +122,73 @@
   </h3>
   
   
+  <a id="EmbedIO_WebModuleExtensions_GetImplementation_" data-uid="EmbedIO.WebModuleExtensions.GetImplementation*"></a>
+  <h4 id="EmbedIO_WebModuleExtensions_GetImplementation_EmbedIO_IWebModule_" data-uid="EmbedIO.WebModuleExtensions.GetImplementation(EmbedIO.IWebModule)">GetImplementation(IWebModule)</h4>
+  <div class="markdown level1 summary"><p>Gets the underlying <a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a> interface of an <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>.</p>
+<p>This API mainly supports the EmbedIO infrastructure; it is not intended to be used directly from your code,
+unless to fulfill very specific needs in the development of plug-ins (modules, etc.) for EmbedIO.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IWebModuleImpl GetImplementation(this IWebModule this)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a> interface on which this method is called.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a></td>
+        <td><p>The underlying <a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a> interface representing
+the web module implementation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.EmbedIOInternalErrorException.html">EmbedIOInternalErrorException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> does not implement <a class="xref" href="EmbedIO.IWebModuleImpl.html">IWebModuleImpl</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_WebModuleExtensions_HandleHttpException_" data-uid="EmbedIO.WebModuleExtensions.HandleHttpException*"></a>
   <h4 id="EmbedIO_WebModuleExtensions_HandleHttpException__1___0_EmbedIO_HttpExceptionHandlerCallback_" data-uid="EmbedIO.WebModuleExtensions.HandleHttpException``1(``0,EmbedIO.HttpExceptionHandlerCallback)">HandleHttpException&lt;TWebModule&gt;(TWebModule, HttpExceptionHandlerCallback)</h4>
-  <div class="markdown level1 summary"><p>Sets the HTTP exception handler on a <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>.</p>
+  <div class="markdown level1 summary"><p>Sets the HTTP exception handler on an <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -198,7 +262,7 @@
   
   <a id="EmbedIO_WebModuleExtensions_HandleUnhandledException_" data-uid="EmbedIO.WebModuleExtensions.HandleUnhandledException*"></a>
   <h4 id="EmbedIO_WebModuleExtensions_HandleUnhandledException__1___0_EmbedIO_ExceptionHandlerCallback_" data-uid="EmbedIO.WebModuleExtensions.HandleUnhandledException``1(``0,EmbedIO.ExceptionHandlerCallback)">HandleUnhandledException&lt;TWebModule&gt;(TWebModule, ExceptionHandlerCallback)</h4>
-  <div class="markdown level1 summary"><p>Sets the unhandled exception handler on a <a class="xref" href="EmbedIO.IWebServer.html">IWebServer</a>.</p>
+  <div class="markdown level1 summary"><p>Sets the unhandled exception handler on an <a class="xref" href="EmbedIO.IWebModule.html">IWebModule</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

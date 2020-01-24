@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class RouteVerbResolver
+    <title>Class AuthenticationModuleBaseExtensions
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class RouteVerbResolver
+    <meta name="title" content="Class AuthenticationModuleBaseExtensions
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,92 +76,62 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.Routing.RouteVerbResolver">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Authentication.AuthenticationModuleBaseExtensions">
   
   
-  <h1 id="EmbedIO_Routing_RouteVerbResolver" data-uid="EmbedIO.Routing.RouteVerbResolver" class="text-break">Class RouteVerbResolver
+  <h1 id="EmbedIO_Authentication_AuthenticationModuleBaseExtensions" data-uid="EmbedIO.Authentication.AuthenticationModuleBaseExtensions" class="text-break">Class AuthenticationModuleBaseExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Handles a HTTP request by matching it against a route,
-possibly handling different HTTP methods via different handlers.</p>
+  <div class="markdown level0 summary"><p>Provides extension methods for classes derived from <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html">AuthenticationModuleBase</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html">RouteResolverBase</a>&lt;<a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a>&gt;</div>
-    <div class="level2"><span class="xref">RouteVerbResolver</span></div>
+    <div class="level1"><span class="xref">AuthenticationModuleBaseExtensions</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Matcher">RouteResolverBase&lt;HttpVerbs&gt;.Matcher</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Route">RouteResolverBase&lt;HttpVerbs&gt;.Route</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute">RouteResolverBase&lt;HttpVerbs&gt;.IsBaseRoute</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_RouteHandlerCallback_">RouteResolverBase&lt;HttpVerbs&gt;.Add(HttpVerbs, RouteHandlerCallback)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_SyncRouteHandlerCallback_">RouteResolverBase&lt;HttpVerbs&gt;.Add(HttpVerbs, SyncRouteHandlerCallback)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Lock">RouteResolverBase&lt;HttpVerbs&gt;.Lock()</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">RouteResolverBase&lt;HttpVerbs&gt;.ResolveAsync(IHttpContext)</a>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
-  <h5 id="EmbedIO_Routing_RouteVerbResolver_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Authentication.html">EmbedIO.Authentication</a></h6>
+  <h5 id="EmbedIO_Authentication_AuthenticationModuleBaseExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class RouteVerbResolver : RouteResolverBase&lt;HttpVerbs&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public static class AuthenticationModuleBaseExtensions</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="EmbedIO_Routing_RouteVerbResolver__ctor_" data-uid="EmbedIO.Routing.RouteVerbResolver.#ctor*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolver__ctor_EmbedIO_Routing_RouteMatcher_" data-uid="EmbedIO.Routing.RouteVerbResolver.#ctor(EmbedIO.Routing.RouteMatcher)">RouteVerbResolver(RouteMatcher)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="EmbedIO.Routing.RouteVerbResolver.html">RouteVerbResolver</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouteVerbResolver(RouteMatcher matcher)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
-        <td><span class="parametername">matcher</span></td>
-        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a> to match URL paths against.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="EmbedIO_Routing_RouteVerbResolver_GetContextData_" data-uid="EmbedIO.Routing.RouteVerbResolver.GetContextData*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolver_GetContextData_EmbedIO_IHttpContext_" data-uid="EmbedIO.Routing.RouteVerbResolver.GetContextData(EmbedIO.IHttpContext)">GetContextData(IHttpContext)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleInvalidCredentials_" data-uid="EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleInvalidCredentials__1___0_EmbedIO_Authentication_AuthenticationHandlerCallback_" data-uid="EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleInvalidCredentials``1(``0,EmbedIO.Authentication.AuthenticationHandlerCallback)">HandleInvalidCredentials&lt;TModule&gt;(TModule, AuthenticationHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Sets an <a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a> that is called by an authentication module
+when a request contains invalid credentials.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override HttpVerbs GetContextData(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static TModule HandleInvalidCredentials&lt;TModule&gt;(this TModule this, AuthenticationHandlerCallback callback)
+    where TModule : AuthenticationModuleBase</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,9 +144,16 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
+        <td><span class="xref">TModule</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The module on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>The method to call.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -190,22 +167,41 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
-        <td></td>
+        <td><span class="xref">TModule</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with its <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnInvalidCredentials">OnInvalidCredentials</a>
+    property set to <code data-dev-comment-type="paramref" class="paramref">callback</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerbs&gt;.GetContextData(EmbedIO.IHttpContext)</span></div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TModule</span></td>
+        <td><p>The type of the module on which this method is called.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
-  <a id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_EmbedIO_HttpVerbs_EmbedIO_HttpVerbs_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData(EmbedIO.HttpVerbs,EmbedIO.HttpVerbs)">MatchContextData(HttpVerbs, HttpVerbs)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleMissingCredentials_" data-uid="EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials*"></a>
+  <h4 id="EmbedIO_Authentication_AuthenticationModuleBaseExtensions_HandleMissingCredentials__1___0_EmbedIO_Authentication_AuthenticationHandlerCallback_" data-uid="EmbedIO.Authentication.AuthenticationModuleBaseExtensions.HandleMissingCredentials``1(``0,EmbedIO.Authentication.AuthenticationHandlerCallback)">HandleMissingCredentials&lt;TModule&gt;(TModule, AuthenticationHandlerCallback)</h4>
+  <div class="markdown level1 summary"><p>Sets an <a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a> that is called by an authentication module
+when authentication could not take place.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override bool MatchContextData(HttpVerbs contextVerb, HttpVerbs handlerVerb)</code></pre>
+    <pre><code class="lang-csharp hljs">public static TModule HandleMissingCredentials&lt;TModule&gt;(this TModule this, AuthenticationHandlerCallback callback)
+    where TModule : AuthenticationModuleBase</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -218,14 +214,16 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">contextVerb</span></td>
-        <td></td>
+        <td><span class="xref">TModule</span></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The module on which this method is called.</p>
+</td>
       </tr>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
-        <td><span class="parametername">handlerVerb</span></td>
-        <td></td>
+        <td><a class="xref" href="EmbedIO.Authentication.AuthenticationHandlerCallback.html">AuthenticationHandlerCallback</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>The method to call.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -239,13 +237,29 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><span class="xref">TModule</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> with its <a class="xref" href="EmbedIO.Authentication.AuthenticationModuleBase.html#EmbedIO_Authentication_AuthenticationModuleBase_OnMissingCredentials">OnMissingCredentials</a>
+    property set to <code data-dev-comment-type="paramref" class="paramref">callback</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerbs&gt;.MatchContextData(EmbedIO.HttpVerbs, EmbedIO.HttpVerbs)</span></div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TModule</span></td>
+        <td><p>The type of the module on which this method is called.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

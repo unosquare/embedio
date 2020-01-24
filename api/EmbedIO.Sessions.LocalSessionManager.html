@@ -226,12 +226,12 @@ with default values for all properties.</p>
   
   
   <h4 id="EmbedIO_Sessions_LocalSessionManager_DefaultCookiePath" data-uid="EmbedIO.Sessions.LocalSessionManager.DefaultCookiePath">DefaultCookiePath</h4>
-  <div class="markdown level1 summary"><p>The default path for session cookies, i.e. the empty string.</p>
+  <div class="markdown level1 summary"><p>The default path for session cookies, i.e. <code>&quot;/&quot;</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string DefaultCookiePath = &quot;&quot;</code></pre>
+    <pre><code class="lang-csharp hljs">public const string DefaultCookiePath = &quot;/&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -486,7 +486,7 @@ with default values for all properties.</p>
   
   <a id="EmbedIO_Sessions_LocalSessionManager_Create_" data-uid="EmbedIO.Sessions.LocalSessionManager.Create*"></a>
   <h4 id="EmbedIO_Sessions_LocalSessionManager_Create_EmbedIO_IHttpContext_" data-uid="EmbedIO.Sessions.LocalSessionManager.Create(EmbedIO.IHttpContext)">Create(IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>Returns the session associated with a <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>.
+  <div class="markdown level1 summary"><p>Returns the session associated with an <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>.
 If a session ID can be retrieved for the context and stored session data
 are available, the returned <a class="xref" href="EmbedIO.Sessions.ISession.html">ISession</a> will contain those data;
 otherwise, a new session is created and its ID is stored in the response
@@ -526,7 +526,7 @@ to be retrieved by subsequent requests.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="EmbedIO.Sessions.ISession.html">ISession</a></td>
-        <td><p>A <a class="xref" href="EmbedIO.Sessions.ISession.html">ISession</a> interface.</p>
+        <td><p>An <a class="xref" href="EmbedIO.Sessions.ISession.html">ISession</a> interface.</p>
 </td>
       </tr>
     </tbody>
@@ -534,14 +534,13 @@ to be retrieved by subsequent requests.</p>
   
   
   <a id="EmbedIO_Sessions_LocalSessionManager_Delete_" data-uid="EmbedIO.Sessions.LocalSessionManager.Delete*"></a>
-  <h4 id="EmbedIO_Sessions_LocalSessionManager_Delete_EmbedIO_IHttpContext_System_String_" data-uid="EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext,System.String)">Delete(IHttpContext, String)</h4>
-  <div class="markdown level1 summary"><p>Deletes the session (if any) associated with the specified context
-and removes the session&apos;s ID from the context.</p>
+  <h4 id="EmbedIO_Sessions_LocalSessionManager_Delete_EmbedIO_IHttpContext_" data-uid="EmbedIO.Sessions.LocalSessionManager.Delete(EmbedIO.IHttpContext)">Delete(IHttpContext)</h4>
+  <div class="markdown level1 summary"><p>Deletes the session (if any) associated with the specified context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Delete(IHttpContext context, string id)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Delete(IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -559,15 +558,9 @@ and removes the session&apos;s ID from the context.</p>
         <td><p>The HTTP context.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">id</span></td>
-        <td><p>The unique ID of the session.</p>
-</td>
-      </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_Sessions_LocalSessionManager_Delete_EmbedIO_IHttpContext_System_String__seealso">See Also</h5>
+  <h5 id="EmbedIO_Sessions_LocalSessionManager_Delete_EmbedIO_IHttpContext__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.Sessions.ISession.html#EmbedIO_Sessions_ISession_Id">Id</a></div>
   </div>
@@ -576,7 +569,7 @@ and removes the session&apos;s ID from the context.</p>
   <a id="EmbedIO_Sessions_LocalSessionManager_OnContextClose_" data-uid="EmbedIO.Sessions.LocalSessionManager.OnContextClose*"></a>
   <h4 id="EmbedIO_Sessions_LocalSessionManager_OnContextClose_EmbedIO_IHttpContext_" data-uid="EmbedIO.Sessions.LocalSessionManager.OnContextClose(EmbedIO.IHttpContext)">OnContextClose(IHttpContext)</h4>
   <div class="markdown level1 summary"><p>Called by a session proxy when a session has been obtained
-for a <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a> and the context is closed,
+for an <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a> and the context is closed,
 even if the session was subsequently deleted.</p>
 <p>This method can be used to save session data to a storage medium.</p>
 </div>
