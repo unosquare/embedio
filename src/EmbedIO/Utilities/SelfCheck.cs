@@ -14,7 +14,7 @@ namespace EmbedIO.Utilities
         /// </summary>
         /// <param name="message">The exception message.</param>
         /// <returns>A newly-created instance of <see cref="EmbedIOInternalErrorException"/>.</returns>
-        public static Exception Failure(string message)
+        public static EmbedIOInternalErrorException Failure(string message)
             => new EmbedIOInternalErrorException(message);
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace EmbedIO.Utilities
         /// <param name="exception">An exception related to the failure,
         /// or <see langword="null"/> if no such exception is specified.</param>
         /// <returns>A newly-created instance of <see cref="EmbedIOInternalErrorException"/>.</returns>
-        public static Exception Failure(string message, Exception? exception)
+        public static EmbedIOInternalErrorException Failure(string message, Exception? exception)
             => new EmbedIOInternalErrorException(message, exception);
     }
 }
