@@ -25,7 +25,6 @@ namespace EmbedIO
         /// </exception>
         public static IHttpContextImpl GetImplementation(this IHttpContext @this)
             => Validate.NotNull(nameof(@this), @this) as IHttpContextImpl
-            ?? throw SelfCheck.Failure($"HTTP context does not implement {nameof(IHttpContextImpl)}.");
-
+            ?? throw SelfCheck.Failure($"{@this.GetType().FullName} does not implement {nameof(IHttpContextImpl)}.");
     }
 }
