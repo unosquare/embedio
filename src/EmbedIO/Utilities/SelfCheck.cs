@@ -26,19 +26,5 @@ namespace EmbedIO.Utilities
         /// <returns>A newly-created instance of <see cref="EmbedIOInternalErrorException"/>.</returns>
         public static Exception Failure(string message, Exception? exception)
             => new EmbedIOInternalErrorException(message, exception);
-
-        /// <summary>
-        /// Throws an <see cref="EmbedIOInternalErrorException"/>
-        /// if a condition is not satisfied.
-        /// </summary>
-        /// <param name="condition">A boolean expression that, if <see langword="false"/>,
-        /// indicates failure of the self-check..</param>
-        /// <param name="message">The exception message to use
-        /// if <paramref name="condition"/> is <see langword="false"/>.</param>
-        public static void Assert(bool condition, string message)
-        {
-            if (!condition)
-                throw new EmbedIOInternalErrorException(message);
-        }
     }
 }
