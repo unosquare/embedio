@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Swan.Threading;
 
-namespace EmbedIO.Security
+namespace EmbedIO.Security.Internal
 {
     internal static class IPBanningExecutor
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Security.Internal;
 
 namespace EmbedIO.Security
 {
