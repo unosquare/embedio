@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmbedIO.Internal;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Routing
 {
