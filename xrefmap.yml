@@ -9062,28 +9062,6 @@ references:
   commentId: N:EmbedIO.Utilities
   fullName: EmbedIO.Utilities
   nameWithType: EmbedIO.Utilities
-- uid: EmbedIO.Utilities.CompositeHashCode
-  name: CompositeHashCode
-  href: api/EmbedIO.Utilities.CompositeHashCode.html
-  commentId: T:EmbedIO.Utilities.CompositeHashCode
-  fullName: EmbedIO.Utilities.CompositeHashCode
-  nameWithType: CompositeHashCode
-- uid: EmbedIO.Utilities.CompositeHashCode.Using(System.Object[])
-  name: Using(Object[])
-  href: api/EmbedIO.Utilities.CompositeHashCode.html#EmbedIO_Utilities_CompositeHashCode_Using_System_Object___
-  commentId: M:EmbedIO.Utilities.CompositeHashCode.Using(System.Object[])
-  name.vb: Using(Object())
-  fullName: EmbedIO.Utilities.CompositeHashCode.Using(System.Object[])
-  fullName.vb: EmbedIO.Utilities.CompositeHashCode.Using(System.Object())
-  nameWithType: CompositeHashCode.Using(Object[])
-  nameWithType.vb: CompositeHashCode.Using(Object())
-- uid: EmbedIO.Utilities.CompositeHashCode.Using*
-  name: Using
-  href: api/EmbedIO.Utilities.CompositeHashCode.html#EmbedIO_Utilities_CompositeHashCode_Using_
-  commentId: Overload:EmbedIO.Utilities.CompositeHashCode.Using
-  isSpec: "True"
-  fullName: EmbedIO.Utilities.CompositeHashCode.Using
-  nameWithType: CompositeHashCode.Using
 - uid: EmbedIO.Utilities.HttpDate
   name: HttpDate
   href: api/EmbedIO.Utilities.HttpDate.html
