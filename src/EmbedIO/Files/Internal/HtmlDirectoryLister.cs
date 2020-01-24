@@ -34,7 +34,8 @@ namespace EmbedIO.Files.Internal
             const int MaxEntryLength = 50;
             const int SizeIndent = -20; // Negative for right alignment
 
-            SelfCheck.Assert(info.IsDirectory, $"{nameof(HtmlDirectoryLister)}.{nameof(ListDirectoryAsync)} invoked with a file, not a directory.");
+            if (!info.IsDirectory)
+                throw SelfCheck.Failure($"{nameof(HtmlDirectoryLister)}.{nameof(ListDirectoryAsync)} invoked with a file, not a directory.");
 
             var encodedPath = WebUtility.HtmlEncode(absoluteUrlPath);
             using var text = new StreamWriter(stream, Encoding.UTF8);
