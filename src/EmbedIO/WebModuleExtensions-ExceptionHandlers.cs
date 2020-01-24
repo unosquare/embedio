@@ -24,7 +24,7 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Sets the unhandled exception handler on an <see cref="IWebServer" />.
+        /// Sets the unhandled exception handler on an <see cref="IWebModule" />.
         /// </summary>
         /// <typeparam name="TWebModule">The type of the web server.</typeparam>
         /// <param name="this">The <typeparamref name="TWebModule" /> on which this method is called.</param>
