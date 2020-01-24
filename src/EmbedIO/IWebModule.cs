@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 
@@ -9,6 +10,15 @@ namespace EmbedIO
     /// </summary>
     public interface IWebModule
     {
+        /// <summary>
+        /// Gets the container of this module.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// The module has not yet been added to a container.
+        /// </exception>
+        /// <seealso cref="IWebModuleContainer"/>
+        IWebModuleContainer Container { get; }
+
         /// <summary>
         /// Gets the base route of a module.
         /// </summary>

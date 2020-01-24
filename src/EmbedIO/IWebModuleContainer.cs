@@ -1,4 +1,5 @@
-﻿using Swan.Collections;
+﻿using System.Collections.Concurrent;
+using Swan.Collections;
 
 namespace EmbedIO
 {
@@ -14,5 +15,12 @@ namespace EmbedIO
         /// The modules.
         /// </value>
         IComponentCollection<IWebModule> Modules { get; }
+
+        /// <summary>
+        /// <para>Gets a dictionary of data shared among the modules in a container.</para>
+        /// <para>This API mainly supports the EmbedIO infrastructure; it is not intended to be used
+        /// directly from your code, unless to address specific needs in module development.</para>
+        /// </summary>
+        ConcurrentDictionary<object, object> SharedItems { get; }
     }
 }
