@@ -31,7 +31,7 @@ namespace EmbedIO
         /// <summary>
         /// Sends an empty response.
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task EmptyResponse(IHttpContext context, IHttpException httpException)
@@ -42,7 +42,7 @@ namespace EmbedIO
         /// as a plain text response.</para>
         /// <para>This handler does not use the <see cref="IHttpException.DataObject">DataObject</see> property.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task PlainTextResponse(IHttpContext context, IHttpException httpException)
@@ -55,7 +55,7 @@ namespace EmbedIO
         /// and <see cref="ExceptionHandler.IncludeStackTraces"/> properties, respectively.</para>
         /// <para>This handler does not use the <see cref="IHttpException.DataObject">DataObject</see> property.</para>
         /// </summary>
-        /// <param name="context">A <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task HtmlResponse(IHttpContext context, IHttpException httpException)

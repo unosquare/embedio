@@ -5,7 +5,7 @@ namespace EmbedIO
     partial class WebServerExtensions
     {
         /// <summary>
-        /// Sets the HTTP exception handler on a <see cref="IWebServer" />.
+        /// Sets the HTTP exception handler on an <see cref="IWebServer" />.
         /// </summary>
         /// <typeparam name="TWebServer">The type of the web server.</typeparam>
         /// <param name="this">The <typeparamref name="TWebServer" /> on which this method is called.</param>
@@ -25,7 +25,7 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// Sets the unhandled exception handler on a <see cref="IWebServer" />.
+        /// Sets the unhandled exception handler on an <see cref="IWebServer" />.
         /// </summary>
         /// <typeparam name="TWebServer">The type of the web server.</typeparam>
         /// <param name="this">The <typeparamref name="TWebServer" /> on which this method is called.</param>

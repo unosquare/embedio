@@ -6,7 +6,7 @@ namespace EmbedIO
     partial class WebServerExtensions
     {
         /// <summary>
-        /// Sets the session manager on a <see cref="IWebServer"/>.
+        /// Sets the session manager on an <see cref="IWebServer"/>.
         /// </summary>
         /// <typeparam name="TWebServer">The type of the web server.</typeparam>
         /// <param name="this">The <see cref="IWebServer"/> on which this method is called.</param>
@@ -23,7 +23,7 @@ namespace EmbedIO
 
         /// <summary>
         /// <para>Creates a <see cref="LocalSessionManager"/> with all properties set to their default values
-        /// and sets it as session manager on a <see cref="IWebServer"/>.</para>
+        /// and sets it as session manager on an <see cref="IWebServer"/>.</para>
         /// </summary>
         /// <typeparam name="TWebServer">The type of the web server.</typeparam>
         /// <param name="this">The <see cref="IWebServer"/> on which this method is called.</param>
