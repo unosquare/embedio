@@ -38,6 +38,14 @@ namespace EmbedIO.Security
             AddToWhitelist(whitelist);
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="IPBanningModule"/> class.
+        /// </summary>
+        ~IPBanningModule()
+        {
+            Dispose(false);
+        }
+
         /// <inheritdoc />
         public override bool IsFinalHandler => false;
 
@@ -59,8 +67,11 @@ namespace EmbedIO.Security
             Configuration.RegisterCriterion(criterion);
 
         /// <inheritdoc />
-        public void Dispose() =>
+        public void Dispose()
+        {
             Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Gets the list of current banned IPs.
