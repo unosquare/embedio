@@ -19,9 +19,6 @@ namespace EmbedIO.Routing
         private static readonly char[] ValidParameterNameChars =
             "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
-        // Passed to string.Split to divide a route in segments.
-        private static readonly char[] SlashSeparator = { '/'};
-
         /// <summary>
         /// <para>Determines whether a string is a valid route parameter name.</para>
         /// <para>To be considered a valid route parameter name, the specified string:</para>
