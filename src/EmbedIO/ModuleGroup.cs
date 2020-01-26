@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
@@ -91,9 +92,15 @@ namespace EmbedIO
         /// <see langword="false"/> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+                return;
 
             _modules.Dispose();
+
+            var disposables = SharedItems.Values.OfType<IDisposable>();
+            SharedItems.Clear();
+            foreach (var disposable in disposables)
+                disposable.Dispose();
         }
 
         /// <inheritdoc />
