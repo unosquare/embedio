@@ -48,7 +48,7 @@ namespace EmbedIO.Net.Internal
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
                 
-                Headers[HttpHeaderNames.ContentLength] = value.ToString();
+                Headers[HttpHeaderNames.ContentLength] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
