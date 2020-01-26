@@ -38,9 +38,9 @@ namespace EmbedIO
         string HttpMethod { get; }
 
         /// <summary>
-        /// Gets a <see cref="HttpVerbs"/> constant representing the HTTP method of the request.
+        /// Gets a <see cref="EmbedIO.HttpVerb"/> constant representing the HTTP method of the request.
         /// </summary>
-        HttpVerbs HttpVerb { get; }
+        HttpVerb HttpVerb { get; }
 
         /// <summary>
         /// Gets the URL.

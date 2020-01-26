@@ -23,7 +23,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="route"/> does not comply with route syntax.</para>
         /// </exception>
         /// <seealso cref="Routing.Route.IsValid"/>
-        public BaseRouteAttribute(HttpVerbs verb, string route)
+        public BaseRouteAttribute(HttpVerb verb, string route)
             : base(verb, route, true)
         {
         }

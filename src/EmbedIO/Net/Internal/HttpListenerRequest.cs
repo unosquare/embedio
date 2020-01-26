@@ -102,7 +102,7 @@ namespace EmbedIO.Net.Internal
         public string? HttpMethod { get; private set; }
 
         /// <inheritdoc />
-        public HttpVerbs HttpVerb { get; private set; }
+        public HttpVerb HttpVerb { get; private set; }
 
         /// <inheritdoc />
         public Stream InputStream => _inputStream ??= ContentLength64 > 0 ? _context.Connection.GetRequestStream(ContentLength64) : Stream.Null;
@@ -182,7 +182,7 @@ namespace EmbedIO.Net.Internal
 
         /// <inheritdoc />
         public bool IsWebSocketRequest
-            => HttpVerb == HttpVerbs.Get
+            => HttpVerb == HttpVerb.Get
             && ProtocolVersion >= HttpVersion.Version11
             && Headers.Contains(HttpHeaderNames.Upgrade, "websocket")
             && Headers.Contains(HttpHeaderNames.Connection, "Upgrade");
@@ -235,7 +235,7 @@ namespace EmbedIO.Net.Internal
             }
 
             HttpMethod = parts[0];
-            Enum.TryParse<HttpVerbs>(HttpMethod, true, out var verb);
+            Enum.TryParse<HttpVerb>(HttpMethod, true, out var verb);
             HttpVerb = verb;
 
             foreach (var c in HttpMethod)
@@ -303,7 +303,7 @@ namespace EmbedIO.Net.Internal
 
             CreateQueryString(_url.Query);
             
-            if (ContentLength64 == 0 && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
+            if (ContentLength64 == 0 && (HttpVerb == HttpVerb.Post || HttpVerb == HttpVerb.Put))
                 return;
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)

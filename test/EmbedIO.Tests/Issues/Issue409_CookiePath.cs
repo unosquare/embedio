@@ -40,7 +40,7 @@ namespace EmbedIO.Tests.Issues
 
         private class CookieController : WebApiController
         {
-            [Route(HttpVerbs.Get, "/test")]
+            [Route(HttpVerb.Get, "/test")]
             public async Task Get()
             {
                 Session["key"] = 1;

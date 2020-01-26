@@ -3,7 +3,7 @@
     /// <summary>
     /// Enumerates the different HTTP Verbs.
     /// </summary>
-    public enum HttpVerbs
+    public enum HttpVerb
     {
         /// <summary>
         /// Wildcard Method

@@ -6,7 +6,7 @@ namespace EmbedIO.Routing
     /// Handles a HTTP request by matching it against a route,
     /// possibly handling different HTTP methods via different handlers.
     /// </summary>
-    public sealed class RouteVerbResolver : RouteResolverBase<HttpVerbs>
+    public sealed class RouteVerbResolver : RouteResolverBase<HttpVerb>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteVerbResolver"/> class.
@@ -21,10 +21,10 @@ namespace EmbedIO.Routing
         }
 
         /// <inheritdoc />
-        protected override HttpVerbs GetContextData(IHttpContext context) => context.Request.HttpVerb;
+        protected override HttpVerb GetContextData(IHttpContext context) => context.Request.HttpVerb;
 
         /// <inheritdoc />
-        protected override bool MatchContextData(HttpVerbs contextVerb, HttpVerbs handlerVerb)
-            => handlerVerb == HttpVerbs.Any || contextVerb == handlerVerb;
+        protected override bool MatchContextData(HttpVerb contextVerb, HttpVerb handlerVerb)
+            => handlerVerb == HttpVerb.Any || contextVerb == handlerVerb;
     }
 }

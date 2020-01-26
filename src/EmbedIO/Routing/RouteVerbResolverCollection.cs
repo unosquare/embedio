@@ -14,7 +14,7 @@ namespace EmbedIO.Routing
     /// </summary>
     /// <seealso cref="RouteResolverBase{TData}"/>
     /// <seealso cref="RouteVerbResolver"/>
-    public sealed class RouteVerbResolverCollection : RouteResolverCollectionBase<HttpVerbs, RouteVerbResolver>
+    public sealed class RouteVerbResolverCollection : RouteResolverCollectionBase<HttpVerb, RouteVerbResolver>
     {
         private readonly string _logSource;
 

@@ -17,13 +17,13 @@ namespace EmbedIO.Samples
         // Gets all records.
         // This will respond to 
         //     GET http://localhost:9696/api/people
-        [Route(HttpVerbs.Get, "/people")]
+        [Route(HttpVerb.Get, "/people")]
         public Task<IEnumerable<Person>> GetAllPeople() => Person.GetDataAsync();
 
         // Gets the first record.
         // This will respond to 
         //     GET http://localhost:9696/api/people/first
-        [Route(HttpVerbs.Get, "/people/first")]
+        [Route(HttpVerb.Get, "/people/first")]
         public async Task<Person> GetFirstPeople() => (await Person.GetDataAsync().ConfigureAwait(false)).First();
 
         // Gets a single record.
@@ -36,23 +36,23 @@ namespace EmbedIO.Samples
         //
         // If the given ID cannot be converted to an integer, an exception will be thrown.
         // By default, WebApiModule will then respond with "500 Internal Server Error".
-        [Route(HttpVerbs.Get, "/people/{id?}")]
+        [Route(HttpVerb.Get, "/people/{id?}")]
         public async Task<Person> GetPeople(int id)
             => (await Person.GetDataAsync().ConfigureAwait(false)).FirstOrDefault(x => x.Id == id)
             ?? throw HttpException.NotFound();
 
         // Posts the people Tubular model.
-        [Route(HttpVerbs.Post, "/people")]
+        [Route(HttpVerb.Post, "/people")]
         public async Task<GridDataResponse> PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
             => gridDataRequest.CreateGridDataResponse((await Person.GetDataAsync().ConfigureAwait(false)).AsQueryable());
 
         // Echoes request form data in JSON format.
-        [Route(HttpVerbs.Post, "/echo")]
+        [Route(HttpVerb.Post, "/echo")]
         public Dictionary<string, object> Echo([FormData] NameValueCollection data)
             => data.ToDictionary();
 
         // Select by name
-        [Route(HttpVerbs.Get, "/peopleByName/{name}")]
+        [Route(HttpVerb.Get, "/peopleByName/{name}")]
         public async Task<Person> GetPeopleByName(string name)
             => (await Person.GetDataAsync().ConfigureAwait(false)).FirstOrDefault(x => x.Name == name)
             ?? throw HttpException.NotFound();

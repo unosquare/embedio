@@ -66,7 +66,7 @@ namespace EmbedIO.Cors
         /// <inheritdoc />
         protected override Task OnRequestAsync(IHttpContext context)
         {
-            var isOptions = context.Request.HttpVerb == HttpVerbs.Options;
+            var isOptions = context.Request.HttpVerb == HttpVerb.Options;
 
             // If we allow all we don't need to filter
             if (_origins == All && _headers == All && _methods == All)

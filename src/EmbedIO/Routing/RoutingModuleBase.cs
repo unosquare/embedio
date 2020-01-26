@@ -47,8 +47,8 @@ namespace EmbedIO.Routing
         /// <summary>
         /// Associates a HTTP method and a route to a handler.
         /// </summary>
-        /// <param name="verb">A <see cref="HttpVerbs"/> constant representing the HTTP method
-        /// to associate with <paramref name="handler"/>, or <see cref="HttpVerbs.Any"/>
+        /// <param name="verb">A <see cref="HttpVerb"/> constant representing the HTTP method
+        /// to associate with <paramref name="handler"/>, or <see cref="HttpVerb.Any"/>
         /// if <paramref name="handler"/> can handle all HTTP methods.</param>
         /// <param name="matcher">The <see cref="RouteMatcher"/> used to match URL paths.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
@@ -57,14 +57,14 @@ namespace EmbedIO.Routing
         /// <para>- or -</para>
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
-        protected void AddHandler(HttpVerbs verb, RouteMatcher matcher, RouteHandlerCallback handler)
+        protected void AddHandler(HttpVerb verb, RouteMatcher matcher, RouteHandlerCallback handler)
             => _resolvers.Add(verb, matcher, handler);
 
         /// <summary>
         /// Associates a HTTP method and a route to a synchronous handler.
         /// </summary>
-        /// <param name="verb">A <see cref="HttpVerbs"/> constant representing the HTTP method
-        /// to associate with <paramref name="handler"/>, or <see cref="HttpVerbs.Any"/>
+        /// <param name="verb">A <see cref="HttpVerb"/> constant representing the HTTP method
+        /// to associate with <paramref name="handler"/>, or <see cref="HttpVerb.Any"/>
         /// if <paramref name="handler"/> can handle all HTTP methods.</param>
         /// <param name="matcher">The <see cref="RouteMatcher"/> used to match URL paths.</param>
         /// <param name="handler">A callback used to handle matching contexts.</param>
@@ -73,7 +73,7 @@ namespace EmbedIO.Routing
         /// <para>- or -</para>
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
-        protected void AddHandler(HttpVerbs verb, RouteMatcher matcher, SyncRouteHandlerCallback handler)
+        protected void AddHandler(HttpVerb verb, RouteMatcher matcher, SyncRouteHandlerCallback handler)
             => _resolvers.Add(verb, matcher, handler);
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnAny(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Any, matcher, handler);
+            => _resolvers.Add(HttpVerb.Any, matcher, handler);
 
         /// <summary>
         /// Associates all requests matching a route to a synchronous handler.
@@ -111,7 +111,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnAny(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Any, matcher, handler);
+            => _resolvers.Add(HttpVerb.Any, matcher, handler);
 
         /// <summary>
         /// Associates <c>DELETE</c> requests matching a route to a handler.
@@ -124,7 +124,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnDelete(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Delete, matcher, handler);
+            => _resolvers.Add(HttpVerb.Delete, matcher, handler);
 
         /// <summary>
         /// Associates <c>DELETE</c> requests matching a route to a synchronous handler.
@@ -137,7 +137,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnDelete(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Delete, matcher, handler);
+            => _resolvers.Add(HttpVerb.Delete, matcher, handler);
 
         /// <summary>
         /// Associates <c>GET</c> requests matching a route to a handler.
@@ -150,7 +150,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnGet(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Get, matcher, handler);
+            => _resolvers.Add(HttpVerb.Get, matcher, handler);
 
         /// <summary>
         /// Associates <c>GET</c> requests matching a route to a synchronous handler.
@@ -163,7 +163,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnGet(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Get, matcher, handler);
+            => _resolvers.Add(HttpVerb.Get, matcher, handler);
 
         /// <summary>
         /// Associates <c>HEAD</c> requests matching a route to a handler.
@@ -176,7 +176,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnHead(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Head, matcher, handler);
+            => _resolvers.Add(HttpVerb.Head, matcher, handler);
 
         /// <summary>
         /// Associates <c>HEAD</c> requests matching a route to a synchronous handler.
@@ -189,7 +189,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnHead(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Head, matcher, handler);
+            => _resolvers.Add(HttpVerb.Head, matcher, handler);
 
         /// <summary>
         /// Associates <c>OPTIONS</c> requests matching a route to a handler.
@@ -202,7 +202,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnOptions(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Options, matcher, handler);
+            => _resolvers.Add(HttpVerb.Options, matcher, handler);
 
         /// <summary>
         /// Associates <c>OPTIONS</c> requests matching a route to a synchronous handler.
@@ -215,7 +215,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnOptions(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Options, matcher, handler);
+            => _resolvers.Add(HttpVerb.Options, matcher, handler);
 
         /// <summary>
         /// Associates <c>PATCH</c> requests matching a route to a handler.
@@ -228,7 +228,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnPatch(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Patch, matcher, handler);
+            => _resolvers.Add(HttpVerb.Patch, matcher, handler);
 
         /// <summary>
         /// Associates <c>PATCH</c> requests matching a route to a synchronous handler.
@@ -241,7 +241,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnPatch(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Patch, matcher, handler);
+            => _resolvers.Add(HttpVerb.Patch, matcher, handler);
 
         /// <summary>
         /// Associates <c>POST</c> requests matching a route to a handler.
@@ -254,7 +254,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnPost(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Post, matcher, handler);
+            => _resolvers.Add(HttpVerb.Post, matcher, handler);
 
         /// <summary>
         /// Associates <c>POST</c> requests matching a route to a synchronous handler.
@@ -267,7 +267,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnPost(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Post, matcher, handler);
+            => _resolvers.Add(HttpVerb.Post, matcher, handler);
 
         /// <summary>
         /// Associates <c>PUT</c> requests matching a route to a handler.
@@ -280,7 +280,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnPut(RouteMatcher matcher, RouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Put, matcher, handler);
+            => _resolvers.Add(HttpVerb.Put, matcher, handler);
 
         /// <summary>
         /// Associates <c>PUT</c> requests matching a route to a synchronous handler.
@@ -293,7 +293,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="handler"/> is <see langword="null"/>.</para>
         /// </exception>
         protected void OnPut(RouteMatcher matcher, SyncRouteHandlerCallback handler)
-            => _resolvers.Add(HttpVerbs.Put, matcher, handler);
+            => _resolvers.Add(HttpVerb.Put, matcher, handler);
 
         /// <summary>
         /// <para>Called when no route is matched for the requested URL path.</para>

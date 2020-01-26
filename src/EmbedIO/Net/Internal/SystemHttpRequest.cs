@@ -21,7 +21,7 @@ namespace EmbedIO.Net.Internal
         public SystemHttpRequest(System.Net.HttpListenerContext context)
         {
             _request = context.Request;
-            Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
+            Enum.TryParse<HttpVerb>(_request.HttpMethod.Trim(), true, out var verb);
             HttpVerb = verb;
             Cookies = new SystemCookieCollection(_request.Cookies);
             LocalEndPoint = _request.LocalEndPoint;
@@ -50,7 +50,7 @@ namespace EmbedIO.Net.Internal
         public string HttpMethod => _request.HttpMethod;
 
         /// <inheritdoc />
-        public HttpVerbs HttpVerb { get; }
+        public HttpVerb HttpVerb { get; }
 
         /// <inheritdoc />
         public Uri Url => _request.Url;

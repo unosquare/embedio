@@ -74,7 +74,7 @@ namespace EmbedIO.Testing.Internal
 
         public string HttpMethod { get; }
 
-        public HttpVerbs HttpVerb { get; }
+        public HttpVerb HttpVerb { get; }
 
         public Uri Url { get; }
 
@@ -104,30 +104,30 @@ namespace EmbedIO.Testing.Internal
 
         public Uri? UrlReferrer => null;
 
-        private static HttpVerbs HttpMethodToVerb(HttpMethod method)
+        private static HttpVerb HttpMethodToVerb(HttpMethod method)
         {
             if (method == System.Net.Http.HttpMethod.Delete)
-                return HttpVerbs.Delete;
+                return HttpVerb.Delete;
 
             if (method == System.Net.Http.HttpMethod.Get)
-                return HttpVerbs.Get;
+                return HttpVerb.Get;
 
             if (method == System.Net.Http.HttpMethod.Head)
-                return HttpVerbs.Head;
+                return HttpVerb.Head;
 
             if (method == System.Net.Http.HttpMethod.Options)
-                return HttpVerbs.Options;
+                return HttpVerb.Options;
             
             if (method == AdditionalHttpMethods.Patch)
-                return HttpVerbs.Patch;
+                return HttpVerb.Patch;
 
             if (method == System.Net.Http.HttpMethod.Post)
-                return HttpVerbs.Post;
+                return HttpVerb.Post;
 
             if (method == System.Net.Http.HttpMethod.Put)
-                return HttpVerbs.Put;
+                return HttpVerb.Put;
 
-            return HttpVerbs.Any;
+            return HttpVerb.Any;
         }
     }
 }

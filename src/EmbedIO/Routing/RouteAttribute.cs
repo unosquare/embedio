@@ -25,7 +25,7 @@ namespace EmbedIO.Routing
         /// <para><paramref name="route"/> does not comply with route syntax.</para>
         /// </exception>
         /// <seealso cref="Routing.Route.IsValid"/>
-        public RouteAttribute(HttpVerbs verb, string route, bool isBaseRoute = false)
+        public RouteAttribute(HttpVerb verb, string route, bool isBaseRoute = false)
         {
             Matcher = RouteMatcher.Parse(route, isBaseRoute);
             Verb = verb;
@@ -34,7 +34,7 @@ namespace EmbedIO.Routing
         /// <summary>
         /// Gets the HTTP verb handled by a method with this attribute.
         /// </summary>
-        public HttpVerbs Verb { get; }
+        public HttpVerb Verb { get; }
 
         /// <summary>
         /// Gets a <see cref="RouteMatcher"/> that will match URLs against this attribute's data.

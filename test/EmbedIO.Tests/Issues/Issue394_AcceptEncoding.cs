@@ -14,7 +14,7 @@ namespace EmbedIO.Tests.Issues
             const string DefaultUrl = "http://localhost:1234/";
 
             using var server = new WebServer(HttpListenerMode.EmbedIO, DefaultUrl);
-            server.WithAction("/", HttpVerbs.Get, async context => { await context.SendDataAsync(12345); });
+            server.WithAction("/", HttpVerb.Get, async context => { await context.SendDataAsync(12345); });
 
             _ = server.RunAsync();
 

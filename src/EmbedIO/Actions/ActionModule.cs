@@ -10,7 +10,7 @@ namespace EmbedIO.Actions
     /// <seealso cref="WebModuleBase" />
     public class ActionModule : WebModuleBase
     {
-        private readonly HttpVerbs _verb;
+        private readonly HttpVerb _verb;
 
         private readonly RequestHandlerCallback _handler;
 
@@ -22,7 +22,7 @@ namespace EmbedIO.Actions
         /// <param name="handler">The callback used to handle requests.</param>
         /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
         /// <seealso cref="WebModuleBase(string)"/>
-        public ActionModule(string baseRoute, HttpVerbs verb, RequestHandlerCallback handler)
+        public ActionModule(string baseRoute, HttpVerb verb, RequestHandlerCallback handler)
             : base(baseRoute)
         {
             _verb = verb;
@@ -34,7 +34,7 @@ namespace EmbedIO.Actions
         /// </summary>
         /// <param name="handler">The handler.</param>
         public ActionModule(RequestHandlerCallback handler)
-            : this("/", HttpVerbs.Any, handler)
+            : this("/", HttpVerb.Any, handler)
         {
         }
 
@@ -44,7 +44,7 @@ namespace EmbedIO.Actions
         /// <inheritdoc />
         protected override async Task OnRequestAsync(IHttpContext context)
         {
-            if (_verb != HttpVerbs.Any && context.Request.HttpVerb != _verb)
+            if (_verb != HttpVerb.Any && context.Request.HttpVerb != _verb)
                 return;
 
             await _handler(context).ConfigureAwait(false);
