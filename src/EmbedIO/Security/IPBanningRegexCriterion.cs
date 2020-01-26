@@ -53,6 +53,14 @@ namespace EmbedIO.Security
                 _innerLogger = new InnerRegexCriterionLogger(this);
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="IPBanningRegexCriterion"/> class.
+        /// </summary>
+        ~IPBanningRegexCriterion()
+        {
+            Dispose(false);
+        }
+
         /// <inheritdoc />
         public Task<bool> ValidateIPAddress(IPAddress address)
         {
@@ -85,12 +93,17 @@ namespace EmbedIO.Security
         }
 
         /// <inheritdoc />
-        public void Dispose() =>
+        public void Dispose()
+        {
             Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
+
             if (disposing)
             {
                 _failRegexMatches.Clear();
