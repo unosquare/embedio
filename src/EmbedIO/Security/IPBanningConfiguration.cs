@@ -27,6 +27,14 @@ namespace EmbedIO.Security
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="IPBanningConfiguration"/> class.
+        /// </summary>
+        ~IPBanningConfiguration()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Gets the black list.
         /// </summary>
         /// <value>
@@ -80,8 +88,11 @@ namespace EmbedIO.Security
         }
         
         /// <inheritdoc />
-        public void Dispose() =>
+        public void Dispose()
+        {
             Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         internal async Task AddToWhitelistAsync(IEnumerable<string>? whitelist)
         {
@@ -150,7 +161,9 @@ namespace EmbedIO.Security
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
+
             if (disposing)
             {
                 _blacklistDictionary.Clear();
