@@ -30,7 +30,7 @@ namespace EmbedIO.Tests.Issues
             // Issue 351: registering this controller would throw ArgumentException
             // because the handler compiler would pass (System.Object)null
             // instead of (System.String)null for parameter str.
-            [Route(HttpVerbs.Get, "/")]
+            [Route(HttpVerb.Get, "/")]
             public void GiveMeTheDefaultValueForString(string str)
             {
             }

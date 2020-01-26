@@ -343,10 +343,10 @@ namespace EmbedIO.Files
         {
             switch (request.HttpVerb)
             {
-                case HttpVerbs.Head:
+                case HttpVerb.Head:
                     sendResponseBody = false;
                     return true;
-                case HttpVerbs.Get:
+                case HttpVerb.Get:
                     sendResponseBody = true;
                     return true;
                 default:

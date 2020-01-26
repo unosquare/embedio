@@ -15,7 +15,7 @@ namespace EmbedIO.Tests.Issues
             var ok = Encoding.UTF8.GetBytes("content");
 
             using var server = new WebServer(HttpListenerMode.EmbedIO, DefaultUrl);
-            server.WithAction("/", HttpVerbs.Get, async context =>
+            server.WithAction("/", HttpVerb.Get, async context =>
             {
                 context.Response.ContentLength64 = ok.Length;
 
@@ -37,7 +37,7 @@ namespace EmbedIO.Tests.Issues
             var ok = Encoding.UTF8.GetBytes("content");
 
             using var server = new WebServer(1234);
-            server.WithAction("/", HttpVerbs.Get, async context =>
+            server.WithAction("/", HttpVerb.Get, async context =>
             {
                 context.Response.Headers[HttpHeaderNames.ContentLength] = ok.Length.ToString();
 

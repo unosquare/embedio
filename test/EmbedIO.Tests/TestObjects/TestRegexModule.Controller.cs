@@ -9,15 +9,15 @@ namespace EmbedIO.Tests.TestObjects
     {
         public class Controller : WebApiController
         {
-            [Route(HttpVerbs.Any, "/data/{id}")]
+            [Route(HttpVerb.Any, "/data/{id}")]
             public Task Id(string id)
                 => HttpContext.SendStringAsync(id, MimeType.PlainText, Encoding.UTF8);
 
-            [Route(HttpVerbs.Any, "/data/{id}/{time?}")]
+            [Route(HttpVerb.Any, "/data/{id}/{time?}")]
             public Task Time(string id, string time)
                 => HttpContext.SendStringAsync(time, MimeType.PlainText, Encoding.UTF8);
 
-            [Route(HttpVerbs.Any, "/empty")]
+            [Route(HttpVerb.Any, "/empty")]
             public void Empty()
             {
             }

@@ -213,7 +213,7 @@ namespace EmbedIO
 
             // RFC7233, Section 3.1:
             // "A server MUST ignore a Range header field received with a request method other than GET."
-            if (@this.HttpVerb != HttpVerbs.Get)
+            if (@this.HttpVerb != HttpVerb.Get)
                 return false;
 
             // No Range header, no partial content.

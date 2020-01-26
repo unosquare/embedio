@@ -21,7 +21,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithAction<TContainer>(this TContainer @this, string baseRoute, HttpVerbs verb, RequestHandlerCallback handler)
+        public static TContainer WithAction<TContainer>(this TContainer @this, string baseRoute, HttpVerb verb, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
         {
             @this.Modules.Add(new ActionModule(baseRoute, verb, handler));
@@ -41,7 +41,7 @@ namespace EmbedIO
         /// <seealso cref="ActionModule"/>
         /// <seealso cref="IWebModuleContainer.Modules"/>
         /// <seealso cref="IComponentCollection{T}.Add"/>
-        public static TContainer WithAction<TContainer>(this TContainer @this, HttpVerbs verb, RequestHandlerCallback handler)
+        public static TContainer WithAction<TContainer>(this TContainer @this, HttpVerb verb, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
             => WithAction(@this, UrlPath.Root, verb, handler);
 
@@ -60,7 +60,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnAny<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Any, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Any, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all requests
@@ -76,7 +76,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnAny<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Any, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Any, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>DELETE</c>requests
@@ -93,7 +93,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnDelete<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Delete, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Delete, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>DELETE</c>requests
@@ -109,7 +109,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnDelete<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Delete, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Delete, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>GET</c>requests
@@ -126,7 +126,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnGet<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Get, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Get, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>GET</c>requests
@@ -142,7 +142,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnGet<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Get, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Get, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>HEAD</c>requests
@@ -159,7 +159,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnHead<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Head, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Head, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>HEAD</c>requests
@@ -175,7 +175,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnHead<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Head, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Head, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>OPTIONS</c>requests
@@ -192,7 +192,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnOptions<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Options, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Options, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>OPTIONS</c>requests
@@ -208,7 +208,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnOptions<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Options, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Options, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>PATCH</c>requests
@@ -225,7 +225,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnPatch<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Patch, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Patch, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>PATCH</c>requests
@@ -241,7 +241,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnPatch<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Patch, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Patch, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>POST</c>requests
@@ -258,7 +258,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnPost<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Post, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Post, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>POST</c>requests
@@ -274,7 +274,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnPost<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Post, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Post, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>PUT</c>requests
@@ -291,7 +291,7 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnPut<TContainer>(this TContainer @this, string baseRoute, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, baseRoute, HttpVerbs.Put, handler);
+            => WithAction(@this, baseRoute, HttpVerb.Put, handler);
 
         /// <summary>
         /// Creates an instance of <see cref="ActionModule"/> that intercepts all <c>PUT</c>requests
@@ -307,6 +307,6 @@ namespace EmbedIO
         /// <seealso cref="IComponentCollection{T}.Add"/>
         public static TContainer OnPut<TContainer>(this TContainer @this, RequestHandlerCallback handler)
             where TContainer : class, IWebModuleContainer
-            => WithAction(@this, UrlPath.Root, HttpVerbs.Put, handler);
+            => WithAction(@this, UrlPath.Root, HttpVerb.Put, handler);
     }
 }
