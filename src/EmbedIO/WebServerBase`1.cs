@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -319,9 +320,15 @@ namespace EmbedIO
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+                return;
 
             _modules.Dispose();
+
+            var disposables = SharedItems.Values.OfType<IDisposable>();
+            SharedItems.Clear();
+            foreach (var disposable in disposables)
+                disposable.Dispose();
         }
 
         /// <summary>
