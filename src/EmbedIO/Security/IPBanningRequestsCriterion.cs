@@ -28,6 +28,14 @@ namespace EmbedIO.Security
             _maxRequestsPerSecond = maxRequestsPerSecond;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="IPBanningRequestsCriterion"/> class.
+        /// </summary>
+        ~IPBanningRequestsCriterion()
+        {
+            Dispose(false);
+        }
+
         /// <inheritdoc />
         public Task<bool> ValidateIPAddress(IPAddress address)
         {
@@ -65,8 +73,11 @@ namespace EmbedIO.Security
         }
 
         /// <inheritdoc />
-        public void Dispose() =>
+        public void Dispose()
+        {
             Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
