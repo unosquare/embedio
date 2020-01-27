@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EmbedIO.Tests.Issues
 {
     [TestFixture]
-    public class Issue_PassHttpException : EndToEndFixtureBase
+    public class Issue427_PassHttpException : EndToEndFixtureBase
     {
         protected override void OnSetUp()
         {
