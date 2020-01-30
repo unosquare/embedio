@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
+using Swan;
 using Swan.Collections;
 using Swan.Configuration;
 

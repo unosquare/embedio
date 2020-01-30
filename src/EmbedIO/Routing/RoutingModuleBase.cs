@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO.Routing
 {
