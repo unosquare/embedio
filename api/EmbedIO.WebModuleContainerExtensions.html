@@ -1339,14 +1339,14 @@ under the specified <code data-dev-comment-type="paramref" class="paramref">base
   
   
   <a id="EmbedIO_WebModuleContainerExtensions_WithAction_" data-uid="EmbedIO.WebModuleContainerExtensions.WithAction*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_EmbedIO_HttpVerbs_EmbedIO_RequestHandlerCallback_" data-uid="EmbedIO.WebModuleContainerExtensions.WithAction``1(``0,EmbedIO.HttpVerbs,EmbedIO.RequestHandlerCallback)">WithAction&lt;TContainer&gt;(TContainer, HttpVerbs, RequestHandlerCallback)</h4>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_EmbedIO_HttpVerb_EmbedIO_RequestHandlerCallback_" data-uid="EmbedIO.WebModuleContainerExtensions.WithAction``1(``0,EmbedIO.HttpVerb,EmbedIO.RequestHandlerCallback)">WithAction&lt;TContainer&gt;(TContainer, HttpVerb, RequestHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ActionModule"></see> with a base URL path of <code>&quot;/&quot;</code>
 and adds it to a module container.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithAction&lt;TContainer&gt;(this TContainer this, HttpVerbs verb, RequestHandlerCallback handler)
+    <pre><code class="lang-csharp hljs">public static TContainer WithAction&lt;TContainer&gt;(this TContainer this, HttpVerb verb, RequestHandlerCallback handler)
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1366,7 +1366,7 @@ and adds it to a module container.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
         <td><span class="parametername">verb</span></td>
         <td><p>The HTTP verb that will be served by <code data-dev-comment-type="paramref" class="paramref">handler</code>.</p>
 </td>
@@ -1411,20 +1411,20 @@ and adds it to a module container.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_EmbedIO_HttpVerbs_EmbedIO_RequestHandlerCallback__seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_EmbedIO_HttpVerb_EmbedIO_RequestHandlerCallback__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>
   
   
   <a id="EmbedIO_WebModuleContainerExtensions_WithAction_" data-uid="EmbedIO.WebModuleContainerExtensions.WithAction*"></a>
-  <h4 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_System_String_EmbedIO_HttpVerbs_EmbedIO_RequestHandlerCallback_" data-uid="EmbedIO.WebModuleContainerExtensions.WithAction``1(``0,System.String,EmbedIO.HttpVerbs,EmbedIO.RequestHandlerCallback)">WithAction&lt;TContainer&gt;(TContainer, String, HttpVerbs, RequestHandlerCallback)</h4>
+  <h4 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_System_String_EmbedIO_HttpVerb_EmbedIO_RequestHandlerCallback_" data-uid="EmbedIO.WebModuleContainerExtensions.WithAction``1(``0,System.String,EmbedIO.HttpVerb,EmbedIO.RequestHandlerCallback)">WithAction&lt;TContainer&gt;(TContainer, String, HttpVerb, RequestHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Creates an instance of <see cref="!:ActionModule"></see> and adds it to a module container.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContainer WithAction&lt;TContainer&gt;(this TContainer this, string baseRoute, HttpVerbs verb, RequestHandlerCallback handler)
+    <pre><code class="lang-csharp hljs">public static TContainer WithAction&lt;TContainer&gt;(this TContainer this, string baseRoute, HttpVerb verb, RequestHandlerCallback handler)
     where TContainer : class, IWebModuleContainer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1450,7 +1450,7 @@ and adds it to a module container.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
         <td><span class="parametername">verb</span></td>
         <td><p>The HTTP verb that will be served by <code data-dev-comment-type="paramref" class="paramref">handler</code>.</p>
 </td>
@@ -1495,7 +1495,7 @@ and adds it to a module container.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_System_String_EmbedIO_HttpVerbs_EmbedIO_RequestHandlerCallback__seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleContainerExtensions_WithAction__1___0_System_String_EmbedIO_HttpVerb_EmbedIO_RequestHandlerCallback__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html#EmbedIO_IWebModuleContainer_Modules">Modules</a></div>
   </div>

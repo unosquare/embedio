@@ -105,10 +105,10 @@
       <a class="xref" href="EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_OnRequestAsync_EmbedIO_IHttpContext_">RoutingModuleBase.OnRequestAsync(IHttpContext)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">RoutingModuleBase.AddHandler(HttpVerbs, RouteMatcher, RouteHandlerCallback)</a>
+      <a class="xref" href="EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerb_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">RoutingModuleBase.AddHandler(HttpVerb, RouteMatcher, RouteHandlerCallback)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_">RoutingModuleBase.AddHandler(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)</a>
+      <a class="xref" href="EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandler_EmbedIO_HttpVerb_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_">RoutingModuleBase.AddHandler(HttpVerb, RouteMatcher, SyncRouteHandlerCallback)</a>
     </div>
     <div>
       <a class="xref" href="EmbedIO.Routing.RoutingModuleBase.html#EmbedIO_Routing_RoutingModuleBase_AddHandlersFrom_System_Object_">RoutingModuleBase.AddHandlersFrom(Object)</a>
@@ -238,13 +238,13 @@
   
   
   <a id="EmbedIO_Routing_RoutingModule_Add_" data-uid="EmbedIO.Routing.RoutingModule.Add*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">Add(HttpVerbs, RouteMatcher, RouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerb_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerb,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.RouteHandlerCallback)">Add(HttpVerb, RouteMatcher, RouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates a HTTP method and a route to a handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Add(HttpVerbs verb, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Add(HttpVerb verb, RouteMatcher matcher, RouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -257,10 +257,10 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
         <td><span class="parametername">verb</span></td>
-        <td><p>A <a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a> constant representing the HTTP method
-to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerbs.html#EmbedIO_HttpVerbs_Any">Any</a>
+        <td><p>A <a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a> constant representing the HTTP method
+to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerb.html#EmbedIO_HttpVerb_Any">Any</a>
 if <code data-dev-comment-type="paramref" class="paramref">handler</code> can handle all HTTP methods.</p>
 </td>
       </tr>
@@ -281,13 +281,13 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
   
   
   <a id="EmbedIO_Routing_RoutingModule_Add_" data-uid="EmbedIO.Routing.RoutingModule.Add*"></a>
-  <h4 id="EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerbs_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerbs,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">Add(HttpVerbs, RouteMatcher, SyncRouteHandlerCallback)</h4>
+  <h4 id="EmbedIO_Routing_RoutingModule_Add_EmbedIO_HttpVerb_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_" data-uid="EmbedIO.Routing.RoutingModule.Add(EmbedIO.HttpVerb,EmbedIO.Routing.RouteMatcher,EmbedIO.Routing.SyncRouteHandlerCallback)">Add(HttpVerb, RouteMatcher, SyncRouteHandlerCallback)</h4>
   <div class="markdown level1 summary"><p>Associates a HTTP method and a route to a synchronous handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Add(HttpVerbs verb, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Add(HttpVerb verb, RouteMatcher matcher, SyncRouteHandlerCallback handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -300,10 +300,10 @@ if <code data-dev-comment-type="paramref" class="paramref">handler</code> can ha
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
         <td><span class="parametername">verb</span></td>
-        <td><p>A <a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a> constant representing the HTTP method
-to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerbs.html#EmbedIO_HttpVerbs_Any">Any</a>
+        <td><p>A <a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a> constant representing the HTTP method
+to associate with <code data-dev-comment-type="paramref" class="paramref">handler</code>, or <a class="xref" href="EmbedIO.HttpVerb.html#EmbedIO_HttpVerb_Any">Any</a>
 if <code data-dev-comment-type="paramref" class="paramref">handler</code> can handle all HTTP methods.</p>
 </td>
       </tr>

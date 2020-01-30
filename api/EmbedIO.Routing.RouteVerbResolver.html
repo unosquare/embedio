@@ -88,37 +88,37 @@ possibly handling different HTTP methods via different handlers.</p>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html">RouteResolverBase</a>&lt;<a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a>&gt;</div>
+    <div class="level1"><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html">RouteResolverBase</a>&lt;<a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a>&gt;</div>
     <div class="level2"><span class="xref">RouteVerbResolver</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Matcher">RouteResolverBase&lt;HttpVerbs&gt;.Matcher</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Matcher">RouteResolverBase&lt;HttpVerb&gt;.Matcher</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Route">RouteResolverBase&lt;HttpVerbs&gt;.Route</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Route">RouteResolverBase&lt;HttpVerb&gt;.Route</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute">RouteResolverBase&lt;HttpVerbs&gt;.IsBaseRoute</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_IsBaseRoute">RouteResolverBase&lt;HttpVerb&gt;.IsBaseRoute</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_RouteHandlerCallback_">RouteResolverBase&lt;HttpVerbs&gt;.Add(HttpVerbs, RouteHandlerCallback)</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_RouteHandlerCallback_">RouteResolverBase&lt;HttpVerb&gt;.Add(HttpVerb, RouteHandlerCallback)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_SyncRouteHandlerCallback_">RouteResolverBase&lt;HttpVerbs&gt;.Add(HttpVerbs, SyncRouteHandlerCallback)</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Add__0_EmbedIO_Routing_SyncRouteHandlerCallback_">RouteResolverBase&lt;HttpVerb&gt;.Add(HttpVerb, SyncRouteHandlerCallback)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Lock">RouteResolverBase&lt;HttpVerbs&gt;.Lock()</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_Lock">RouteResolverBase&lt;HttpVerb&gt;.Lock()</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">RouteResolverBase&lt;HttpVerbs&gt;.ResolveAsync(IHttpContext)</a>
+      <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">RouteResolverBase&lt;HttpVerb&gt;.ResolveAsync(IHttpContext)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Routing.html">EmbedIO.Routing</a></h6>
   <h5 id="EmbedIO_Routing_RouteVerbResolver_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class RouteVerbResolver : RouteResolverBase&lt;HttpVerbs&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class RouteVerbResolver : RouteResolverBase&lt;HttpVerb&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -161,7 +161,7 @@ possibly handling different HTTP methods via different handlers.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override HttpVerbs GetContextData(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override HttpVerb GetContextData(IHttpContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -190,22 +190,22 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerbs&gt;.GetContextData(EmbedIO.IHttpContext)</span></div>
+  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerb&gt;.GetContextData(EmbedIO.IHttpContext)</span></div>
   
   
   <a id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData*"></a>
-  <h4 id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_EmbedIO_HttpVerbs_EmbedIO_HttpVerbs_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData(EmbedIO.HttpVerbs,EmbedIO.HttpVerbs)">MatchContextData(HttpVerbs, HttpVerbs)</h4>
+  <h4 id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_EmbedIO_HttpVerb_EmbedIO_HttpVerb_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData(EmbedIO.HttpVerb,EmbedIO.HttpVerb)">MatchContextData(HttpVerb, HttpVerb)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override bool MatchContextData(HttpVerbs contextVerb, HttpVerbs handlerVerb)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override bool MatchContextData(HttpVerb contextVerb, HttpVerb handlerVerb)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -218,12 +218,12 @@ possibly handling different HTTP methods via different handlers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
         <td><span class="parametername">contextVerb</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="EmbedIO.HttpVerbs.html">HttpVerbs</a></td>
+        <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
         <td><span class="parametername">handlerVerb</span></td>
         <td></td>
       </tr>
@@ -245,7 +245,7 @@ possibly handling different HTTP methods via different handlers.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerbs&gt;.MatchContextData(EmbedIO.HttpVerbs, EmbedIO.HttpVerbs)</span></div>
+  <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerb&gt;.MatchContextData(EmbedIO.HttpVerb, EmbedIO.HttpVerb)</span></div>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>
