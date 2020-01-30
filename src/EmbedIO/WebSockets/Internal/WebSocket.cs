@@ -153,7 +153,9 @@ namespace EmbedIO.WebSockets.Internal
         /// A task that represents the asynchronous of send 
         /// binary data using websocket.
         /// </returns>
+#pragma warning disable CA1801 // Unused parameter
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken cancellationToken = default)
+#pragma warning restore CA1801
         {
             if (_readyState != WebSocketState.Open)
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
@@ -229,7 +231,9 @@ namespace EmbedIO.WebSockets.Internal
             || code == CloseStatusCode.Abnormal
             || code == CloseStatusCode.TlsHandshakeFailure;
 
+#pragma warning disable CA1801 // Unused parameter
         private void Dispose(bool disposing)
+#pragma warning restore CA1801
         {
             try
             {
