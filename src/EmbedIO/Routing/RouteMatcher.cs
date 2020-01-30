@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using EmbedIO.Utilities;
-using Swan.Lite;
+using Swan;
 
 namespace EmbedIO.Routing
 {

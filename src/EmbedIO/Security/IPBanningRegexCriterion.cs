@@ -1,5 +1,4 @@
-﻿using Swan;
-using Swan.Logging;
+﻿using Swan.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
