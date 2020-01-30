@@ -95,7 +95,9 @@ namespace EmbedIO.Samples
         }
 
         // Open the default browser on the web server's home page.
+#pragma warning disable CA1801 // Unused parameter
         private static async Task ShowBrowserAsync(string url, CancellationToken cancellationToken)
+#pragma warning restore CA1801
         {
             // Be sure to run in parallel.
             await Task.Yield();
