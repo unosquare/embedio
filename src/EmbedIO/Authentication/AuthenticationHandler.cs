@@ -17,7 +17,9 @@ namespace EmbedIO.Authentication
         /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="module">The authentication module that called the handler.</param>
         /// <returns>A completed <see cref="Task"/>.</returns>
+#pragma warning disable CA1801 // Unused parameter
         public static Task PassThrough(IHttpContext context, AuthenticationModuleBase module)
+#pragma warning restore CA1801
             => Task.CompletedTask;
 
         /// <summary>

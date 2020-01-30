@@ -49,7 +49,9 @@ namespace EmbedIO
         /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+#pragma warning disable CA1801 // Unused parameter
         public static Task EmptyResponse(IHttpContext context, Exception exception)
+#pragma warning restore CA1801
         {
             context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
             return Task.CompletedTask;
