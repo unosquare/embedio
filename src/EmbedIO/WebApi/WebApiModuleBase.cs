@@ -277,6 +277,34 @@ namespace EmbedIO.WebApi
             return -1;
         }
 
+        private static T AwaitResult<T>(Task<T> task) => task.ConfigureAwait(false).GetAwaiter().GetResult();
+
+        private static T AwaitAndCastResult<T>(string parameterName, Task<object> task)
+        {
+            var result = task.ConfigureAwait(false).GetAwaiter().GetResult();
+            
+            return result switch {
+                null when typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null => throw new InvalidCastException($"Cannot cast null to {typeof(T).FullName} for parameter \"{parameterName}\"."),
+                null => default,
+                T castResult => castResult,
+                _ => throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".")
+            };
+        }
+
+        private static bool IsGenericTaskType(Type type, out Type? resultType)
+        {
+            resultType = null;
+
+            if (!type.IsConstructedGenericType)
+                return false;
+
+            if (type.GetGenericTypeDefinition() != typeof(Task<>))
+                return false;
+
+            resultType = type.GetGenericArguments()[0];
+            return true;
+        }
+
         // Compile a handler.
         //
         // Parameters:
@@ -425,7 +453,7 @@ namespace EmbedIO.WebApi
                         parameterType,
                         Expression.Property(routeInLambda, "Item", Expression.Constant(index)));
 
-                    handlerArguments.Add(convertFromRoute);
+                    handlerArguments.Add(convertFromRoute ?? throw SelfCheck.Failure($"{nameof(convertFromRoute)} is null."));
                     continue;
                 }
 
@@ -511,20 +539,6 @@ namespace EmbedIO.WebApi
                 .Compile();
         }
 
-        private static T AwaitResult<T>(Task<T> task) => task.ConfigureAwait(false).GetAwaiter().GetResult();
-
-        private static T AwaitAndCastResult<T>(string parameterName, Task<object> task)
-        {
-            var result = task.ConfigureAwait(false).GetAwaiter().GetResult();
-            
-            return result switch {
-                null when typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null => throw new InvalidCastException($"Cannot cast null to {typeof(T).FullName} for parameter \"{parameterName}\"."),
-                null => default,
-                T castResult => castResult,
-                _ => throw new InvalidCastException($"Cannot cast {result.GetType().FullName} to {typeof(T).FullName} for parameter \"{parameterName}\".")
-            };
-        }
-
         private async Task SerializeResultAsync<TResult>(IHttpContext context, Task<TResult> task)
         {
             await Serializer(
@@ -580,20 +594,6 @@ namespace EmbedIO.WebApi
                 return false;
 
             _controllerTypes.Add(controllerType);
-            return true;
-        }
-
-        private static bool IsGenericTaskType(Type type, out Type? resultType)
-        {
-            resultType = null;
-
-            if (!type.IsConstructedGenericType)
-                return false;
-
-            if (type.GetGenericTypeDefinition() != typeof(Task<>))
-                return false;
-
-            resultType = type.GetGenericArguments()[0];
             return true;
         }
     }
