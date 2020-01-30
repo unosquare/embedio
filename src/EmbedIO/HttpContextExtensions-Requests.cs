@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO
 {

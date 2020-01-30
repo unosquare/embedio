@@ -1,5 +1,6 @@
 ﻿using System;
 using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO
 {
@@ -19,7 +20,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException">
         /// <paramref name="this"/> is <see langword="null"/>.
         /// </exception>
-        /// <exception cref="EmbedIOInternalErrorException">
+        /// <exception cref="InternalErrorException">
         /// <paramref name="this"/> does not implement <see cref="IHttpContextImpl"/>.
         /// </exception>
         public static IHttpContextImpl GetImplementation(this IHttpContext @this)
