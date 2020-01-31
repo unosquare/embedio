@@ -44,5 +44,17 @@ namespace EmbedIO.Sessions
         /// otherwise, the default value for <typeparamref name="T"/>.</returns>
         public static T GetValue<T>(this ISession @this, string key)
             => @this.TryGetValue(key, out var value) && value is T typedValue ? typedValue : default;
+
+        /// <summary>Gets the value associated with the specified key.</summary>
+        /// <typeparam name="T">The desired type of the value.</typeparam>
+        /// <param name="this">The <see cref="ISession"/> on which this method is called.</param>
+        /// <param name="key">The key whose value to get from the session.</param>
+        /// <param name="defaultValue">The default value to return if the key is not found
+        /// or its associated value is not of type <typeparamref name="T"/>.</param>
+        /// <returns>The value associated with the specified key,
+        /// if the key is found and the associated value is of type <typeparamref name="T"/>;
+        /// otherwise, <paramref name="defaultValue"/>.</returns>
+        public static T GetOrDefault<T>(this ISession @this, string key, T defaultValue)
+            => @this.TryGetValue(key, out var value) && value is T typedValue ? typedValue : defaultValue;
     }
 }
