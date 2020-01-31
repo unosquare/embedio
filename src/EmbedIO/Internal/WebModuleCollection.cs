@@ -16,7 +16,7 @@ namespace EmbedIO.Internal
         }
 
         /// <inheritdoc />
-        public new void Add(string name, IWebModule component)
+        public new void Add(string? name, IWebModule component)
         {
             base.Add(name, component);
             component.GetImplementation().Container = _container
