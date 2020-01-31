@@ -19,6 +19,5 @@ namespace EmbedIO.Internal
 
         private InternalErrorException UnexpectedCall([CallerMemberName] string member = "")
             => SelfCheck.Failure($"Unexpected call to {nameof(DummyWebModuleContainer)}.{member}.");
-
     }
 }
