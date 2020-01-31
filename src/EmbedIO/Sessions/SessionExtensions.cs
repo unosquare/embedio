@@ -42,7 +42,7 @@ namespace EmbedIO.Sessions
         /// <returns>The value associated with the specified key,
         /// if the key is found and the associated value is of type <typeparamref name="T"/>;
         /// otherwise, the default value for <typeparamref name="T"/>.</returns>
-        public static T GetValue<T>(this ISession @this, string key)
+        public static T GetOrDefault<T>(this ISession @this, string key)
             => @this.TryGetValue(key, out var value) && value is T typedValue ? typedValue : default;
     }
 }
