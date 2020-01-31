@@ -11,12 +11,12 @@ namespace EmbedIO.WebApi
     /// <para>This class cannot be inherited.</para>
     /// </summary>
     /// <seealso cref="Attribute" />
-    /// <seealso cref="IRequestDataAttribute{TController,TData}" />
+    /// <seealso cref="INonNullRequestDataAttribute{TController,TData}" />
     [AttributeUsage(AttributeTargets.Parameter)]
-    public sealed class QueryDataAttribute : Attribute, IRequestDataAttribute<WebApiController, NameValueCollection>
+    public sealed class QueryDataAttribute : Attribute, INonNullRequestDataAttribute<WebApiController, NameValueCollection>
     {
         /// <inheritdoc />
-        public Task<NameValueCollection?> GetRequestDataAsync(WebApiController controller, string parameterName)
+        public Task<NameValueCollection> GetRequestDataAsync(WebApiController controller, string parameterName)
             => Task.FromResult(controller.HttpContext.GetRequestQueryData());
     }
 }

@@ -25,13 +25,14 @@ namespace EmbedIO.WebApi
     /// <para>This class cannot be inherited.</para>
     /// </summary>
     /// <seealso cref="Attribute" />
-    /// <seealso cref="IRequestDataAttribute{TController,TData}" />
     /// <seealso cref="IRequestDataAttribute{TController}" />
+    /// <seealso cref="IRequestDataAttribute{TController,TData}" />
+    /// <seealso cref="INonNullRequestDataAttribute{TController,TData}" />
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class FormFieldAttribute : 
         Attribute,
         IRequestDataAttribute<WebApiController, string>,
-        IRequestDataAttribute<WebApiController, string[]>,
+        INonNullRequestDataAttribute<WebApiController, string[]>,
         IRequestDataAttribute<WebApiController>
     {
         /// <summary>
@@ -122,7 +123,7 @@ namespace EmbedIO.WebApi
             return data.GetValues(fieldName)?.LastOrDefault();
         }
 
-        async Task<string[]> IRequestDataAttribute<WebApiController, string[]>.GetRequestDataAsync(
+        async Task<string[]> INonNullRequestDataAttribute<WebApiController, string[]>.GetRequestDataAsync(
             WebApiController controller,
             string parameterName)
         {

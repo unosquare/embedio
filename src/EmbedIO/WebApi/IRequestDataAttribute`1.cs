@@ -9,6 +9,7 @@ namespace EmbedIO.WebApi
     /// </summary>
     /// <typeparam name="TController">The type of the controller.</typeparam>
     /// <seealso cref="IRequestDataAttribute{TController,TData}"/>
+    /// <seealso cref="INonNullRequestDataAttribute{TController,TData}"/>
     public interface IRequestDataAttribute<in TController>
         where TController : WebApiController
     {

@@ -353,8 +353,14 @@ namespace EmbedIO.WebApi
                 var requestDataInterfaces = parameter.GetCustomAttributes<Attribute>()
                         .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) => {
                             list.AddRange(attr.GetType().GetInterfaces()
-                                .Where(x => x.IsConstructedGenericType
-                                         && x.GetGenericTypeDefinition() == typeof(IRequestDataAttribute<,>))
+                                .Where(x => {
+                                    if (!x.IsConstructedGenericType)
+                                        return false;
+
+                                    var definition = x.GetGenericTypeDefinition();
+                                    return definition == typeof(IRequestDataAttribute<,>)
+                                        || definition == typeof(INonNullRequestDataAttribute<,>);
+                                })
                                 .Select(x => (attr, x)));
 
                             return list;
