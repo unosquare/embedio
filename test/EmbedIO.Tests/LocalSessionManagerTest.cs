@@ -60,7 +60,7 @@ namespace EmbedIO.Tests
             public async Task DeleteSession()
             {
                 var request = new HttpRequestMessage(HttpMethod.Get,
-                    WebServerUrl + TestLocalSessionController.PutData);
+                    WebServerUrl + TestLocalSessionController.PutDataPath);
 
                 using (var response = await Client.SendAsync(request))
                 {
@@ -72,7 +72,7 @@ namespace EmbedIO.Tests
                 }
 
                 request = new HttpRequestMessage(HttpMethod.Get,
-                    WebServerUrl + TestLocalSessionController.DeleteSession);
+                    WebServerUrl + TestLocalSessionController.DeleteSessionPath);
 
                 using (var response = await Client.SendAsync(request))
                 {
@@ -84,7 +84,7 @@ namespace EmbedIO.Tests
                 }
 
                 request = new HttpRequestMessage(HttpMethod.Get,
-                    WebServerUrl + TestLocalSessionController.GetData);
+                    WebServerUrl + TestLocalSessionController.GetDataPath);
 
                 using (var response = await Client.SendAsync(request))
                 {
@@ -121,8 +121,8 @@ namespace EmbedIO.Tests
             public async Task RetrieveCookie()
             {
                 var request = new HttpRequestMessage(HttpMethod.Get,
-                    WebServerUrl + TestLocalSessionController.GetCookie);
-                var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookie);
+                    WebServerUrl + TestLocalSessionController.GetCookiePath);
+                var uri = new Uri(WebServerUrl + TestLocalSessionController.GetCookiePath);
 
                 using var response = await Client.SendAsync(request);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Status OK");
