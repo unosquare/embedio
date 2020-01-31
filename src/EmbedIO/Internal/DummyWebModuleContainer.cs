@@ -7,11 +7,11 @@ namespace EmbedIO.Internal
 {
     internal sealed class DummyWebModuleContainer : IWebModuleContainer
     {
+        public static readonly IWebModuleContainer Instance = new DummyWebModuleContainer();
+
         private DummyWebModuleContainer()
         {
         }
-
-        public static IWebModuleContainer Instance { get; } = new DummyWebModuleContainer();
 
         public IComponentCollection<IWebModule> Modules => throw UnexpectedCall();
 

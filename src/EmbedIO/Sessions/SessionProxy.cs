@@ -15,6 +15,14 @@ namespace EmbedIO.Sessions
     /// <seealso cref="ISessionProxy" />
     public sealed class SessionProxy : ISessionProxy
     {
+        /// <summary>
+        /// <para>A "dummy" <see cref="ISessionProxy"/> interface that will always behave
+        /// as if no session manager has been defined.</para>
+        /// <para>Useful to initialize non-nullable fields or properties
+        /// of type <see cref="ISessionProxy"/>.</para>
+        /// </summary>
+        public static readonly ISessionProxy None = DummySessionProxy.Instance;
+
         private readonly IHttpContext _context;
         private readonly ISessionManager? _sessionManager;
 
@@ -26,15 +34,6 @@ namespace EmbedIO.Sessions
             _context = context;
             _sessionManager = sessionManager;
         }
-
-        /// <summary>
-        /// Returns a "dummy" <see cref="ISessionProxy"/> interface that will always behave as if no session manager has been defined.
-        /// </summary>
-        /// <remarks>
-        /// <para>The returned <see cref="ISessionProxy"/> interface is only useful
-        /// to initialize a non-nullable property of type <see cref="ISessionProxy"/>.</para>
-        /// </remarks>
-        public static ISessionProxy None => DummySessionProxy.Instance;
 
         /// <inheritdoc/>
         public bool Exists => _session != null;
