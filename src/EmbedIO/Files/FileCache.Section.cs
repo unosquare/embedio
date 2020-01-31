@@ -177,7 +177,7 @@ namespace EmbedIO.Files
                 item.PreviousKey = _newestKey;
                 item.NextKey = null;
 
-                _items[_newestKey].NextKey = path;
+                _items[_newestKey!].NextKey = path;
                 _newestKey = path;
             }
         }

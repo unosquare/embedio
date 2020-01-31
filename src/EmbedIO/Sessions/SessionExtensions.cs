@@ -29,7 +29,9 @@ namespace EmbedIO.Sessions
                 return true;
             }
 
+#pragma warning disable CS8653 // "default" can be null - We are returning false, so value is undefined
             value = default;
+#pragma warning restore CS8653
             return false;
         }
 
