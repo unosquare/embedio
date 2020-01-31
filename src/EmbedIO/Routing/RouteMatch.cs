@@ -20,32 +20,29 @@ namespace EmbedIO.Routing
     public sealed class RouteMatch : IReadOnlyList<string>, IReadOnlyDictionary<string, string>
 #pragma warning restore CA1710
     {
+        private static readonly IReadOnlyList<string> EmptyStringList = Array.Empty<string>();
+
         /// <summary>
-        /// Gets a <see cref="RouteMatch"/> instance that represents no match at all.
+        /// A <see cref="RouteMatch"/> instance that represents no match.
         /// </summary>
         /// <remarks>
         /// <para>The <see cref="RouteMatch"/> instance returned by this property
         /// has the following specifications:</para>
         /// <list type="bullet">
+        /// <item><description>its <see cref="IsMatch">IsMatch</see> property is the <see langword="false"/>;</description></item>
         /// <item><description>its <see cref="Path">Path</see> property is the empty string;</description></item>
         /// <item><description>it has no parameters;</description></item>
-        /// <item><description>its <see cref="SubPath">SubPath</see> property is <see langword="null"/>.</description></item>
+        /// <item><description>its <see cref="SubPath">SubPath</see> property is the empty string.</description></item>
         /// </list>
-        /// <para>This <see cref="RouteMatch"/> instance is only useful to initialize
-        /// a non-nullable property of type <see cref="RouteMatch"/>, provided that it is subsequently
-        /// set to a meaningful value before being used.</para>
+        /// <para>This instance can be used to initialize a non-nullable field or property of type <see cref="RouteMatch"/></para>
         /// </remarks>
-        public static readonly RouteMatch None = new RouteMatch(
-            string.Empty,
-            Array.Empty<string>(),
-            Array.Empty<string>(),
-            null);
-
-        private static readonly IReadOnlyList<string> EmptyStringList = Array.Empty<string>();
+#pragma warning disable SA1202 // Public members should come before private members - We need to initialize EmptyStringList before None.
+        public static readonly RouteMatch None = new RouteMatch(string.Empty, EmptyStringList, EmptyStringList, string.Empty);
+#pragma warning restore SA1202
 
         private readonly IReadOnlyList<string> _values;
 
-        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values, string? subPath)
+        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values, string subPath)
         {
             Path = path;
             Names = names;
@@ -54,15 +51,23 @@ namespace EmbedIO.Routing
         }
 
         /// <summary>
-        /// Gets the URL path that was successfully matched against the route.
+        /// Gets a value indicating whether this instance actually represents
+        /// a match.
+        /// </summary>
+        public bool IsMatch => SubPath.Length > 0;
+
+        /// <summary>
+        /// <para>Gets the URL path that was successfully matched against the route.</para>
+        /// <para></para>
         /// </summary>
         public string Path { get; }
 
         /// <summary>
-        /// <para>For a base route, gets the part of <see cref="Path"/> that follows the matched route;
-        /// for a non-base route, this property is always <see langword="null"/>.</para>
+        /// <para>Gets the part of <see cref="Path"/> that follows the matched route,
+        /// prefixed by <c>/</c>.</para>
+        /// <para>For a non-base route, this property is always <c>/</c>.</para>
         /// </summary>
-        public string? SubPath { get; }
+        public string SubPath { get; }
 
         /// <summary>
         /// Gets a list of the names of the route's parameters.
@@ -140,17 +145,17 @@ namespace EmbedIO.Routing
         /// calling this method, using either <see cref="Validate.UrlPath"/>
         /// or <see cref="UrlPath.IsValid"/>.</para>
         /// </remarks>
-        public static RouteMatch? UnsafeFromBasePath(string baseUrlPath, string urlPath)
+        public static RouteMatch UnsafeFromBasePath(string baseUrlPath, string urlPath)
         {
             var subPath = UrlPath.UnsafeStripPrefix(urlPath, baseUrlPath);
-            return subPath == null ? null : new RouteMatch(urlPath, EmptyStringList, EmptyStringList, "/" + subPath);
+            return subPath == null ? None : new RouteMatch(urlPath, EmptyStringList, EmptyStringList, "/" + subPath);
         }
 
         /// <inheritdoc />
         public bool ContainsKey(string key) => Names.Any(n => n == key);
 
         /// <inheritdoc />
-        public bool TryGetValue(string key, out string? value)
+        public bool TryGetValue(string key, out string value)
         {
             var count = Names.Count;
             for (var i = 0; i < count; i++)
@@ -162,7 +167,9 @@ namespace EmbedIO.Routing
                 }
             }
 
+#pragma warning disable CS8625 // Value is not nullable - we're returning false, so value is undefined.
             value = null;
+#pragma warning restore CS8625
             return false;
         }
 

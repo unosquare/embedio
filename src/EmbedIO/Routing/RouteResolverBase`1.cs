@@ -118,7 +118,7 @@ namespace EmbedIO.Routing
             LockConfiguration();
 
             var match = Matcher.Match(context.RequestedPath);
-            if (match == null)
+            if (!match.IsMatch)
                 return RouteResolutionResult.RouteNotMatched;
 
             var contextData = GetContextData(context);

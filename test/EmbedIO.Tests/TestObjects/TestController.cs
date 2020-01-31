@@ -75,7 +75,7 @@ namespace EmbedIO.Tests.TestObjects
         public void GetException() => throw new Exception("This is an exception");
 
         [BaseRoute(HttpVerb.Get, "/testBaseRoute/")]
-        public string? TestBaseRoute() => Route.SubPath;
+        public string TestBaseRoute() => Route.SubPath;
 
         private static Person CheckPerson(int id)
             => PeopleRepository.Database.FirstOrDefault(p => p.Key == id)

@@ -54,7 +54,7 @@ namespace EmbedIO.Net.Internal
 
         public RouteMatch Route { get; set; }
 
-        public string RequestedPath => Route.SubPath ?? string.Empty; // It will never be empty, because modules are matched via base routes - this is just to silence a warning.
+        public string RequestedPath => Route.SubPath;
 
         public IHttpResponse Response { get; }
 

@@ -105,7 +105,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public RouteMatch? MatchUrlPath(string urlPath) => _routeMatcher.Match(urlPath);
+        public RouteMatch MatchUrlPath(string urlPath) => _routeMatcher.Match(urlPath);
 
         /// <inheritdoc />
         public async Task HandleRequestAsync(IHttpContext context)
