@@ -1,22 +1,23 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
+using EmbedIO.Sessions;
 using EmbedIO.WebApi;
 
 namespace EmbedIO.Tests.TestObjects
 {
     public class TestLocalSessionController : WebApiController
     {
-        public const string DeleteSession = "api/deletesession";
-        public const string PutData = "api/putdata";
-        public const string GetData = "api/getdata";
-        public const string GetCookie = "api/getcookie";
+        public const string DeleteSessionPath = "api/deletesession";
+        public const string PutDataPath = "api/putdata";
+        public const string GetDataPath = "api/getdata";
+        public const string GetCookiePath = "api/getcookie";
 
         public const string MyData = "MyData";
         public const string CookieName = "MyCookie";
 
         [Route(HttpVerb.Get, "/getcookie")]
-        public Task GetCookieC()
+        public Task GetCookie()
         {
             var cookie = new System.Net.Cookie(CookieName, CookieName);
             Response.Cookies.Add(cookie);
@@ -25,21 +26,21 @@ namespace EmbedIO.Tests.TestObjects
         }
 
         [Route(HttpVerb.Get, "/deletesession")]
-        public Task DeleteSessionC()
+        public Task DeleteSession()
         {
             HttpContext.Session.Delete();
             return HttpContext.SendStringAsync("Deleted", MimeType.PlainText, Encoding.UTF8);
         }
 
         [Route(HttpVerb.Get, "/putdata")]
-        public Task PutDataSession()
+        public Task PutData()
         {
             HttpContext.Session["sessionData"] = MyData;
-            return HttpContext.SendStringAsync(HttpContext.Session["sessionData"].ToString(), MimeType.PlainText, Encoding.UTF8);
+            return HttpContext.SendStringAsync(HttpContext.Session.GetOrDefault("sessionData", string.Empty), MimeType.PlainText, Encoding.UTF8);
         }
 
         [Route(HttpVerb.Get, "/getdata")]
-        public Task GetDataSession()
-            => HttpContext.SendStringAsync(HttpContext.Session["sessionData"]?.ToString() ?? string.Empty, MimeType.PlainText, Encoding.UTF8);
+        public Task GetData()
+            => HttpContext.SendStringAsync(HttpContext.Session.GetOrDefault("sessionData", string.Empty), MimeType.PlainText, Encoding.UTF8);
     }
 }
