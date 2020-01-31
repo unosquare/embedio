@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using EmbedIO.Utilities;
-using Swan.Collections;
 
 namespace EmbedIO.Sessions
 {
@@ -10,7 +9,7 @@ namespace EmbedIO.Sessions
     {
         private class SessionImpl : ISession
         {
-            private readonly DataDictionary<string, object> _data = new DataDictionary<string, object>(Session.KeyComparer);
+            private readonly Dictionary<string, object> _data = new Dictionary<string, object>(Session.KeyComparer);
 
             private int _usageCount;
 
@@ -45,7 +44,7 @@ namespace EmbedIO.Sessions
                 {
                     lock (_data)
                     {
-                        return _data.IsEmpty;
+                        return _data.Count == 0;
                     }
                 }
             }
@@ -88,7 +87,11 @@ namespace EmbedIO.Sessions
             {
                 lock (_data)
                 {
-                    return _data.TryRemove(key, out value);
+                    if (!_data.TryGetValue(key, out value))
+                        return false;
+
+                    _data.Remove(key);
+                    return true;
                 }
             }
 
