@@ -16,6 +16,7 @@ namespace EmbedIO.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationModuleBase"/> class.
         /// </summary>
+        /// <param name="baseRoute">The base route served by this module.</param>
         protected AuthenticationModuleBase(string baseRoute)
             : base(baseRoute)
         {
