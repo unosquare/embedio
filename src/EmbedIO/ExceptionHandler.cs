@@ -27,6 +27,12 @@ namespace EmbedIO
         public const string ExceptionMessageHeaderName = "X-Exception-Message";
 
         /// <summary>
+        /// <para>The default handler used by <see cref="WebServerBase{TOptions}"/>.</para>
+        /// <para>This is the same as <see cref="HtmlResponse"/>.</para>
+        /// </summary>
+        public static readonly ExceptionHandlerCallback Default = HtmlResponse;
+
+        /// <summary>
         /// Gets or sets the contact information to include in exception responses.
         /// </summary>
         public static string? ContactInformation { get; set; }
