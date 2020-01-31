@@ -1,16 +1,17 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
+using EmbedIO.Sessions;
 using EmbedIO.WebApi;
 
 namespace EmbedIO.Tests.TestObjects
 {
     public class TestLocalSessionController : WebApiController
     {
-        public const string DeleteSession = "api/deletesession";
-        public const string PutData = "api/putdata";
-        public const string GetData = "api/getdata";
-        public const string GetCookie = "api/getcookie";
+        public const string DeleteSessionPath = "api/deletesession";
+        public const string PutDataPath = "api/putdata";
+        public const string GetDataPath = "api/getdata";
+        public const string GetCookiePath = "api/getcookie";
 
         public const string MyData = "MyData";
         public const string CookieName = "MyCookie";
@@ -35,7 +36,7 @@ namespace EmbedIO.Tests.TestObjects
         public Task PutDataSession()
         {
             HttpContext.Session["sessionData"] = MyData;
-            return HttpContext.SendStringAsync(HttpContext.Session["sessionData"].ToString(), MimeType.PlainText, Encoding.UTF8);
+            return HttpContext.SendStringAsync(HttpContext.Session.GetOrDefault("sessionData", string.Empty), MimeType.PlainText, Encoding.UTF8);
         }
 
         [Route(HttpVerbs.Get, "/getdata")]
