@@ -21,7 +21,7 @@ namespace EmbedIO.Sessions
         /// otherwise, <see langword="false"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
-        public static bool TryGetValue<T>(this ISession @this, string key, out T value)
+        public static bool TryGet<T>(this ISession @this, string key, out T value)
         {
             if (@this.TryGetValue(key, out var foundValue) && foundValue is T typedValue)
             {
