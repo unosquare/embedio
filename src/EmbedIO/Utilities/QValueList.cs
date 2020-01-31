@@ -227,6 +227,23 @@ namespace EmbedIO.Utilities
             }
         }
 
+        private static int CompareQualities((int Weight, int Ordinal) a, (int Weight, int Ordinal) b)
+        {
+            if (a.Weight > b.Weight)
+                return 1;
+
+            if (a.Weight < b.Weight)
+                return -1;
+
+            if (a.Ordinal < b.Ordinal)
+                return 1;
+
+            if (a.Ordinal > b.Ordinal)
+                return -1;
+
+            return 0;
+        }
+
         private int FindPreferredCore(IEnumerable<string> values, out string? result)
         {
             values = Validate.NotNull(nameof(values), values);
@@ -258,22 +275,5 @@ namespace EmbedIO.Utilities
         private bool TryGetCandidateValue(string value, out (int Weight, int Ordinal) candidate)
             => QValues.TryGetValue(value, out candidate)
             || (UseWildcard && QValues.TryGetValue(Wildcard, out candidate));
-
-        private static int CompareQualities((int Weight, int Ordinal) a, (int Weight, int Ordinal) b)
-        {
-            if (a.Weight > b.Weight)
-                return 1;
-
-            if (a.Weight < b.Weight)
-                return -1;
-
-            if (a.Ordinal < b.Ordinal)
-                return 1;
-
-            if (a.Ordinal > b.Ordinal)
-                return -1;
-
-            return 0;
-        }
     }
 }
