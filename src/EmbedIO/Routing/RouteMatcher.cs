@@ -128,10 +128,10 @@ namespace EmbedIO.Routing
         /// <param name="path">The URL path to match.</param>
         /// <returns>If the match is successful, a <see cref="RouteMatch"/> object;
         /// otherwise, <see langword="null"/>.</returns>
-        public RouteMatch? Match(string path)
+        public RouteMatch Match(string path)
         {
             if (path == null)
-                return null;
+                return RouteMatch.None;
 
             // Optimize for parameterless base routes
             if (IsBaseRoute)
@@ -145,13 +145,13 @@ namespace EmbedIO.Routing
 
             var match = _regex.Match(path);
             if (!match.Success)
-                return null;
+                return RouteMatch.None;
 
             return new RouteMatch(
                 path,
                 ParameterNames,
                 match.Groups.Cast<Group>().Skip(1).Select(g => WebUtility.UrlDecode(g.Value)).ToArray(),
-                IsBaseRoute ? "/" + path.Substring(match.Groups[0].Length) : null);
+                "/" + (IsBaseRoute ? path.Substring(match.Groups[0].Length) : string.Empty));
         }
 
         private static Exception? TryParseInternal(string route, bool isBaseRoute, out RouteMatcher? result)

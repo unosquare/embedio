@@ -44,7 +44,7 @@ namespace EmbedIO.Internal
             foreach (var (name, module) in WithSafeNames)
             {
                 var routeMatch = module.MatchUrlPath(requestedPath);
-                if (routeMatch == null)
+                if (!routeMatch.IsMatch)
                     continue;
 
                 $"[{context.Id}] Processing with {name}.".Debug(_logSource); 
