@@ -168,22 +168,6 @@ the HTTP context implementation.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.EmbedIOInternalErrorException.html">EmbedIOInternalErrorException</a></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">this</code> does not implement <a class="xref" href="EmbedIO.IHttpContextImpl.html">IHttpContextImpl</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="EmbedIO_HttpContextExtensions_GetItem_" data-uid="EmbedIO.HttpContextExtensions.GetItem*"></a>
@@ -533,7 +517,7 @@ whose result will be the deserialized data.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;NameValueCollection?&gt; GetRequestFormDataAsync(this IHttpContext this)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;NameValueCollection&gt; GetRequestFormDataAsync(this IHttpContext this)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -563,7 +547,7 @@ whose result will be the deserialized data.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">NameValueCollection</span>&gt;&gt;</td>
+        <td><span class="xref">Task</span>&lt;<span class="xref">NameValueCollection</span>&gt;</td>
         <td><p>A <see cref="!:Task&lt;TResult>">Task</see>, representing the ongoing operation,
 whose result will be a read-only <see cref="!:NameValueCollection"></see>of form field names and values.</p>
 </td>
@@ -585,7 +569,7 @@ as values of the <code>null</code> key.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static NameValueCollection? GetRequestQueryData(this IHttpContext this)</code></pre>
+    <pre><code class="lang-csharp hljs">public static NameValueCollection GetRequestQueryData(this IHttpContext this)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -615,7 +599,7 @@ as values of the <code>null</code> key.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">NameValueCollection</span>&gt;</td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><p>A read-only <see cref="!:NameValueCollection"></see>.</p>
 </td>
       </tr>

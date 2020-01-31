@@ -152,6 +152,12 @@ as collections of handler methods.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="EmbedIO.WebApi.INonNullRequestDataAttribute-2.html">INonNullRequestDataAttribute&lt;TController, TData&gt;</a></h4>
+      <section><p>Represents an attribute, applied to a parameter of a web API controller method,
+that causes the parameter to be passed deserialized data from a request.</p>
+<p>The difference between this interface and <a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-2.html">IRequestDataAttribute&lt;TController, TData&gt;</a>
+is that attributes implementing this interface never retrieve <span class="xref">null</span> values.</p>
+</section>
       <h4><a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-1.html">IRequestDataAttribute&lt;TController&gt;</a></h4>
       <section><p>Represents an attribute, applied to a parameter of a web API controller method,
 that causes the parameter to be passed deserialized data from a request.</p>
@@ -159,6 +165,8 @@ that causes the parameter to be passed deserialized data from a request.</p>
       <h4><a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-2.html">IRequestDataAttribute&lt;TController, TData&gt;</a></h4>
       <section><p>Represents an attribute, applied to a parameter of a web API controller method,
 that causes the parameter to be passed deserialized data from a request.</p>
+<p>The difference between this interface and <a class="xref" href="EmbedIO.WebApi.INonNullRequestDataAttribute-2.html">INonNullRequestDataAttribute&lt;TController, TData&gt;</a>
+is that attributes implementing this interface can retrieve <span class="xref">null</span> values.</p>
 </section>
 
 <h3 id="disqus_thread">Comments</h3>

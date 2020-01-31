@@ -397,11 +397,13 @@ the exception will be handled by the web server, or by the containing
   
   <a id="EmbedIO_WebModuleBase_MatchUrlPath_" data-uid="EmbedIO.WebModuleBase.MatchUrlPath*"></a>
   <h4 id="EmbedIO_WebModuleBase_MatchUrlPath_System_String_" data-uid="EmbedIO.WebModuleBase.MatchUrlPath(System.String)">MatchUrlPath(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Matches the specified URL path against a module&apos;s <a class="xref" href="EmbedIO.IWebModule.html#EmbedIO_IWebModule_BaseRoute">BaseRoute</a>,
+extracting values for the route&apos;s parameters and a sub-path.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouteMatch? MatchUrlPath(string urlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public RouteMatch MatchUrlPath(string urlPath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -416,7 +418,8 @@ the exception will be handled by the web server, or by the containing
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">urlPath</span></td>
-        <td></td>
+        <td><p>The URL path to match.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -430,8 +433,10 @@ the exception will be handled by the web server, or by the containing
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">RouteMatch</span>&gt;</td>
-        <td></td>
+        <td><span class="xref">RouteMatch</span></td>
+        <td><p>If the match is successful, a <see cref="!:RouteMatch"></see> object;
+otherwise, <span class="xref">null</span>.</p>
+</td>
       </tr>
     </tbody>
   </table>

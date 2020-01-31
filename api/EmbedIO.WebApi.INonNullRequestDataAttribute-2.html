@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class SelfCheck
+    <title>Interface INonNullRequestDataAttribute&lt;TController, TData&gt;
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class SelfCheck
+    <meta name="title" content="Interface INonNullRequestDataAttribute&lt;TController, TData&gt;
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,62 +76,56 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.Utilities.SelfCheck">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.WebApi.INonNullRequestDataAttribute`2">
   
   
-  <h1 id="EmbedIO_Utilities_SelfCheck" data-uid="EmbedIO.Utilities.SelfCheck" class="text-break">Class SelfCheck
+  <h1 id="EmbedIO_WebApi_INonNullRequestDataAttribute_2" data-uid="EmbedIO.WebApi.INonNullRequestDataAttribute`2" class="text-break">Interface INonNullRequestDataAttribute&lt;TController, TData&gt;
   </h1>
-  <div class="markdown level0 summary"><p>Provides methods to perform self-checks in EmbedIO code.</p>
-<p>This API mainly supports the EmbedIO infrastructure; it is not intended
-to be used directly from your code, unless in EmbedIO plug-ins.</p>
+  <div class="markdown level0 summary"><p>Represents an attribute, applied to a parameter of a web API controller method,
+that causes the parameter to be passed deserialized data from a request.</p>
+<p>The difference between this interface and <a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-2.html">IRequestDataAttribute&lt;TController, TData&gt;</a>
+is that attributes implementing this interface never retrieve <span class="xref">null</span> values.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">SelfCheck</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Utilities.html">EmbedIO.Utilities</a></h6>
-  <h5 id="EmbedIO_Utilities_SelfCheck_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.WebApi.html">EmbedIO.WebApi</a></h6>
+  <h5 id="EmbedIO_WebApi_INonNullRequestDataAttribute_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class SelfCheck</code></pre>
+    <pre><code class="lang-csharp hljs">public interface INonNullRequestDataAttribute&lt;in TController, TData&gt;
+    where TController : WebApiController where TData : class</code></pre>
   </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TController</span></td>
+        <td><p>The type of the controller.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TData</span></td>
+        <td><p>The type of the data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="EmbedIO_Utilities_SelfCheck_Failure_" data-uid="EmbedIO.Utilities.SelfCheck.Failure*"></a>
-  <h4 id="EmbedIO_Utilities_SelfCheck_Failure_System_String_" data-uid="EmbedIO.Utilities.SelfCheck.Failure(System.String)">Failure(String)</h4>
-  <div class="markdown level1 summary"><p>Creates an exception representing a self-check failure.</p>
+  <a id="EmbedIO_WebApi_INonNullRequestDataAttribute_2_GetRequestDataAsync_" data-uid="EmbedIO.WebApi.INonNullRequestDataAttribute`2.GetRequestDataAsync*"></a>
+  <h4 id="EmbedIO_WebApi_INonNullRequestDataAttribute_2_GetRequestDataAsync__0_System_String_" data-uid="EmbedIO.WebApi.INonNullRequestDataAttribute`2.GetRequestDataAsync(`0,System.String)">GetRequestDataAsync(TController, String)</h4>
+  <div class="markdown level1 summary"><p>Asynchronously obtains data from a controller&apos;s context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static EmbedIOInternalErrorException Failure(string message)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;TData&gt; GetRequestDataAsync(TController controller, string parameterName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,9 +138,15 @@ to be used directly from your code, unless in EmbedIO plug-ins.</p>
     </thead>
     <tbody>
       <tr>
+        <td><span class="xref">TController</span></td>
+        <td><span class="parametername">controller</span></td>
+        <td><p>The controller.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">message</span></td>
-        <td><p>The exception message.</p>
+        <td><span class="parametername">parameterName</span></td>
+        <td><p>The name of the parameter that has to receive the data.</p>
 </td>
       </tr>
     </tbody>
@@ -161,64 +161,18 @@ to be used directly from your code, unless in EmbedIO plug-ins.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.EmbedIOInternalErrorException.html">EmbedIOInternalErrorException</a></td>
-        <td><p>A newly-created instance of <a class="xref" href="EmbedIO.EmbedIOInternalErrorException.html">EmbedIOInternalErrorException</a>.</p>
+        <td><span class="xref">Task</span>&lt;TData&gt;</td>
+        <td><p>a <see cref="!:Task"></see> whose result will be the data
+to pass as a parameter to a controller method.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="EmbedIO_Utilities_SelfCheck_Failure_" data-uid="EmbedIO.Utilities.SelfCheck.Failure*"></a>
-  <h4 id="EmbedIO_Utilities_SelfCheck_Failure_System_String_System_Nullable_Exception__" data-uid="EmbedIO.Utilities.SelfCheck.Failure(System.String,System.Nullable{Exception})">Failure(String, Nullable&lt;Exception&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an exception representing a self-check failure.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static EmbedIOInternalErrorException Failure(string message, Exception? exception)</code></pre>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-1.html">IRequestDataAttribute</a>&lt;TController&gt;</div>
+      <div><a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-2.html">IRequestDataAttribute</a>&lt;TController, TData&gt;</div>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">message</span></td>
-        <td><p>The exception message.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Exception</span>&gt;</td>
-        <td><span class="parametername">exception</span></td>
-        <td><p>An exception related to the failure,
-or <span class="xref">null</span> if no such exception is specified.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.EmbedIOInternalErrorException.html">EmbedIOInternalErrorException</a></td>
-        <td><p>A newly-created instance of <a class="xref" href="EmbedIO.EmbedIOInternalErrorException.html">EmbedIOInternalErrorException</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

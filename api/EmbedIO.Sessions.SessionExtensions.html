@@ -122,14 +122,14 @@
   </h3>
   
   
-  <a id="EmbedIO_Sessions_SessionExtensions_GetValue_" data-uid="EmbedIO.Sessions.SessionExtensions.GetValue*"></a>
-  <h4 id="EmbedIO_Sessions_SessionExtensions_GetValue__1_EmbedIO_Sessions_ISession_System_String_" data-uid="EmbedIO.Sessions.SessionExtensions.GetValue``1(EmbedIO.Sessions.ISession,System.String)">GetValue&lt;T&gt;(ISession, String)</h4>
+  <a id="EmbedIO_Sessions_SessionExtensions_GetOrDefault_" data-uid="EmbedIO.Sessions.SessionExtensions.GetOrDefault*"></a>
+  <h4 id="EmbedIO_Sessions_SessionExtensions_GetOrDefault__1_EmbedIO_Sessions_ISession_System_String_" data-uid="EmbedIO.Sessions.SessionExtensions.GetOrDefault``1(EmbedIO.Sessions.ISession,System.String)">GetOrDefault&lt;T&gt;(ISession, String)</h4>
   <div class="markdown level1 summary"><p>Gets the value associated with the specified key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static T GetValue&lt;T&gt;(this ISession this, string key)</code></pre>
+    <pre><code class="lang-csharp hljs">public static T GetOrDefault&lt;T&gt;(this ISession this, string key)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -191,14 +191,90 @@ otherwise, the default value for <code data-dev-comment-type="typeparamref" clas
   </table>
   
   
-  <a id="EmbedIO_Sessions_SessionExtensions_TryGetValue_" data-uid="EmbedIO.Sessions.SessionExtensions.TryGetValue*"></a>
-  <h4 id="EmbedIO_Sessions_SessionExtensions_TryGetValue__1_EmbedIO_Sessions_ISession_System_String___0__" data-uid="EmbedIO.Sessions.SessionExtensions.TryGetValue``1(EmbedIO.Sessions.ISession,System.String,``0@)">TryGetValue&lt;T&gt;(ISession, String, out T)</h4>
+  <a id="EmbedIO_Sessions_SessionExtensions_GetOrDefault_" data-uid="EmbedIO.Sessions.SessionExtensions.GetOrDefault*"></a>
+  <h4 id="EmbedIO_Sessions_SessionExtensions_GetOrDefault__1_EmbedIO_Sessions_ISession_System_String___0_" data-uid="EmbedIO.Sessions.SessionExtensions.GetOrDefault``1(EmbedIO.Sessions.ISession,System.String,``0)">GetOrDefault&lt;T&gt;(ISession, String, T)</h4>
   <div class="markdown level1 summary"><p>Gets the value associated with the specified key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryGetValue&lt;T&gt;(this ISession this, string key, out T value)</code></pre>
+    <pre><code class="lang-csharp hljs">public static T GetOrDefault&lt;T&gt;(this ISession this, string key, T defaultValue)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Sessions.ISession.html">ISession</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Sessions.ISession.html">ISession</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The key whose value to get from the session.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">defaultValue</span></td>
+        <td><p>The default value to return if the key is not found
+or its associated value is not of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The value associated with the specified key,
+if the key is found and the associated value is of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>;
+otherwise, <code data-dev-comment-type="paramref" class="paramref">defaultValue</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The desired type of the value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Sessions_SessionExtensions_TryGet_" data-uid="EmbedIO.Sessions.SessionExtensions.TryGet*"></a>
+  <h4 id="EmbedIO_Sessions_SessionExtensions_TryGet__1_EmbedIO_Sessions_ISession_System_String___0__" data-uid="EmbedIO.Sessions.SessionExtensions.TryGet``1(EmbedIO.Sessions.ISession,System.String,``0@)">TryGet&lt;T&gt;(ISession, String, out T)</h4>
+  <div class="markdown level1 summary"><p>Gets the value associated with the specified key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGet&lt;T&gt;(this ISession this, string key, out T value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

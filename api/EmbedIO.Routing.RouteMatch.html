@@ -105,6 +105,39 @@ this class iterates over name / value pairs.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public sealed class RouteMatch : IReadOnlyList&lt;string&gt;, IReadOnlyDictionary&lt;string, string&gt;</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="EmbedIO_Routing_RouteMatch_None" data-uid="EmbedIO.Routing.RouteMatch.None">None</h4>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a> instance that represents no match.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly RouteMatch None</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_Routing_RouteMatch_None_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a> instance returned by this property
+has the following specifications:</p>
+<ul><li>its <a class="xref" href="EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_IsMatch">IsMatch</a> property is the <span class="xref">false</span>;</li><li>its <a class="xref" href="EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_Path">Path</a> property is the empty string;</li><li>it has no parameters;</li><li>its <a class="xref" href="EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_SubPath">SubPath</a> property is the empty string.</li></ul>
+<p>This instance can be used to initialize a non-nullable field or property of type <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a></p>
+</div>
   <h3 id="properties">Properties
   </h3>
   
@@ -128,6 +161,33 @@ this class iterates over name / value pairs.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Routing_RouteMatch_IsMatch_" data-uid="EmbedIO.Routing.RouteMatch.IsMatch*"></a>
+  <h4 id="EmbedIO_Routing_RouteMatch_IsMatch" data-uid="EmbedIO.Routing.RouteMatch.IsMatch">IsMatch</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance actually represents
+a match.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsMatch { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -269,40 +329,6 @@ this class iterates over name / value pairs.</p>
   </table>
   
   
-  <a id="EmbedIO_Routing_RouteMatch_None_" data-uid="EmbedIO.Routing.RouteMatch.None*"></a>
-  <h4 id="EmbedIO_Routing_RouteMatch_None" data-uid="EmbedIO.Routing.RouteMatch.None">None</h4>
-  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a> instance that represents no match at all.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static RouteMatch None { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="EmbedIO_Routing_RouteMatch_None_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a> instance returned by this property
-has the following specifications:</p>
-<ul><li>its <a class="xref" href="EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_Path">Path</a> property is the empty string;</li><li>it has no parameters;</li><li>its <a class="xref" href="EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_SubPath">SubPath</a> property is <span class="xref">null</span>.</li></ul>
-<p>This <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a> instance is only useful to initialize
-a non-nullable property of type <a class="xref" href="EmbedIO.Routing.RouteMatch.html">RouteMatch</a>, provided that it is subsequently
-set to a meaningful value before being used.</p>
-</div>
-  
-  
   <a id="EmbedIO_Routing_RouteMatch_Pairs_" data-uid="EmbedIO.Routing.RouteMatch.Pairs*"></a>
   <h4 id="EmbedIO_Routing_RouteMatch_Pairs" data-uid="EmbedIO.Routing.RouteMatch.Pairs">Pairs</h4>
   <div class="markdown level1 summary"><p>Gets an <see cref="!:IEnumerable&lt;T>"></see> interface that can be used
@@ -333,6 +359,7 @@ to iterate over name / value pairs.</p>
   <a id="EmbedIO_Routing_RouteMatch_Path_" data-uid="EmbedIO.Routing.RouteMatch.Path*"></a>
   <h4 id="EmbedIO_Routing_RouteMatch_Path" data-uid="EmbedIO.Routing.RouteMatch.Path">Path</h4>
   <div class="markdown level1 summary"><p>Gets the URL path that was successfully matched against the route.</p>
+<p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -358,8 +385,9 @@ to iterate over name / value pairs.</p>
   
   <a id="EmbedIO_Routing_RouteMatch_SubPath_" data-uid="EmbedIO.Routing.RouteMatch.SubPath*"></a>
   <h4 id="EmbedIO_Routing_RouteMatch_SubPath" data-uid="EmbedIO.Routing.RouteMatch.SubPath">SubPath</h4>
-  <div class="markdown level1 summary"><p>For a base route, gets the part of <a class="xref" href="EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_Path">Path</a> that follows the matched route;
-for a non-base route, this property is always <span class="xref">null</span>.</p>
+  <div class="markdown level1 summary"><p>Gets the part of <a class="xref" href="EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_Path">Path</a> that follows the matched route,
+prefixed by <code>/</code>.</p>
+<p>For a non-base route, this property is always <code>/</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

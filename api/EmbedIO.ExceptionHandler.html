@@ -122,6 +122,32 @@
   </h3>
   
   
+  <h4 id="EmbedIO_ExceptionHandler_Default" data-uid="EmbedIO.ExceptionHandler.Default">Default</h4>
+  <div class="markdown level1 summary"><p>The default handler used by <a class="xref" href="EmbedIO.WebServerBase-1.html">WebServerBase&lt;TOptions&gt;</a>.</p>
+<p>This is the same as <a class="xref" href="EmbedIO.ExceptionHandler.html#EmbedIO_ExceptionHandler_HtmlResponse_EmbedIO_IHttpContext_Exception_">HtmlResponse(IHttpContext, Exception)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ExceptionHandlerCallback Default</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.ExceptionHandlerCallback.html">ExceptionHandlerCallback</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="EmbedIO_ExceptionHandler_ExceptionMessageHeaderName" data-uid="EmbedIO.ExceptionHandler.ExceptionMessageHeaderName">ExceptionMessageHeaderName</h4>
   <div class="markdown level1 summary"><p>The name of the response header used by the <a class="xref" href="EmbedIO.ExceptionHandler.html#EmbedIO_ExceptionHandler_EmptyResponseWithHeaders_EmbedIO_IHttpContext_Exception_">EmptyResponseWithHeaders(IHttpContext, Exception)</a>
 handler to transmit the message of the exception to the client.</p>
@@ -196,33 +222,6 @@ handler to transmit the type of the exception to the client.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="EmbedIO_ExceptionHandler_Default_" data-uid="EmbedIO.ExceptionHandler.Default*"></a>
-  <h4 id="EmbedIO_ExceptionHandler_Default" data-uid="EmbedIO.ExceptionHandler.Default">Default</h4>
-  <div class="markdown level1 summary"><p>Gets the default handler used by <a class="xref" href="EmbedIO.WebServerBase-1.html">WebServerBase&lt;TOptions&gt;</a>.</p>
-<p>This is the same as <a class="xref" href="EmbedIO.ExceptionHandler.html#EmbedIO_ExceptionHandler_HtmlResponse_EmbedIO_IHttpContext_Exception_">HtmlResponse(IHttpContext, Exception)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ExceptionHandlerCallback Default { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.ExceptionHandlerCallback.html">ExceptionHandlerCallback</a></td>
         <td></td>
       </tr>
     </tbody>

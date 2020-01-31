@@ -95,12 +95,12 @@ of <code>application/x-www-form-urlencoded</code>.</p>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-2.html">IRequestDataAttribute</a>&lt;<a class="xref" href="EmbedIO.WebApi.WebApiController.html">WebApiController</a>, <span class="xref">NameValueCollection</span>&gt;</div>
+    <div><a class="xref" href="EmbedIO.WebApi.INonNullRequestDataAttribute-2.html">INonNullRequestDataAttribute</a>&lt;<a class="xref" href="EmbedIO.WebApi.WebApiController.html">WebApiController</a>, <span class="xref">NameValueCollection</span>&gt;</div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.WebApi.html">EmbedIO.WebApi</a></h6>
   <h5 id="EmbedIO_WebApi_FormDataAttribute_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class FormDataAttribute : Attribute, IRequestDataAttribute&lt;WebApiController, NameValueCollection&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class FormDataAttribute : Attribute, INonNullRequestDataAttribute&lt;WebApiController, NameValueCollection&gt;</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -112,7 +112,7 @@ of <code>application/x-www-form-urlencoded</code>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;NameValueCollection?&gt; GetRequestDataAsync(WebApiController controller, string parameterName)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;NameValueCollection&gt; GetRequestDataAsync(WebApiController controller, string parameterName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,18 +146,18 @@ of <code>application/x-www-form-urlencoded</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">NameValueCollection</span>&gt;&gt;</td>
+        <td><span class="xref">Task</span>&lt;<span class="xref">NameValueCollection</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-2.html">IRequestDataAttribute&lt;TController, TData&gt;</a>
+      <a class="xref" href="EmbedIO.WebApi.INonNullRequestDataAttribute-2.html">INonNullRequestDataAttribute&lt;TController, TData&gt;</a>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><a class="xref" href="EmbedIO.WebApi.IRequestDataAttribute-2.html">IRequestDataAttribute</a>&lt;TController, TData&gt;</div>
+      <div><a class="xref" href="EmbedIO.WebApi.INonNullRequestDataAttribute-2.html">INonNullRequestDataAttribute</a>&lt;TController, TData&gt;</div>
   </div>
 
 <h3 id="disqus_thread">Comments</h3>

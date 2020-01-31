@@ -172,14 +172,7 @@ references:
 - uid: EmbedIO.Authentication.Auth.NoUser
   name: NoUser
   href: api/EmbedIO.Authentication.Auth.html#EmbedIO_Authentication_Auth_NoUser
-  commentId: P:EmbedIO.Authentication.Auth.NoUser
-  fullName: EmbedIO.Authentication.Auth.NoUser
-  nameWithType: Auth.NoUser
-- uid: EmbedIO.Authentication.Auth.NoUser*
-  name: NoUser
-  href: api/EmbedIO.Authentication.Auth.html#EmbedIO_Authentication_Auth_NoUser_
-  commentId: Overload:EmbedIO.Authentication.Auth.NoUser
-  isSpec: "True"
+  commentId: F:EmbedIO.Authentication.Auth.NoUser
   fullName: EmbedIO.Authentication.Auth.NoUser
   nameWithType: Auth.NoUser
 - uid: EmbedIO.Authentication.AuthenticationHandler
@@ -603,46 +596,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Cors.CorsModule.OnRequestAsync
   nameWithType: CorsModule.OnRequestAsync
-- uid: EmbedIO.EmbedIOInternalErrorException
-  name: EmbedIOInternalErrorException
-  href: api/EmbedIO.EmbedIOInternalErrorException.html
-  commentId: T:EmbedIO.EmbedIOInternalErrorException
-  fullName: EmbedIO.EmbedIOInternalErrorException
-  nameWithType: EmbedIOInternalErrorException
-- uid: EmbedIO.EmbedIOInternalErrorException.#ctor
-  name: EmbedIOInternalErrorException()
-  href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor
-  commentId: M:EmbedIO.EmbedIOInternalErrorException.#ctor
-  fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException()
-  nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException()
-- uid: EmbedIO.EmbedIOInternalErrorException.#ctor(SerializationInfo,StreamingContext)
-  name: EmbedIOInternalErrorException(SerializationInfo, StreamingContext)
-  href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:EmbedIO.EmbedIOInternalErrorException.#ctor(SerializationInfo,StreamingContext)
-  fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(SerializationInfo, StreamingContext)
-  nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException(SerializationInfo, StreamingContext)
-- uid: EmbedIO.EmbedIOInternalErrorException.#ctor(System.String)
-  name: EmbedIOInternalErrorException(String)
-  href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor_System_String_
-  commentId: M:EmbedIO.EmbedIOInternalErrorException.#ctor(System.String)
-  fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(System.String)
-  nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException(String)
-- uid: EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,System.Nullable{Exception})
-  name: EmbedIOInternalErrorException(String, Nullable<Exception>)
-  href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor_System_String_System_Nullable_Exception__
-  commentId: M:EmbedIO.EmbedIOInternalErrorException.#ctor(System.String,System.Nullable{Exception})
-  name.vb: EmbedIOInternalErrorException(String, Nullable(Of Exception))
-  fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(System.String, System.Nullable<Exception>)
-  fullName.vb: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException(System.String, System.Nullable(Of Exception))
-  nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException(String, Nullable<Exception>)
-  nameWithType.vb: EmbedIOInternalErrorException.EmbedIOInternalErrorException(String, Nullable(Of Exception))
-- uid: EmbedIO.EmbedIOInternalErrorException.#ctor*
-  name: EmbedIOInternalErrorException
-  href: api/EmbedIO.EmbedIOInternalErrorException.html#EmbedIO_EmbedIOInternalErrorException__ctor_
-  commentId: Overload:EmbedIO.EmbedIOInternalErrorException.#ctor
-  isSpec: "True"
-  fullName: EmbedIO.EmbedIOInternalErrorException.EmbedIOInternalErrorException
-  nameWithType: EmbedIOInternalErrorException.EmbedIOInternalErrorException
 - uid: EmbedIO.ExceptionHandler
   name: ExceptionHandler
   href: api/EmbedIO.ExceptionHandler.html
@@ -665,14 +618,7 @@ references:
 - uid: EmbedIO.ExceptionHandler.Default
   name: Default
   href: api/EmbedIO.ExceptionHandler.html#EmbedIO_ExceptionHandler_Default
-  commentId: P:EmbedIO.ExceptionHandler.Default
-  fullName: EmbedIO.ExceptionHandler.Default
-  nameWithType: ExceptionHandler.Default
-- uid: EmbedIO.ExceptionHandler.Default*
-  name: Default
-  href: api/EmbedIO.ExceptionHandler.html#EmbedIO_ExceptionHandler_Default_
-  commentId: Overload:EmbedIO.ExceptionHandler.Default
-  isSpec: "True"
+  commentId: F:EmbedIO.ExceptionHandler.Default
   fullName: EmbedIO.ExceptionHandler.Default
   nameWithType: ExceptionHandler.Default
 - uid: EmbedIO.ExceptionHandler.EmptyResponse(EmbedIO.IHttpContext,Exception)
@@ -2555,14 +2501,7 @@ references:
 - uid: EmbedIO.HttpExceptionHandler.Default
   name: Default
   href: api/EmbedIO.HttpExceptionHandler.html#EmbedIO_HttpExceptionHandler_Default
-  commentId: P:EmbedIO.HttpExceptionHandler.Default
-  fullName: EmbedIO.HttpExceptionHandler.Default
-  nameWithType: HttpExceptionHandler.Default
-- uid: EmbedIO.HttpExceptionHandler.Default*
-  name: Default
-  href: api/EmbedIO.HttpExceptionHandler.html#EmbedIO_HttpExceptionHandler_Default_
-  commentId: Overload:EmbedIO.HttpExceptionHandler.Default
-  isSpec: "True"
+  commentId: F:EmbedIO.HttpExceptionHandler.Default
   fullName: EmbedIO.HttpExceptionHandler.Default
   nameWithType: HttpExceptionHandler.Default
 - uid: EmbedIO.HttpExceptionHandler.EmptyResponse(EmbedIO.IHttpContext,EmbedIO.IHttpException)
@@ -6348,6 +6287,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Routing.RouteMatch.IndexOf
   nameWithType: RouteMatch.IndexOf
+- uid: EmbedIO.Routing.RouteMatch.IsMatch
+  name: IsMatch
+  href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_IsMatch
+  commentId: P:EmbedIO.Routing.RouteMatch.IsMatch
+  fullName: EmbedIO.Routing.RouteMatch.IsMatch
+  nameWithType: RouteMatch.IsMatch
+- uid: EmbedIO.Routing.RouteMatch.IsMatch*
+  name: IsMatch
+  href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_IsMatch_
+  commentId: Overload:EmbedIO.Routing.RouteMatch.IsMatch
+  isSpec: "True"
+  fullName: EmbedIO.Routing.RouteMatch.IsMatch
+  nameWithType: RouteMatch.IsMatch
 - uid: EmbedIO.Routing.RouteMatch.Item(System.Int32)
   name: Item[Int32]
   href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_Item_System_Int32_
@@ -6402,14 +6354,7 @@ references:
 - uid: EmbedIO.Routing.RouteMatch.None
   name: None
   href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_None
-  commentId: P:EmbedIO.Routing.RouteMatch.None
-  fullName: EmbedIO.Routing.RouteMatch.None
-  nameWithType: RouteMatch.None
-- uid: EmbedIO.Routing.RouteMatch.None*
-  name: None
-  href: api/EmbedIO.Routing.RouteMatch.html#EmbedIO_Routing_RouteMatch_None_
-  commentId: Overload:EmbedIO.Routing.RouteMatch.None
-  isSpec: "True"
+  commentId: F:EmbedIO.Routing.RouteMatch.None
   fullName: EmbedIO.Routing.RouteMatch.None
   nameWithType: RouteMatch.None
 - uid: EmbedIO.Routing.RouteMatch.Pairs
@@ -8866,38 +8811,47 @@ references:
   commentId: T:EmbedIO.Sessions.SessionExtensions
   fullName: EmbedIO.Sessions.SessionExtensions
   nameWithType: SessionExtensions
-- uid: EmbedIO.Sessions.SessionExtensions.GetValue*
-  name: GetValue
-  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_GetValue_
-  commentId: Overload:EmbedIO.Sessions.SessionExtensions.GetValue
+- uid: EmbedIO.Sessions.SessionExtensions.GetOrDefault*
+  name: GetOrDefault
+  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_GetOrDefault_
+  commentId: Overload:EmbedIO.Sessions.SessionExtensions.GetOrDefault
   isSpec: "True"
-  fullName: EmbedIO.Sessions.SessionExtensions.GetValue
-  nameWithType: SessionExtensions.GetValue
-- uid: EmbedIO.Sessions.SessionExtensions.GetValue``1(EmbedIO.Sessions.ISession,System.String)
-  name: GetValue<T>(ISession, String)
-  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_GetValue__1_EmbedIO_Sessions_ISession_System_String_
-  commentId: M:EmbedIO.Sessions.SessionExtensions.GetValue``1(EmbedIO.Sessions.ISession,System.String)
-  name.vb: GetValue(Of T)(ISession, String)
-  fullName: EmbedIO.Sessions.SessionExtensions.GetValue<T>(EmbedIO.Sessions.ISession, System.String)
-  fullName.vb: EmbedIO.Sessions.SessionExtensions.GetValue(Of T)(EmbedIO.Sessions.ISession, System.String)
-  nameWithType: SessionExtensions.GetValue<T>(ISession, String)
-  nameWithType.vb: SessionExtensions.GetValue(Of T)(ISession, String)
-- uid: EmbedIO.Sessions.SessionExtensions.TryGetValue*
-  name: TryGetValue
-  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_TryGetValue_
-  commentId: Overload:EmbedIO.Sessions.SessionExtensions.TryGetValue
+  fullName: EmbedIO.Sessions.SessionExtensions.GetOrDefault
+  nameWithType: SessionExtensions.GetOrDefault
+- uid: EmbedIO.Sessions.SessionExtensions.GetOrDefault``1(EmbedIO.Sessions.ISession,System.String)
+  name: GetOrDefault<T>(ISession, String)
+  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_GetOrDefault__1_EmbedIO_Sessions_ISession_System_String_
+  commentId: M:EmbedIO.Sessions.SessionExtensions.GetOrDefault``1(EmbedIO.Sessions.ISession,System.String)
+  name.vb: GetOrDefault(Of T)(ISession, String)
+  fullName: EmbedIO.Sessions.SessionExtensions.GetOrDefault<T>(EmbedIO.Sessions.ISession, System.String)
+  fullName.vb: EmbedIO.Sessions.SessionExtensions.GetOrDefault(Of T)(EmbedIO.Sessions.ISession, System.String)
+  nameWithType: SessionExtensions.GetOrDefault<T>(ISession, String)
+  nameWithType.vb: SessionExtensions.GetOrDefault(Of T)(ISession, String)
+- uid: EmbedIO.Sessions.SessionExtensions.GetOrDefault``1(EmbedIO.Sessions.ISession,System.String,``0)
+  name: GetOrDefault<T>(ISession, String, T)
+  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_GetOrDefault__1_EmbedIO_Sessions_ISession_System_String___0_
+  commentId: M:EmbedIO.Sessions.SessionExtensions.GetOrDefault``1(EmbedIO.Sessions.ISession,System.String,``0)
+  name.vb: GetOrDefault(Of T)(ISession, String, T)
+  fullName: EmbedIO.Sessions.SessionExtensions.GetOrDefault<T>(EmbedIO.Sessions.ISession, System.String, T)
+  fullName.vb: EmbedIO.Sessions.SessionExtensions.GetOrDefault(Of T)(EmbedIO.Sessions.ISession, System.String, T)
+  nameWithType: SessionExtensions.GetOrDefault<T>(ISession, String, T)
+  nameWithType.vb: SessionExtensions.GetOrDefault(Of T)(ISession, String, T)
+- uid: EmbedIO.Sessions.SessionExtensions.TryGet*
+  name: TryGet
+  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_TryGet_
+  commentId: Overload:EmbedIO.Sessions.SessionExtensions.TryGet
   isSpec: "True"
-  fullName: EmbedIO.Sessions.SessionExtensions.TryGetValue
-  nameWithType: SessionExtensions.TryGetValue
-- uid: EmbedIO.Sessions.SessionExtensions.TryGetValue``1(EmbedIO.Sessions.ISession,System.String,``0@)
-  name: TryGetValue<T>(ISession, String, out T)
-  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_TryGetValue__1_EmbedIO_Sessions_ISession_System_String___0__
-  commentId: M:EmbedIO.Sessions.SessionExtensions.TryGetValue``1(EmbedIO.Sessions.ISession,System.String,``0@)
-  name.vb: TryGetValue(Of T)(ISession, String, ByRef T)
-  fullName: EmbedIO.Sessions.SessionExtensions.TryGetValue<T>(EmbedIO.Sessions.ISession, System.String, out T)
-  fullName.vb: EmbedIO.Sessions.SessionExtensions.TryGetValue(Of T)(EmbedIO.Sessions.ISession, System.String, ByRef T)
-  nameWithType: SessionExtensions.TryGetValue<T>(ISession, String, out T)
-  nameWithType.vb: SessionExtensions.TryGetValue(Of T)(ISession, String, ByRef T)
+  fullName: EmbedIO.Sessions.SessionExtensions.TryGet
+  nameWithType: SessionExtensions.TryGet
+- uid: EmbedIO.Sessions.SessionExtensions.TryGet``1(EmbedIO.Sessions.ISession,System.String,``0@)
+  name: TryGet<T>(ISession, String, out T)
+  href: api/EmbedIO.Sessions.SessionExtensions.html#EmbedIO_Sessions_SessionExtensions_TryGet__1_EmbedIO_Sessions_ISession_System_String___0__
+  commentId: M:EmbedIO.Sessions.SessionExtensions.TryGet``1(EmbedIO.Sessions.ISession,System.String,``0@)
+  name.vb: TryGet(Of T)(ISession, String, ByRef T)
+  fullName: EmbedIO.Sessions.SessionExtensions.TryGet<T>(EmbedIO.Sessions.ISession, System.String, out T)
+  fullName.vb: EmbedIO.Sessions.SessionExtensions.TryGet(Of T)(EmbedIO.Sessions.ISession, System.String, ByRef T)
+  nameWithType: SessionExtensions.TryGet<T>(ISession, String, out T)
+  nameWithType.vb: SessionExtensions.TryGet(Of T)(ISession, String, ByRef T)
 - uid: EmbedIO.Sessions.SessionProxy
   name: SessionProxy
   href: api/EmbedIO.Sessions.SessionProxy.html
@@ -9040,14 +8994,7 @@ references:
 - uid: EmbedIO.Sessions.SessionProxy.None
   name: None
   href: api/EmbedIO.Sessions.SessionProxy.html#EmbedIO_Sessions_SessionProxy_None
-  commentId: P:EmbedIO.Sessions.SessionProxy.None
-  fullName: EmbedIO.Sessions.SessionProxy.None
-  nameWithType: SessionProxy.None
-- uid: EmbedIO.Sessions.SessionProxy.None*
-  name: None
-  href: api/EmbedIO.Sessions.SessionProxy.html#EmbedIO_Sessions_SessionProxy_None_
-  commentId: Overload:EmbedIO.Sessions.SessionProxy.None
-  isSpec: "True"
+  commentId: F:EmbedIO.Sessions.SessionProxy.None
   fullName: EmbedIO.Sessions.SessionProxy.None
   nameWithType: SessionProxy.None
 - uid: EmbedIO.Sessions.SessionProxy.Regenerate
@@ -9525,34 +9472,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.QValueListExtensions.TryNegotiateContentEncoding
   nameWithType: QValueListExtensions.TryNegotiateContentEncoding
-- uid: EmbedIO.Utilities.SelfCheck
-  name: SelfCheck
-  href: api/EmbedIO.Utilities.SelfCheck.html
-  commentId: T:EmbedIO.Utilities.SelfCheck
-  fullName: EmbedIO.Utilities.SelfCheck
-  nameWithType: SelfCheck
-- uid: EmbedIO.Utilities.SelfCheck.Failure(System.String)
-  name: Failure(String)
-  href: api/EmbedIO.Utilities.SelfCheck.html#EmbedIO_Utilities_SelfCheck_Failure_System_String_
-  commentId: M:EmbedIO.Utilities.SelfCheck.Failure(System.String)
-  fullName: EmbedIO.Utilities.SelfCheck.Failure(System.String)
-  nameWithType: SelfCheck.Failure(String)
-- uid: EmbedIO.Utilities.SelfCheck.Failure(System.String,System.Nullable{Exception})
-  name: Failure(String, Nullable<Exception>)
-  href: api/EmbedIO.Utilities.SelfCheck.html#EmbedIO_Utilities_SelfCheck_Failure_System_String_System_Nullable_Exception__
-  commentId: M:EmbedIO.Utilities.SelfCheck.Failure(System.String,System.Nullable{Exception})
-  name.vb: Failure(String, Nullable(Of Exception))
-  fullName: EmbedIO.Utilities.SelfCheck.Failure(System.String, System.Nullable<Exception>)
-  fullName.vb: EmbedIO.Utilities.SelfCheck.Failure(System.String, System.Nullable(Of Exception))
-  nameWithType: SelfCheck.Failure(String, Nullable<Exception>)
-  nameWithType.vb: SelfCheck.Failure(String, Nullable(Of Exception))
-- uid: EmbedIO.Utilities.SelfCheck.Failure*
-  name: Failure
-  href: api/EmbedIO.Utilities.SelfCheck.html#EmbedIO_Utilities_SelfCheck_Failure_
-  commentId: Overload:EmbedIO.Utilities.SelfCheck.Failure
-  isSpec: "True"
-  fullName: EmbedIO.Utilities.SelfCheck.Failure
-  nameWithType: SelfCheck.Failure
 - uid: EmbedIO.Utilities.StringExtensions
   name: StringExtensions
   href: api/EmbedIO.Utilities.StringExtensions.html
@@ -9968,25 +9887,25 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebApi.FormFieldAttribute.BadRequestIfMissing
   nameWithType: FormFieldAttribute.BadRequestIfMissing
-- uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
-  name: IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
-  href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
-  commentId: M:EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
-  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
-  fullName: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
-  fullName.vb: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
-  nameWithType: FormFieldAttribute.IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
-  nameWithType.vb: FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
-- uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync*
-  name: IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
-  href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_
-  commentId: Overload:EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync
+- uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name: INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
+  href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_INonNullRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
+  commentId: M:EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name.vb: EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
+  fullName: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  fullName.vb: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  nameWithType: FormFieldAttribute.INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
+  nameWithType.vb: FormFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
+- uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync*
+  name: INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
+  href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_INonNullRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_
+  commentId: Overload:EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync
   isSpec: "True"
-  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
-  fullName: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync
-  fullName.vb: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
-  nameWithType: FormFieldAttribute.IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
-  nameWithType.vb: FormFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+  name.vb: EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+  fullName: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync
+  fullName.vb: EmbedIO.WebApi.FormFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+  nameWithType: FormFieldAttribute.INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
+  nameWithType.vb: FormFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
 - uid: EmbedIO.WebApi.FormFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
   name: IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync(WebApiController, String)
   href: api/EmbedIO.WebApi.FormFieldAttribute.html#EmbedIO_WebApi_FormFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String__GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
@@ -10036,6 +9955,32 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebApi.FormFieldAttribute.FieldName
   nameWithType: FormFieldAttribute.FieldName
+- uid: EmbedIO.WebApi.INonNullRequestDataAttribute`2
+  name: INonNullRequestDataAttribute<TController, TData>
+  href: api/EmbedIO.WebApi.INonNullRequestDataAttribute-2.html
+  commentId: T:EmbedIO.WebApi.INonNullRequestDataAttribute`2
+  name.vb: INonNullRequestDataAttribute(Of TController, TData)
+  fullName: EmbedIO.WebApi.INonNullRequestDataAttribute<TController, TData>
+  fullName.vb: EmbedIO.WebApi.INonNullRequestDataAttribute(Of TController, TData)
+  nameWithType: INonNullRequestDataAttribute<TController, TData>
+  nameWithType.vb: INonNullRequestDataAttribute(Of TController, TData)
+- uid: EmbedIO.WebApi.INonNullRequestDataAttribute`2.GetRequestDataAsync(`0,System.String)
+  name: GetRequestDataAsync(TController, String)
+  href: api/EmbedIO.WebApi.INonNullRequestDataAttribute-2.html#EmbedIO_WebApi_INonNullRequestDataAttribute_2_GetRequestDataAsync__0_System_String_
+  commentId: M:EmbedIO.WebApi.INonNullRequestDataAttribute`2.GetRequestDataAsync(`0,System.String)
+  fullName: EmbedIO.WebApi.INonNullRequestDataAttribute<TController, TData>.GetRequestDataAsync(TController, System.String)
+  fullName.vb: EmbedIO.WebApi.INonNullRequestDataAttribute(Of TController, TData).GetRequestDataAsync(TController, System.String)
+  nameWithType: INonNullRequestDataAttribute<TController, TData>.GetRequestDataAsync(TController, String)
+  nameWithType.vb: INonNullRequestDataAttribute(Of TController, TData).GetRequestDataAsync(TController, String)
+- uid: EmbedIO.WebApi.INonNullRequestDataAttribute`2.GetRequestDataAsync*
+  name: GetRequestDataAsync
+  href: api/EmbedIO.WebApi.INonNullRequestDataAttribute-2.html#EmbedIO_WebApi_INonNullRequestDataAttribute_2_GetRequestDataAsync_
+  commentId: Overload:EmbedIO.WebApi.INonNullRequestDataAttribute`2.GetRequestDataAsync
+  isSpec: "True"
+  fullName: EmbedIO.WebApi.INonNullRequestDataAttribute<TController, TData>.GetRequestDataAsync
+  fullName.vb: EmbedIO.WebApi.INonNullRequestDataAttribute(Of TController, TData).GetRequestDataAsync
+  nameWithType: INonNullRequestDataAttribute<TController, TData>.GetRequestDataAsync
+  nameWithType.vb: INonNullRequestDataAttribute(Of TController, TData).GetRequestDataAsync
 - uid: EmbedIO.WebApi.IRequestDataAttribute`1
   name: IRequestDataAttribute<TController>
   href: api/EmbedIO.WebApi.IRequestDataAttribute-1.html
@@ -10157,25 +10102,25 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebApi.QueryFieldAttribute.BadRequestIfMissing
   nameWithType: QueryFieldAttribute.BadRequestIfMissing
-- uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
-  name: IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
-  href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
-  commentId: M:EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
-  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
-  fullName: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
-  fullName.vb: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
-  nameWithType: QueryFieldAttribute.IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
-  nameWithType.vb: QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
-- uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync*
-  name: IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
-  href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_
-  commentId: Overload:EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync
+- uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name: INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
+  href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_INonNullRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
+  commentId: M:EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
+  name.vb: EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
+  fullName: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  fullName.vb: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, System.String)
+  nameWithType: QueryFieldAttribute.INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync(WebApiController, String)
+  nameWithType.vb: QueryFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync(WebApiController, String)
+- uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync*
+  name: INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
+  href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_INonNullRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String____GetRequestDataAsync_
+  commentId: Overload:EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#INonNullRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String[]}#GetRequestDataAsync
   isSpec: "True"
-  name.vb: EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
-  fullName: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync
-  fullName.vb: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
-  nameWithType: QueryFieldAttribute.IRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
-  nameWithType.vb: QueryFieldAttribute.EmbedIO.WebApi.IRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+  name.vb: EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+  fullName: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController, System.String[]>.GetRequestDataAsync
+  fullName.vb: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
+  nameWithType: QueryFieldAttribute.INonNullRequestDataAttribute<WebApiController, String[]>.GetRequestDataAsync
+  nameWithType.vb: QueryFieldAttribute.EmbedIO.WebApi.INonNullRequestDataAttribute<EmbedIO.WebApi.WebApiController,System.String[]>.GetRequestDataAsync
 - uid: EmbedIO.WebApi.QueryFieldAttribute.EmbedIO#WebApi#IRequestDataAttribute{EmbedIO#WebApi#WebApiController,System#String}#GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)
   name: IRequestDataAttribute<WebApiController, String>.GetRequestDataAsync(WebApiController, String)
   href: api/EmbedIO.WebApi.QueryFieldAttribute.html#EmbedIO_WebApi_QueryFieldAttribute_EmbedIO_WebApi_IRequestDataAttribute_EmbedIO_WebApi_WebApiController_System_String__GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_
@@ -10738,14 +10683,7 @@ references:
 - uid: EmbedIO.WebModuleContainer.None
   name: None
   href: api/EmbedIO.WebModuleContainer.html#EmbedIO_WebModuleContainer_None
-  commentId: P:EmbedIO.WebModuleContainer.None
-  fullName: EmbedIO.WebModuleContainer.None
-  nameWithType: WebModuleContainer.None
-- uid: EmbedIO.WebModuleContainer.None*
-  name: None
-  href: api/EmbedIO.WebModuleContainer.html#EmbedIO_WebModuleContainer_None_
-  commentId: Overload:EmbedIO.WebModuleContainer.None
-  isSpec: "True"
+  commentId: F:EmbedIO.WebModuleContainer.None
   fullName: EmbedIO.WebModuleContainer.None
   nameWithType: WebModuleContainer.None
 - uid: EmbedIO.WebModuleContainerExtensions
@@ -11423,6 +11361,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebServer.ProcessRequestsAsync
   nameWithType: WebServer.ProcessRequestsAsync
+- uid: EmbedIO.WebServer.Signature
+  name: Signature
+  href: api/EmbedIO.WebServer.html#EmbedIO_WebServer_Signature
+  commentId: F:EmbedIO.WebServer.Signature
+  fullName: EmbedIO.WebServer.Signature
+  nameWithType: WebServer.Signature
 - uid: EmbedIO.WebServer.StreamCopyBufferSize
   name: StreamCopyBufferSize
   href: api/EmbedIO.WebServer.html#EmbedIO_WebServer_StreamCopyBufferSize
