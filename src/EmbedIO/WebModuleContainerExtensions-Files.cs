@@ -71,8 +71,19 @@ namespace EmbedIO
             Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
         {
-            var module = new FileModule(baseRoute, new FileSystemProvider(fileSystemPath, isImmutable));
-            return WithModule(@this, name, module, configure);
+#pragma warning disable CA2000 // Call Dispose on disposable - Ownership of provider is transferred to module
+            var provider = new FileSystemProvider(fileSystemPath, isImmutable);
+#pragma warning restore CA2000
+            try
+            {
+                var module = new FileModule(baseRoute, provider);
+                return WithModule(@this, name, module, configure);
+            }
+            catch
+            {
+                provider.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -183,8 +194,19 @@ namespace EmbedIO
             Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
         {
-            var module = new FileModule(baseRoute, new ZipFileProvider(zipFilePath));
-            return WithModule(@this, name, module, configure);
+#pragma warning disable CA2000 // Call Dispose on disposable - Ownership of provider is transferred to module
+            var provider = new ZipFileProvider(zipFilePath);
+#pragma warning restore CA2000
+            try
+            {
+                var module = new FileModule(baseRoute, provider);
+                return WithModule(@this, name, module, configure);
+            }
+            catch
+            {
+                provider.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -235,8 +257,19 @@ namespace EmbedIO
             Action<FileModule>? configure = null)
             where TContainer : class, IWebModuleContainer
         {
-            var module = new FileModule(baseRoute, new ZipFileProvider(zipFileStream));
-            return WithModule(@this, name, module, configure);
+#pragma warning disable CA2000 // Call Dispose on disposable - Ownership of provider is transferred to module
+            var provider = new ZipFileProvider(zipFileStream);
+#pragma warning restore CA2000
+            try
+            {
+                var module = new FileModule(baseRoute, provider);
+                return WithModule(@this, name, module, configure);
+            }
+            catch
+            {
+                provider.Dispose();
+                throw;
+            }
         }
     }
 }

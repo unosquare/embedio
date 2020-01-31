@@ -230,7 +230,6 @@ namespace EmbedIO.Sessions
             lock (_sessions)
             {
                 if (_sessions.TryGetValue(id, out var session))
-                {
                     session.EndUse(() => _sessions.TryRemove(id, out _));
                 }
             }
@@ -299,5 +298,7 @@ namespace EmbedIO.Sessions
                 }
             }
         }
+
+        private string GetSessionId(IHttpContext context) => context.Request.Cookies.FirstOrDefault(IsSessionCookie)?.Value.Trim() ?? string.Empty;
     }
 }
