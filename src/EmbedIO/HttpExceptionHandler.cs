@@ -23,10 +23,10 @@ namespace EmbedIO
     public static class HttpExceptionHandler
     {
         /// <summary>
-        /// <para>Gets the default handler used by <see cref="WebServerBase{TOptions}"/>.</para>
+        /// <para>The default handler used by <see cref="WebServerBase{TOptions}"/>.</para>
         /// <para>This is the same as <see cref="HtmlResponse"/>.</para>
         /// </summary>
-        public static HttpExceptionHandlerCallback Default { get; } = HtmlResponse;
+        public static readonly HttpExceptionHandlerCallback Default = HtmlResponse;
 
         /// <summary>
         /// Sends an empty response.

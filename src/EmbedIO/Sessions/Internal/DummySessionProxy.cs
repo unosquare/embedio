@@ -5,11 +5,11 @@ namespace EmbedIO.Sessions.Internal
 {
     internal sealed class DummySessionProxy : ISessionProxy
     {
+        public static readonly ISessionProxy Instance = new DummySessionProxy();
+
         private DummySessionProxy()
         {
         }
-
-        public static ISessionProxy Instance { get; } = new DummySessionProxy();
 
         public bool Exists => false;
 

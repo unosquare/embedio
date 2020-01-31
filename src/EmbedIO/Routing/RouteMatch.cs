@@ -20,18 +20,6 @@ namespace EmbedIO.Routing
     public sealed class RouteMatch : IReadOnlyList<string>, IReadOnlyDictionary<string, string>
 #pragma warning restore CA1710
     {
-        private static readonly IReadOnlyList<string> EmptyStringList = Array.Empty<string>();
-
-        private readonly IReadOnlyList<string> _values;
-
-        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values, string? subPath)
-        {
-            Path = path;
-            Names = names;
-            _values = values;
-            SubPath = subPath;
-        }
-
         /// <summary>
         /// Gets a <see cref="RouteMatch"/> instance that represents no match at all.
         /// </summary>
@@ -47,11 +35,23 @@ namespace EmbedIO.Routing
         /// a non-nullable property of type <see cref="RouteMatch"/>, provided that it is subsequently
         /// set to a meaningful value before being used.</para>
         /// </remarks>
-        public static RouteMatch None { get; } = new RouteMatch(
+        public static readonly RouteMatch None = new RouteMatch(
             string.Empty,
             Array.Empty<string>(),
             Array.Empty<string>(),
             null);
+
+        private static readonly IReadOnlyList<string> EmptyStringList = Array.Empty<string>();
+
+        private readonly IReadOnlyList<string> _values;
+
+        internal RouteMatch(string path, IReadOnlyList<string> names, IReadOnlyList<string> values, string? subPath)
+        {
+            Path = path;
+            Names = names;
+            _values = values;
+            SubPath = subPath;
+        }
 
         /// <summary>
         /// Gets the URL path that was successfully matched against the route.
