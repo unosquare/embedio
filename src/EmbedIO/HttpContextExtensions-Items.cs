@@ -27,7 +27,9 @@ namespace EmbedIO
                 return true;
             }
 
+#pragma warning disable CS8653 // value is non-nullable - We are returning false, so value is undefined.
             value = default;
+#pragma warning restore CS8653
             return false;
         }
 
