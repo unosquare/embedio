@@ -15,12 +15,6 @@ namespace EmbedIO
     public static class ExceptionHandler
     {
         /// <summary>
-        /// <para>The default handler used by <see cref="WebServerBase{TOptions}"/>.</para>
-        /// <para>This is the same as <see cref="HtmlResponse"/>.</para>
-        /// </summary>
-        public static readonly ExceptionHandlerCallback Default = HtmlResponse;
-
-        /// <summary>
         /// The name of the response header used by the <see cref="EmptyResponseWithHeaders" />
         /// handler to transmit the type of the exception to the client.
         /// </summary>
@@ -31,6 +25,12 @@ namespace EmbedIO
         /// handler to transmit the message of the exception to the client.
         /// </summary>
         public const string ExceptionMessageHeaderName = "X-Exception-Message";
+
+        /// <summary>
+        /// <para>The default handler used by <see cref="WebServerBase{TOptions}"/>.</para>
+        /// <para>This is the same as <see cref="HtmlResponse"/>.</para>
+        /// </summary>
+        public static readonly ExceptionHandlerCallback Default = HtmlResponse;
 
         /// <summary>
         /// Gets or sets the contact information to include in exception responses.
