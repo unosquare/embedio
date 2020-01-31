@@ -18,14 +18,6 @@ namespace EmbedIO.Internal
             _container = container;
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-
-            if (disposing)
-                _container = null;
-        }
-
         /// <inheritdoc />
         public new void Add(string name, IWebModule component)
         {
@@ -61,6 +53,14 @@ namespace EmbedIO.Internal
                 if (context.IsHandled)
                     break;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+                _container = null;
         }
     }
 }
