@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.IO;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
@@ -116,8 +115,7 @@ namespace EmbedIO
                     return collection;
 
                 case Exception exception:
-                    ExceptionDispatchInfo.Capture(exception).Throw();
-                    throw SelfCheck.Failure("Reached unreachable code");
+                    throw exception.RethrowPreservingStackTrace();
 
                 case null:
                     throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is null.");
@@ -164,8 +162,7 @@ namespace EmbedIO
                     return collection;
 
                 case Exception exception:
-                    ExceptionDispatchInfo.Capture(exception).Throw();
-                    throw SelfCheck.Failure("Reached unreachable code.");
+                    throw exception.RethrowPreservingStackTrace();
 
                 case null:
                     throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is null.");
