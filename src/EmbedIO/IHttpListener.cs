@@ -50,7 +50,9 @@ namespace EmbedIO
         /// <summary>
         /// Stops this listener.
         /// </summary>
+#pragma warning disable CA1716 // Rename method to avoid conflict with (VB) keyword - It is consistent with Microsoft's HttpListener
         void Stop();
+#pragma warning restore CA1716
 
         /// <summary>
         /// Adds the prefix.
