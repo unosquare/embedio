@@ -138,7 +138,7 @@ namespace EmbedIO.Files
                 {
                     _defaultExtension = null;
                 }
-                else if (value[0] != '.')
+                else if (value![0] != '.')
                 {
                     throw new ArgumentException("Default extension does not start with a period.", nameof(value));
                 }
@@ -407,7 +407,7 @@ namespace EmbedIO.Files
         {
             // Try to extract resource information from cache.
             var cachingThreshold = 1024L * Cache.MaxFileSizeKb;
-            if (!_cacheSection.TryGet(info.Path, out var cacheItem))
+            if (!_cacheSection!.TryGet(info.Path, out var cacheItem))
             {
                 // Resource information not yet cached
                 cacheItem = new FileCacheItem(_cacheSection, info.LastModifiedUtc, info.Length);
@@ -629,7 +629,7 @@ namespace EmbedIO.Files
             using var memoryStream = new MemoryStream();
             using var stream = new CompressionStream(memoryStream, compressionMethod);
 
-            await DirectoryLister.ListDirectoryAsync(
+            await DirectoryLister!.ListDirectoryAsync(
                 info,
                 context.Request.Url.AbsolutePath,
                 Provider.GetDirectoryEntries(info.Path, context),
