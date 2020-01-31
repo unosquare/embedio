@@ -30,6 +30,49 @@ namespace EmbedIO.Authentication
         /// </remarks>
         public sealed override bool IsFinalHandler => false;
 
+        /// <summary>
+        /// <para>Gets or sets an <see cref="AuthenticationHandlerCallback"/> that is called if
+        /// authentication could not take place. For example, <see cref="BasicAuthenticationModuleBase"/>
+        /// calls this handler if the request has no <c>Authorization</c> header.</para>
+        /// <para>The default is
+        /// <see cref="AuthenticationHandler.Unauthorized(IHttpContext,AuthenticationModuleBase)">AuthenticationHandler.Unauthorized</see>.</para>
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
+        /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
+        /// <seealso cref="AuthenticateAsync"/>
+        /// <seealso cref="OnInvalidCredentials"/>
+        /// <seealso cref="AuthenticationHandler"/>
+        public AuthenticationHandlerCallback OnMissingCredentials
+        {
+            get => _onMissingCredentials;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _onMissingCredentials = Validate.NotNull(nameof(value), value);
+            }
+        }
+
+        /// <summary>
+        /// <para>Gets or sets an <see cref="AuthenticationHandlerCallback"/> that is called if
+        /// a request contains invalid credentials.</para>
+        /// <para>The default is
+        /// <see cref="AuthenticationHandler.Unauthorized(IHttpContext,AuthenticationModuleBase)">AuthenticationHandler.Unauthorized</see>.</para>
+        /// </summary>
+        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
+        /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
+        /// <seealso cref="AuthenticateAsync"/>
+        /// <seealso cref="OnMissingCredentials"/>
+        /// <seealso cref="AuthenticationHandler"/>
+        public AuthenticationHandlerCallback OnInvalidCredentials
+        {
+            get => _onInvalidCredentials;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _onInvalidCredentials = Validate.NotNull(nameof(value), value);
+            }
+        }
+
         /// <inheritdoc />
         protected sealed override async Task OnRequestAsync(IHttpContext context)
         {
@@ -98,48 +141,5 @@ namespace EmbedIO.Authentication
         /// will cause subsequent authentication modules to skip processing the HTTP context completely.</para>
         /// </remarks>
         protected abstract Task<IPrincipal> AuthenticateAsync(IHttpContext context);
-
-        /// <summary>
-        /// <para>Gets or sets an <see cref="AuthenticationHandlerCallback"/> that is called if
-        /// authentication could not take place. For example, <see cref="BasicAuthenticationModuleBase"/>
-        /// calls this handler if the request has no <c>Authorization</c> header.</para>
-        /// <para>The default is
-        /// <see cref="AuthenticationHandler.Unauthorized(IHttpContext,AuthenticationModuleBase)">AuthenticationHandler.Unauthorized</see>.</para>
-        /// </summary>
-        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
-        /// <seealso cref="AuthenticateAsync"/>
-        /// <seealso cref="OnInvalidCredentials"/>
-        /// <seealso cref="AuthenticationHandler"/>
-        public AuthenticationHandlerCallback OnMissingCredentials
-        {
-            get => _onMissingCredentials;
-            set
-            {
-                EnsureConfigurationNotLocked();
-                _onMissingCredentials = Validate.NotNull(nameof(value), value);
-            }
-        }
-
-        /// <summary>
-        /// <para>Gets or sets an <see cref="AuthenticationHandlerCallback"/> that is called if
-        /// a request contains invalid credentials.</para>
-        /// <para>The default is
-        /// <see cref="AuthenticationHandler.Unauthorized(IHttpContext,AuthenticationModuleBase)">AuthenticationHandler.Unauthorized</see>.</para>
-        /// </summary>
-        /// <exception cref="InvalidOperationException">The module's configuration is locked.</exception>
-        /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
-        /// <seealso cref="AuthenticateAsync"/>
-        /// <seealso cref="OnMissingCredentials"/>
-        /// <seealso cref="AuthenticationHandler"/>
-        public AuthenticationHandlerCallback OnInvalidCredentials
-        {
-            get => _onInvalidCredentials;
-            set
-            {
-                EnsureConfigurationNotLocked();
-                _onInvalidCredentials = Validate.NotNull(nameof(value), value);
-            }
-        }
     }
 }
