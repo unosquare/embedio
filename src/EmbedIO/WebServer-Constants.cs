@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace EmbedIO
 {
@@ -15,7 +17,6 @@ namespace EmbedIO
         /// <summary>
         /// The signature string included in <c>Server</c> response headers.
         /// </summary>
-        // TODO: Make this constant public in EmbedIO 3.1
-        internal const string Signature = "embedio/3.0";
+        public static readonly string Signature = "EmbedIO/" + Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyInformationalVersionAttribute>().First().InformationalVersion;
     }
 }
