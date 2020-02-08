@@ -124,28 +124,12 @@ namespace EmbedIO.Net.Internal
                 if (_kaSet)
                     return _keepAlive;
 
+                var cnc = Headers.GetValues(HttpHeaderNames.Connection);
+                _keepAlive = ProtocolVersion < HttpVersion.Version11
+                    ? cnc != null && cnc.Length == 1 && string.Compare(cnc[0], "keep-alive", StringComparison.OrdinalIgnoreCase) == 0
+                    : cnc == null || cnc.All(s => string.Compare(s, "close", StringComparison.OrdinalIgnoreCase) != 0);
+
                 _kaSet = true;
-
-                // 1. Connection header
-                // 2. Protocol (1.1 == keep-alive by default)
-                // 3. Keep-Alive header
-                var cnc = Headers[HttpHeaderNames.Connection];
-                if (!string.IsNullOrEmpty(cnc))
-                {
-                    _keepAlive = string.Compare(cnc, "keep-alive", StringComparison.OrdinalIgnoreCase) == 0;
-                }
-                else if (ProtocolVersion == HttpVersion.Version11)
-                {
-                    _keepAlive = true;
-                }
-                else
-                {
-                    cnc = Headers[HttpHeaderNames.KeepAlive];
-
-                    if (!string.IsNullOrEmpty(cnc))
-                        _keepAlive = string.Compare(cnc, "closed", StringComparison.OrdinalIgnoreCase) != 0;
-                }
-
                 return _keepAlive;
             }
         }
