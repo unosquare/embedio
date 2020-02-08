@@ -14,37 +14,37 @@ namespace EmbedIO.Net.Internal
     /// <seealso cref="IDisposable" />
     internal sealed class HttpListenerResponse : IHttpResponse, IDisposable
     {
-        private const string CannotChangeHeaderWarning = "Cannot be changed after headers are sent.";
-        private readonly HttpListenerContext _context;
+        private readonly HttpConnection _connection;
+        private readonly string _id;
         private bool _disposed;
-        private string? _contentType;
+        private string _contentType = MimeType.Html; // Same default value as Microsoft's implementation
         private CookieList? _cookies;
-        private bool _keepAlive = true;
+        private bool _keepAlive;
         private ResponseStream? _outputStream;
         private int _statusCode = 200;
         private bool _chunked;
 
         internal HttpListenerResponse(HttpListenerContext context)
         {
-            _context = context;
+            _connection = context.Connection;
+            _id = context.Id;
+            _keepAlive = context.Request.KeepAlive;
+            ProtocolVersion = context.Request.ProtocolVersion;
         }
 
         /// <inheritdoc />
         public Encoding? ContentEncoding { get; set; } = Encoding.UTF8;
 
         /// <inheritdoc />
+        /// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+        /// <exception cref="InvalidOperationException">This property is being set and headers were already sent.</exception>
         public long ContentLength64
         {
             get => Headers.ContainsKey(HttpHeaderNames.ContentLength) && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var val) ? val : 0;
 
             set
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
-
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
+                EnsureCanChangeHeaders();
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
                 
@@ -53,19 +53,18 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public string? ContentType
+        /// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+        /// <exception cref="InvalidOperationException">This property is being set and headers were already sent.</exception>
+        /// <exception cref="ArgumentNullException">This property is being set to <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">This property is being set to the empty string.</exception>
+        public string ContentType
         {
             get => _contentType;
 
             set
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
-
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
-                _contentType = value;
+                EnsureCanChangeHeaders();
+                _contentType = Validate.NotNullOrEmpty(nameof(value), value);
             }
         }
 
@@ -82,63 +81,41 @@ namespace EmbedIO.Net.Internal
 
             set
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
-
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
+                EnsureCanChangeHeaders();
                 _keepAlive = value;
             }
         }
 
         /// <inheritdoc />
-        public Stream OutputStream => _outputStream ??= _context.Connection.GetResponseStream();
+        public Stream OutputStream => _outputStream ??= _connection.GetResponseStream();
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; } = HttpVersion.Version11;
+        public Version ProtocolVersion { get; }
 
         /// <inheritdoc />
-        /// <summary>
-        /// Gets or sets a value indicating whether [send chunked].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [send chunked]; otherwise, <c>false</c>.
-        /// </value>
-        /// <exception cref="ObjectDisposedException">
-        /// Is thrown when you try to access a member of an object that implements the 
-        /// IDisposable interface, and that object has been disposed.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">Cannot be changed after headers are sent.</exception>
+        /// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+        /// <exception cref="InvalidOperationException">This property is being set and headers were already sent.</exception>
         public bool SendChunked
         {
             get => _chunked;
 
             set
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
-
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
+                EnsureCanChangeHeaders();
                 _chunked = value;
             }
         }
 
         /// <inheritdoc />
+        /// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+        /// <exception cref="InvalidOperationException">This property is being set and headers were already sent.</exception>
         public int StatusCode
         {
             get => _statusCode;
 
             set
             {
-                if (_disposed)
-                    throw new ObjectDisposedException(_context.Id ?? nameof(HttpListenerResponse));
-
-                if (HeadersSent)
-                    throw new InvalidOperationException(CannotChangeHeaderWarning);
-
+                EnsureCanChangeHeaders();
                 if (value < 100 || value > 999)
                     throw new ArgumentOutOfRangeException(nameof(StatusCode), "StatusCode must be between 100 and 999.");
 
@@ -157,9 +134,7 @@ namespace EmbedIO.Net.Internal
         }
 
         internal bool HeadersSent { get; set; }
-        internal object HeadersLock { get; } = new object();
-        internal bool ForceCloseChunked { get; private set; }
-
+        
         void IDisposable.Dispose() => Close(true);
 
         public void Close()
@@ -201,26 +176,34 @@ namespace EmbedIO.Net.Internal
             if (Headers[HttpHeaderNames.Server] == null)
                 Headers.Add(HttpHeaderNames.Server, WebServer.Signature);
 
-            var inv = CultureInfo.InvariantCulture;
             if (Headers[HttpHeaderNames.Date] == null)
-                Headers.Add(HttpHeaderNames.Date, DateTime.UtcNow.ToString("r", inv));
+                Headers.Add(HttpHeaderNames.Date, HttpDate.Format(DateTime.UtcNow));
 
-            var clSet = ContentLength64 > 0;
-
-            if (!_chunked)
+            if (closing)
             {
-                if (!clSet && closing)
-                {
-                    clSet = true;
+                Headers[HttpHeaderNames.ContentLength] = "0";
+                _chunked = false;
+            }
+            else
+            {
+                if (ProtocolVersion < HttpVersion.Version11)
+                    _chunked = false;
 
-                    if (!Headers.ContainsKey(HttpHeaderNames.ContentLength))
-                        Headers[HttpHeaderNames.ContentLength] = "0";
+                var haveContentLength = !_chunked
+                                 && Headers.ContainsKey(HttpHeaderNames.ContentLength)
+                                 && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var contentLength)
+                                 && contentLength >= 0L;
+            
+                if (!haveContentLength)
+                {
+                    Headers.Remove(HttpHeaderNames.ContentLength);
+                    if (ProtocolVersion >= HttpVersion.Version11)
+                        _chunked = true;
                 }
             }
 
-            var v = _context.Request.ProtocolVersion;
-            if (!clSet && !_chunked && v >= HttpVersion.Version11)
-                _chunked = true;
+            if (_chunked)
+                Headers.Add(HttpHeaderNames.TransferEncoding, "chunked");
 
             //// Apache forces closing the connection for these status codes:
             //// HttpStatusCode.BadRequest            400
@@ -230,82 +213,71 @@ namespace EmbedIO.Net.Internal
             //// HttpStatusCode.RequestUriTooLong     414
             //// HttpStatusCode.InternalServerError   500
             //// HttpStatusCode.ServiceUnavailable    503        
-            var connClose = _statusCode == 400 || _statusCode == 408 || _statusCode == 411 ||
-                            _statusCode == 413 || _statusCode == 414 || _statusCode == 500 ||
-                            _statusCode == 503;
+            var reuses = _connection.Reuses;
+            var keepAlive = _statusCode switch {
+                400 => false,
+                408 => false,
+                411 => false,
+                413 => false,
+                414 => false,
+                500 => false,
+                503 => false,
+                _ => _keepAlive && reuses < 100
+            };
 
-            connClose |= !_context.Request.KeepAlive;
-
-            // They sent both KeepAlive: true and Connection: close!?
-            if (!_keepAlive || connClose)
+            _keepAlive = keepAlive;
+            if (keepAlive)
+            {
+                Headers.Add(HttpHeaderNames.Connection, "keep-alive");
+                if (ProtocolVersion >= HttpVersion.Version11)
+                    Headers.Add(HttpHeaderNames.KeepAlive, $"timeout=15,max={100 - reuses}");
+            }
+            else
             {
                 Headers.Add(HttpHeaderNames.Connection, "close");
-                connClose = true;
-            }
-
-            if (_chunked)
-                Headers.Add(HttpHeaderNames.TransferEncoding, "chunked");
-
-            var reuses = _context.Connection.Reuses;
-            if (reuses >= 100)
-            {
-                ForceCloseChunked = true;
-                if (!connClose)
-                {
-                    Headers.Add(HttpHeaderNames.Connection, "close");
-                    connClose = true;
-                }
-            }
-
-            if (!connClose)
-            {
-                Headers.Add(HttpHeaderNames.KeepAlive, $"timeout=15,max={100 - reuses}");
-
-                if (_context.Request.ProtocolVersion <= HttpVersion.Version10)
-                    Headers.Add(HttpHeaderNames.Connection, "keep-alive");
             }
 
             return WriteHeaders();
         }
 
-        private static string CookieToClientString(Cookie cookie)
+        private static void AppendSetCookieHeader(StringBuilder sb, Cookie cookie)
         {
             if (cookie.Name.Length == 0)
-                return string.Empty;
+                return;
 
-            var result = new StringBuilder(64);
+            sb.Append("Set-Cookie: ");
 
             if (cookie.Version > 0)
-                result.Append("Version=").Append(cookie.Version).Append("; ");
+                sb.Append("Version=").Append(cookie.Version).Append("; ");
 
-            result
+            sb
                 .Append(cookie.Name)
                 .Append("=")
                 .Append(cookie.Value);
 
             if (cookie.Expires != DateTime.MinValue)
             {
-                result
+                sb
                     .Append("; Expires=")
                     .Append(HttpDate.Format(cookie.Expires));
             }
 
             if (!string.IsNullOrEmpty(cookie.Path))
-                result.Append("; Path=").Append(QuotedString(cookie, cookie.Path));
+                sb.Append("; Path=").Append(QuotedString(cookie, cookie.Path));
 
             if (!string.IsNullOrEmpty(cookie.Domain))
-                result.Append("; Domain=").Append(QuotedString(cookie, cookie.Domain));
+                sb.Append("; Domain=").Append(QuotedString(cookie, cookie.Domain));
 
             if (!string.IsNullOrEmpty(cookie.Port))
-                result.Append("; Port=").Append(cookie.Port);
+                sb.Append("; Port=").Append(cookie.Port);
 
             if (cookie.Secure)
-                result.Append("; Secure");
+                sb.Append("; Secure");
 
             if (cookie.HttpOnly)
-                result.Append("; HttpOnly");
+                sb.Append("; HttpOnly");
 
-            return result.ToString();
+            sb.Append("\r\n");
         }
 
         private static string QuotedString(Cookie cookie, string value)
@@ -315,27 +287,39 @@ namespace EmbedIO.Net.Internal
         {
             _disposed = true;
 
-            _context.Connection.Close(force);
+            _connection.Close(force);
         }
 
         private string GetHeaderData()
         {
             var sb = new StringBuilder()
-                .AppendFormat(CultureInfo.InvariantCulture, "HTTP/{0} {1} {2}\r\n", ProtocolVersion, _statusCode, StatusDescription);
+                .Append("HTTP/")
+                .Append(ProtocolVersion)
+                .Append(' ')
+                .Append(_statusCode)
+                .Append(' ')
+                .Append(StatusDescription)
+                .Append("\r\n");
 
             foreach (var key in Headers.AllKeys.Where(x => x != "Set-Cookie"))
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", key, Headers[key]);
-            
+            {
+                sb
+                    .Append(key)
+                    .Append(": ")
+                    .Append(Headers[key])
+                    .Append("\r\n");
+            }
+
             if (_cookies != null)
             {
                 foreach (var cookie in _cookies)
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
+                    AppendSetCookieHeader(sb, cookie);
             }
 
-            if (Headers.AllKeys.Contains(HttpHeaderNames.SetCookie))
+            if (Headers.ContainsKey(HttpHeaderNames.SetCookie))
             {
                 foreach (var cookie in CookieList.Parse(Headers[HttpHeaderNames.SetCookie]))
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "Set-Cookie: {0}\r\n", CookieToClientString(cookie));
+                    AppendSetCookieHeader(sb, cookie);
             }
 
             return sb.Append("\r\n").ToString();
@@ -350,13 +334,22 @@ namespace EmbedIO.Net.Internal
             stream.Write(data, 0, data.Length);
 
             if (_outputStream == null)
-                _outputStream = _context.Connection.GetResponseStream();
+                _outputStream = _connection.GetResponseStream();
 
             // Assumes that the ms was at position 0
             stream.Position = preamble.Length;
             HeadersSent = true;
 
             return stream;
+        }
+
+        private void EnsureCanChangeHeaders()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(_id);
+
+            if (HeadersSent)
+                throw new InvalidOperationException("Header values cannot be changed after headers are sent.");
         }
     }
 }
