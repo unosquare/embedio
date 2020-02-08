@@ -20,7 +20,7 @@ namespace EmbedIO
         /// </value>
         /// <param name="name">The name.</param>
         /// <returns>The cookie matching the specified name.</returns>
-        Cookie this[string name] { get; }
+        Cookie? this[string name] { get; }
 
         /// <summary>
         /// Determines whether this <see cref="ICookieCollection"/> contains the specified <see cref="Cookie"/>.

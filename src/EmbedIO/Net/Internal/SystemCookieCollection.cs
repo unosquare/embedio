@@ -33,7 +33,7 @@ namespace EmbedIO.Net.Internal
         public object SyncRoot => _collection.SyncRoot;
 
         /// <inheritdoc />
-        public Cookie this[string name] => _collection[name];
+        public Cookie? this[string name] => _collection[name];
 
         /// <inheritdoc />
         IEnumerator<Cookie> IEnumerable<Cookie>.GetEnumerator() => _collection.OfType<Cookie>().GetEnumerator();
