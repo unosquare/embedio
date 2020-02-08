@@ -7,7 +7,8 @@ namespace EmbedIO.Net.Internal
 {
     internal class ResponseStream : Stream
     {
-        private static readonly byte[] Crlf = { 13, 10 };
+        private static readonly byte[] CrLf = { 13, 10 };
+        private readonly object _headersSyncRoot = new object();
 
         private readonly Stream _stream;
         private readonly HttpListenerResponse _response;
@@ -84,7 +85,7 @@ namespace EmbedIO.Net.Internal
                 InternalWrite(buffer, offset, count);
 
             if (chunked)
-                InternalWrite(Crlf, 0, 2);
+                InternalWrite(CrLf, 0, 2);
         }
 
         /// <inheritdoc />
@@ -123,7 +124,7 @@ namespace EmbedIO.Net.Internal
 
             if (!disposing) return;
 
-            using var ms = GetHeaders();
+            using var ms = GetHeaders(true);
             var chunked = _response.SendChunked;
 
             if (_stream.CanWrite)
@@ -166,9 +167,9 @@ namespace EmbedIO.Net.Internal
 
         private static byte[] GetChunkSizeBytes(int size, bool final) => Encoding.UTF8.GetBytes($"{size:x}\r\n{(final ? "\r\n" : string.Empty)}");
 
-        private MemoryStream? GetHeaders(bool closing = true)
+        private MemoryStream? GetHeaders(bool closing)
         {
-            lock (_response.HeadersLock)
+            lock (_headersSyncRoot)
                 return _response.HeadersSent ? null : _response.SendHeaders(closing);
         }
     }
