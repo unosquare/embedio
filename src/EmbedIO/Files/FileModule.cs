@@ -505,12 +505,12 @@ namespace EmbedIO.Files
             var partialUpperBound = contentLength - 1;
             var isPartial = compressionMethod == CompressionMethod.None
                          && context.Request.IsRangeRequest(contentLength, entityTag, info.LastModifiedUtc, out partialStart, out partialUpperBound);
-            var partialLength = contentLength;
+            var responseContentLength = contentLength;
 
             if (isPartial)
             {
                 // Prepare a "206 Partial Content" response.
-                partialLength = partialUpperBound - partialStart + 1;
+                responseContentLength = partialUpperBound - partialStart + 1;
                 context.Response.StatusCode = (int)HttpStatusCode.PartialContent;
                 PreparePositiveResponse(context.Response, info, contentType, entityTag, setCompressionInResponse);
                 context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes {partialStart}-{partialUpperBound}/{contentLength}");
@@ -548,18 +548,10 @@ namespace EmbedIO.Files
             // Transfer cached content if present.
             if (content != null)
             {
-                if (isPartial)
-                {
-                    context.Response.ContentLength64 = partialLength;
-                    await context.Response.OutputStream.WriteAsync(content, (int)partialStart, (int)partialLength, context.CancellationToken)
-                        .ConfigureAwait(false);
-                }
-                else
-                {
-                    context.Response.ContentLength64 = content.Length;
-                    await context.Response.OutputStream.WriteAsync(content, 0, content.Length, context.CancellationToken)
-                        .ConfigureAwait(false);
-                }
+                context.Response.ContentLength64 = responseContentLength;
+                var offset = isPartial ? (int) partialStart : 0;
+                await context.Response.OutputStream.WriteAsync(content, offset, (int)responseContentLength, context.CancellationToken)
+                    .ConfigureAwait(false);
 
                 return;
             }
@@ -588,7 +580,7 @@ namespace EmbedIO.Files
                         }
                     }
 
-                    var transferSize = partialLength;
+                    var transferSize = responseContentLength;
                     while (transferSize >= WebServer.StreamCopyBufferSize)
                     {
                         var read = await source.ReadAsync(buffer, 0, WebServer.StreamCopyBufferSize, context.CancellationToken)
