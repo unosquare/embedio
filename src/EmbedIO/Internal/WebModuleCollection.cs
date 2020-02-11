@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Swan.Collections;
+using EmbedIO.Utilities;
 using Swan.Logging;
 
 namespace EmbedIO.Internal
