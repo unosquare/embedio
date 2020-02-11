@@ -2,7 +2,6 @@
 using EmbedIO.Actions;
 using EmbedIO.Utilities;
 using Swan;
-using Swan.Collections;
 
 namespace EmbedIO
 {

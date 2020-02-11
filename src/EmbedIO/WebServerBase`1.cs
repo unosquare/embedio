@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Sessions;
 using EmbedIO.Utilities;
-using Swan.Collections;
 using Swan.Configuration;
 using Swan.Logging;
 
