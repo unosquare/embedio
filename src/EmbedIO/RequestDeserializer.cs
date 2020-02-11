@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Swan;
 using Swan.Logging;
 
 namespace EmbedIO
@@ -26,7 +27,20 @@ namespace EmbedIO
         /// <param name="context">The <see cref="IHttpContext"/> whose request body is to be deserialized.</param>
         /// <returns>A <see cref="Task{TResult}">Task</see>, representing the ongoing operation,
         /// whose result will be the deserialized data.</returns>
-        public static async Task<TData> Json<TData>(IHttpContext context)
+        public static Task<TData> Json<TData>(IHttpContext context) => JsonInternal<TData>(context, default);
+
+        /// <summary>
+        /// Returns a <see cref="RequestDeserializerCallback{TData}">RequestDeserializerCallback</see>
+        /// that will deserialize an HTTP request body in JSON format, using the specified property name casing.
+        /// </summary>
+        /// <typeparam name="TData">The expected type of the deserialized data.</typeparam>
+        /// <param name="jsonSerializerCase">The <see cref="JsonSerializerCase"/> to use.</param>
+        /// <returns>A <see cref="RequestDeserializerCallback{TData}"/> that can be used to deserialize
+        /// a JSON request body.</returns>
+        public static RequestDeserializerCallback<TData> Json<TData>(JsonSerializerCase jsonSerializerCase)
+            => context => JsonInternal<TData>(context, jsonSerializerCase);
+
+        private static async Task<TData> JsonInternal<TData>(IHttpContext context, JsonSerializerCase jsonSerializerCase)
         {
             string body;
             using (var reader = context.OpenRequestText())
@@ -36,7 +50,7 @@ namespace EmbedIO
 
             try
             {
-                return Swan.Formatters.Json.Deserialize<TData>(body);
+                return Swan.Formatters.Json.Deserialize<TData>(body, jsonSerializerCase);
             }
             catch (FormatException)
             {
