@@ -1,5 +1,5 @@
-﻿using System;
-using Swan.Collections;
+﻿using System.Collections.Concurrent;
+using EmbedIO.Utilities;
 
 namespace EmbedIO
 {

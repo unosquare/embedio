@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using Swan;
-using Swan.Collections;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Internal
 {
