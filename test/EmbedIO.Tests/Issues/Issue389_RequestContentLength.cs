@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Swan.Formatters;
 
 namespace EmbedIO.Tests.Issues
 {
@@ -46,7 +47,7 @@ namespace EmbedIO.Tests.Issues
             using var response = await client.PostAsync(DefaultUrl, content).ConfigureAwait(false);
             var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            Assert.AreEqual(Content.Length.ToString(), responseString);
+            Assert.AreEqual(Json.Serialize(Content.Length.ToString()), responseString);
         }
     }
 }
