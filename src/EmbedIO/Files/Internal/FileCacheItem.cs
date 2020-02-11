@@ -5,7 +5,7 @@ namespace EmbedIO.Files.Internal
 {
     internal sealed class FileCacheItem
     {
-#pragma warning disable SA1401 // Field should be private - performance is a strongest concern here.
+#pragma warning disable SA1401 // Field should be private - performance is a stronger concern here.
         // These fields create a sort of linked list of items
         // inside the cache's dictionary.
         // Their purpose is to keep track of items
