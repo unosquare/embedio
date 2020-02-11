@@ -104,7 +104,7 @@ namespace EmbedIO.Tests
                 var result = await Client.GetAsync($"/api/{TestController.QueryFieldTestPath}?id={value}");
                 Assert.IsNotNull(result);
                 var returnedValue = await result.Content.ReadAsStringAsync();
-                Assert.AreEqual(value, returnedValue);
+                Assert.AreEqual(Json.Serialize(value), returnedValue);
             }
         }
 
@@ -214,7 +214,7 @@ namespace EmbedIO.Tests
                 var subPath = "/" + Guid.NewGuid().ToString("D", CultureInfo.InvariantCulture);
                 var receivedSubPath = await Client.GetStringAsync("/api/testBaseRoute" + subPath);
 
-                Assert.AreEqual(subPath, receivedSubPath);
+                Assert.AreEqual(Json.Serialize(subPath), receivedSubPath);
             }
         }
     }
