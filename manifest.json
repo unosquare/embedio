@@ -637,7 +637,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.ICookieCollection.html",
-          "hash": "tOki/OMsqrORTT/YjMP7iQ=="
+          "hash": "U0+aZ6TvRP/UuUaZzRqJtQ=="
         }
       },
       "is_incremental": false,
@@ -877,7 +877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.Net.CookieList.html",
-          "hash": "N9qc9i2mwIJKxLARUHWEBw=="
+          "hash": "cXl0zUjqL1PhoefkqgK5IQ=="
         }
       },
       "is_incremental": false,
@@ -961,7 +961,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.RequestDeserializer.html",
-          "hash": "KSPTwWxB07w4IGxCUCNBPA=="
+          "hash": "lEHmURZpGFDoQO01TWU5lA=="
         }
       },
       "is_incremental": false,
@@ -973,7 +973,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.RequestDeserializerCallback-1.html",
-          "hash": "eBxW61kTqcRtZNndIB011g=="
+          "hash": "ghBaBBoO7TeyoayjUZ05Wg=="
         }
       },
       "is_incremental": false,
@@ -1413,11 +1413,59 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/EmbedIO.Utilities.ComponentCollection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/EmbedIO.Utilities.ComponentCollection-1.html",
+          "hash": "kh4D0FEZW20+5PwMevgccg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/EmbedIO.Utilities.ComponentCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/EmbedIO.Utilities.ComponentCollectionExtensions.html",
+          "hash": "KWtHSGykRbciMrHPW6mNyA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/EmbedIO.Utilities.DisposableComponentCollection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/EmbedIO.Utilities.DisposableComponentCollection-1.html",
+          "hash": "1YKbQfjO/Ad6AzjCwsq11Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/EmbedIO.Utilities.HttpDate.yml",
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.Utilities.HttpDate.html",
           "hash": "FgKlxT4Jy2tZyHYdmVu7DQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/EmbedIO.Utilities.IComponentCollection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/EmbedIO.Utilities.IComponentCollection-1.html",
+          "hash": "sRk5WuS6o+Es8KlX/MVrTg=="
         }
       },
       "is_incremental": false,
@@ -1549,7 +1597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.Utilities.html",
-          "hash": "xl1xvYG+QC7FWS28cvK74Q=="
+          "hash": "muFLsstMmw+5pQVHJ0WlUA=="
         }
       },
       "is_incremental": false,
@@ -1969,7 +2017,7 @@
       "output": {
         ".html": {
           "relative_path": "api/EmbedIO.html",
-          "hash": "xTAoY5kK3pxYdHbE238vZw=="
+          "hash": "sHbcSx2sZQQ2bVcx2eS9MQ=="
         }
       },
       "is_incremental": false,
@@ -1981,7 +2029,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1KcBQ8UyP+NNUP2aSAg4ew=="
+          "hash": "xn6wleA6Ool6IM3hbyncEg=="
         }
       },
       "is_incremental": false,
@@ -2095,28 +2143,28 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 156,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 10,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 160,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

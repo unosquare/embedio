@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class RequestDeserializer
+    <title>Class ComponentCollectionExtensions
    | Unosquare EmbedIO </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class RequestDeserializer
+    <meta name="title" content="Class ComponentCollectionExtensions
    | Unosquare EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
@@ -76,18 +76,18 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="EmbedIO.RequestDeserializer">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Utilities.ComponentCollectionExtensions">
   
   
-  <h1 id="EmbedIO_RequestDeserializer" data-uid="EmbedIO.RequestDeserializer" class="text-break">Class RequestDeserializer
+  <h1 id="EmbedIO_Utilities_ComponentCollectionExtensions" data-uid="EmbedIO.Utilities.ComponentCollectionExtensions" class="text-break">Class ComponentCollectionExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Provides standard request deserialization callbacks.</p>
+  <div class="markdown level0 summary"><p>Provides extension methods for types implementing <a class="xref" href="EmbedIO.Utilities.IComponentCollection-1.html">IComponentCollection&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">RequestDeserializer</span></div>
+    <div class="level1"><span class="xref">ComponentCollectionExtensions</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -113,24 +113,23 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.html">EmbedIO</a></h6>
-  <h5 id="EmbedIO_RequestDeserializer_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Utilities.html">EmbedIO.Utilities</a></h6>
+  <h5 id="EmbedIO_Utilities_ComponentCollectionExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class RequestDeserializer</code></pre>
+    <pre><code class="lang-csharp hljs">public static class ComponentCollectionExtensions</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="EmbedIO_RequestDeserializer_Default_" data-uid="EmbedIO.RequestDeserializer.Default*"></a>
-  <h4 id="EmbedIO_RequestDeserializer_Default__1_EmbedIO_IHttpContext_" data-uid="EmbedIO.RequestDeserializer.Default``1(EmbedIO.IHttpContext)">Default&lt;TData&gt;(IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>The default request deserializer used by EmbedIO.</p>
-<p>Equivalent to <a class="xref" href="EmbedIO.RequestDeserializer.html#EmbedIO_RequestDeserializer_Json__1_EmbedIO_IHttpContext_">Json&lt;TData&gt;(IHttpContext)</a>.</p>
+  <a id="EmbedIO_Utilities_ComponentCollectionExtensions_Add_" data-uid="EmbedIO.Utilities.ComponentCollectionExtensions.Add*"></a>
+  <h4 id="EmbedIO_Utilities_ComponentCollectionExtensions_Add__1_EmbedIO_Utilities_IComponentCollection___0____0_" data-uid="EmbedIO.Utilities.ComponentCollectionExtensions.Add``1(EmbedIO.Utilities.IComponentCollection{``0},``0)">Add&lt;T&gt;(IComponentCollection&lt;T&gt;, T)</h4>
+  <div class="markdown level1 summary"><p>Adds the specified component to a collection, without giving it a name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;TData&gt; Default&lt;TData&gt;(IHttpContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void Add&lt;T&gt;(this IComponentCollection&lt;T&gt; this, T component)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -143,26 +142,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a> whose request body is to be deserialized.</p>
+        <td><a class="xref" href="EmbedIO.Utilities.IComponentCollection-1.html">IComponentCollection</a>&lt;T&gt;</td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="EmbedIO.Utilities.IComponentCollection-1.html">IComponentCollection&lt;T&gt;</a> on which this method is called.</p>
 </td>
       </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
       <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Task</span>&lt;TData&gt;</td>
-        <td><p>A <see cref="!:Task&lt;TResult>">Task</see>, representing the ongoing operation,
-whose result will be the deserialized data.</p>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">component</span></td>
+        <td><p>The component to add.</p>
 </td>
       </tr>
     </tbody>
@@ -177,137 +165,16 @@ whose result will be the deserialized data.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TData</span></td>
-        <td><p>The expected type of the deserialized data.</p>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of components in the collection.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="EmbedIO_RequestDeserializer_Json_" data-uid="EmbedIO.RequestDeserializer.Json*"></a>
-  <h4 id="EmbedIO_RequestDeserializer_Json__1_EmbedIO_IHttpContext_" data-uid="EmbedIO.RequestDeserializer.Json``1(EmbedIO.IHttpContext)">Json&lt;TData&gt;(IHttpContext)</h4>
-  <div class="markdown level1 summary"><p>Asynchronously deserializes a request body in JSON format.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;TData&gt; Json&lt;TData&gt;(IHttpContext context)</code></pre>
+  <h5 id="EmbedIO_Utilities_ComponentCollectionExtensions_Add__1_EmbedIO_Utilities_IComponentCollection___0____0__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_Add_System_String__0_">Add</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, T)</div>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The <a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a> whose request body is to be deserialized.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Task</span>&lt;TData&gt;</td>
-        <td><p>A <see cref="!:Task&lt;TResult>">Task</see>, representing the ongoing operation,
-whose result will be the deserialized data.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TData</span></td>
-        <td><p>The expected type of the deserialized data.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="EmbedIO_RequestDeserializer_Json_" data-uid="EmbedIO.RequestDeserializer.Json*"></a>
-  <h4 id="EmbedIO_RequestDeserializer_Json__1_JsonSerializerCase_" data-uid="EmbedIO.RequestDeserializer.Json``1(JsonSerializerCase)">Json&lt;TData&gt;(JsonSerializerCase)</h4>
-  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="EmbedIO.RequestDeserializerCallback-1.html">RequestDeserializerCallback&lt;TData&gt;</a>
-that will deserialize an HTTP request body in JSON format, using the specified property name casing.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static RequestDeserializerCallback&lt;TData&gt; Json&lt;TData&gt;(JsonSerializerCase jsonSerializerCase)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">JsonSerializerCase</span></td>
-        <td><span class="parametername">jsonSerializerCase</span></td>
-        <td><p>The <see cref="!:JsonSerializerCase"></see> to use.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.RequestDeserializerCallback-1.html">RequestDeserializerCallback</a>&lt;TData&gt;</td>
-        <td><p>A <a class="xref" href="EmbedIO.RequestDeserializerCallback-1.html">RequestDeserializerCallback&lt;TData&gt;</a> that can be used to deserialize
-a JSON request body.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TData</span></td>
-        <td><p>The expected type of the deserialized data.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

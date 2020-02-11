@@ -5978,6 +5978,15 @@ references:
   fullName.vb: EmbedIO.RequestDeserializer.Json(Of TData)(EmbedIO.IHttpContext)
   nameWithType: RequestDeserializer.Json<TData>(IHttpContext)
   nameWithType.vb: RequestDeserializer.Json(Of TData)(IHttpContext)
+- uid: EmbedIO.RequestDeserializer.Json``1(JsonSerializerCase)
+  name: Json<TData>(JsonSerializerCase)
+  href: api/EmbedIO.RequestDeserializer.html#EmbedIO_RequestDeserializer_Json__1_JsonSerializerCase_
+  commentId: M:EmbedIO.RequestDeserializer.Json``1(JsonSerializerCase)
+  name.vb: Json(Of TData)(JsonSerializerCase)
+  fullName: EmbedIO.RequestDeserializer.Json<TData>(JsonSerializerCase)
+  fullName.vb: EmbedIO.RequestDeserializer.Json(Of TData)(JsonSerializerCase)
+  nameWithType: RequestDeserializer.Json<TData>(JsonSerializerCase)
+  nameWithType.vb: RequestDeserializer.Json(Of TData)(JsonSerializerCase)
 - uid: EmbedIO.RequestDeserializerCallback`1
   name: RequestDeserializerCallback<TData>
   href: api/EmbedIO.RequestDeserializerCallback-1.html
@@ -9061,6 +9070,217 @@ references:
   commentId: N:EmbedIO.Utilities
   fullName: EmbedIO.Utilities
   nameWithType: EmbedIO.Utilities
+- uid: EmbedIO.Utilities.ComponentCollection`1
+  name: ComponentCollection<T>
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html
+  commentId: T:EmbedIO.Utilities.ComponentCollection`1
+  name.vb: ComponentCollection(Of T)
+  fullName: EmbedIO.Utilities.ComponentCollection<T>
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T)
+  nameWithType: ComponentCollection<T>
+  nameWithType.vb: ComponentCollection(Of T)
+- uid: EmbedIO.Utilities.ComponentCollection`1.Add(System.String,`0)
+  name: Add(String, T)
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Add_System_String__0_
+  commentId: M:EmbedIO.Utilities.ComponentCollection`1.Add(System.String,`0)
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Add(System.String, T)
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Add(System.String, T)
+  nameWithType: ComponentCollection<T>.Add(String, T)
+  nameWithType.vb: ComponentCollection(Of T).Add(String, T)
+- uid: EmbedIO.Utilities.ComponentCollection`1.Add*
+  name: Add
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Add_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollection`1.Add
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Add
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Add
+  nameWithType: ComponentCollection<T>.Add
+  nameWithType.vb: ComponentCollection(Of T).Add
+- uid: EmbedIO.Utilities.ComponentCollection`1.Count
+  name: Count
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Count
+  commentId: P:EmbedIO.Utilities.ComponentCollection`1.Count
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Count
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Count
+  nameWithType: ComponentCollection<T>.Count
+  nameWithType.vb: ComponentCollection(Of T).Count
+- uid: EmbedIO.Utilities.ComponentCollection`1.Count*
+  name: Count
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Count_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollection`1.Count
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Count
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Count
+  nameWithType: ComponentCollection<T>.Count
+  nameWithType.vb: ComponentCollection(Of T).Count
+- uid: EmbedIO.Utilities.ComponentCollection`1.GetEnumerator
+  name: GetEnumerator()
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_GetEnumerator
+  commentId: M:EmbedIO.Utilities.ComponentCollection`1.GetEnumerator
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.GetEnumerator()
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).GetEnumerator()
+  nameWithType: ComponentCollection<T>.GetEnumerator()
+  nameWithType.vb: ComponentCollection(Of T).GetEnumerator()
+- uid: EmbedIO.Utilities.ComponentCollection`1.GetEnumerator*
+  name: GetEnumerator
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_GetEnumerator_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollection`1.GetEnumerator
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.GetEnumerator
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).GetEnumerator
+  nameWithType: ComponentCollection<T>.GetEnumerator
+  nameWithType.vb: ComponentCollection(Of T).GetEnumerator
+- uid: EmbedIO.Utilities.ComponentCollection`1.Item(System.Int32)
+  name: Item[Int32]
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Item_System_Int32_
+  commentId: P:EmbedIO.Utilities.ComponentCollection`1.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Item[System.Int32]
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Item(System.Int32)
+  nameWithType: ComponentCollection<T>.Item[Int32]
+  nameWithType.vb: ComponentCollection(Of T).Item(Int32)
+- uid: EmbedIO.Utilities.ComponentCollection`1.Item(System.String)
+  name: Item[String]
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Item_System_String_
+  commentId: P:EmbedIO.Utilities.ComponentCollection`1.Item(System.String)
+  name.vb: Item(String)
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Item[System.String]
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Item(System.String)
+  nameWithType: ComponentCollection<T>.Item[String]
+  nameWithType.vb: ComponentCollection(Of T).Item(String)
+- uid: EmbedIO.Utilities.ComponentCollection`1.Item*
+  name: Item
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Item_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollection`1.Item
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Item
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Item
+  nameWithType: ComponentCollection<T>.Item
+  nameWithType.vb: ComponentCollection(Of T).Item
+- uid: EmbedIO.Utilities.ComponentCollection`1.Lock
+  name: Lock()
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Lock
+  commentId: M:EmbedIO.Utilities.ComponentCollection`1.Lock
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Lock()
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Lock()
+  nameWithType: ComponentCollection<T>.Lock()
+  nameWithType.vb: ComponentCollection(Of T).Lock()
+- uid: EmbedIO.Utilities.ComponentCollection`1.Lock*
+  name: Lock
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Lock_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollection`1.Lock
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Lock
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Lock
+  nameWithType: ComponentCollection<T>.Lock
+  nameWithType.vb: ComponentCollection(Of T).Lock
+- uid: EmbedIO.Utilities.ComponentCollection`1.Named
+  name: Named
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Named
+  commentId: P:EmbedIO.Utilities.ComponentCollection`1.Named
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Named
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Named
+  nameWithType: ComponentCollection<T>.Named
+  nameWithType.vb: ComponentCollection(Of T).Named
+- uid: EmbedIO.Utilities.ComponentCollection`1.Named*
+  name: Named
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_Named_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollection`1.Named
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.Named
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).Named
+  nameWithType: ComponentCollection<T>.Named
+  nameWithType.vb: ComponentCollection(Of T).Named
+- uid: EmbedIO.Utilities.ComponentCollection`1.WithSafeNames
+  name: WithSafeNames
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_WithSafeNames
+  commentId: P:EmbedIO.Utilities.ComponentCollection`1.WithSafeNames
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.WithSafeNames
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).WithSafeNames
+  nameWithType: ComponentCollection<T>.WithSafeNames
+  nameWithType.vb: ComponentCollection(Of T).WithSafeNames
+- uid: EmbedIO.Utilities.ComponentCollection`1.WithSafeNames*
+  name: WithSafeNames
+  href: api/EmbedIO.Utilities.ComponentCollection-1.html#EmbedIO_Utilities_ComponentCollection_1_WithSafeNames_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollection`1.WithSafeNames
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollection<T>.WithSafeNames
+  fullName.vb: EmbedIO.Utilities.ComponentCollection(Of T).WithSafeNames
+  nameWithType: ComponentCollection<T>.WithSafeNames
+  nameWithType.vb: ComponentCollection(Of T).WithSafeNames
+- uid: EmbedIO.Utilities.ComponentCollectionExtensions
+  name: ComponentCollectionExtensions
+  href: api/EmbedIO.Utilities.ComponentCollectionExtensions.html
+  commentId: T:EmbedIO.Utilities.ComponentCollectionExtensions
+  fullName: EmbedIO.Utilities.ComponentCollectionExtensions
+  nameWithType: ComponentCollectionExtensions
+- uid: EmbedIO.Utilities.ComponentCollectionExtensions.Add*
+  name: Add
+  href: api/EmbedIO.Utilities.ComponentCollectionExtensions.html#EmbedIO_Utilities_ComponentCollectionExtensions_Add_
+  commentId: Overload:EmbedIO.Utilities.ComponentCollectionExtensions.Add
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ComponentCollectionExtensions.Add
+  nameWithType: ComponentCollectionExtensions.Add
+- uid: EmbedIO.Utilities.ComponentCollectionExtensions.Add``1(EmbedIO.Utilities.IComponentCollection{``0},``0)
+  name: Add<T>(IComponentCollection<T>, T)
+  href: api/EmbedIO.Utilities.ComponentCollectionExtensions.html#EmbedIO_Utilities_ComponentCollectionExtensions_Add__1_EmbedIO_Utilities_IComponentCollection___0____0_
+  commentId: M:EmbedIO.Utilities.ComponentCollectionExtensions.Add``1(EmbedIO.Utilities.IComponentCollection{``0},``0)
+  name.vb: Add(Of T)(IComponentCollection(Of T), T)
+  fullName: EmbedIO.Utilities.ComponentCollectionExtensions.Add<T>(EmbedIO.Utilities.IComponentCollection<T>, T)
+  fullName.vb: EmbedIO.Utilities.ComponentCollectionExtensions.Add(Of T)(EmbedIO.Utilities.IComponentCollection(Of T), T)
+  nameWithType: ComponentCollectionExtensions.Add<T>(IComponentCollection<T>, T)
+  nameWithType.vb: ComponentCollectionExtensions.Add(Of T)(IComponentCollection(Of T), T)
+- uid: EmbedIO.Utilities.DisposableComponentCollection`1
+  name: DisposableComponentCollection<T>
+  href: api/EmbedIO.Utilities.DisposableComponentCollection-1.html
+  commentId: T:EmbedIO.Utilities.DisposableComponentCollection`1
+  name.vb: DisposableComponentCollection(Of T)
+  fullName: EmbedIO.Utilities.DisposableComponentCollection<T>
+  fullName.vb: EmbedIO.Utilities.DisposableComponentCollection(Of T)
+  nameWithType: DisposableComponentCollection<T>
+  nameWithType.vb: DisposableComponentCollection(Of T)
+- uid: EmbedIO.Utilities.DisposableComponentCollection`1.Dispose
+  name: Dispose()
+  href: api/EmbedIO.Utilities.DisposableComponentCollection-1.html#EmbedIO_Utilities_DisposableComponentCollection_1_Dispose
+  commentId: M:EmbedIO.Utilities.DisposableComponentCollection`1.Dispose
+  fullName: EmbedIO.Utilities.DisposableComponentCollection<T>.Dispose()
+  fullName.vb: EmbedIO.Utilities.DisposableComponentCollection(Of T).Dispose()
+  nameWithType: DisposableComponentCollection<T>.Dispose()
+  nameWithType.vb: DisposableComponentCollection(Of T).Dispose()
+- uid: EmbedIO.Utilities.DisposableComponentCollection`1.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/EmbedIO.Utilities.DisposableComponentCollection-1.html#EmbedIO_Utilities_DisposableComponentCollection_1_Dispose_System_Boolean_
+  commentId: M:EmbedIO.Utilities.DisposableComponentCollection`1.Dispose(System.Boolean)
+  fullName: EmbedIO.Utilities.DisposableComponentCollection<T>.Dispose(System.Boolean)
+  fullName.vb: EmbedIO.Utilities.DisposableComponentCollection(Of T).Dispose(System.Boolean)
+  nameWithType: DisposableComponentCollection<T>.Dispose(Boolean)
+  nameWithType.vb: DisposableComponentCollection(Of T).Dispose(Boolean)
+- uid: EmbedIO.Utilities.DisposableComponentCollection`1.Dispose*
+  name: Dispose
+  href: api/EmbedIO.Utilities.DisposableComponentCollection-1.html#EmbedIO_Utilities_DisposableComponentCollection_1_Dispose_
+  commentId: Overload:EmbedIO.Utilities.DisposableComponentCollection`1.Dispose
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.DisposableComponentCollection<T>.Dispose
+  fullName.vb: EmbedIO.Utilities.DisposableComponentCollection(Of T).Dispose
+  nameWithType: DisposableComponentCollection<T>.Dispose
+  nameWithType.vb: DisposableComponentCollection(Of T).Dispose
+- uid: EmbedIO.Utilities.DisposableComponentCollection`1.Finalize
+  name: Finalize()
+  href: api/EmbedIO.Utilities.DisposableComponentCollection-1.html#EmbedIO_Utilities_DisposableComponentCollection_1_Finalize
+  commentId: M:EmbedIO.Utilities.DisposableComponentCollection`1.Finalize
+  fullName: EmbedIO.Utilities.DisposableComponentCollection<T>.Finalize()
+  fullName.vb: EmbedIO.Utilities.DisposableComponentCollection(Of T).Finalize()
+  nameWithType: DisposableComponentCollection<T>.Finalize()
+  nameWithType.vb: DisposableComponentCollection(Of T).Finalize()
+- uid: EmbedIO.Utilities.DisposableComponentCollection`1.Finalize*
+  name: Finalize
+  href: api/EmbedIO.Utilities.DisposableComponentCollection-1.html#EmbedIO_Utilities_DisposableComponentCollection_1_Finalize_
+  commentId: Overload:EmbedIO.Utilities.DisposableComponentCollection`1.Finalize
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.DisposableComponentCollection<T>.Finalize
+  fullName.vb: EmbedIO.Utilities.DisposableComponentCollection(Of T).Finalize
+  nameWithType: DisposableComponentCollection<T>.Finalize
+  nameWithType.vb: DisposableComponentCollection(Of T).Finalize
 - uid: EmbedIO.Utilities.HttpDate
   name: HttpDate
   href: api/EmbedIO.Utilities.HttpDate.html
@@ -9102,6 +9322,84 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.HttpDate.TryParse
   nameWithType: HttpDate.TryParse
+- uid: EmbedIO.Utilities.IComponentCollection`1
+  name: IComponentCollection<T>
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html
+  commentId: T:EmbedIO.Utilities.IComponentCollection`1
+  name.vb: IComponentCollection(Of T)
+  fullName: EmbedIO.Utilities.IComponentCollection<T>
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T)
+  nameWithType: IComponentCollection<T>
+  nameWithType.vb: IComponentCollection(Of T)
+- uid: EmbedIO.Utilities.IComponentCollection`1.Add(System.String,`0)
+  name: Add(String, T)
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_Add_System_String__0_
+  commentId: M:EmbedIO.Utilities.IComponentCollection`1.Add(System.String,`0)
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.Add(System.String, T)
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).Add(System.String, T)
+  nameWithType: IComponentCollection<T>.Add(String, T)
+  nameWithType.vb: IComponentCollection(Of T).Add(String, T)
+- uid: EmbedIO.Utilities.IComponentCollection`1.Add*
+  name: Add
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_Add_
+  commentId: Overload:EmbedIO.Utilities.IComponentCollection`1.Add
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.Add
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).Add
+  nameWithType: IComponentCollection<T>.Add
+  nameWithType.vb: IComponentCollection(Of T).Add
+- uid: EmbedIO.Utilities.IComponentCollection`1.Item(System.String)
+  name: Item[String]
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_Item_System_String_
+  commentId: P:EmbedIO.Utilities.IComponentCollection`1.Item(System.String)
+  name.vb: Item(String)
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.Item[System.String]
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).Item(System.String)
+  nameWithType: IComponentCollection<T>.Item[String]
+  nameWithType.vb: IComponentCollection(Of T).Item(String)
+- uid: EmbedIO.Utilities.IComponentCollection`1.Item*
+  name: Item
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_Item_
+  commentId: Overload:EmbedIO.Utilities.IComponentCollection`1.Item
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.Item
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).Item
+  nameWithType: IComponentCollection<T>.Item
+  nameWithType.vb: IComponentCollection(Of T).Item
+- uid: EmbedIO.Utilities.IComponentCollection`1.Named
+  name: Named
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_Named
+  commentId: P:EmbedIO.Utilities.IComponentCollection`1.Named
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.Named
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).Named
+  nameWithType: IComponentCollection<T>.Named
+  nameWithType.vb: IComponentCollection(Of T).Named
+- uid: EmbedIO.Utilities.IComponentCollection`1.Named*
+  name: Named
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_Named_
+  commentId: Overload:EmbedIO.Utilities.IComponentCollection`1.Named
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.Named
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).Named
+  nameWithType: IComponentCollection<T>.Named
+  nameWithType.vb: IComponentCollection(Of T).Named
+- uid: EmbedIO.Utilities.IComponentCollection`1.WithSafeNames
+  name: WithSafeNames
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_WithSafeNames
+  commentId: P:EmbedIO.Utilities.IComponentCollection`1.WithSafeNames
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.WithSafeNames
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).WithSafeNames
+  nameWithType: IComponentCollection<T>.WithSafeNames
+  nameWithType.vb: IComponentCollection(Of T).WithSafeNames
+- uid: EmbedIO.Utilities.IComponentCollection`1.WithSafeNames*
+  name: WithSafeNames
+  href: api/EmbedIO.Utilities.IComponentCollection-1.html#EmbedIO_Utilities_IComponentCollection_1_WithSafeNames_
+  commentId: Overload:EmbedIO.Utilities.IComponentCollection`1.WithSafeNames
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.IComponentCollection<T>.WithSafeNames
+  fullName.vb: EmbedIO.Utilities.IComponentCollection(Of T).WithSafeNames
+  nameWithType: IComponentCollection<T>.WithSafeNames
+  nameWithType.vb: IComponentCollection(Of T).WithSafeNames
 - uid: EmbedIO.Utilities.IPParser
   name: IPParser
   href: api/EmbedIO.Utilities.IPParser.html
