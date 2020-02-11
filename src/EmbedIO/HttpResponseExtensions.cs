@@ -36,7 +36,7 @@ namespace EmbedIO
 
             @this.StatusCode = statusCode;
             @this.StatusDescription = statusDescription;
-            @this.ContentType = string.Empty;
+            @this.ContentType = MimeType.Default;
             @this.ContentEncoding = null;
         }
     }
