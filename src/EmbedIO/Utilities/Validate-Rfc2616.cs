@@ -3,10 +3,7 @@ using System.Linq;
 
 namespace EmbedIO.Utilities
 {
-    /// <summary>
-    /// Provides validation methods for method arguments.
-    /// </summary>
-    public static partial class Validate
+    partial class Validate
     {
         private static readonly char[] ValidRfc2616TokenChars = GetValidRfc2616TokenChars();
 
