@@ -68,7 +68,7 @@ namespace EmbedIO.Utilities
             if (prefixParts.Length != 4)
                 return false;
 
-            return byte.TryParse(prefixLen, out var len) && len >= 0 && len <= 32;
+            return byte.TryParse(prefixLen, out var len) && len <= 32;
         }
 
         /// <summary>
