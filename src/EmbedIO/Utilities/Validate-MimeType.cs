@@ -2,10 +2,7 @@
 
 namespace EmbedIO.Utilities
 {
-    /// <summary>
-    /// Provides validation methods for method arguments.
-    /// </summary>
-    public static partial class Validate
+    partial class Validate
     {
         /// <summary>
         /// <para>Ensures that a <see langword="string"/> argument is valid as MIME type or media range as defined by
