@@ -21,6 +21,8 @@ namespace EmbedIO.Files.Internal
         // Size of a WeakReference<T> in bytes
         private static readonly long SizeOfWeakReference = Environment.Is64BitProcess ? 16 : 32;
 
+        private readonly object _syncRoot = new object();
+
         // Educated guess about the size of an Item in memory (see comments on constructor).
         // 3 * SizeOfPointer + total size of fields, rounded up to a multiple of 16.
         //
@@ -122,7 +124,7 @@ namespace EmbedIO.Files.Internal
             // This is the bare minimum locking we need
             // to ensure we don't mess sizes up.
             byte[]? oldContent;
-            lock (this)
+            lock (_syncRoot)
             {
                 switch (compressionMethod)
                 {
