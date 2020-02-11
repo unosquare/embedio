@@ -111,7 +111,7 @@ namespace EmbedIO.Net.Internal
         public bool IsAuthenticated => false;
 
         /// <inheritdoc />
-        public bool IsLocal => LocalEndPoint?.Address?.Equals(RemoteEndPoint?.Address) ?? true;
+        public bool IsLocal => LocalEndPoint.Address?.Equals(RemoteEndPoint.Address) ?? true;
 
         /// <inheritdoc />
         public bool IsSecureConnection => _context.Connection.IsSecure;
