@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace EmbedIO.Utilities
 {
@@ -51,5 +52,85 @@ namespace EmbedIO.Utilities
         /// otherwise, <paramref name="this."/></returns>
         public static string? NullIfEmpty(this string @this)
             => string.IsNullOrEmpty(@this) ? null : @this;
+
+        /// <summary>Retrieves a substring from this instance, with leading and trailing white-space characters removed.
+        /// The substring starts at a specified character position and continues to the end of the string.</summary>
+        /// <param name="this">The <see cref="string"/> on which this method is called.</param>
+        /// <param name="startIndex">The zero-based starting character position of the substring to retrieve.</param>
+        /// <returns>A string that is equivalent to the substring that begins at <paramref name="startIndex"/>
+        /// in <paramref name="this"/>, minus any leading and/or trailing white-space characters.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <para><paramref name="startIndex"/> is less than 0.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="startIndex"/> is larger then the length of <paramref name="this"/>.</para>
+        /// </exception>
+        public static string TrimmedSubstring(this string @this, int startIndex)
+        {
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "The starting index of a substring must be non-negative.");
+
+            if (startIndex > @this.Length)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "The starting index of a substring cannot be larger than the string's length.");
+
+            return TrimmedSubstringInternal(@this, startIndex, @this.Length - startIndex);
+        }
+
+        /// <summary>Retrieves a substring from this instance, with leading and trailing white-space characters removed.
+        /// The substring starts at a specified character position and has a specified length.</summary>
+        /// <param name="this">The <see cref="string"/> on which this method is called.</param>
+        /// <param name="startIndex">The zero-based starting character position of the substring to retrieve.</param>
+        /// <param name="length">The length of the substring to retrieve, including leading and/or trailing white-space characters.</param>
+        /// <returns>A string that is equivalent to the substring of length <paramref name="length"/> that begins at <paramref name="startIndex"/>
+        /// in <paramref name="this"/>, minus any leading and/or trailing white-space characters.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <para><paramref name="startIndex"/> is less than 0.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="startIndex"/> is larger then the length of <paramref name="this"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="length"/> is less than 0.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="startIndex"/> is larger then the length of <paramref name="this"/>.</para>
+        /// </exception>
+        public static string TrimmedSubstring(this string @this, int startIndex, int length)
+        {
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "The starting index of a substring must be non-negative.");
+
+            if (startIndex > @this.Length)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "The starting index of a substring cannot be larger than the string's length.");
+
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length), "The length of a substring cannot be negative.");
+
+            if (startIndex > @this.Length - length)
+                throw new ArgumentOutOfRangeException(nameof(length), "The starting index and length of a substring must refer to a location within the string.");
+
+            return TrimmedSubstringInternal(@this, startIndex, length);
+        }
+
+        private static string TrimmedSubstringInternal(string @this, int startIndex, int length)
+        {
+            if (length == 0)
+                return string.Empty;
+
+            if (startIndex == 0 && length == @this.Length)
+                return @this.Trim();
+
+            int endIndex = startIndex + length - 1;
+
+            while (startIndex <= endIndex && char.IsWhiteSpace(@this[startIndex]))
+                startIndex++;
+
+            while (endIndex >= startIndex && char.IsWhiteSpace(@this[endIndex]))
+                endIndex--;
+
+            int substringLength = endIndex - startIndex + 1;
+            return
+                substringLength == 0 ? string.Empty :
+                substringLength == @this.Length ? @this :
+                @this.Substring(startIndex, substringLength);
+        }
     }
 }
