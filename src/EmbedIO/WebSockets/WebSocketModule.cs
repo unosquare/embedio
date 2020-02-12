@@ -264,7 +264,7 @@ namespace EmbedIO.WebSockets
         /// <seealso cref="AddProtocols(string[])"/>
         protected void AddProtocol(string protocol)
         {
-            protocol = Validate.Rfc2616Token(nameof(protocol), protocol);
+            protocol = Validate.Rfc2616Token(nameof(protocol), protocol, "Protocol name");
 
             EnsureConfigurationNotLocked();
 
@@ -306,7 +306,7 @@ namespace EmbedIO.WebSockets
 
             EnsureConfigurationNotLocked();
 
-            foreach (var protocol in protocols.Select(p => Validate.Rfc2616Token(nameof(protocols), p)))
+            foreach (var protocol in protocols.Select(p => Validate.Rfc2616Token(nameof(protocols), p, "Protocol name")))
             {
                 if (_protocols.Contains(protocol))
                     throw new ArgumentException("Duplicate WebSocket protocol name.", nameof(protocols));
@@ -346,7 +346,7 @@ namespace EmbedIO.WebSockets
         {
             protocols = Validate.NotNull(nameof(protocols), protocols);
 
-            if (protocols.Select(p => Validate.Rfc2616Token(nameof(protocols), p)).Any(protocol => _protocols.Contains(protocol)))
+            if (protocols.Select(p => Validate.Rfc2616Token(nameof(protocols), p, "Protocol name")).Any(protocol => _protocols.Contains(protocol)))
                 throw new ArgumentException("Duplicate WebSocket protocol name.", nameof(protocols));
 
             EnsureConfigurationNotLocked();

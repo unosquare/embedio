@@ -26,6 +26,8 @@ namespace EmbedIO.Utilities
         /// </summary>
         /// <param name="argumentName">The name of the argument to validate.</param>
         /// <param name="value">The value to validate.</param>
+        /// <param name="entity">What is being validated. This string is put at the start of the exception
+        /// message when validation fails. Default is <c>"Token"</c>, as in <c>"Token contains one or more invalid characters."</c></param>
         /// <returns><paramref name="value"/>, if it is a valid token.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">
@@ -33,12 +35,12 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="value"/> contains one or more characters that are not allowed in a token.</para>
         /// </exception>
-        public static string Rfc2616Token(string argumentName, string value)
+        public static string Rfc2616Token(string argumentName, string value, string entity = "Token")
         {
             value = NotNullOrEmpty(argumentName, value);
 
             if (!IsRfc2616Token(value))
-                throw new ArgumentException("Token contains one or more invalid characters.", argumentName);
+                throw new ArgumentException(entity + " contains one or more invalid characters.", argumentName);
 
             return value;
         }
