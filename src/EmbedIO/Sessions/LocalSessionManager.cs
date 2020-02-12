@@ -120,7 +120,7 @@ namespace EmbedIO.Sessions
             set
             {
                 EnsureConfigurationNotLocked();
-                _cookieName = Validate.Rfc2616Token(nameof(value), value);
+                _cookieName = Validate.Rfc2616Token(nameof(value), value, "Cookie name");
             }
         }
 
