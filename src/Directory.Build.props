@@ -4,6 +4,8 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
 
-  <Version>3.4.1</Version>
+  <PropertyGroup>
+    <Version>3.4.1</Version>
+  </PropertyGroup>
 
 </Project>
