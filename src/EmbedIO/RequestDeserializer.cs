@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Swan;
+using Swan.Formatters;
 using Swan.Logging;
 
 namespace EmbedIO
