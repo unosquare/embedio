@@ -46,7 +46,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Unosquare.Swan.Lite" Version="2.6.2" />
+    <PackageReference Include="Unosquare.Swan.Lite" Version="3.0.0" />
   </ItemGroup>
   
 </Project>
