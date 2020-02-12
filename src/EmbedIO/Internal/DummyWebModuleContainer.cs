@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
-using Swan;
 using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO.Internal
 {
@@ -16,6 +16,10 @@ namespace EmbedIO.Internal
         public IComponentCollection<IWebModule> Modules => throw UnexpectedCall();
 
         public ConcurrentDictionary<object, object> SharedItems => throw UnexpectedCall();
+
+        public void Dispose()
+        {
+        }
 
         private InternalErrorException UnexpectedCall([CallerMemberName] string member = "")
             => SelfCheck.Failure($"Unexpected call to {nameof(DummyWebModuleContainer)}.{member}.");

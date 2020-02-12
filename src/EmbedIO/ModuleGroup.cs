@@ -92,11 +92,6 @@ namespace EmbedIO
                 return;
 
             _modules.Dispose();
-
-            var disposables = SharedItems.Values.OfType<IDisposable>();
-            SharedItems.Clear();
-            foreach (var disposable in disposables)
-                disposable.Dispose();
         }
 
         /// <inheritdoc />

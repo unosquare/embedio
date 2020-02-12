@@ -7,8 +7,8 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbedIO.Internal;
 using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO.Files.Internal
 {

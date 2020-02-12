@@ -231,7 +231,6 @@ namespace EmbedIO.Sessions
             {
                 if (_sessions.TryGetValue(id, out var session))
                     session.EndUse(() => _sessions.TryRemove(id, out _));
-                }
             }
 
             context.Request.Cookies.Add(BuildSessionCookie(string.Empty));

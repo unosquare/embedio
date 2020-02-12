@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
 using EmbedIO.Utilities;
 
 namespace EmbedIO
