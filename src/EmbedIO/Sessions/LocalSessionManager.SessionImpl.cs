@@ -49,20 +49,23 @@ namespace EmbedIO.Sessions
                 }
             }
 
-            public object this[string key]
+            public object? this[string key]
             {
                 get
                 {
                     lock (_data)
                     {
-                        return _data[key];
+                        return _data.TryGetValue(key, out var value) ? value : null;
                     }
                 }
                 set
                 {
                     lock (_data)
                     {
-                        _data[key] = value;
+                        if (value == null)
+                            _data.Remove(key);
+                        else
+                            _data[key] = value;
                     }
                 }
             }
