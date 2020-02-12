@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
+using Swan;
 using Swan.Collections;
 using Swan.Configuration;
 
@@ -16,7 +17,7 @@ namespace EmbedIO.Routing
     /// <typeparam name="TData">The type of the data used to select a suitable handler
     /// for a context.</typeparam>
     /// <typeparam name="TResolver">The type of the route resolver.</typeparam>
-    /// <seealso cref="ComponentCollection{T}" />
+    /// <seealso cref="Utilities.ComponentCollection{T}" />
     public abstract class RouteResolverCollectionBase<TData, TResolver> : ConfiguredObject
         where TResolver : RouteResolverBase<TData>
     {
@@ -75,7 +76,7 @@ namespace EmbedIO.Routing
         /// if the match is successful, tries to handle the specified <paramref name="context"/>
         /// using handlers selected according to data extracted from the context.
         /// <para>Registered resolvers are tried in the same order they were added by calling
-        /// <see cref="IComponentCollection{T}.Add"/>.</para>
+        /// <see cref="Utilities.IComponentCollection{T}.Add"/>.</para>
         /// </summary>
         /// <param name="context">The context to handle.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,

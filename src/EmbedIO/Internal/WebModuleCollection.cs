@@ -12,15 +12,6 @@ namespace EmbedIO.Internal
         internal WebModuleCollection(string logSource)
         {
             _logSource = logSource;
-            _container = container;
-        }
-
-        /// <inheritdoc />
-        public new void Add(string? name, IWebModule component)
-        {
-            base.Add(name, component);
-            component.GetImplementation().Container = _container
-                ?? throw new InvalidOperationException($"Cannot add an instance of {component.GetType().Name} to a disposed container.");
         }
 
         internal void StartAll(CancellationToken cancellationToken)
@@ -50,14 +41,6 @@ namespace EmbedIO.Internal
                 if (context.IsHandled)
                     break;
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-
-            if (disposing)
-                _container = null;
         }
     }
 }

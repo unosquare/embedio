@@ -1,6 +1,6 @@
 ﻿using System;
-using EmbedIO.Internal;
 using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO
 {
