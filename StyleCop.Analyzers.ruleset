@@ -778,6 +778,7 @@
     <Rule Id="SA1504" Action="None" />
     <Rule Id="SA1600" Action="None" />
     <Rule Id="SA1623" Action="None" />
+    <Rule Id="SA1629" Action="None" />
     <Rule Id="SA1633" Action="None" />
     <Rule Id="SA1639" Action="Warning" />
     <Rule Id="SA1642" Action="None" />
