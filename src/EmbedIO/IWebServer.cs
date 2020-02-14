@@ -19,7 +19,7 @@ namespace EmbedIO
         /// <summary>
         /// Occurs when the <see cref="State"/> property changes.
         /// </summary>
-        event WebServerStateChangedEventHandler StateChanged;
+        event EventHandler<WebServerStateChangedEventArgs> StateChanged;
 
         /// <summary>
         /// <para>Gets or sets a callback that is called every time an unhandled exception

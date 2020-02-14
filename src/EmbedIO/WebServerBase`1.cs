@@ -82,7 +82,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public event WebServerStateChangedEventHandler? StateChanged;
+        public event EventHandler<WebServerStateChangedEventArgs> StateChanged;
 
         /// <inheritdoc />
         public IComponentCollection<IWebModule> Modules => _modules;
