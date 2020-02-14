@@ -14,7 +14,9 @@ namespace EmbedIO.Files
         /// <para>Occurs when a file or directory provided by this instance is modified or removed.</para>
         /// <para>The event's parameter is the provider-specific path of the resource that changed.</para>
         /// </summary>
+#pragma warning disable CA1003 // Use EventHandler<T> - we use Action<> for performance reasons.
         event Action<string> ResourceChanged;
+#pragma warning restore CA1003
 
         /// <summary>
         /// Gets a value indicating whether the files and directories provided by this instance
