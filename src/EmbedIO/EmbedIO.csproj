@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Description>A tiny, cross-platform, module based, MIT-licensed web server. Supporting NET Framework, Net Core, and Mono.</Description>
-    <Copyright>Copyright © Unosquare 2013-2020</Copyright>
     <AssemblyTitle>EmbedIO Web Server</AssemblyTitle>
     <Authors>Unosquare, and Contributors to EmbedIO</Authors>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
@@ -18,8 +17,6 @@
     <RepositoryUrl>https://github.com/unosquare/embedio/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webserver websocket webapi http</PackageTags>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release' And Exists('NugetSigning.pfx')">

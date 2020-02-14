@@ -6,6 +6,9 @@
 
   <PropertyGroup>
     <Version>3.4.1</Version>
+    <Copyright>(C) 2014-2020 Unosquare, Mario A. Di Vece, and Geovanni Perez</Copyright>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
 </Project>
