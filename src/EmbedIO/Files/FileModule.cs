@@ -540,6 +540,7 @@ namespace EmbedIO.Files
                     }
 
                     content = memoryStream.ToArray();
+                    responseContentLength = content.Length;
                 }
 
                 cacheItem.SetContent(compressionMethod, content);
