@@ -15,9 +15,9 @@ using EmbedIO.Utilities;
 namespace EmbedIO.Tests
 {
     [TestFixture]
-    public class StaticFilesModuleTest : EndToEndFixtureBase
+    public class FileModuleTest : EndToEndFixtureBase
     {
-        protected StaticFolder.WithDataFiles ServedFolder { get; } = new StaticFolder.WithDataFiles(nameof(StaticFilesModuleTest));
+        protected StaticFolder.WithDataFiles ServedFolder { get; } = new StaticFolder.WithDataFiles(nameof(FileModuleTest));
 
         protected override void Dispose(bool disposing)
         {
@@ -27,10 +27,10 @@ namespace EmbedIO.Tests
         protected override void OnSetUp()
         {
             Server
-                .WithStaticFolder("/", StaticFolder.RootPathOf(nameof(StaticFilesModuleTest)), true);
+                .WithStaticFolder("/", StaticFolder.RootPathOf(nameof(FileModuleTest)), true);
         }
 
-        public class GetFiles : StaticFilesModuleTest
+        public class GetFiles : FileModuleTest
         {
             [Test]
             public async Task Index()
@@ -123,7 +123,7 @@ namespace EmbedIO.Tests
             }
         }
 
-        public class GetPartials : StaticFilesModuleTest
+        public class GetPartials : FileModuleTest
         {
             [TestCase("Got initial part of file", 0, 1024)]
             [TestCase("Got middle part of file", StaticFolder.WithDataFiles.BigDataSize / 2, 1024)]
@@ -207,7 +207,7 @@ namespace EmbedIO.Tests
             }
         }
 
-        public class CompressFile : StaticFilesModuleTest
+        public class CompressFile : FileModuleTest
         {
             [Test]
             public async Task GetGzip()
@@ -242,7 +242,7 @@ namespace EmbedIO.Tests
             }
         }
 
-        public class Etag : StaticFilesModuleTest
+        public class Etag : FileModuleTest
         {
             [Test]
             public async Task GetEtag()

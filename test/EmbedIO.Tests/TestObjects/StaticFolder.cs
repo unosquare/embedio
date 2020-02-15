@@ -26,7 +26,7 @@ namespace EmbedIO.Tests.TestObjects
 
         public static string RootPathOf(string folderName)
         {
-            var assemblyPath = Path.GetDirectoryName(typeof(StaticFilesModuleTest).Assembly.Location);
+            var assemblyPath = Path.GetDirectoryName(typeof(FileModuleTest).Assembly.Location);
             return Path.Combine(assemblyPath ?? Path.GetTempPath(), folderName);
         }
 
