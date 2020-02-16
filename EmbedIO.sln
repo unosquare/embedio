@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		docfx.json = docfx.json
 		StyleCop.Analyzers.ruleset = StyleCop.Analyzers.ruleset
 		toc.yml = toc.yml
+		VERSION = VERSION
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{39AC0FCD-3DBB-4C9B-87EE-873D31165F28}"
