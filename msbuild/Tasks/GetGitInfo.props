@@ -10,7 +10,6 @@
       <CommitShort ParameterType="System.String" Output="true" />
     </ParameterGroup>
     <Task>
-      <!-- <Reference Include="netstandard.dll" /> -->
       <Code Type="Class" Language="cs" Source="$(MSBuildThisFileDirectory)GetGitInfo.cs" />
     </Task>  
   </UsingTask>
