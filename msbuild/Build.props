@@ -13,6 +13,12 @@
     <_Build_AppVeyor Condition="'$(APPVEYOR.ToLowerInvariant())' == 'true'">true</_Build_AppVeyor>
   </PropertyGroup>  
 
+  <!-- Determine whether this is a LGTM build. -->
+  <PropertyGroup>
+    <_Build_LGTM>false</_Build_LGTM>
+    <_Build_LGTM Condition="'$(LGTM_SRC)' != ''">true</_Build_LGTM>
+  </PropertyGroup>  
+
   <!-- Find out whether the current project is a SDK-style project -->
   <!-- https://gist.github.com/rdeago/94ec83c5d726a010ec11f35548d92c2f - Gist -->
   <!-- https://stackoverflow.com/a/53276466/5753412 - original StackOverflow answer --> 
