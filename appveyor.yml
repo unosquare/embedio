@@ -28,7 +28,7 @@ before_build:
 build_script:
     - cmd: msbuild /target:Pack /verbosity:quiet /p:Configuration=Release src/EmbedIO.sln
 test_script:
-    - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release src
+    - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit3.TestAdapter]* src/tests/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release src
 after_build:
     - ps: |
         if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE -And $env:APPVEYOR_REPO_BRANCH -eq "master")
