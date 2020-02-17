@@ -3,4 +3,3 @@ extraction:
         index:
             dotnet:
                 version: 3.1.101
-                arguments: src
