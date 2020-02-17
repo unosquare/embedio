@@ -161,7 +161,6 @@ TestResult.xml
 /src/EmbedIO/nuget.config
 /src/EmbedIO.Samples/nuget.config
 /test/EmbedIO.Tests/nuget.config
-*.targets
 /.vscode
 /_site
 /_api

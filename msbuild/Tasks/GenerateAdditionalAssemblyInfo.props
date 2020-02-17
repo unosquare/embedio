@@ -1,0 +1,8 @@
+<Project>
+
+  <!-- Make assemblies CLS-compliant by default -->
+  <PropertyGroup>
+      <CLSCompliant Condition="'$(CLSCompliant)' == ''">true</CLSCompliant>
+  </PropertyGroup>
+
+</Project>

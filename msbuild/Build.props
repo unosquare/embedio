@@ -1,0 +1,145 @@
+﻿<Project>
+
+  <!-- Define directories used by the build system. -->
+  <PropertyGroup>
+    <_Build_RootDirectory>$([System.IO.Path]::GetFullPath($([System.IO.Path]::Combine(`$(MSBuildThisFileDirectory)`, `..`))))\</_Build_RootDirectory>
+    <_Build_DistributionDirectory>$(_Build_RootDirectory)distrib\</_Build_DistributionDirectory>
+    <_Build_TempDirectory>$(_Build_RootDirectory)msbuild-temp\</_Build_TempDirectory>
+  </PropertyGroup>  
+
+  <!-- Determine whether this is an AppVeyor build. -->
+  <PropertyGroup>
+    <_Build_AppVeyor>false</_Build_AppVeyor>
+    <_Build_AppVeyor Condition="'$(APPVEYOR.ToLowerInvariant())' == 'true'">true</_Build_AppVeyor>
+  </PropertyGroup>  
+
+  <!-- Find out whether the current project is a SDK-style project -->
+  <!-- https://gist.github.com/rdeago/94ec83c5d726a010ec11f35548d92c2f - Gist -->
+  <!-- https://stackoverflow.com/a/53276466/5753412 - original StackOverflow answer --> 
+  <!-- https://regex101.com/r/pFP2Dq/3 - regex explanation -->
+  <PropertyGroup>
+    <_IsSdkProject>$([System.Text.RegularExpressions.Regex]::IsMatch(`$([System.IO.File]::ReadAllText(`$(MSBuildProjectFullPath)`))`, `(?s-i)(^|\s|&gt;)&lt;Project\s(([^&gt;]*?)\s)?Sdk(\s*?)=(\s*?)"`))</_IsSdkProject>
+  </PropertyGroup>
+
+  <!-- Default project properties (both SDK and legacy.) -->
+  <PropertyGroup>
+
+    <!-- Force deterministic builds. -->
+    <Deterministic>true</Deterministic>
+
+    <!-- Use latest language version. -->
+    <LangVersion>latest</LangVersion>
+
+    <!-- Enable nullable reference types. -->
+    <Nullable>enable</Nullable>
+
+    <!-- Make package ID the same as assembly name. -->
+    <PackageId>$(AssemblyName)</PackageId>
+
+    <!-- Use (and automatically export) JetBrains annotations. -->
+    <UseJetBrainsAnnotations>true</UseJetBrainsAnnotations>
+
+  </PropertyGroup>
+
+  <!-- Import versions of automatically added dependencies. -->
+  <Import Project="$(MSBuildThisFileDirectory)DependencyVersions.props" />
+
+  <!-- Import utility tasks -->
+  <Import Project="$(MSBuildThisFileDirectory)Tasks\*.props" />
+
+  <!-- ==================================================================================== -->
+
+  <!--
+    Import Common.props files _BuildRootDirectory down to the project's directory.
+    
+    NOTES:
+      * Only existing files will be imported.
+      * A maximum of 5 files will be imported, for the following reasons:
+          - MSBuild lacks "real" loops, especially outside of targets;
+          - MSBuild imports the same file at most once, thus ruling out tricks based on recursive imports.
+  -->
+
+  <!-- Initialize properties. -->
+  <PropertyGroup>
+    <_Import_File>Common.props</_Import_File> <!-- Name of files to import. -->
+    <_Import_List /> <!-- List of files to import. -->
+    <_Import_Directory>$(MSBuildProjectDirectory)</_Import_Directory> <!-- Initial directory where to look for a file to import. -->
+    <_Import_RootDirectory>$(_BuildRootDirectory)</_Import_RootDirectory> <!-- Directory where to stop searching. -->
+  </PropertyGroup>
+
+  <!-- NOTE: The "Find file #" blocks should be identical! -->
+
+  <!-- Find file #1 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #2 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #3 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #4 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #5 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Import the found files, if any. -->
+  <Import Condition="'$(_Import_List)' != ''" Project="$(_Import_List)" />
+
+  <!-- Reset used properties. -->
+  <PropertyGroup>
+    <_Import_File />
+    <_Import_List />
+    <_Import_Directory />
+    <_Import_RootDirectory />
+  </PropertyGroup>
+
+  <!-- ==================================================================================== -->
+
+</Project>

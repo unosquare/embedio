@@ -1,0 +1,19 @@
+<Project>
+
+  <UsingTask TaskName="ParseVersionFile" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <VersionFileFullPath ParameterType="System.String" Required="true" />
+      <Version ParameterType="System.String" Output="true" />
+      <VersionPrefix ParameterType="System.String" Output="true" />
+      <VersionSuffix ParameterType="System.String" Output="true" />
+      <AssemblyVersion ParameterType="System.String" Output="true" />
+      <AssemblyFileVersion ParameterType="System.String" Output="true" />
+      <AssemblyInformationalVersion ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="netstandard.dll" />
+      <Code Type="Class" Language="cs" Source="$(MSBuildThisFileDirectory)ParseVersionFile.cs" />
+    </Task>  
+  </UsingTask>
+
+</Project>

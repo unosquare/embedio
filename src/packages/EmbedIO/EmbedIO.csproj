@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>A tiny, cross-platform, modular, MIT-licensed web server. Supports .NET Framework, .NET Core, and Mono.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Unosquare.Swan.Lite" Version="3.0.0" />
+  </ItemGroup>
+  
+</Project>

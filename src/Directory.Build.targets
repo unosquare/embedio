@@ -1,12 +1,12 @@
 ﻿<Project>
 
-  <!-- DO NOT MODIFY THIS FILE! Create or modify Common.props instead. -->
+  <!-- DO NOT MODIFY THIS FILE! Create or modify Common.targets instead. -->
   
   <!-- Add this file to MSBuildAllProjects to support incremental builds on MSBuild versions prior to 16.0 -->
   <PropertyGroup>
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)..\msbuild\Build.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\msbuild\Build.targets" />
 
 </Project>

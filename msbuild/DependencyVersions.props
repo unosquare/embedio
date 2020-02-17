@@ -1,0 +1,15 @@
+﻿<Project>
+
+  <!-- All versions of automatically added dependencies are grouped here for easier updating.
+       Updating these packages with Visual Studio Package Manager will NOT work.
+       Please keep the versions below up-to-date with latest versions appearing on nuget.org.
+       If there is some compelling reason to NOT update one or more of this packages,
+       there MUST be a comment stating so. -->
+  <PropertyGroup>
+    <_VersionOf_JetBrains_Annotations>2019.1.3</_VersionOf_JetBrains_Annotations>
+    <_VersionOf_ReSharper_ExportAnnotations_Task>1.0.0</_VersionOf_ReSharper_ExportAnnotations_Task>
+    <_VersionOf_NuGet_Build_Tasks_Pack>5.2.0</_VersionOf_NuGet_Build_Tasks_Pack>
+    <_VersionOf_Microsoft_Packaging_Tools_Trimming>1.1.0-preview1-26619-01</_VersionOf_Microsoft_Packaging_Tools_Trimming>
+  </PropertyGroup>  
+
+</Project>

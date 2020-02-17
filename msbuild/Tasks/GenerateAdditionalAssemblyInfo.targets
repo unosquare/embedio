@@ -1,0 +1,37 @@
+<Project>
+  
+  <PropertyGroup>
+    <CLSCompliant Condition="'$(CLSCompliant)' != '' And '$(CLSCompliant)' != 'true'">false</CLSCompliant>
+  </PropertyGroup>
+  
+  <!-- Suppress warning CS3021: $type_or_method does not need a CLSCompliant attribute because the assembly does not have a CLSCompliant attribute.
+       The assembly actually has a CLSCompliant attribute; it's just that the IDE does not see it, because it's not in the source. -->
+  <PropertyGroup Condition="'$(CLSCompliant)' != ''">
+      <NoWarn Condition="'$(NoWarn)' != ''">$(NoWarn);</NoWarn>
+      <NoWarn>$(NoWarn)CS3021</NoWarn>
+  </PropertyGroup>
+
+  <!-- Always delete assembly info file so it gets recreated; otherwise there will be a duplicate CLSCompliant attribute in it -->
+  <!-- NOTE: This could be handled better with target inputs and outputs, so as to append to the file only when CoreGenerateAssemblyInfo actually runs,
+             but I tried and had no success, so here's my workaround. RDA 2018-12-08 -->
+  <Target Name="_Build_ResetAssemblyInfo" BeforeTargets="CoreGenerateAssemblyInfo" Condition="'$(Language)' == 'C#' And '$(CLSCompliant)' != ''">
+    <Delete Files="$(GeneratedAssemblyInfoFile)" />
+  </Target>
+
+  <Target Name="_Build_GenerateAdditionalAssemblyInfo"
+    AfterTargets="CoreGenerateAssemblyInfo"
+    Condition="'$(Language)' == 'C#' And '$(CLSCompliant)' != ''">
+
+    <ItemGroup>
+      <_AdditionalAssemblyInfoLines Include="[assembly:System.CLSCompliantAttribute($(CLSCompliant))]" />
+    </ItemGroup>
+
+    <WriteLinesToFile
+      File="$(GeneratedAssemblyInfoFile)"
+      Lines="@(_AdditionalAssemblyInfoLines)"
+      Overwrite="false"
+      />
+
+  </Target>
+  
+</Project>

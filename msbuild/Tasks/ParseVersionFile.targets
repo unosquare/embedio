@@ -1,0 +1,25 @@
+<Project InitialTargets="_Build_ParseVersionFile">
+
+  <Target Name="_Build_ParseVersionFile">
+
+    <PropertyGroup>
+      <_Build_VersionFileFullPath>$([MSBuild]::GetPathOfFileAbove('VERSION', '$(MSBuildProjectDirectory)'))</_Build_VersionFileFullPath>
+    </PropertyGroup>
+    <Error Condition="!$(_Build_VersionFileFullPath.StartsWith('$(_Build_RootDirectory)'))" Text="VERSION file not found ($(_Build_VersionFileFullPath))." />
+
+    <ParseVersionFile VersionFileFullPath="$(_Build_VersionFileFullPath)">
+      <Output TaskParameter="Version" PropertyName="Version" />
+      <Output TaskParameter="VersionPrefix" PropertyName="VersionPrefix" />
+      <Output TaskParameter="VersionSuffix" PropertyName="VersionSuffix" />
+      <Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" />
+      <Output TaskParameter="AssemblyFileVersion" PropertyName="AssemblyFileVersion" />
+      <Output TaskParameter="AssemblyInformationalVersion" PropertyName="AssemblyInformationalVersion" />
+    </ParseVersionFile>
+
+    <PropertyGroup>
+      <PackageVersion>$(Version)</PackageVersion>
+    </PropertyGroup>
+
+  </Target>
+
+</Project>

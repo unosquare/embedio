@@ -1,0 +1,18 @@
+<Project>
+
+  <UsingTask TaskName="GetGitInfo" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <RepoDirectory ParameterType="System.String" Required="true" />
+      <IsGitRepo ParameterType="System.Boolean" Output="true" />
+      <RepoUrl ParameterType="System.String" Output="true" />
+      <Branch ParameterType="System.String" Output="true" />
+      <CommitSHA ParameterType="System.String" Output="true" />
+      <CommitShort ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <!-- <Reference Include="netstandard.dll" /> -->
+      <Code Type="Class" Language="cs" Source="$(MSBuildThisFileDirectory)GetGitInfo.cs" />
+    </Task>  
+  </UsingTask>
+
+</Project>

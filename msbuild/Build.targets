@@ -1,0 +1,247 @@
+﻿<Project InitialTargets="_Build_InitializeGeneratedAssemblyInfoFile">
+
+  <!-- Determine whether this is a test project (unless overridden.) -->
+  <PropertyGroup Condition="'$(_Build_IsTestProject)' == ''">
+    <_Build_IsTestProject Condition="'$(TestProjectType)' != ''">true</_Build_IsTestProject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Build_IsTestProject)' != 'true'">
+    <_Build_IsTestProject>false</_Build_IsTestProject>
+  </PropertyGroup>
+
+  <!-- Determine whether this is a non-test library project (unless overridden.) -->
+  <PropertyGroup Condition="'$(_Build_IsLibraryProject)' == ''">
+    <_Build_IsLibraryProject Condition="'$(OutputType)' == 'Library' And '$(_Build_IsTestProject)' != 'true'">true</_Build_IsLibraryProject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Build_IsLibraryProject)' != 'true'">
+    <_Build_IsLibraryProject>false</_Build_IsLibraryProject>
+  </PropertyGroup>
+
+  <!-- Determine whether this is an executable project (unless overridden.) -->
+  <PropertyGroup Condition="'$(_Build_IsExeProject)' == ''">
+    <_Build_IsExeProject Condition="'$(OutputType)' == 'Exe' Or '$(OutputType)' == 'WinExe'">true</_Build_IsExeProject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Build_IsExeProject)' != 'true'">
+    <_Build_IsExeProject>false</_Build_IsExeProject>
+  </PropertyGroup>
+
+  <!-- Pack only libraries, unless told differently. -->
+  <PropertyGroup Condition="'$(IsPackable)' == ''">
+    <IsPackable Condition="'$(_Build_IsLibraryProject)' == 'true'">true</IsPackable>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsPackable)' != 'true'">
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- ==================================================================================== -->
+  
+  <!--
+    Import Common.targets files from _BuildRootDirectory down to the project's directory.
+    
+    NOTES:
+      * Only existing files will be imported.
+      * A maximum of 5 files will be imported, for the following reasons:
+          - MSBuild lacks "real" loops, especially outside of targets;
+          - MSBuild imports the same file at most once, thus ruling out tricks based on recursive imports.
+  -->
+
+  <!-- Initialize properties. -->
+  <PropertyGroup>
+    <_Import_File>Common.targets</_Import_File> <!-- Name of files to import. -->
+    <_Import_List /> <!-- List of files to import. -->
+    <_Import_Directory>$(MSBuildProjectDirectory)</_Import_Directory> <!-- Initial directory where to look for a file to import. -->
+    <_Import_RootDirectory>$(_BuildRootDirectory)</_Import_RootDirectory> <!-- Directory where to stop searching. -->
+  </PropertyGroup>
+
+  <!-- NOTE: The "Find file #" blocks should be identical! -->
+
+  <!-- Find file #1 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #2 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #3 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #4 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Find file #5 -->  
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_Directory>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_Import_Directory)', '$(_Import_File)'))</_Import_Directory>
+    <!-- Bail out if not found, or found outside of "root" directory -->
+    <_Import_Directory Condition="!$(_Import_Directory.StartsWith('$(_Import_RootDirectory)'))" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_Import_Directory)' != ''">
+    <_Import_List Condition="'$(_Import_List)' != ''">;$(_Import_List)</_Import_List>
+    <_Import_List>$([System.IO.Path]::Combine('$(_Import_Directory)', '$(_Import_File)'))$(_Import_List)</_Import_List>
+    <_Import_Directory>$([System.IO.Path]::GetDirectoryName('$(_Import_Directory)'))</_Import_Directory>
+  </PropertyGroup>
+
+  <!-- Import the found files, if any. -->
+  <Import Condition="'$(_Import_List)' != ''" Project="$(_Import_List)" />
+
+  <!-- Reset used properties. -->
+  <PropertyGroup>
+    <_Import_File />
+    <_Import_List />
+    <_Import_Directory />
+    <_Import_RootDirectory />
+  </PropertyGroup>
+
+  <!-- ==================================================================================== -->
+
+  <!-- Never pack during build. -->
+  <!-- @rdeago 2018-12-09: Maybe this could be avoided, but perform thorough testing before removing the property group below. -->
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <!-- Put packages in distribution folder. -->
+  <PropertyGroup>
+    <PackageOutputPath>$(_Build_DistributionDirectory)$(Configuration)\</PackageOutputPath>
+  </PropertyGroup>
+    
+  <!-- Always generate assembly info. -->
+  <PropertyGroup>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateAssemblyCompanyAttribute>true</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyConfigurationAttribute>true</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCopyrightAttribute>true</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyDescriptionAttribute>true</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyFileVersionAttribute>true</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>true</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyProductAttribute>true</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyTitleAttribute>true</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+    <GenerateNeutralResourcesLanguageAttribute>true</GenerateNeutralResourcesLanguageAttribute>
+  </PropertyGroup>
+
+  <!-- Make Owners default to Authors. -->
+  <PropertyGroup>
+    <Owners Condition="'$(Owners)' == ''">$(Authors)</Owners>
+  </PropertyGroup>
+
+  <!-- Suppress warning NU1603 unless KillNU1603 is explicitly set to false. -->
+  <PropertyGroup Condition="'$(KillNU1603)' != 'false'">
+      <NoWarn Condition="'$(NoWarn)' != ''">$(NoWarn);</NoWarn>
+      <NoWarn>$(NoWarn)NU1603</NoWarn>
+  </PropertyGroup>
+
+  <!-- Generate documentation file by default only for libraries.
+       We cannot use GenerateDocumentationFile directly, because it is set to some default
+       by some standard import; we cannot set a sensible default in Build.props, either,
+       because OutputType and Configuration are still unknown. -->
+  <PropertyGroup Condition="'$(XmlDoc)' == ''">
+    <XmlDoc Condition="'$(_Build_IsLibraryProject)' == 'true'">true</XmlDoc>
+  </PropertyGroup>
+  <PropertyGroup>
+    <XmlDoc Condition="'$(XmlDoc)' != 'true'">false</XmlDoc>
+  </PropertyGroup>
+
+  <!-- Copy XmlDoc to GenerateDocumentationFile -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>$(XmlDoc)</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Always put XML documentation, if any, alongside the compiled assembly.
+       We cannot trust MSBuild's default for this: at least in legacy projects,
+       it would give the file an ugly upper-case .XML extension. -->
+  <PropertyGroup Condition="$(GenerateDocumentationFile)">
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <!-- Put .pdb in package by default -->
+  <PropertyGroup>
+    <PdbInPackage Condition="'$(PdbInPackage)' == ''">true</PdbInPackage>
+    <PdbInPackage Condition="'$(PdbInPackage)' != 'true'">false</PdbInPackage>
+  </PropertyGroup>
+
+  <!-- Put .pdb in package if specified by PdbInPackage -->
+  <PropertyGroup Condition="$(PdbInPackage)">
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <!-- By default, trim unused dependencies for executable projects. -->
+  <PropertyGroup Condition="'$(TrimUnusedDependencies)' == ''">
+    <TrimUnusedDependencies Condition="'$(_Build_IsExeProject)' == 'true'">true</TrimUnusedDependencies>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TrimUnusedDependencies)' != 'true'">
+    <TrimUnusedDependencies>false</TrimUnusedDependencies>
+  </PropertyGroup>
+
+  <!-- Add ReSharper-related package references where appropriate. -->
+  <ItemGroup>
+    <PackageReference Condition="$(UseJetBrainsAnnotations)" Include="JetBrains.Annotations" Version="$(_VersionOf_JetBrains_Annotations)" PrivateAssets="All" />
+    <PackageReference Condition="$(UseJetBrainsAnnotations)" Include="ReSharper.ExportAnnotations.Task" Version="$(_VersionOf_ReSharper_ExportAnnotations_Task)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Use NuGet.Build.Tasks.Pack for packable legacy projects -->
+  <ItemGroup Condition="!$(_IsSdkProject) And $(IsPackable)">
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="$(_VersionOf_NuGet_Build_Tasks_Pack)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Use Microsoft.Packaging.Tools.Trimming if required -->
+  <ItemGroup Condition="$(TrimUnusedDependencies)">
+    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="$(_VersionOf_Microsoft_Packaging_Tools_Trimming)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Import Microsoft.NET.GenerateAssemblyInfo.targets (copied from .NET Core SDK) for non-SDK projects. -->
+  <!-- This is necessary to unify project- and package matedata management across a solution
+       which can contain both SDK and non-SDK projects. -->
+  <Import Condition="!$(_IsSdkProject)" Project="$(MSBuildThisFileDirectory)Microsoft.NET.GenerateAssemblyInfo.targets" />
+
+  <!-- Import utility tasks -->
+  <Import Project="$(MSBuildThisFileDirectory)Tasks\*.targets" />
+
+  <!-- ==================================================================================== -->
+
+  <Target Name="_Build_InitializeGeneratedAssemblyInfoFile">
+    <!-- @rdeago 2019-01-14: It is not clear to me why it is necessary to initialize this property in a target.
+                             The PropertyGroup near the beginning of Microsoft.NET.GenerateAssemblyInfo.targets *should* be enough.
+                             Still, without this target, the GeneratedAssemblyInfoFile property remains unset.
+                             This is a dirty workaround, but it works. -->
+    <PropertyGroup Condition="!$(_IsSdkProject)">
+      <GeneratedAssemblyInfoFile>$(IntermediateOutputPath)$(MSBuildProjectName).AssemblyInfo$(DefaultLanguageSourceExtension)</GeneratedAssemblyInfoFile>
+    </PropertyGroup>
+  </Target>
+
+  <!-- ==================================================================================== -->
+
+</Project>
