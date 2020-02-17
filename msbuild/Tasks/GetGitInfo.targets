@@ -18,7 +18,7 @@
       <_Build_GitCommitShort>$(APPVEYOR_REPO_COMMIT.Substring(0,8))</_Build_GitCommitShort>
     </PropertyGroup>
 
-    <GetGitInfo Condition="!$(_Build_AppVeyor)" RepoDirectory="$(_Build_RootDirectory)">
+    <GetGitInfo Condition="!$(_Build_AppVeyor) And !$(_Build_LGTM)" RepoDirectory="$(_Build_RootDirectory)">
       <Output TaskParameter="IsGitRepo" PropertyName="_Build_IsGitRepo" />
       <Output TaskParameter="RepoUrl" PropertyName="_Build_GitRepoUrl" />
       <Output TaskParameter="Branch" PropertyName="_Build_GitBranch" />
