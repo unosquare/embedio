@@ -1,0 +1,9 @@
+extraction:
+    csharp:
+        index:
+            solution: src/EmbedIO.sln
+            msbuild:
+                configuration: Release   
+                platform: x64
+            dotnet:
+                version: 3.1.101
