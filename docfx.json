@@ -3,7 +3,7 @@
     {
       "src": [
         {
-          "files": [ "src/EmbedIO/**/*.cs" ],
+          "files": [ "src/packages/EmbedIO/**/*.cs" ],
           "exclude": [ "**/bin/**", "**/obj/**" ]
         }
       ],
@@ -34,7 +34,7 @@
       }
     ],
     "globalMetadata": {
-      "_appTitle": "Unosquare EmbedIO",
+      "_appTitle": "EmbedIO",
       "_enableSearch": true,
       "_appFaviconPath": "src/Command/favicon.ico",
       "_appLogoPath": "best-practices/resources/images/logo.png",

@@ -1,0 +1,50 @@
+<Project InitialTargets="_Build_GetGitInfo">
+
+  <!-- Skip on non-packable projects to save some time. -->
+  <Target Name="_Build_GetGitInfo">
+
+    <PropertyGroup>
+      <_Build_IsGitRepo>false</_Build_IsGitRepo>
+    </PropertyGroup>
+
+    <!-- If running in AppVeyor (and using git), fetch data from environment.
+         https://www.appveyor.com/docs/environment-variables/
+    -->
+    <PropertyGroup Condition="$(_Build_AppVeyor) And '$(APPVEYOR_REPO_SCM)' == 'git'">
+      <_Build_IsGitRepo>true</_Build_IsGitRepo>
+      <_Build_GitRepoUrl>$(APPVEYOR_REPO_NAME)</_Build_GitRepoUrl>
+      <_Build_GitBranch>$(APPVEYOR_REPO_BRANCH)</_Build_GitBranch>
+      <_Build_GitCommitSHA>$(APPVEYOR_REPO_COMMIT)</_Build_GitCommitSHA>
+      <_Build_GitCommitShort>$(APPVEYOR_REPO_COMMIT.Substring(0,8))</_Build_GitCommitShort>
+    </PropertyGroup>
+
+    <GetGitInfo Condition="!$(_Build_AppVeyor)" RepoDirectory="$(_Build_RootDirectory)">
+      <Output TaskParameter="IsGitRepo" PropertyName="_Build_IsGitRepo" />
+      <Output TaskParameter="RepoUrl" PropertyName="_Build_GitRepoUrl" />
+      <Output TaskParameter="Branch" PropertyName="_Build_GitBranch" />
+      <Output TaskParameter="CommitSHA" PropertyName="_Build_GitCommitSHA" />
+      <Output TaskParameter="CommitShort" PropertyName="_Build_GitCommitShort" />
+    </GetGitInfo>
+
+    <!-- Bool parameters of inline tasks are 'True' or 'False', not 'true' or 'false'. -->
+    <PropertyGroup>
+      <_Build_IsGitRepo>$(_Build_IsGitRepo.ToLowerInvariant())</_Build_IsGitRepo>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(_Build_IsGitRepo)">
+      <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
+      <RepositoryType>git</RepositoryType>
+      <RepositoryUrl>$(_Build_GitRepoUrl)</RepositoryUrl>
+      <RepositoryBranch>$(_Build_GitBranch)</RepositoryBranch>
+      <RepositoryCommit>$(_Build_GitCommitSHA)</RepositoryCommit>
+      <SourceRevisionId>$(_Build_GitBranch).$(_Build_GitCommitShort)</SourceRevisionId>
+    </PropertyGroup>
+
+  </Target>
+
+  <!-- This target must be present when SourceControlInformationFeatureSupported is true,
+       but it is not present in any SDK as of .NET Core 3.1.100.
+   -->
+  <Target Name="InitializeSourceControlInformation" />
+
+</Project>

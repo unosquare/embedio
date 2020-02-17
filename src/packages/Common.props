@@ -1,0 +1,22 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>http://unosquare.github.io/embedio</PackageProjectUrl>
+    <PackageTags>web;server;websocket;webapi;http</PackageTags>
+    <PackageIcon>embedio.png</PackageIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And Exists('..\NugetSigning.pfx')">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\NugetSigning.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(_Build_RootDirectory)LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
+    <None Include="$(_Build_RootDirectory)embedio.png" Link="embedio.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>
