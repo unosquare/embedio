@@ -4,6 +4,6 @@ extraction:
             solution: src/EmbedIO.sln
             msbuild:
                 configuration: Release   
-                platform: AnyCPU
+                platform: Any CPU
             dotnet:
                 version: 3.1.101
