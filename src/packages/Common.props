@@ -15,8 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(_Build_RootDirectory)LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
-    <None Include="$(_Build_RootDirectory)embedio.png" Link="embedio.png" Pack="true" PackagePath="" />
+    <None Include="$(_Build_RootDirectory)LICENSE" Link="LICENSE" Pack="true" PackagePath="" Visible="false" />
+    <None Include="$(_Build_RootDirectory)embedio.png" Link="embedio.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
 </Project>
