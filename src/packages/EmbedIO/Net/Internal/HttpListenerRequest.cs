@@ -168,8 +168,8 @@ namespace EmbedIO.Net.Internal
         public bool IsWebSocketRequest
             => HttpVerb == HttpVerb.Get
             && ProtocolVersion >= HttpVersion.Version11
-            && Headers.Contains(HttpHeaderNames.Upgrade, "websocket")
-            && Headers.Contains(HttpHeaderNames.Connection, "Upgrade");
+            && Headers.Contains(HttpHeaderNames.Upgrade, "websocket", StringComparison.OrdinalIgnoreCase)
+            && Headers.Contains(HttpHeaderNames.Connection, "Upgrade", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Begins to the get client certificate asynchronously.
@@ -238,7 +238,7 @@ namespace EmbedIO.Net.Internal
             }
 
             RawUrl = parts[1];
-            if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/"))
+            if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/", StringComparison.Ordinal))
             {
                 _context.ErrorMessage = "Invalid request line (version).";
                 return;
@@ -402,19 +402,19 @@ namespace EmbedIO.Net.Internal
 
             foreach (var str in cookieStrings)
             {
-                if (str.StartsWith("$Version"))
+                if (str.StartsWith("$Version", StringComparison.Ordinal))
                 {
                     version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote(), CultureInfo.InvariantCulture);
                 }
-                else if (str.StartsWith("$Path") && current != null)
+                else if (str.StartsWith("$Path", StringComparison.Ordinal) && current != null)
                 {
                     current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
                 }
-                else if (str.StartsWith("$Domain") && current != null)
+                else if (str.StartsWith("$Domain", StringComparison.Ordinal) && current != null)
                 {
                     current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
                 }
-                else if (str.StartsWith("$Port") && current != null)
+                else if (str.StartsWith("$Port", StringComparison.Ordinal) && current != null)
                 {
                     current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
                 }

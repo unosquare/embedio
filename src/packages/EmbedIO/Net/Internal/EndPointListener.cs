@@ -269,7 +269,7 @@ namespace EmbedIO.Net.Internal
 
             foreach (var p in list)
             {
-                if (p.Path.Length < bestLength || !path.StartsWith(p.Path))
+                if (p.Path.Length < bestLength || !path.StartsWith(p.Path, StringComparison.Ordinal))
                     continue;
 
                 bestLength = p.Path.Length;
@@ -337,7 +337,7 @@ namespace EmbedIO.Net.Internal
                     if (p.Host != host || p.Port != port)
                         continue;
 
-                    if (!path.StartsWith(p.Path) && !pathSlash.StartsWith(p.Path))
+                    if (!path.StartsWith(p.Path, StringComparison.Ordinal) && !pathSlash.StartsWith(p.Path, StringComparison.Ordinal))
                         continue;
 
                     bestLength = p.Path.Length;
