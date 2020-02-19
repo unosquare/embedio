@@ -14,7 +14,7 @@ namespace EmbedIO.Net.Internal
         private readonly Socket _sock;
         private Dictionary<ListenerPrefix, HttpListener> _prefixes;
         private List<ListenerPrefix>? _unhandled; // unhandled; host = '*'
-        private List<ListenerPrefix>? _all; //  all;  host = '+       
+        private List<ListenerPrefix>? _all; //  all;  host = '+'
 
         public EndPointListener(HttpListener listener, IPAddress address, int port, bool secure)
         {
@@ -22,7 +22,7 @@ namespace EmbedIO.Net.Internal
             Secure = secure;
             _endpoint = new IPEndPoint(address, port);
             _sock = new Socket(address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            
+
             if (address.AddressFamily == AddressFamily.InterNetworkV6 && EndPointManager.UseIpv6)
                 _sock.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
 
@@ -269,7 +269,8 @@ namespace EmbedIO.Net.Internal
 
             foreach (var p in list)
             {
-                if (p.Path.Length < bestLength || !path.StartsWith(p.Path)) continue;
+                if (p.Path.Length < bestLength || !path.StartsWith(p.Path))
+                    continue;
 
                 bestLength = p.Path.Length;
                 bestMatch = p.Listener;
@@ -300,7 +301,8 @@ namespace EmbedIO.Net.Internal
             var c = coll.Count;
             for (var i = 0; i < c; i++)
             {
-                if (coll[i].Path != prefix.Path) continue;
+                if (coll[i].Path != prefix.Path)
+                    continue;
 
                 coll.RemoveAt(i);
                 return true;

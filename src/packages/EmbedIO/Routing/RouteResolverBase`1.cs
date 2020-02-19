@@ -89,7 +89,8 @@ namespace EmbedIO.Routing
             EnsureConfigurationNotLocked();
 
             handler = Validate.NotNull(nameof(handler), handler);
-            _dataHandlerPairs.Add((data, (ctx, route) => {
+            _dataHandlerPairs.Add((data, (ctx, route) =>
+            {
                 handler(ctx, route);
                 return Task.CompletedTask;
             }));
@@ -109,11 +110,15 @@ namespace EmbedIO.Routing
         /// <param name="context">The context to handle.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="context"/> is <see langword="null"/>.</exception>
         /// <seealso cref="Add(TData,RouteHandlerCallback)"/>
         /// <seealso cref="Add(TData,SyncRouteHandlerCallback)"/>
         /// <seealso cref="GetContextData"/>
         /// <seealso cref="MatchContextData"/>
-        public async Task<RouteResolutionResult> ResolveAsync(IHttpContext context)
+        public Task<RouteResolutionResult> ResolveAsync(IHttpContext context)
+            => UnsafeResolveAsync(Validate.NotNull(nameof(context), context));
+
+        internal async Task<RouteResolutionResult> UnsafeResolveAsync([ValidatedNotNull] IHttpContext context)
         {
             LockConfiguration();
 

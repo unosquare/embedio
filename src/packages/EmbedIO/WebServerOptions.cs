@@ -70,6 +70,7 @@ namespace EmbedIO
 
                 return _certificate ?? (AutoLoadCertificate ? LoadCertificate() : null);
             }
+
             set
             {
                 EnsureConfigurationNotLocked();
@@ -172,23 +173,23 @@ namespace EmbedIO
         /// <summary>
         /// Adds a URL prefix.
         /// </summary>
-        /// <param name="urlPrefix">The URL prefix.</param>
+        /// <param name="prefix">The URL prefix.</param>
         /// <exception cref="InvalidOperationException">This instance's configuration is locked.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="urlPrefix"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="prefix"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">
-        /// <para><paramref name="urlPrefix"/> is the empty string.</para>
+        /// <para><paramref name="prefix"/> is the empty string.</para>
         /// <para>- or -</para>
-        /// <para><paramref name="urlPrefix"/> is already registered.</para>
+        /// <para><paramref name="prefix"/> is already registered.</para>
         /// </exception>
-        public void AddUrlPrefix(string urlPrefix)
+        public void AddUrlPrefix(string prefix)
         {
             EnsureConfigurationNotLocked();
 
-            urlPrefix = Validate.NotNullOrEmpty(nameof(urlPrefix), urlPrefix);
-            if (_urlPrefixes.Contains(urlPrefix))
-                throw new ArgumentException("URL prefix is already registered.", nameof(urlPrefix));
+            prefix = Validate.NotNullOrEmpty(nameof(prefix), prefix);
+            if (_urlPrefixes.Contains(prefix))
+                throw new ArgumentException("URL prefix is already registered.", nameof(prefix));
 
-            _urlPrefixes.Add(urlPrefix);
+            _urlPrefixes.Add(prefix);
         }
 
         private X509Certificate2? LoadCertificate()
@@ -196,7 +197,8 @@ namespace EmbedIO
             if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 return null;
 
-            if (!string.IsNullOrWhiteSpace(_certificateThumbprint)) return GetCertificate(_certificateThumbprint);
+            if (!string.IsNullOrWhiteSpace(_certificateThumbprint))
+                return GetCertificate(_certificateThumbprint);
 
             using var netsh = GetNetsh("show");
 
@@ -204,20 +206,22 @@ namespace EmbedIO
 
             netsh.ErrorDataReceived += (s, e) =>
             {
-                if (string.IsNullOrWhiteSpace(e.Data)) return;
+                if (string.IsNullOrWhiteSpace(e.Data))
+                    return;
 
                 e.Data.Error(NetShLogSource);
             };
 
             netsh.OutputDataReceived += (s, e) =>
             {
-                if (string.IsNullOrWhiteSpace(e.Data)) return;
+                if (string.IsNullOrWhiteSpace(e.Data))
+                    return;
 
                 e.Data.Debug(NetShLogSource);
 
                 var line = e.Data.Trim();
 
-                if (line.StartsWith("Certificate Hash") && line.IndexOf(":", StringComparison.Ordinal) > -1)
+                if (line.StartsWith("Certificate Hash", StringComparison.Ordinal) && line.IndexOf(":", StringComparison.Ordinal) > -1)
                     thumbprint = line.Split(':')[1].Trim();
             };
 
@@ -239,7 +243,7 @@ namespace EmbedIO
             store.Open(OpenFlags.ReadOnly);
             var signingCert = store.Certificates.Find(
                 X509FindType.FindByThumbprint,
-                thumbprint ?? _certificateThumbprint, 
+                thumbprint ?? _certificateThumbprint,
                 false);
             return signingCert.Count == 0 ? null : signingCert[0];
         }
@@ -279,7 +283,8 @@ namespace EmbedIO
 
             void PushLine(object sender, DataReceivedEventArgs e)
             {
-                if (string.IsNullOrWhiteSpace(e.Data)) return;
+                if (string.IsNullOrWhiteSpace(e.Data))
+                    return;
 
                 sb.AppendLine(e.Data);
                 e.Data.Error(NetShLogSource);
@@ -289,7 +294,8 @@ namespace EmbedIO
 
             netsh.ErrorDataReceived += PushLine;
 
-            if (!netsh.Start()) return false;
+            if (!netsh.Start())
+                return false;
 
             netsh.BeginOutputReadLine();
             netsh.BeginErrorReadLine();

@@ -38,7 +38,7 @@ namespace EmbedIO.Net.Internal
             Route = RouteMatch.None;
             Session = SessionProxy.None;
         }
-        
+
         public string Id { get; }
 
         public CancellationToken CancellationToken { get; set; }

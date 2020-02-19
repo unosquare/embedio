@@ -26,7 +26,7 @@ namespace EmbedIO.Net.Internal
 
             return bytes;
         }
-        
+
         internal static byte[] ToHostOrder(this byte[] source, Endianness sourceOrder)
         {
             if (source == null)
@@ -34,7 +34,7 @@ namespace EmbedIO.Net.Internal
 
             return source.Length > 1 && !sourceOrder.IsHostOrder() ? source.Reverse().ToArray() : source;
         }
-        
+
         internal static bool IsHostOrder(this Endianness order)
         {
             // true: !(true ^ true) or !(false ^ false)

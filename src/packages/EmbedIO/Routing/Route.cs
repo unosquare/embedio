@@ -283,7 +283,7 @@ namespace EmbedIO.Routing
         {
             var length = route.Length;
             var position = 0;
-            for (; ; )
+            while (true)
             {
                 while (route[position] == '/')
                 {

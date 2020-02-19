@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Web;
+using EmbedIO.Utilities;
+using Swan;
 using Swan.Logging;
 
 namespace EmbedIO
@@ -49,9 +50,7 @@ namespace EmbedIO
         /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-#pragma warning disable CA1801 // Unused parameter
         public static Task EmptyResponse(IHttpContext context, Exception exception)
-#pragma warning restore CA1801
         {
             context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
             return Task.CompletedTask;
@@ -74,17 +73,25 @@ namespace EmbedIO
         ///     <description>The <see cref="Exception.Message">Message</see> property of the exception.</description>
         ///   </item>
         /// </list>
-        /// <para>The aforementioned header names are available as the <see cref="ExceptionTypeHeaderName" /> and
-        /// <see cref="ExceptionMessageHeaderName" /> properties, respectively.</para>
+        /// <para>The aforementioned header names are available as the <see cref="ExceptionTypeHeaderName"/> and
+        /// <see cref="ExceptionMessageHeaderName"/> properties, respectively.</para>
         /// </summary>
-        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="context"/> is <see langword="null"/>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="exception"/> is <see langword="null"/>.</para>
+        /// </exception>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task EmptyResponseWithHeaders(IHttpContext context, Exception exception)
         {
-            context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
+            Validate.NotNull(nameof(context), context);
+            Validate.NotNull(nameof(exception), exception);
+
             context.Response.Headers[ExceptionTypeHeaderName] = Uri.EscapeDataString(exception.GetType().Name);
             context.Response.Headers[ExceptionMessageHeaderName] = Uri.EscapeDataString(exception.Message);
+            context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
             return Task.CompletedTask;
         }
 
@@ -127,7 +134,7 @@ namespace EmbedIO
         {
             if (handler == null)
             {
-                ExceptionDispatchInfo.Capture(exception).Throw();
+                exception.RethrowPreservingStackTrace();
                 return;
             }
 
@@ -155,7 +162,9 @@ namespace EmbedIO
 
                 await httpHandler(context, httpException1).ConfigureAwait(false);
             }
+#pragma warning disable CA1031 // Don't catch Exception - That's exactly what we have to do here.
             catch (Exception exception2)
+#pragma warning restore CA1031
             {
                 exception2.Log(logSource, $"[{context.Id}] Unhandled exception while handling exception.");
             }

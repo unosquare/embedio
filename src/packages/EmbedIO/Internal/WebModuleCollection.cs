@@ -22,8 +22,8 @@ namespace EmbedIO.Internal
         public new void Add(string? name, IWebModule component)
         {
             base.Add(name, component);
-            component.GetImplementation().Container = _container
-                ?? throw new InvalidOperationException($"Cannot add an instance of {component.GetType().Name} to a disposed container.");
+            component.GetImplementation().SetContainer(_container
+                ?? throw new InvalidOperationException($"Cannot add an instance of {component.GetType().Name} to a disposed container."));
         }
 
         internal void StartAll(CancellationToken cancellationToken)
@@ -47,7 +47,7 @@ namespace EmbedIO.Internal
                 if (!routeMatch.IsMatch)
                     continue;
 
-                $"[{context.Id}] Processing with {name}.".Debug(_logSource); 
+                $"[{context.Id}] Processing with {name}.".Debug(_logSource);
                 context.GetImplementation().Route = routeMatch;
                 await module.HandleRequestAsync(context).ConfigureAwait(false);
                 if (context.IsHandled)

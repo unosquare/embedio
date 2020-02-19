@@ -24,7 +24,7 @@ namespace EmbedIO.Routing
         protected override HttpVerb GetContextData(IHttpContext context) => context.Request.HttpVerb;
 
         /// <inheritdoc />
-        protected override bool MatchContextData(HttpVerb contextVerb, HttpVerb handlerVerb)
-            => handlerVerb == HttpVerb.Any || contextVerb == handlerVerb;
+        protected override bool MatchContextData(HttpVerb contextData, HttpVerb handlerData)
+            => handlerData == HttpVerb.Any || contextData == handlerData;
     }
 }

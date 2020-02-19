@@ -24,7 +24,7 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="value"/> contains one or more characters that are not allowed in a HTTP header name.</para>
         /// </exception>
-        public static string HttpHeaderName(string argumentName, string value)
+        public static string HttpHeaderName(string argumentName, [ValidatedNotNull] string value)
             => Rfc2616Token(argumentName, value, "Header name");
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="value"/> contains one or more characters that are not allowed in a token.</para>
         /// </exception>
-        public static string Rfc2616Token(string argumentName, string value, string entity = "Token")
+        public static string Rfc2616Token(string argumentName, [ValidatedNotNull] string value, string entity = "Token")
         {
             value = NotNullOrEmpty(argumentName, value);
 

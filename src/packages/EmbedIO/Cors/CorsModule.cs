@@ -7,7 +7,7 @@ namespace EmbedIO.Cors
 {
     /// <summary>
     /// Cross-origin resource sharing (CORS) control Module.
-    /// CORS is a mechanism that allows restricted resources (e.g. fonts) 
+    /// CORS is a mechanism that allows restricted resources (e.g. fonts)
     /// on a web page to be requested from another domain outside the domain from which the resource originated.
     /// </summary>
     public class CorsModule : WebModuleBase
@@ -47,14 +47,14 @@ namespace EmbedIO.Cors
             _origins = origins ?? throw new ArgumentNullException(nameof(origins));
             _headers = headers ?? throw new ArgumentNullException(nameof(headers));
             _methods = methods ?? throw new ArgumentNullException(nameof(methods));
-            
+
             _validOrigins =
-                origins.ToLowerInvariant()
+                origins.ToUpperInvariant()
                     .SplitByComma(StringSplitOptions.RemoveEmptyEntries)
                     .Select(x => x.Trim())
                     .ToArray();
             _validMethods =
-                methods.ToLowerInvariant()
+                methods.ToUpperInvariant()
                     .SplitByComma(StringSplitOptions.RemoveEmptyEntries)
                     .Select(x => x.Trim())
                     .ToArray();
@@ -64,7 +64,7 @@ namespace EmbedIO.Cors
         public override bool IsFinalHandler => false;
 
         /// <inheritdoc />
-        protected override Task OnRequestAsync(IHttpContext context)
+        protected override Task OnRequestAsync([ValidatedNotNull] IHttpContext context)
         {
             var isOptions = context.Request.HttpVerb == HttpVerb.Options;
 
@@ -114,10 +114,10 @@ namespace EmbedIO.Cors
             }
 
             var requestMethodHeader = context.Request.Headers[HttpHeaderNames.AccessControlRequestMethod];
-            if (string.IsNullOrWhiteSpace(requestMethodHeader)) 
+            if (string.IsNullOrWhiteSpace(requestMethodHeader))
                 return;
 
-            var currentMethods = requestMethodHeader.ToLowerInvariant()
+            var currentMethods = requestMethodHeader.ToUpperInvariant()
                 .SplitByComma(StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim());
 

@@ -123,7 +123,9 @@ namespace EmbedIO
                 {
                     Listener.Dispose();
                 }
+#pragma warning disable CA1031 // Don't catch Exception - That's exactly what we need to do here.
                 catch (Exception ex)
+#pragma warning restore CA1031
                 {
                     ex.Log(LogSource, "Exception thrown while disposing HTTP listener.");
                 }
@@ -165,8 +167,8 @@ namespace EmbedIO
         private IHttpListener CreateHttpListener()
         {
             IHttpListener DoCreate() => Options.Mode switch {
-                HttpListenerMode.Microsoft => System.Net.HttpListener.IsSupported 
-                    ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener 
+                HttpListenerMode.Microsoft => System.Net.HttpListener.IsSupported
+                    ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener
                     : new Net.HttpListener(Options.Certificate),
                 _ => new Net.HttpListener(Options.Certificate)
             };
@@ -178,8 +180,12 @@ namespace EmbedIO
             {
                 var urlPrefix = new string(prefix?.ToCharArray());
 
-                if (!urlPrefix.EndsWith("/")) urlPrefix += "/";
+                if (!urlPrefix.EndsWith("/", StringComparison.Ordinal))
+                    urlPrefix += "/";
+
+#pragma warning disable CA1308 // Use ToUpperInvariant - URLs are better normalized to lower case; safe because no round trip is required.
                 urlPrefix = urlPrefix.ToLowerInvariant();
+#pragma warning restore CA1308
 
                 listener.AddPrefix(urlPrefix);
                 $"Web server prefix '{urlPrefix}' added.".Info(LogSource);

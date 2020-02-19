@@ -30,7 +30,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public event Action<string> ResourceChanged
+        public event Action<string>? ResourceChanged
         {
             add { }
             remove { }
@@ -55,9 +55,10 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string path, IMimeTypeProvider mimeTypeProvider)
         {
-            var resourceName = PathPrefix + urlPath.Replace('/', '.');
+            var resourceName = PathPrefix + Validate.UrlPath(nameof(path), path, false).Replace('/', '.');
+            Validate.NotNull(nameof(mimeTypeProvider), mimeTypeProvider);
 
             long size;
             try
@@ -73,22 +74,22 @@ namespace EmbedIO.Files
                 return null;
             }
 
-            var lastSlashPos = urlPath.LastIndexOf('/');
-            var name = urlPath.Substring(lastSlashPos + 1);
+            var lastSlashPos = path.LastIndexOf('/');
+            var name = path.Substring(lastSlashPos + 1);
 
             return MappedResourceInfo.ForFile(
-                resourceName, 
-                name, 
-                _fileTime, 
-                size, 
+                resourceName,
+                name,
+                _fileTime,
+                size,
                 mimeTypeProvider.GetMimeType(Path.GetExtension(name)));
         }
 
         /// <inheritdoc />
-        public Stream OpenFile(string path) => Assembly.GetManifestResourceStream(path);
+        public Stream OpenFile(string providerPath) => Assembly.GetManifestResourceStream(providerPath);
 
         /// <inheritdoc />
-        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
+        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string providerPath, IMimeTypeProvider mimeTypeProvider)
             => Enumerable.Empty<MappedResourceInfo>();
     }
 }

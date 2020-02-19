@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.WebApi
 {
@@ -17,6 +18,6 @@ namespace EmbedIO.WebApi
     {
         /// <inheritdoc />
         public Task<NameValueCollection> GetRequestDataAsync(WebApiController controller, string parameterName)
-            => Task.FromResult(controller.HttpContext.GetRequestQueryData());
+            => Task.FromResult(Validate.NotNull(nameof(controller), controller).HttpContext.GetRequestQueryData());
     }
 }

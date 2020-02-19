@@ -48,16 +48,13 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public IWebModuleContainer Container => GetContainer();
+        public IWebModuleContainer Container
+            => _container is DummyWebModuleContainer
+                ? throw new InvalidOperationException($"Cannot retrieve the container of a {GetType().Name} that has not been added to one yet.")
+                : _container;
 
         /// <inheritdoc />
-        IWebModuleContainer IWebModuleImpl.Container
-        {
-            get => GetContainer();
-            set => _container = _container is DummyWebModuleContainer
-                ? value
-                : throw new InvalidOperationException($"Cannot add a {GetType().Name} to more than one container.");
-        }
+        void IWebModuleImpl.SetContainer(IWebModuleContainer value) => SetContainer(value);
 
         /// <inheritdoc />
         public string BaseRoute { get; }
@@ -88,7 +85,7 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public abstract bool IsFinalHandler { get; }
-        
+
         /// <summary>
         /// Gets a string to use as a source for log messages.
         /// </summary>
@@ -105,7 +102,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public RouteMatch MatchUrlPath(string urlPath) => _routeMatcher.Match(urlPath);
+        public RouteMatch MatchUrlPath(string path) => _routeMatcher.Match(path);
 
         /// <inheritdoc />
         public async Task HandleRequestAsync(IHttpContext context)
@@ -122,7 +119,9 @@ namespace EmbedIO
                     context.SetHandled();
             }
             catch (RequestHandlerPassThroughException)
-            { }
+            {
+                // Do nothing - it's a "pass through" after all.
+            }
             catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
             {
                 throw; // Let the web server handle it
@@ -136,7 +135,9 @@ namespace EmbedIO
                 await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException)
                     .ConfigureAwait(false);
             }
+#pragma warning disable CA1031 // Don't catch Exception - That's exactly what we have to do here.
             catch (Exception exception)
+#pragma warning restore CA1031
             {
                 await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, _onHttpException)
                     .ConfigureAwait(false);
@@ -163,9 +164,16 @@ namespace EmbedIO
         {
         }
 
-        private IWebModuleContainer GetContainer()
-            => _container is DummyWebModuleContainer
-                ? throw new InvalidOperationException($"Cannot retrieve the container of a {GetType().Name} that has not been added to one yet.")
-                : _container;
+        /// <summary>
+        /// <para>Sets the container of this module.</para>
+        /// <para>This API supports the EmbedIO infrastructure; it is not intended to be used directly from your code.</para>
+        /// </summary>
+        /// <param name="value">The container to associate this module with.</param>
+        /// <seealso cref="IWebModule.Container"/>
+        /// <seealso cref="IWebModuleContainer"/>
+        protected void SetContainer(IWebModuleContainer value)
+            => _container = _container is DummyWebModuleContainer
+                ? value
+                : throw new InvalidOperationException($"Cannot add a {GetType().Name} to more than one container.");
     }
 }

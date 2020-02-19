@@ -20,14 +20,14 @@ namespace EmbedIO.Files
         /// </summary>
         /// <param name="info">A <see cref="MappedResourceInfo"/> containing information about
         /// the directory which is to be listed.</param>
-        /// <param name="absoluteUrlPath">The absolute URL path that was mapped to <paramref name="info"/>.</param>
+        /// <param name="absolutePath">The absolute URL path that was mapped to <paramref name="info"/>.</param>
         /// <param name="entries">An enumeration of the entries in the directory represented by <paramref name="info"/>.</param>
         /// <param name="stream">A <see cref="Stream"/> to which the directory listing must be written.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         Task ListDirectoryAsync(
             MappedResourceInfo info,
-            string absoluteUrlPath,
+            string absolutePath,
             IEnumerable<MappedResourceInfo> entries,
             Stream stream,
             CancellationToken cancellationToken);

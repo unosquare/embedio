@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace EmbedIO.Utilities
 {
@@ -8,7 +7,7 @@ namespace EmbedIO.Utilities
     /// </summary>
     public static class StringExtensions
     {
-        private static readonly char[] CommaSplitChars = {','};
+        private static readonly char[] CommaSplitChars = { ',' };
 
         /// <summary>Splits a string into substrings based on the specified <paramref name="delimiters"/>.
         /// The returned array includes empty array elements if two or more consecutive delimiters are found
@@ -19,7 +18,7 @@ namespace EmbedIO.Utilities
         /// by one or more characters in <paramref name="delimiters"/>.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         public static string[] SplitByAny(this string @this, params char[] delimiters) => @this.Split(delimiters);
-        
+
         /// <summary>Splits a string into substrings, using the comma (<c>,</c>) character as a delimiter.
         /// The returned array includes empty array elements if two or more commas are found in <paramref name="this"/>.</summary>
         /// <param name="this">The <see cref="string"/> on which this method is called.</param>

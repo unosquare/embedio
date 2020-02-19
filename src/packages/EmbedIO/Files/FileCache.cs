@@ -6,8 +6,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Internal;
-using Swan.Threading;
 using Swan.Logging;
+using Swan.Threading;
 
 namespace EmbedIO.Files
 {
@@ -164,7 +164,7 @@ namespace EmbedIO.Files
             {
                 var section = pair.Value;
                 var time = section.GetLeastRecentUseTime();
-               
+
                 if (time < earliestTime)
                 {
                     result = section;

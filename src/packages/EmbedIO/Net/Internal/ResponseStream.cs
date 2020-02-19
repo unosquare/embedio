@@ -118,11 +118,13 @@ namespace EmbedIO.Net.Internal
 
         protected override void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
 
             _disposed = true;
 
-            if (!disposing) return;
+            if (!disposing)
+                return;
 
             using var ms = GetHeaders(true);
             var chunked = _response.SendChunked;

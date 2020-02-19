@@ -53,12 +53,12 @@ namespace EmbedIO.WebSockets
         /// <summary>
         /// Initializes a new instance of the <see cref="WebSocketModule" /> class.
         /// </summary>
-        /// <param name="urlPath">The URL path of the WebSocket endpoint to serve.</param>
+        /// <param name="path">The URL path of the WebSocket endpoint to serve.</param>
         /// <param name="enableConnectionWatchdog">If set to <see langword="true"/>,
         /// contexts representing closed connections will automatically be purged
         /// from <see cref="ActiveContexts"/> every 30 seconds..</param>
-        protected WebSocketModule(string urlPath, bool enableConnectionWatchdog)
-            : base(urlPath)
+        protected WebSocketModule(string path, bool enableConnectionWatchdog)
+            : base(path)
         {
             _enableConnectionWatchdog = enableConnectionWatchdog;
             _maxMessageSize = 0;
@@ -147,8 +147,51 @@ namespace EmbedIO.WebSockets
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Sends a text payload.
+        /// </summary>
+        /// <param name="context">The web socket.</param>
+        /// <param name="payload">The payload.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        protected static async Task SendAsync(IWebSocketContext context, string payload)
+        {
+            Validate.NotNull(nameof(context), context);
+
+            try
+            {
+                var buffer = Encoding.UTF8.GetBytes(payload ?? string.Empty);
+
+                await context.WebSocket.SendAsync(buffer, true, context.CancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocketModule));
+            }
+        }
+
+        /// <summary>
+        /// Sends a binary payload.
+        /// </summary>
+        /// <param name="context">The web socket.</param>
+        /// <param name="payload">The payload.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+        protected static async Task SendAsync(IWebSocketContext context, byte[] payload)
+        {
+            Validate.NotNull(nameof(context), context);
+
+            try
+            {
+                await context.WebSocket.SendAsync(payload ?? Array.Empty<byte>(), false, context.CancellationToken)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                ex.Log(nameof(WebSocketModule));
+            }
+        }
+
         /// <inheritdoc />
-        protected sealed override async Task OnRequestAsync(IHttpContext context)
+        protected sealed override async Task OnRequestAsync([ValidatedNotNull] IHttpContext context)
         {
             // The WebSocket endpoint must match exactly, giving a RequestedPath of "/".
             // In all other cases the path is longer, so there's no need to compare strings here.
@@ -188,11 +231,11 @@ namespace EmbedIO.WebSockets
             var contextImpl = context.GetImplementation();
             $"{BaseRoute} - Accepting WebSocket connection with subprotocol \"{acceptedProtocol}\"".Debug(nameof(WebSocketModule));
             var webSocketContext = await contextImpl.AcceptWebSocketAsync(
-                    requestedProtocols, 
-                    acceptedProtocol, 
-                    ReceiveBufferSize, 
-                    KeepAliveInterval, 
-                    context.CancellationToken).ConfigureAwait(false);
+                requestedProtocols,
+                acceptedProtocol,
+                ReceiveBufferSize,
+                KeepAliveInterval,
+                context.CancellationToken).ConfigureAwait(false);
 
             PurgeDisconnectedContexts();
             _contexts.TryAdd(webSocketContext.Id, webSocketContext);
@@ -207,9 +250,9 @@ namespace EmbedIO.WebSockets
                 if (webSocketContext.WebSocket is SystemWebSocket systemWebSocket)
                 {
                     await ProcessSystemContext(
-                            webSocketContext, 
-                            systemWebSocket.UnderlyingWebSocket,
-                            context.CancellationToken).ConfigureAwait(false);
+                        webSocketContext,
+                        systemWebSocket.UnderlyingWebSocket,
+                        context.CancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
@@ -239,7 +282,8 @@ namespace EmbedIO.WebSockets
             {
                 _connectionWatchdog = new PeriodicTask(
                     TimeSpan.FromSeconds(30),
-                    ct => {
+                    ct =>
+                    {
                         PurgeDisconnectedContexts();
                         return Task.CompletedTask;
                     },
@@ -353,47 +397,6 @@ namespace EmbedIO.WebSockets
 
             _protocols.AddRange(protocols);
         }
-
-        /// <summary>
-        /// Sends a text payload.
-        /// </summary>
-        /// <param name="context">The web socket.</param>
-        /// <param name="payload">The payload.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected async Task SendAsync(IWebSocketContext context, string payload)
-        {
-            try
-            {
-                var buffer = _encoding.GetBytes(payload ?? string.Empty);
-
-                await context.WebSocket.SendAsync(buffer, true, context.CancellationToken).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocketModule));
-            }
-        }
-
-#pragma warning disable CA1822 // Member can be declared as static - It is an instance method for API consistency.
-        /// <summary>
-        /// Sends a binary payload.
-        /// </summary>
-        /// <param name="context">The web socket.</param>
-        /// <param name="payload">The payload.</param>
-        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected async Task SendAsync(IWebSocketContext context, byte[] payload)
-        {
-            try
-            {
-                await context.WebSocket.SendAsync(payload ?? Array.Empty<byte>(), false, context.CancellationToken)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                ex.Log(nameof(WebSocketModule));
-            }
-        }
-#pragma warning restore CA1822
 
         /// <summary>
         /// Broadcasts the specified payload to all connected WebSocket clients.
@@ -519,7 +522,8 @@ namespace EmbedIO.WebSockets
             // so it may call methods that require a lock on _contextsAccess.
             // Otherwise, calling e.g. Broadcast would result in a deadlock.
 #pragma warning disable CS4014 // Call is not awaited - it is intentionally forked.
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 try
                 {
                     await OnClientDisconnectedAsync(context).ConfigureAwait(false);
@@ -625,7 +629,8 @@ namespace EmbedIO.WebSockets
                 }
 
                 // if we're at the end of the message, process the message
-                if (!receiveResult.EndOfMessage) continue;
+                if (!receiveResult.EndOfMessage)
+                    continue;
 
                 await OnMessageReceivedAsync(context, receivedMessage.ToArray(), receiveResult)
                     .ConfigureAwait(false);

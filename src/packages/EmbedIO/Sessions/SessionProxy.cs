@@ -82,6 +82,7 @@ namespace EmbedIO.Sessions
                 EnsureSessionExists();
                 return _session![key];
             }
+
             set
             {
                 EnsureSessionExists();

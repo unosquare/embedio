@@ -14,11 +14,11 @@ namespace EmbedIO.Utilities
     public class ComponentCollection<T> : ConfiguredObject, IComponentCollection<T>
     {
         private readonly List<T> _components = new List<T>();
-        
+
         private readonly List<(string, T)> _componentsWithSafeNames = new List<(string, T)>();
 
         private readonly Dictionary<string, T> _namedComponents = new Dictionary<string, T>();
-        
+
         /// <inheritdoc />
         public int Count => _components.Count;
 

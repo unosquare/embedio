@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
@@ -17,7 +18,7 @@ namespace EmbedIO.Net.Internal
         /// Initializes a new instance of the <see cref="SystemHttpResponse"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public SystemHttpResponse(System.Net.HttpListenerContext context)
+        public SystemHttpResponse([ValidatedNotNull] System.Net.HttpListenerContext context)
         {
             _response = context.Response;
             Cookies = new SystemCookieCollection(_response.Cookies);
@@ -59,7 +60,7 @@ namespace EmbedIO.Net.Internal
             get => _response.ContentEncoding;
             set => _response.ContentEncoding = value;
         }
-        
+
         /// <inheritdoc />
         public bool KeepAlive
         {
@@ -82,7 +83,7 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public string StatusDescription 
+        public string StatusDescription
         {
             get => _response.StatusDescription;
             set => _response.StatusDescription = value;

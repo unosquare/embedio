@@ -163,7 +163,8 @@ namespace EmbedIO.Utilities
         {
             var result = new Dictionary<string, (int Weight, int Ordinal)>();
 
-            if (headerValues == null) return result;
+            if (headerValues == null)
+                return result;
 
             foreach (var headerValue in headerValues)
                 ParseCore(headerValue, result);

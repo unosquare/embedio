@@ -115,40 +115,40 @@ namespace EmbedIO.Routing
         /// that would result by matching the specified URL path against a
         /// base route of <c>"/"</c>.
         /// </summary>
-        /// <param name="urlPath">The URL path to match.</param>
+        /// <param name="path">The URL path to match.</param>
         /// <returns>A newly-constructed <see cref="RouteMatch"/>.</returns>
         /// <remarks>
-        /// <para>This method assumes that <paramref name="urlPath"/>
+        /// <para>This method assumes that <paramref name="path"/>
         /// is a valid, non-base URL path or route. Otherwise, the behavior of this method
         /// is unspecified.</para>
-        /// <para>Ensure that you validate <paramref name="urlPath"/> before
+        /// <para>Ensure that you validate <paramref name="path"/> before
         /// calling this method, using either <see cref="Validate.UrlPath"/>
         /// or <see cref="UrlPath.IsValid"/>.</para>
         /// </remarks>
-        public static RouteMatch UnsafeFromRoot(string urlPath)
-            => new RouteMatch(urlPath, EmptyStringList, EmptyStringList, urlPath);
+        public static RouteMatch UnsafeFromRoot(string path)
+            => new RouteMatch(path, EmptyStringList, EmptyStringList, path);
 
         /// <summary>
         /// Returns a <see cref="RouteMatch"/> object equal to the one
         /// that would result by matching the specified URL path against
         /// the specified parameterless base route.
         /// </summary>
-        /// <param name="baseUrlPath">The base route to match <paramref name="urlPath"/> against.</param>
-        /// <param name="urlPath">The URL path to match.</param>
+        /// <param name="basePath">The base route to match <paramref name="path"/> against.</param>
+        /// <param name="path">The URL path to match.</param>
         /// <returns>A newly-constructed <see cref="RouteMatch"/>.</returns>
         /// <remarks>
-        /// <para>This method assumes that <paramref name="baseUrlPath"/> is a
-        /// valid base URL path, and <paramref name="urlPath"/>
+        /// <para>This method assumes that <paramref name="basePath"/> is a
+        /// valid base URL path, and <paramref name="path"/>
         /// is a valid, non-base URL path or route. Otherwise, the behavior of this method
         /// is unspecified.</para>
         /// <para>Ensure that you validate both parameters before
         /// calling this method, using either <see cref="Validate.UrlPath"/>
         /// or <see cref="UrlPath.IsValid"/>.</para>
         /// </remarks>
-        public static RouteMatch UnsafeFromBasePath(string baseUrlPath, string urlPath)
+        public static RouteMatch UnsafeFromBasePath(string basePath, string path)
         {
-            var subPath = UrlPath.UnsafeStripPrefix(urlPath, baseUrlPath);
-            return subPath == null ? None : new RouteMatch(urlPath, EmptyStringList, EmptyStringList, "/" + subPath);
+            var subPath = UrlPath.UnsafeStripPrefix(path, basePath);
+            return subPath == null ? None : new RouteMatch(path, EmptyStringList, EmptyStringList, "/" + subPath);
         }
 
         /// <inheritdoc />

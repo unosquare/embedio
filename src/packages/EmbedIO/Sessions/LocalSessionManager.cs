@@ -182,27 +182,30 @@ namespace EmbedIO.Sessions
         {
             ConfigurationLocked = true;
 
-            Task.Run(async () =>
-            {
-                try
+            Task.Run(
+                async () =>
                 {
-                    while (!cancellationToken.IsCancellationRequested)
+                    try
                     {
-                        PurgeExpiredAndEmptySessions();
-                        await Task.Delay(PurgeInterval, cancellationToken).ConfigureAwait(false);
+                        while (!cancellationToken.IsCancellationRequested)
+                        {
+                            PurgeExpiredAndEmptySessions();
+                            await Task.Delay(PurgeInterval, cancellationToken).ConfigureAwait(false);
+                        }
                     }
-                }
-                catch (TaskCanceledException)
-                {
-                    // ignore
-                }
-            }, cancellationToken);
+                    catch (TaskCanceledException)
+                    {
+                        // ignore
+                    }
+                },
+                cancellationToken);
         }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentNullException"><paramref name="context"/> is <see langword="null"/>.</exception>
         public ISession Create(IHttpContext context)
         {
-            var id = GetSessionId(context);
+            var id = GetSessionId(Validate.NotNull(nameof(context), context));
 
             SessionImpl session;
             lock (_sessions)
@@ -225,9 +228,10 @@ namespace EmbedIO.Sessions
         }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentNullException"><paramref name="context"/> is <see langword="null"/>.</exception>
         public void Delete(IHttpContext context)
         {
-            var id = GetSessionId(context);
+            var id = GetSessionId(Validate.NotNull(nameof(context), context));
 
             if (string.IsNullOrEmpty(id))
                 return;
@@ -237,13 +241,13 @@ namespace EmbedIO.Sessions
                 if (_sessions.TryGetValue(id, out var session))
                     session.EndUse(() => _sessions.TryRemove(id, out _));
             }
-            
+
             context.Request.Cookies.Add(BuildSessionCookie(string.Empty));
             context.Response.Cookies.Add(BuildSessionCookie(string.Empty));
         }
 
         /// <inheritdoc />
-        public void OnContextClose(IHttpContext context)
+        public void OnContextClose([ValidatedNotNull] IHttpContext context)
         {
             if (!context.Session.Exists)
                 return;

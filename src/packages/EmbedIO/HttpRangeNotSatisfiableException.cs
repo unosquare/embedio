@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using EmbedIO.Utilities;
 
 namespace EmbedIO
 {
@@ -44,7 +45,7 @@ namespace EmbedIO
             //                        SHOULD generate a Content-Range header field specifying
             //                        the current length of the selected representation."
             if (ContentLength.HasValue)
-                context.Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{ContentLength.Value}");
+                Validate.NotNull(nameof(context), context).Response.Headers.Set(HttpHeaderNames.ContentRange, $"bytes */{ContentLength.Value}");
         }
     }
 }

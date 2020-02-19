@@ -76,11 +76,12 @@ namespace EmbedIO.Testing.Internal
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }
 
-        public Task<IWebSocketContext> AcceptWebSocketAsync(IEnumerable<string> requestedProtocols,
-                                                                  string acceptedProtocol,
-                                                                  int receiveBufferSize,
-                                                                  TimeSpan keepAliveInterval,
-                                                                  CancellationToken cancellationToken)
+        public Task<IWebSocketContext> AcceptWebSocketAsync(
+            IEnumerable<string> requestedProtocols,
+            string acceptedProtocol,
+            int receiveBufferSize,
+            TimeSpan keepAliveInterval,
+            CancellationToken cancellationToken)
             => throw new NotImplementedException("This HTTP context does not support the WebSocket protocol.");
 
         public void Close()

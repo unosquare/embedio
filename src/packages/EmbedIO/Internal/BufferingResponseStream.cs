@@ -33,7 +33,7 @@ namespace EmbedIO.Internal
             get => _buffer.Position;
             set => throw SeekingNotSupported();
         }
-        
+
         public override void Flush() => _buffer.Flush();
 
         public override Task FlushAsync(CancellationToken cancellationToken) => _buffer.FlushAsync(cancellationToken);
@@ -67,7 +67,7 @@ namespace EmbedIO.Internal
 
         public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             => _buffer.WriteAsync(buffer, offset, count, cancellationToken);
-        
+
         protected override void Dispose(bool disposing)
         {
             _response.ContentLength64 = _buffer.Length;

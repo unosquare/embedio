@@ -109,20 +109,13 @@ namespace EmbedIO
                 return result;
             }
 
-            switch (previousResult)
+            return previousResult switch
             {
-                case NameValueCollection collection:
-                    return collection;
-
-                case Exception exception:
-                    throw exception.RethrowPreservingStackTrace();
-
-                case null:
-                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is null.");
-
-                default:
-                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}");
-            }
+                NameValueCollection collection => collection,
+                Exception exception => throw exception.RethrowPreservingStackTrace(),
+                null => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is null."),
+                _ => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}")
+            };
         }
 
         /// <summary>
@@ -156,20 +149,12 @@ namespace EmbedIO
                 return result;
             }
 
-            switch (previousResult)
-            {
-                case NameValueCollection collection:
-                    return collection;
-
-                case Exception exception:
-                    throw exception.RethrowPreservingStackTrace();
-
-                case null:
-                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is null.");
-
-                default:
-                    throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is of unexpected type {previousResult.GetType().FullName}");
-            }
+            return previousResult switch {
+                NameValueCollection collection => collection,
+                Exception exception => throw exception.RethrowPreservingStackTrace(),
+                null => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is null."),
+                _ => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is of unexpected type {previousResult.GetType().FullName}")
+            };
         }
     }
 }

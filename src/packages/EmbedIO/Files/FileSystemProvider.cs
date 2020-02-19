@@ -84,9 +84,9 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string path, IMimeTypeProvider mimeTypeProvider)
         {
-            urlPath = urlPath.Substring(1); // Drop the initial slash
+            path = Validate.UrlPath(nameof(path), path, false).Substring(1); // Drop the initial slash
             string localPath;
 
             // Disable CA1031 as there's little we can do if IsPathRooted or GetFullPath fails.
@@ -94,7 +94,7 @@ namespace EmbedIO.Files
             try
             {
                 // Unescape the url before continue
-                urlPath = Uri.UnescapeDataString(urlPath);
+                path = Uri.UnescapeDataString(path);
 
                 // Bail out early if the path is a rooted path,
                 // as Path.Combine would ignore our base path.
@@ -106,13 +106,13 @@ namespace EmbedIO.Files
                 // Under Unix-like operating systems we have no such problems, as relativeUrlPath
                 // can never start with a slash; however, loading one more class from Swan
                 // just to check the OS type would probably outweigh calling IsPathRooted.
-                if (Path.IsPathRooted(urlPath))
+                if (Path.IsPathRooted(path))
                     return null;
 
                 // Convert the relative URL path to a relative filesystem path
                 // (practically a no-op under Unix-like operating systems)
                 // and combine it with our base local path to obtain a full path.
-                localPath = Path.Combine(FileSystemPath, urlPath.Replace('/', Path.DirectorySeparatorChar));
+                localPath = Path.Combine(FileSystemPath, path.Replace('/', Path.DirectorySeparatorChar));
 
                 // Use GetFullPath as an additional safety check
                 // for relative paths that contain a rooted path
@@ -130,24 +130,18 @@ namespace EmbedIO.Files
 
             // As a final precaution, check that the resulting local path
             // is inside the folder intended to be served.
-            if (!localPath.StartsWith(FileSystemPath, StringComparison.Ordinal))
-                return null;
-
-            if (File.Exists(localPath))
-                return GetMappedFileInfo(mimeTypeProvider, localPath);
-
-            if (Directory.Exists(localPath))
-                return GetMappedDirectoryInfo(localPath);
-
-            return null;
+            return !localPath.StartsWith(FileSystemPath, StringComparison.Ordinal) ? null
+                : File.Exists(localPath) ? GetMappedFileInfo(mimeTypeProvider, localPath)
+                : Directory.Exists(localPath) ? GetMappedDirectoryInfo(localPath)
+                : null;
         }
 
         /// <inheritdoc />
-        public Stream OpenFile(string path) => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        public Stream OpenFile(string providerPath) => new FileStream(providerPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
         /// <inheritdoc />
-        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
-            => new DirectoryInfo(path).EnumerateFileSystemInfos()
+        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string providerPath, IMimeTypeProvider mimeTypeProvider)
+            => new DirectoryInfo(providerPath).EnumerateFileSystemInfos()
                 .Select(fsi => GetMappedResourceInfo(mimeTypeProvider, fsi));
 
         /// <summary>
@@ -191,7 +185,7 @@ namespace EmbedIO.Files
         private static MappedResourceInfo GetMappedResourceInfo(IMimeTypeProvider mimeTypeProvider, FileSystemInfo info)
             => info is DirectoryInfo directoryInfo
                 ? GetMappedDirectoryInfo(directoryInfo)
-                : GetMappedFileInfo(mimeTypeProvider, (FileInfo) info);
+                : GetMappedFileInfo(mimeTypeProvider, (FileInfo)info);
 
         private void Watcher_ChangedOrDeleted(object sender, FileSystemEventArgs e)
             => ResourceChanged?.Invoke(e.FullPath);

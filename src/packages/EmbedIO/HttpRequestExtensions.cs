@@ -71,7 +71,8 @@ namespace EmbedIO
                 return false;
             }
 
-            prepareResponse = r => {
+            prepareResponse = r =>
+            {
                 r.Headers.Add(HttpHeaderNames.Vary, HttpHeaderNames.AcceptEncoding);
                 r.Headers.Set(HttpHeaderNames.ContentEncoding, compressionMethodName);
             };

@@ -11,7 +11,7 @@
             Content,
 
             // The header must be added to the response's Headers
-            Response
+            Response,
         }
     }
 }

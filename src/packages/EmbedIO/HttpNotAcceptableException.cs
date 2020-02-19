@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using EmbedIO.Utilities;
 
 namespace EmbedIO
 {
@@ -49,7 +50,7 @@ namespace EmbedIO
         public override void PrepareResponse(IHttpContext context)
         {
             if (Vary != null)
-                context.Response.Headers.Add(HttpHeaderNames.Vary, Vary);
+                Validate.NotNull(nameof(context), context).Response.Headers.Add(HttpHeaderNames.Vary, Vary);
         }
     }
 }

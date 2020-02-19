@@ -68,7 +68,7 @@ namespace EmbedIO.Net.Internal
         public override void SetLength(long value) => throw new NotSupportedException();
 
         public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
-        
+
         // Returns 0 if we can keep reading from the base stream,
         // > 0 if we read something from the buffer.
         // -1 if we had a content length set and we finished reading that many bytes.
@@ -96,7 +96,7 @@ namespace EmbedIO.Net.Internal
 
             var size = Math.Min(_length, count);
             if (_remainingBody > 0)
-                size = (int) Math.Min(size, _remainingBody);
+                size = (int)Math.Min(size, _remainingBody);
 
             if (_offset > _buffer.Length - size)
             {

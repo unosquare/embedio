@@ -83,7 +83,7 @@ namespace EmbedIO.Utilities
 
             var parts = range.Split('/');
             var prefix = parts[0];
-            
+
             if (!byte.TryParse(parts[1], out var prefixLen))
                 return Enumerable.Empty<IPAddress>();
 
@@ -183,7 +183,7 @@ namespace EmbedIO.Utilities
                 if (endIP[i] < beginIP[i])
                     return Enumerable.Empty<IPAddress>();
             }
-            
+
             var capacity = 1;
             for (var i = 0; i < 4; i++)
                 capacity *= endIP[i] - beginIP[i] + 1;

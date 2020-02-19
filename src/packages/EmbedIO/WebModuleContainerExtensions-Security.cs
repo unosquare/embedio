@@ -1,6 +1,6 @@
-﻿using EmbedIO.Security;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using EmbedIO.Security;
 
 namespace EmbedIO
 {
@@ -16,7 +16,8 @@ namespace EmbedIO
         /// <returns>
         ///   <paramref name="this" /> with an <see cref="IPBanningModule" /> added.
         /// </returns>
-        public static TContainer WithIPBanning<TContainer>(this TContainer @this,
+        public static TContainer WithIPBanning<TContainer>(
+            this TContainer @this,
             IEnumerable<string>? whiteList = null,
             int banMinutes = IPBanningModule.DefaultBanMinutes)
             where TContainer : class, IWebModuleContainer =>
@@ -33,7 +34,8 @@ namespace EmbedIO
         /// <returns>
         ///   <paramref name="this" /> with an <see cref="IPBanningModule" /> added.
         /// </returns>
-        public static TContainer WithIPBanning<TContainer>(this TContainer @this,
+        public static TContainer WithIPBanning<TContainer>(
+            this TContainer @this,
             Action<IPBanningModule>? configure,
             IEnumerable<string>? whiteList = null,
             int banMinutes = IPBanningModule.DefaultBanMinutes)

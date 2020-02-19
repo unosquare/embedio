@@ -8,11 +8,12 @@
     public interface IWebModuleImpl : IWebModule
     {
         /// <summary>
-        /// <para>Gets or sets the container of this module.</para>
+        /// <para>Sets the container of this module.</para>
         /// <para>This API supports the EmbedIO infrastructure; it is not intended to be used directly from your code.</para>
         /// </summary>
+        /// <param name="value">The container to associate this module with.</param>
         /// <seealso cref="IWebModule.Container"/>
         /// <seealso cref="IWebModuleContainer"/>
-        new IWebModuleContainer Container { get; set; }
+        void SetContainer(IWebModuleContainer value);
     }
 }

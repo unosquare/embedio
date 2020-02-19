@@ -20,15 +20,16 @@ namespace EmbedIO.Utilities
         /// with their values.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         public static Dictionary<string, object?> ToDictionary(this NameValueCollection @this)
-            => @this.Keys.Cast<string>().ToDictionary(key => key, key => {
+            => @this.Keys.Cast<string>().ToDictionary(key => key, key =>
+            {
                 var values = @this.GetValues(key);
                 if (values == null)
                     return null;
 
                 return values.Length switch {
                     0 => null,
-                    1 => (object) values[0],
-                    _ => (object) values
+                    1 => (object)values[0],
+                    _ => (object)values
                 };
             });
 
@@ -68,7 +69,7 @@ namespace EmbedIO.Utilities
         /// <summary>
         /// Determines whether a <see cref="NameValueCollection"/> contains one or more values
         /// for the specified <paramref name="name"/>, at least one of which is equal to the specified
-        /// <paramref name="value"/>. Value comparisons are carried out using the 
+        /// <paramref name="value"/>. Value comparisons are carried out using the
         /// <see cref="StringComparison.OrdinalIgnoreCase"/> comparison type.
         /// </summary>
         /// <param name="this">The <see cref="NameValueCollection"/> on which this method is called.</param>

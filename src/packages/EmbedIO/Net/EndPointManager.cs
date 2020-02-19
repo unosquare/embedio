@@ -95,12 +95,13 @@ namespace EmbedIO.Net
             if (host == "*" || host == "+" || host == "0.0.0.0")
                 return UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
 
-            if (IPAddress.TryParse(host, out var address)) 
+            if (IPAddress.TryParse(host, out var address))
                 return address;
 
             try
             {
-                var hostEntry = new IPHostEntry {
+                var hostEntry = new IPHostEntry
+                {
                     HostName = host,
                     AddressList = Dns.GetHostAddresses(host),
                 };

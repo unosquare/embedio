@@ -82,7 +82,7 @@ namespace EmbedIO
         }
 
         /// <inheritdoc />
-        public event EventHandler<WebServerStateChangedEventArgs> StateChanged;
+        public event EventHandler<WebServerStateChangedEventArgs>? StateChanged;
 
         /// <inheritdoc />
         public IComponentCollection<IWebModule> Modules => _modules;
@@ -110,7 +110,7 @@ namespace EmbedIO
             {
                 EnsureConfigurationNotLocked();
                 _onUnhandledException = Validate.NotNull(nameof(value), value);
-            } 
+            }
         }
 
         /// <inheritdoc />
@@ -147,7 +147,8 @@ namespace EmbedIO
             get => _state;
             private set
             {
-                if (value == _state) return;
+                if (value == _state)
+                    return;
 
                 var oldState = _state;
                 _state = value;
@@ -178,10 +179,12 @@ namespace EmbedIO
             return DoHandleContextAsync(context);
         }
 
-        string IMimeTypeProvider.GetMimeType(string extension)
+        /// <inheritdoc />
+        public string GetMimeType(string extension)
             => _mimeTypeCustomizer.GetMimeType(extension);
 
-        bool IMimeTypeProvider.TryDetermineCompression(string mimeType, out bool preferCompression)
+        /// <inheritdoc />
+        public bool TryDetermineCompression(string mimeType, out bool preferCompression)
             => _mimeTypeCustomizer.TryDetermineCompression(mimeType, out preferCompression);
 
         /// <inheritdoc />
@@ -272,7 +275,9 @@ namespace EmbedIO
                         await HttpExceptionHandler.Handle(LogSource, context, exception, _onHttpException)
                             .ConfigureAwait(false);
                     }
+#pragma warning disable CA1031 // Don't catch Exception - That's exactly what we need to do here.
                     catch (Exception exception)
+#pragma warning restore CA1031
                     {
                         await ExceptionHandler.Handle(LogSource, context, exception, _onUnhandledException, _onHttpException)
                             .ConfigureAwait(false);
@@ -300,7 +305,9 @@ namespace EmbedIO
             {
                 ex.Log(LogSource, $"[{context.Id}] Listener exception.");
             }
+#pragma warning disable CA1031 // Don't catch Exception - That's exactly what we need to do here.
             catch (Exception ex)
+#pragma warning restore CA1031
             {
                 ex.Log(LogSource, $"[{context.Id}] Fatal exception.");
                 OnFatalException();

@@ -1,4 +1,6 @@
-﻿namespace EmbedIO.Testing
+﻿using System;
+
+namespace EmbedIO.Testing
 {
     /// <summary>
     /// Represents an object that can act as a web server, processing requests
@@ -10,6 +12,6 @@
         /// <summary>
         /// Gets the base URL simulated by the server.
         /// </summary>
-        string BaseUrl { get; }
+        Uri BaseUrl { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace EmbedIO.Net.Internal
         {
             _listener = listener;
         }
-        
+
         public new void Add(string uriPrefix)
         {
             ListenerPrefix.CheckUri(uriPrefix);

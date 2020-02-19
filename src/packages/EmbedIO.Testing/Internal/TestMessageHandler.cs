@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Routing;
 using EmbedIO.Utilities;
+using Swan;
 
 namespace EmbedIO.Testing.Internal
 {
@@ -29,8 +30,7 @@ namespace EmbedIO.Testing.Internal
             var context = new TestContext(serverRequest)
             {
                 CancellationToken = cancellationToken,
-                Route = RouteMatch.UnsafeFromRoot(UrlPath.Normalize(serverRequest.Url.AbsolutePath, false))
-
+                Route = RouteMatch.UnsafeFromRoot(UrlPath.Normalize(serverRequest.Url.AbsolutePath, false)),
             };
 
             await _handler.HandleContextAsync(context).ConfigureAwait(false);
@@ -48,7 +48,8 @@ namespace EmbedIO.Testing.Internal
             };
             foreach (var key in serverResponse.Headers.AllKeys)
             {
-                switch (GetResponseHeaderType(key))
+                var responseHeaderType = GetResponseHeaderType(key);
+                switch (responseHeaderType)
                 {
                     case ResponseHeaderType.Content:
                         response.Content?.Headers.Add(key, serverResponse.Headers.GetValues(key));
@@ -56,6 +57,10 @@ namespace EmbedIO.Testing.Internal
                     case ResponseHeaderType.Response:
                         response.Headers.Add(key, serverResponse.Headers.GetValues(key));
                         break;
+                    case ResponseHeaderType.None:
+                        break;
+                    default:
+                        throw SelfCheck.Failure("Unexpected response header type {responseHeaderType}.");
                 }
             }
 
@@ -70,10 +75,12 @@ namespace EmbedIO.Testing.Internal
         // because nobody outside the .NET team will ever need them, right?
         // https://github.com/dotnet/corefx/blob/master/src/System.Net.Http/src/System/Net/Http/Headers/KnownHeaders.cs
         // Here are the "content" headers, extracted on 2019-07-06:
-        private static ResponseHeaderType GetResponseHeaderType(string name) => name switch {
-            // Content-Length is set automatically and shall not be touched
+        private static ResponseHeaderType GetResponseHeaderType(string name) => name switch
+        {
+            // Content-Length is set automatically and shall not be touched.
             HttpHeaderNames.ContentLength => ResponseHeaderType.None,
-            // These headers belong to Content
+
+            // These headers belong to Content.
             HttpHeaderNames.Allow => ResponseHeaderType.Content,
             HttpHeaderNames.ContentDisposition => ResponseHeaderType.Content,
             HttpHeaderNames.ContentEncoding => ResponseHeaderType.Content,
@@ -84,6 +91,8 @@ namespace EmbedIO.Testing.Internal
             HttpHeaderNames.ContentType => ResponseHeaderType.Content,
             HttpHeaderNames.Expires => ResponseHeaderType.Content,
             HttpHeaderNames.LastModified => ResponseHeaderType.Content,
+
+            // All other headers belong to Response.
             _ => ResponseHeaderType.Response
         };
     }

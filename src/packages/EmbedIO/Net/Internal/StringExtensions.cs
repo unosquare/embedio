@@ -7,7 +7,7 @@ namespace EmbedIO.Net.Internal
     internal static class StringExtensions
     {
         private const string TokenSpecialChars = "()<>@,;:\\\"/[]?={} \t";
-        
+
         internal static bool IsToken(this string @this)
             => @this.All(c => c >= 0x20 && c < 0x7f && TokenSpecialChars.IndexOf(c) < 0);
 

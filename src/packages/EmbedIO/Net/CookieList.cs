@@ -171,7 +171,7 @@ namespace EmbedIO.Net
                     "The elements in this collection cannot be cast automatically to the type of the destination array.");
             }
 
-            ((IList) this).CopyTo(array, index);
+            ((IList)this).CopyTo(array, index);
         }
 
         private static string? GetValue(string nameAndValue, bool unquote = false)

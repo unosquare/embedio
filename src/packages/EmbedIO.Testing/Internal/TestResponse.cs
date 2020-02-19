@@ -18,7 +18,7 @@ namespace EmbedIO.Testing.Internal
 
         public long ContentLength64 { get; set; }
 
-        public string? ContentType { get; set; }
+        public string ContentType { get; set; } = MimeType.Default;
 
         public Stream OutputStream { get; } = new MemoryStream();
 
@@ -34,8 +34,8 @@ namespace EmbedIO.Testing.Internal
 
         public byte[]? Body { get; private set; }
 
-        public string? StatusDescription { get; set; }
-        
+        public string StatusDescription { get; set; } = HttpStatusDescription.Get(HttpStatusCode.OK);
+
         internal bool IsClosed { get; private set; }
 
         public void SetCookie(Cookie cookie) => Cookies.Add(cookie);
