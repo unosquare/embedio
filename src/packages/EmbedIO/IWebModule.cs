@@ -76,16 +76,16 @@ namespace EmbedIO
         /// Matches the specified URL path against a module's <see cref="BaseRoute"/>,
         /// extracting values for the route's parameters and a sub-path.
         /// </summary>
-        /// <param name="urlPath">The URL path to match.</param>
+        /// <param name="path">The URL path to match.</param>
         /// <returns>If the match is successful, a <see cref="RouteMatch"/> object;
         /// otherwise, <see langword="null"/>.</returns>
-        RouteMatch MatchUrlPath(string urlPath);
+        RouteMatch MatchUrlPath(string path);
 
         /// <summary>
         /// Handles a request from a client.
         /// </summary>
         /// <param name="context">The context of the request being handled.</param>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         Task HandleRequestAsync(IHttpContext context);
     }
 }

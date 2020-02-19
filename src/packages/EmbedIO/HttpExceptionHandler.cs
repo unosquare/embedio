@@ -34,9 +34,7 @@ namespace EmbedIO
         /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
-#pragma warning disable CA1801 // Unused parameter
         public static Task EmptyResponse(IHttpContext context, IHttpException httpException)
-#pragma warning restore CA1801
             => Task.CompletedTask;
 
         /// <summary>
@@ -48,7 +46,7 @@ namespace EmbedIO
         /// <param name="httpException">The HTTP exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task PlainTextResponse(IHttpContext context, IHttpException httpException)
-            => context.SendStringAsync(httpException.Message ?? string.Empty, MimeType.PlainText, Encoding.UTF8);
+            => context.SendStringAsync(Validate.NotNull(nameof(httpException), httpException).Message ?? string.Empty, MimeType.PlainText, Encoding.UTF8);
 
         /// <summary>
         /// <para>Sends a response with a HTML payload
@@ -62,8 +60,9 @@ namespace EmbedIO
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task HtmlResponse(IHttpContext context, IHttpException httpException)
             => context.SendStandardHtmlAsync(
-                httpException.StatusCode,
-                text => {
+                Validate.NotNull(nameof(httpException), httpException).StatusCode,
+                text =>
+                {
                     text.Write(
                         "<p><strong>Exception type:</strong> {0}<p><strong>Message:</strong> {1}",
                         HttpUtility.HtmlEncode(httpException.GetType().FullName ?? "<unknown>"),
@@ -144,7 +143,9 @@ namespace EmbedIO
             {
                 throw;
             }
+#pragma warning disable CA1031 // Do not catch Exception - That's exactly what we have to do here.
             catch (Exception exception2)
+#pragma warning restore CA1031
             {
                 exception2.Log(logSource, $"[{context.Id}] Unhandled exception while handling HTTP exception {httpException.StatusCode}");
             }

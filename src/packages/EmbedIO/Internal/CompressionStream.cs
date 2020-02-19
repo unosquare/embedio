@@ -41,7 +41,7 @@ namespace EmbedIO.Internal
         public override bool CanWrite => true;
 
         public override long Length => throw SeekingNotSupported();
-        
+
         public override long Position
         {
             get => throw SeekingNotSupported();
@@ -87,7 +87,8 @@ namespace EmbedIO.Internal
                 buffer,
                 offset,
                 count,
-                ar => {
+                ar =>
+                {
                     UncompressedLength += count;
                     callback(ar);
                 },

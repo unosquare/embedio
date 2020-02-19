@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EmbedIO.Utilities;
 using Swan;
 
 namespace EmbedIO.Routing
@@ -25,9 +26,9 @@ namespace EmbedIO.Routing
         public override bool IsFinalHandler => true;
 
         /// <inheritdoc />
-        protected override async Task OnRequestAsync(IHttpContext context)
+        protected override async Task OnRequestAsync([ValidatedNotNull] IHttpContext context)
         {
-            var result = await _resolvers.ResolveAsync(context).ConfigureAwait(false);
+            var result = await _resolvers.UnsafeResolveAsync(context).ConfigureAwait(false);
             switch (result)
             {
                 case RouteResolutionResult.RouteNotMatched:

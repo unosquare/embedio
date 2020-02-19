@@ -58,6 +58,7 @@ namespace EmbedIO.Sessions
                         return _data[key];
                     }
                 }
+
                 set
                 {
                     lock (_data)

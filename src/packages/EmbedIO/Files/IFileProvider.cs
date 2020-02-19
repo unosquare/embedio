@@ -15,7 +15,7 @@ namespace EmbedIO.Files
         /// <para>The event's parameter is the provider-specific path of the resource that changed.</para>
         /// </summary>
 #pragma warning disable CA1003 // Use EventHandler<T> - we use Action<> for performance reasons.
-        event Action<string> ResourceChanged;
+        event Action<string>? ResourceChanged;
 #pragma warning restore CA1003
 
         /// <summary>
@@ -33,31 +33,31 @@ namespace EmbedIO.Files
         /// <summary>
         /// Maps a URL path to a provider-specific path.
         /// </summary>
-        /// <param name="urlPath">The URL path.</param>
+        /// <param name="path">The URL path.</param>
         /// <param name="mimeTypeProvider">An <see cref="IMimeTypeProvider"/> interface to use
         /// for determining the MIME type of a file.</param>
         /// <returns>A provider-specific path identifying a file or directory,
         /// or <see langword="null"/> if this instance cannot provide a resource associated
-        /// to <paramref name="urlPath"/>.</returns>
-        MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider);
+        /// to <paramref name="path"/>.</returns>
+        MappedResourceInfo? MapUrlPath(string path, IMimeTypeProvider mimeTypeProvider);
 
         /// <summary>
         /// Opens a file for reading.
         /// </summary>
-        /// <param name="path">The provider-specific path for the file.</param>
+        /// <param name="providerPath">The provider-specific path for the file.</param>
         /// <returns>
         /// <para>A readable <see cref="Stream"/> of the file's contents.</para>
         /// </returns>
-        Stream OpenFile(string path);
+        Stream OpenFile(string providerPath);
 
         /// <summary>
         /// Returns an enumeration of the entries of a directory.
         /// </summary>
-        /// <param name="path">The provider-specific path for the directory.</param>
+        /// <param name="providerPath">The provider-specific path for the directory.</param>
         /// <param name="mimeTypeProvider">An <see cref="IMimeTypeProvider"/> interface to use
         /// for determining the MIME type of files.</param>
         /// <returns>An enumeration of <see cref="MappedResourceInfo"/> objects identifying the entries
-        /// in the directory identified by <paramref name="path"/>.</returns>
-        IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider);
+        /// in the directory identified by <paramref name="providerPath"/>.</returns>
+        IEnumerable<MappedResourceInfo> GetDirectoryEntries(string providerPath, IMimeTypeProvider mimeTypeProvider);
     }
 }

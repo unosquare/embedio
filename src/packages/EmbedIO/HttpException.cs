@@ -54,7 +54,7 @@ namespace EmbedIO
             : this((int)statusCode, message)
         {
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpException" /> class,
         /// with a message and a data object to include in the response.
@@ -82,7 +82,7 @@ namespace EmbedIO
 
         /// <inheritdoc />
         public int StatusCode { get; }
- 
+
         /// <inheritdoc />
         public object? DataObject { get; }
 

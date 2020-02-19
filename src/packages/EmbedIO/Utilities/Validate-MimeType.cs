@@ -19,7 +19,7 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="value"/> is not a valid MIME type or media range.</para>
         /// </exception>
-        public static string MimeType(string argumentName, string value, bool acceptMediaRange)
+        public static string MimeType(string argumentName, [ValidatedNotNull] string value, bool acceptMediaRange)
         {
             value = NotNullOrEmpty(argumentName, value);
 

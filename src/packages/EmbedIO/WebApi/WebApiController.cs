@@ -11,9 +11,9 @@ namespace EmbedIO.WebApi
     /// </summary>
     public abstract class WebApiController
     {
-// The HttpContext and Route properties are always initialized to non-null values,
-// but it's done after creation by a runtime-compiled lambda,
-// which the compiler cannot know about, hence the warnings.
+// The HttpContext and Route properties are always initialized to non-null values
+// by the same runtime-compiled lambda that creates the controller.
+// Unfortunately, code analyzers cannot know about the lambda; hence the warnings.
 #pragma warning disable CS8618 // Non-nullable property is uninitialized. Consider declaring the property as nullable.
 
         /// <summary>

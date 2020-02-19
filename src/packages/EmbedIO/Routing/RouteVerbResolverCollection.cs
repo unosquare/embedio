@@ -116,7 +116,8 @@ namespace EmbedIO.Routing
             if (attributes.Length == 0)
                 return 0;
 
-            var parameters = new[] {
+            var parameters = new[]
+            {
                 Expression.Parameter(typeof(IHttpContext), "context"),
                 Expression.Parameter(typeof(RouteMatch), "route"),
             };

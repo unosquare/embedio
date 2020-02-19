@@ -1,4 +1,6 @@
-﻿namespace EmbedIO.Utilities
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace EmbedIO.Utilities
 {
     /// <summary>
     /// Provides extension methods for <see cref="QValueList"/>.
@@ -27,7 +29,7 @@
             this QValueList @this,
             bool preferCompression,
             out CompressionMethod compressionMethod,
-            out string? compressionMethodName)
+            [NotNullWhen(true)] out string? compressionMethodName)
         {
             if (@this.QValues.Count < 1)
             {

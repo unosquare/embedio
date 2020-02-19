@@ -1,10 +1,10 @@
-﻿using EmbedIO.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Files
 {
@@ -45,7 +45,7 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public event Action<string> ResourceChanged
+        public event Action<string>? ResourceChanged
         {
             add { }
             remove { }
@@ -67,31 +67,33 @@ namespace EmbedIO.Files
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string path, IMimeTypeProvider mimeTypeProvider)
         {
-            if (urlPath.Length == 1)
+            if (Validate.UrlPath(nameof(path), path, false).Length == 1)
                 return null;
 
-            urlPath = Uri.UnescapeDataString(urlPath);
+            Validate.NotNull(nameof(mimeTypeProvider), mimeTypeProvider);
 
-            var entry = _zipArchive.GetEntry(urlPath.Substring(1));
+            path = Uri.UnescapeDataString(path);
+
+            var entry = _zipArchive.GetEntry(path.Substring(1));
             if (entry == null)
                 return null;
-            
+
             return MappedResourceInfo.ForFile(
-                entry.FullName, 
-                entry.Name, 
-                entry.LastWriteTime.DateTime, 
-                entry.Length, 
+                entry.FullName,
+                entry.Name,
+                entry.LastWriteTime.DateTime,
+                entry.Length,
                 mimeTypeProvider.GetMimeType(Path.GetExtension(entry.Name)));
         }
 
         /// <inheritdoc />
-        public Stream OpenFile(string path)
-            => _zipArchive.GetEntry(path)?.Open() ?? throw new FileNotFoundException($"\"{path}\" cannot be found in Zip archive.");
+        public Stream OpenFile(string providerPath)
+            => _zipArchive.GetEntry(providerPath)?.Open() ?? throw new FileNotFoundException($"\"{providerPath}\" cannot be found in Zip archive.");
 
         /// <inheritdoc />
-        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
+        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string providerPath, IMimeTypeProvider mimeTypeProvider)
             => Enumerable.Empty<MappedResourceInfo>();
 
         /// <summary>

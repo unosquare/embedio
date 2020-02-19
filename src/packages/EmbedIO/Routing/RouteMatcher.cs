@@ -59,11 +59,10 @@ namespace EmbedIO.Routing
         /// <seealso cref="ClearCache"/>
         public static RouteMatcher Parse(string route, bool isBaseRoute)
         {
-            var exception = TryParseInternal(route, isBaseRoute, out var result);
-            if (exception != null)
+            if (!TryParseInternal(route, isBaseRoute, out var result, out var exception))
                 throw exception;
 
-            return result!;
+            return result;
         }
 
         /// <summary>
@@ -80,8 +79,8 @@ namespace EmbedIO.Routing
         /// <returns><see langword="true"/> if parsing was successful; otherwise, <see langword="false"/>.</returns>
         /// <seealso cref="Parse"/>
         /// <seealso cref="ClearCache"/>
-        public static bool TryParse(string route, bool isBaseRoute, out RouteMatcher result)
-            => TryParseInternal(route, isBaseRoute, out result) == null;
+        public static bool TryParse(string route, bool isBaseRoute, [NotNullWhen(true)] out RouteMatcher? result)
+            => TryParseInternal(route, isBaseRoute, out result, out _);
 
         /// <summary>
         /// Clears <see cref="RouteMatcher"/>'s internal instance cache.
@@ -155,29 +154,30 @@ namespace EmbedIO.Routing
                 "/" + (IsBaseRoute ? path.Substring(match.Groups[0].Length) : string.Empty));
         }
 
-        private static Exception? TryParseInternal(string route, bool isBaseRoute, out RouteMatcher? result)
+        private static bool TryParseInternal(string route, bool isBaseRoute, [NotNullWhen(true)] out RouteMatcher? result, [NotNullWhen(false)] out Exception? exception)
         {
             lock (SyncRoot)
             {
                 string? pattern = null;
                 var parameterNames = new List<string>();
-                var exception = Routing.Route.ParseInternal(route, isBaseRoute, (_, n, p) => {
+                exception = Routing.Route.ParseInternal(route, isBaseRoute, (_, n, p) =>
+                {
                     parameterNames.AddRange(n);
                     pattern = p;
                 });
                 if (exception != null)
                 {
                     result = null;
-                    return exception;
+                    return false;
                 }
 
                 route = UrlPath.UnsafeNormalize(route, isBaseRoute);
                 if (Cache.TryGetValue((isBaseRoute, route), out result))
-                    return null;
+                    return true;
 
                 result = new RouteMatcher(isBaseRoute, route, pattern!, parameterNames);
                 Cache.Add((isBaseRoute, route), result);
-                return null;
+                return true;
             }
         }
     }

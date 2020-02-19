@@ -74,7 +74,7 @@ namespace EmbedIO.Authentication
         }
 
         /// <inheritdoc />
-        protected sealed override async Task OnRequestAsync(IHttpContext context)
+        protected sealed override async Task OnRequestAsync([ValidatedNotNull] IHttpContext context)
         {
             // Skip if an authentication scheme has already been used,
             // regardless of whether the user was authenticated or not.

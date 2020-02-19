@@ -15,14 +15,8 @@ namespace EmbedIO.Testing
     /// </summary>
     public static class StockResource
     {
-        private static readonly string Prefix = typeof(TestWebServer).Namespace + ".Resources.";
-
-        private static readonly Assembly Assembly;
-
-        static StockResource()
-        {
-            Assembly = Assembly.GetExecutingAssembly();
-        }
+        private static readonly string Prefix = typeof(StockResource).Namespace + ".Resources.";
+        private static readonly Assembly Assembly = typeof(StockResource).Assembly;
 
         /// <summary>
         /// Gets an enumeration of paths to all the defined stock resources.
@@ -36,7 +30,8 @@ namespace EmbedIO.Testing
         // 3. The property type is IEnumerable<string>, so
         //    enumerating resources dynamically will not be a breaking change
         //    if someone finds a way to do it.
-        public static IEnumerable<string> Paths { get; } = new[] {
+        public static IEnumerable<string> Paths { get; } = new[]
+        {
             "/index.html",
             "/sub/index.html",
         };
@@ -84,7 +79,7 @@ namespace EmbedIO.Testing
         /// or <see langword="null"/> if the resource is not found.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="path"/> is an empty string.</exception>
-        /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
+        /// <exception cref="FileNotFoundException"><paramref name="path"/> was not found.</exception>
         public static Stream Open(string path)
             => Assembly.GetManifestResourceStream(ConvertPath(Validate.NotNullOrEmpty(nameof(path), path)));
 
@@ -95,7 +90,7 @@ namespace EmbedIO.Testing
         /// <returns>The length of the specified resource.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="path"/> is an empty string.</exception>
-        /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
+        /// <exception cref="FileNotFoundException"><paramref name="path"/> was not found.</exception>
         public static long GetLength(string path)
         {
             using var stream = Open(path);
@@ -109,7 +104,7 @@ namespace EmbedIO.Testing
         /// <returns>An array of bytes containing the resource's contents.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="path"/> is an empty string.</exception>
-        /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
+        /// <exception cref="FileNotFoundException"><paramref name="path"/> was not found.</exception>
         public static byte[] GetBytes(string path)
         {
             using var stream = Open(path);
@@ -136,11 +131,11 @@ namespace EmbedIO.Testing
         /// or <see langword="null"/> if the range is not valid.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="path"/> is an empty string.</exception>
-        /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
+        /// <exception cref="FileNotFoundException"><paramref name="path"/> was not found.</exception>
         public static byte[]? GetByteRange(string path, int start, int upperBound)
         {
             using var stream = Open(path);
-            var length = (int) stream.Length;
+            var length = (int)stream.Length;
             if (start >= length || upperBound < start || upperBound >= length)
                 return null;
 
@@ -161,7 +156,7 @@ namespace EmbedIO.Testing
         /// <returns>The specified resource as a <see langword="string"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="path"/> is an empty string.</exception>
-        /// <exception cref="FileNotFoundException"><paramref name="path"/> is an empty string.</exception>
+        /// <exception cref="FileNotFoundException"><paramref name="path"/> was not found.</exception>
         public static string GetText(string path, Encoding? encoding = null)
         {
             using var stream = Open(path);

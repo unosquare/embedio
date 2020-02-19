@@ -24,7 +24,7 @@ namespace EmbedIO.Net.Internal
         private RequestStream? _iStream;
         private ResponseStream? _oStream;
         private bool _contextBound;
-        private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on        
+        private int _sTimeout = 90000; // 90k ms for first request, 15k ms from then on.
         private HttpListener? _lastListener;
         private InputState _inputState = InputState.RequestLine;
         private LineState _lineState = LineState.None;
@@ -35,8 +35,8 @@ namespace EmbedIO.Net.Internal
             _sock = sock;
             _epl = epl;
             IsSecure = epl.Secure;
-            LocalEndPoint = (IPEndPoint) sock.LocalEndPoint;
-            RemoteEndPoint = (IPEndPoint) sock.RemoteEndPoint;
+            LocalEndPoint = (IPEndPoint)sock.LocalEndPoint;
+            RemoteEndPoint = (IPEndPoint)sock.RemoteEndPoint;
 
             if (!IsSecure)
             {
@@ -112,7 +112,8 @@ namespace EmbedIO.Net.Internal
 
         public RequestStream GetRequestStream(long contentLength)
         {
-            if (_iStream != null) return _iStream;
+            if (_iStream != null)
+                return _iStream;
 
             var buffer = _ms.ToArray();
             var length = (int)_ms.Length;
@@ -135,7 +136,8 @@ namespace EmbedIO.Net.Internal
                 _oStream = null;
             }
 
-            if (_sock == null) return;
+            if (_sock == null)
+                return;
 
             forceClose = forceClose
                       || !_context.Request.KeepAlive
@@ -353,7 +355,9 @@ namespace EmbedIO.Net.Internal
                 }
             }
 
-            if (_lineState != LineState.Lf) return null;
+            if (_lineState != LineState.Lf)
+                return null;
+            
             _lineState = LineState.None;
             var result = _currentLine.ToString();
             _currentLine.Length = 0;
@@ -363,7 +367,8 @@ namespace EmbedIO.Net.Internal
 
         private void Unbind()
         {
-            if (!_contextBound) return;
+            if (!_contextBound)
+                return;
 
             _epl.UnbindContext(_context);
             _contextBound = false;

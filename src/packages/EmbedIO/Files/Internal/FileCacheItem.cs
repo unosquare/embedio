@@ -1,5 +1,6 @@
 ﻿using System;
 using EmbedIO.Internal;
+using Swan;
 
 namespace EmbedIO.Files.Internal
 {
@@ -20,8 +21,6 @@ namespace EmbedIO.Files.Internal
 
         // Size of a WeakReference<T> in bytes
         private static readonly long SizeOfWeakReference = Environment.Is64BitProcess ? 16 : 32;
-
-        private readonly object _syncRoot = new object();
 
         // Educated guess about the size of an Item in memory (see comments on constructor).
         // 3 * SizeOfPointer + total size of fields, rounded up to a multiple of 16.
@@ -45,6 +44,8 @@ namespace EmbedIO.Files.Internal
         //     - multiply count by 8 (size of a pointer)
         //     - if the result is not a multiple of 16, round it up to next multiple of 16
         private static readonly long SizeOfItem = Environment.Is64BitProcess ? 96 : 128;
+
+        private readonly object _syncRoot = new object();
 
         // Used to update total size of section.
         // Weak reference avoids circularity.
@@ -86,14 +87,19 @@ namespace EmbedIO.Files.Internal
             switch (compressionMethod)
             {
                 case CompressionMethod.Deflate:
-                    if (_deflatedContent != null) return _deflatedContent;
+                    if (_deflatedContent != null)
+                        return _deflatedContent;
                     break;
                 case CompressionMethod.Gzip:
-                    if (_gzippedContent != null) return _gzippedContent;
+                    if (_gzippedContent != null)
+                        return _gzippedContent;
+                    break;
+                case CompressionMethod.None:
+                    if (_uncompressedContent != null)
+                        return _uncompressedContent;
                     break;
                 default:
-                    if (_uncompressedContent != null) return _uncompressedContent;
-                    break;
+                    throw SelfCheck.Failure($"Unexpected compression method {compressionMethod}.");
             }
 
             // Try to convert existing content, if any.

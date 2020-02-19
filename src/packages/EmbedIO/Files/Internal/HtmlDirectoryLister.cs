@@ -26,7 +26,7 @@ namespace EmbedIO.Files.Internal
 
         public async Task ListDirectoryAsync(
             MappedResourceInfo info,
-            string absoluteUrlPath,
+            string absolutePath,
             IEnumerable<MappedResourceInfo> entries,
             Stream stream,
             CancellationToken cancellationToken)
@@ -37,7 +37,7 @@ namespace EmbedIO.Files.Internal
             if (!info.IsDirectory)
                 throw SelfCheck.Failure($"{nameof(HtmlDirectoryLister)}.{nameof(ListDirectoryAsync)} invoked with a file, not a directory.");
 
-            var encodedPath = WebUtility.HtmlEncode(absoluteUrlPath);
+            var encodedPath = WebUtility.HtmlEncode(absolutePath);
             using var text = new StreamWriter(stream, Encoding.UTF8);
             text.Write("<html><head><title>Index of ");
             text.Write(encodedPath);

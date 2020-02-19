@@ -17,7 +17,7 @@ namespace EmbedIO
             OldState = oldState;
             NewState = newState;
         }
-    
+
         /// <summary>
         /// Gets the state to which the application service changed.
         /// </summary>

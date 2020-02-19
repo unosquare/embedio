@@ -29,7 +29,7 @@ namespace EmbedIO.WebApi
     /// <seealso cref="IRequestDataAttribute{TController,TData}" />
     /// <seealso cref="INonNullRequestDataAttribute{TController,TData}" />
     [AttributeUsage(AttributeTargets.Parameter)]
-    public sealed class FormFieldAttribute : 
+    public sealed class FormFieldAttribute :
         Attribute,
         IRequestDataAttribute<WebApiController, string>,
         INonNullRequestDataAttribute<WebApiController, string[]>,

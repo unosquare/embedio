@@ -37,7 +37,8 @@ namespace EmbedIO.Utilities
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing) return;
+            if (!disposing)
+                return;
 
             foreach (var component in this)
             {

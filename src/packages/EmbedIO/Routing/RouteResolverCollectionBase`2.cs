@@ -79,13 +79,17 @@ namespace EmbedIO.Routing
         /// <param name="context">The context to handle.</param>
         /// <returns>A <see cref="Task"/>, representing the ongoing operation,
         /// that will return a result in the form of one of the <see cref="RouteResolutionResult"/> constants.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="context"/> is <see langword="null"/>.</exception>
         /// <seealso cref="RouteResolverBase{TData}.ResolveAsync"/>
-        public async Task<RouteResolutionResult> ResolveAsync(IHttpContext context)
+        public Task<RouteResolutionResult> ResolveAsync(IHttpContext context)
+            => UnsafeResolveAsync(Validate.NotNull(nameof(context), context));
+
+        internal async Task<RouteResolutionResult> UnsafeResolveAsync([ValidatedNotNull] IHttpContext context)
         {
             var result = RouteResolutionResult.RouteNotMatched;
             foreach (var resolver in _resolvers)
             {
-                var resolverResult = await resolver.ResolveAsync(context).ConfigureAwait(false);
+                var resolverResult = await resolver.UnsafeResolveAsync(context).ConfigureAwait(false);
                 OnResolverCalled(context, resolver, resolverResult);
                 if (resolverResult == RouteResolutionResult.Success)
                     return RouteResolutionResult.Success;
@@ -120,7 +124,7 @@ namespace EmbedIO.Routing
         /// <param name="matcher">The <see cref="RouteMatcher"/>to match URL paths against.</param>
         /// <returns>A newly-constructed instance of <typeparamref name="TResolver"/>.</returns>
         protected abstract TResolver CreateResolver(RouteMatcher matcher);
-        
+
         /// <summary>
         /// <para>Called by <see cref="ResolveAsync"/> when a resolver's
         /// <see cref="RouteResolverBase{TData}.ResolveAsync">ResolveAsync</see> method has been called

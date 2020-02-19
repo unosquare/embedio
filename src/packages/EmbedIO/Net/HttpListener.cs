@@ -35,7 +35,7 @@ namespace EmbedIO.Net
             _connections = new ConcurrentDictionary<HttpConnection, object>();
             _ctxQueue = new ConcurrentDictionary<string, HttpListenerContext>();
         }
-        
+
         /// <inheritdoc />
         public bool IgnoreWriteExceptions { get; set; } = true;
 
@@ -47,7 +47,7 @@ namespace EmbedIO.Net
 
         /// <inheritdoc />
         public List<string> Prefixes => _prefixes.ToList();
-        
+
         /// <summary>
         /// Gets the certificate.
         /// </summary>
@@ -132,7 +132,8 @@ namespace EmbedIO.Net
             for (var i = list.Count - 1; i >= 0; i--)
                 list[i].Close(true);
 
-            if (!closeExisting) return;
+            if (!closeExisting)
+                return;
 
             while (!_ctxQueue.IsEmpty)
             {

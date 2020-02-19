@@ -17,7 +17,7 @@ namespace EmbedIO
         /// </returns>
         public static HttpException InternalServerError(string? message = null, object? data = null)
             => new HttpException(HttpStatusCode.InternalServerError, message, data);
-        
+
         /// <summary>
         /// Returns a new instance of <see cref="HttpException" /> that, when thrown,
         /// will break the request handling control flow and send a <c>401 Unauthorized</c>

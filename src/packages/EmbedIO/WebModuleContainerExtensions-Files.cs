@@ -145,7 +145,7 @@ namespace EmbedIO
             var module = new FileModule(baseRoute, new ResourceFileProvider(assembly, pathPrefix));
             return WithModule(@this, name, module, configure);
         }
-        
+
         /// <summary>
         /// Creates an instance of <see cref="ZipFileProvider"/> using a file-system path, uses it to initialize
         /// a <seealso cref="FileModule"/>, and adds the latter to a module container.

@@ -15,10 +15,10 @@ namespace EmbedIO.Utilities
         /// <param name="value">The value to validate.</param>
         /// <returns><paramref name="value"/> if not <see langword="null"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-        public static T NotNull<T>(string argumentName, T? value)
+        public static T NotNull<T>(string argumentName, [ValidatedNotNull] T? value)
             where T : class
             => value ?? throw new ArgumentNullException(argumentName);
-        
+
         /// <summary>
         /// Ensures that a <see langword="string"/> argument is neither <see langword="null"/> nor the empty string.
         /// </summary>
@@ -27,7 +27,7 @@ namespace EmbedIO.Utilities
         /// <returns><paramref name="value"/> if neither <see langword="null"/> nor the empty string.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="value"/> is the empty string.</exception>
-        public static string NotNullOrEmpty(string argumentName, string? value)
+        public static string NotNullOrEmpty(string argumentName, [ValidatedNotNull] string? value)
         {
             if (value == null)
                 throw new ArgumentNullException(argumentName);
@@ -37,7 +37,7 @@ namespace EmbedIO.Utilities
 
             return value;
         }
-        
+
         /// <summary>
         /// Ensures that a valid URL can be constructed from a <see langword="string"/> argument.
         /// </summary>
@@ -54,11 +54,13 @@ namespace EmbedIO.Utilities
         /// and <paramref name="value"/>'s scheme is neither <c>http</c> nor <c>https</c>.</para>
         /// </exception>
         /// <seealso cref="Url(string,string,Uri,bool)"/>
+#pragma warning disable CA1055 // Change return type to System.Uri - It makes no sense here.
         public static string Url(
-            string argumentName, 
-            string value, 
+            string argumentName,
+            [ValidatedNotNull] string value,
             UriKind uriKind = UriKind.RelativeOrAbsolute,
             bool enforceHttp = false)
+#pragma warning restore CA1055
         {
             Uri uri;
             try
@@ -84,7 +86,7 @@ namespace EmbedIO.Utilities
         /// <param name="argumentName">Name of the argument.</param>
         /// <param name="value">The value.</param>
         /// <param name="baseUri">The base URI for relative URLs.</param>
-        /// <param name="enforceHttp">Ensure that the resulting URL's scheme is either <c>http</c> or <c>https</c>.</param>
+        /// <param name="enforceHttp">Ensure that the scheme of the resulting URL is either <c>http</c> or <c>https</c>.</param>
         /// <returns>The string representation of the constructed URL.</returns>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="baseUri"/> is <see langword="null"/>.</para>
@@ -96,12 +98,12 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="value"/> is not a valid URL.</para>
         /// <para>- or -</para>
-        /// <para><paramref name="enforceHttp"/> is <see langword="true"/>, 
+        /// <para><paramref name="enforceHttp"/> is <see langword="true"/>,
         /// and the combination of <paramref name="baseUri"/> and <paramref name="value"/> has a scheme
         /// that is neither <c>http</c> nor <c>https</c>.</para>
         /// </exception>
         /// <seealso cref="Url(string,string,UriKind,bool)"/>
-        public static string Url(string argumentName, string value, Uri baseUri, bool enforceHttp = false)
+        public static string Url(string argumentName, [ValidatedNotNull] string value, Uri baseUri, bool enforceHttp = false)
         {
             if (!NotNull(nameof(baseUri), baseUri).IsAbsoluteUri)
                 throw new ArgumentException("Base URI is not an absolute URI.", nameof(baseUri));

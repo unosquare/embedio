@@ -47,7 +47,7 @@ namespace EmbedIO.Net.Internal
                 EnsureCanChangeHeaders();
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
-                
+
                 Headers[HttpHeaderNames.ContentLength] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -134,12 +134,13 @@ namespace EmbedIO.Net.Internal
         }
 
         internal bool HeadersSent { get; set; }
-        
+
         void IDisposable.Dispose() => Close(true);
 
         public void Close()
         {
-            if (!_disposed) Close(false);
+            if (!_disposed)
+                Close(false);
         }
 
         /// <inheritdoc />
@@ -193,7 +194,7 @@ namespace EmbedIO.Net.Internal
                                  && Headers.ContainsKey(HttpHeaderNames.ContentLength)
                                  && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var contentLength)
                                  && contentLength >= 0L;
-            
+
                 if (!haveContentLength)
                 {
                     Headers.Remove(HttpHeaderNames.ContentLength);
@@ -212,7 +213,7 @@ namespace EmbedIO.Net.Internal
             //// HttpStatusCode.RequestEntityTooLarge 413
             //// HttpStatusCode.RequestUriTooLong     414
             //// HttpStatusCode.InternalServerError   500
-            //// HttpStatusCode.ServiceUnavailable    503        
+            //// HttpStatusCode.ServiceUnavailable    503
             var reuses = _connection.Reuses;
             var keepAlive = _statusCode switch {
                 400 => false,

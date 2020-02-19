@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using EmbedIO.Files;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Testing
 {
@@ -15,7 +17,7 @@ namespace EmbedIO.Testing
     /// and a data file filled with random bytes.</para>
     /// </summary>
     /// <seealso cref="IFileProvider" />
-    public sealed partial class MockFileProvider : IFileProvider
+    public sealed partial class MockFileProvider : IFileProvider, IDisposable
     {
         /// <summary>
         /// The file name of HTML indexes.
@@ -45,14 +47,14 @@ namespace EmbedIO.Testing
         /// <summary>
         /// The URL path to a file containing random data.
         /// </summary>
-        /// <seealso cref="GetRandomDataLength"/>
+        /// <seealso cref="RandomDataLength"/>
         /// <seealso cref="GetRandomData"/>
         /// <seealso cref="ChangeRandomData"/>
         public const string RandomDataUrlPath = "/random.dat";
 
         private const string RandomDataPath = "random.dat";
 
-        private readonly Random _random;
+        private readonly RNGCryptoServiceProvider _randomNumberGenerator;
         private readonly MockFile _randomDataFile;
         private readonly MockDirectory _root;
 
@@ -61,20 +63,30 @@ namespace EmbedIO.Testing
         /// </summary>
         public MockFileProvider()
         {
-            _random = new Random();
+            _randomNumberGenerator = new RNGCryptoServiceProvider();
             _randomDataFile = new MockFile(CreateRandomData(10000));
-            _root = new MockDirectory {
-                { "index.html", StockResource.GetBytes("index.html") },
-                { "random.dat",  _randomDataFile },
-                { "sub", new MockDirectory {
-                    { "index.html", StockResource.GetBytes("sub.index.html") },
-                } },
+
+            var sub = new MockDirectory
+            {
+                { "index.html", StockResource.GetBytes("sub.index.html") },
             };
 
+            _root = new MockDirectory
+            {
+                { "index.html", StockResource.GetBytes("index.html") },
+                { "random.dat",  _randomDataFile },
+                { "sub", sub },
+            };
         }
 
         /// <inheritdoc />
-        public event Action<string> ResourceChanged;
+        public void Dispose()
+        {
+            _randomNumberGenerator.Dispose();
+        }
+
+        /// <inheritdoc />
+        public event Action<string>? ResourceChanged;
 
         /// <inheritdoc />
         public bool IsImmutable => false;
@@ -85,32 +97,34 @@ namespace EmbedIO.Testing
         }
 
         /// <inheritdoc />
-        public MappedResourceInfo? MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)
+        public MappedResourceInfo? MapUrlPath(string path, IMimeTypeProvider mimeTypeProvider)
         {
-            if (string.IsNullOrEmpty(urlPath))
+            Validate.NotNull(nameof(mimeTypeProvider), mimeTypeProvider);
+
+            if (string.IsNullOrEmpty(path))
                 return null;
 
-            if (!urlPath.StartsWith("/"))
+            if (!path.StartsWith("/", StringComparison.Ordinal))
                 return null;
 
-            var path = urlPath.Substring(1);
-            var (name, entry) = FindEntry(path);
-            return GetResourceInfo(path, name, entry, mimeTypeProvider);
+            var providerPath = path.Substring(1);
+            var (name, entry) = FindEntry(providerPath);
+            return GetResourceInfo(providerPath, name, entry, mimeTypeProvider);
         }
 
         /// <inheritdoc />
-        public Stream? OpenFile(string path)
+        public Stream OpenFile(string providerPath)
         {
-            var (_, entry) = FindEntry(path);
-            return entry is MockFile file ? new MemoryStream(file.Data, false) : null;
+            var (_, entry) = FindEntry(providerPath);
+            return entry is MockFile file ? new MemoryStream(file.Data, false) : Stream.Null;
         }
 
         /// <inheritdoc />
-        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)
+        public IEnumerable<MappedResourceInfo> GetDirectoryEntries(string providerPath, IMimeTypeProvider mimeTypeProvider)
         {
-            var (name, entry) = FindEntry(path);
+            var (name, entry) = FindEntry(providerPath);
             return entry is MockDirectory directory
-                ? directory.Select(pair => GetResourceInfo(AppendNameToPath(path, name), name, entry, mimeTypeProvider))
+                ? directory.Select(pair => GetResourceInfo(AppendNameToPath(providerPath, name), name, entry, mimeTypeProvider)!)
                 : Enumerable.Empty<MappedResourceInfo>();
         }
 
@@ -122,15 +136,15 @@ namespace EmbedIO.Testing
         /// <seealso cref="RandomDataUrlPath"/>
         /// <seealso cref="GetRandomData"/>
         /// <seealso cref="ChangeRandomData"/>
-        public int GetRandomDataLength() => _randomDataFile.Data.Length;
+        public int RandomDataLength => _randomDataFile.Data.Length;
 
         /// <summary>
         /// Gets the same random data that should be returned
         /// in response to a request for the random data file.
         /// </summary>
         /// <returns>An array of bytes containing random data.</returns>
-        /// <seealso cref="GetRandomDataLength"/>
-        /// <seealso cref="GetRandomData"/>
+        /// <seealso cref="RandomDataUrlPath"/>
+        /// <seealso cref="RandomDataLength"/>
         /// <seealso cref="ChangeRandomData"/>
         public byte[] GetRandomData() => _randomDataFile.Data;
 
@@ -141,6 +155,9 @@ namespace EmbedIO.Testing
         /// </summary>
         /// <param name="newLength">The length of the new random data.</param>
         /// <returns>An array of bytes containing the new random data.</returns>
+        /// <seealso cref="RandomDataUrlPath"/>
+        /// <seealso cref="RandomDataLength"/>
+        /// <seealso cref="GetRandomData"/>
         public byte[] ChangeRandomData(int newLength)
         {
             var data = CreateRandomData(newLength);
@@ -149,10 +166,13 @@ namespace EmbedIO.Testing
             return data;
         }
 
+        private static string AppendNameToPath(string path, string name)
+            => string.IsNullOrEmpty(path) ? name : $"{path}/{name}";
+
         private byte[] CreateRandomData(int length)
         {
             var result = new byte[length];
-            _random.NextBytes(result);
+            _randomNumberGenerator.GetBytes(result);
             return result;
         }
 
@@ -189,13 +209,11 @@ namespace EmbedIO.Testing
             return default;
         }
 
-        private MappedResourceInfo? GetResourceInfo(string path, string name, MockDirectoryEntry entry, IMimeTypeProvider mimeTypeProvider) => entry switch {
+        private MappedResourceInfo? GetResourceInfo(string path, string name, MockDirectoryEntry entry, IMimeTypeProvider mimeTypeProvider) => entry switch
+        {
             MockFile file => MappedResourceInfo.ForFile(path, name, file.LastModifiedUtc, file.Data.Length, mimeTypeProvider.GetMimeType(Path.GetExtension(name))),
             MockDirectory _ => MappedResourceInfo.ForDirectory(string.Empty, name, _root.LastModifiedUtc),
             _ => null
         };
-
-        private static string AppendNameToPath(string path, string name)
-            => string.IsNullOrEmpty(path) ? name : $"{path}/{name}";
     }
 }

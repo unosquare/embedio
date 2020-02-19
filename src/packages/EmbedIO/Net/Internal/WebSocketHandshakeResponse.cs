@@ -28,7 +28,7 @@ namespace EmbedIO.Net.Internal
         public string Reason { get; }
 
         public int StatusCode { get; }
-        
+
         public NameValueCollection Headers { get; }
 
         public Version ProtocolVersion { get; }
@@ -42,7 +42,7 @@ namespace EmbedIO.Net.Internal
                 output.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", key, Headers[key]);
 
             output.Append("\r\n");
-            
+
             return output.ToString();
         }
     }

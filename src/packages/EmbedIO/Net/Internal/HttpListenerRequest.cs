@@ -286,7 +286,7 @@ namespace EmbedIO.Net.Internal
             }
 
             CreateQueryString(_url.Query);
-            
+
             if (ContentLength64 == 0 && (HttpVerb == HttpVerb.Post || HttpVerb == HttpVerb.Put))
                 return;
 
@@ -320,10 +320,10 @@ namespace EmbedIO.Net.Internal
                     break;
                 case "content-length":
                     Headers[HttpHeaderNames.ContentLength] = val.Trim();
-                    
+
                     if (ContentLength64 < 0)
                         _context.ErrorMessage = "Invalid Content-Length.";
-                    
+
                     break;
                 case "referer":
                     try

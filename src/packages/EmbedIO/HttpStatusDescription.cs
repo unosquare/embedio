@@ -22,7 +22,8 @@ namespace EmbedIO
     /// </summary>
     public static class HttpStatusDescription
     {
-        private static readonly IReadOnlyDictionary<int, string> Dictionary = new Dictionary<int, string> {
+        private static readonly IReadOnlyDictionary<int, string> Dictionary = new Dictionary<int, string>
+        {
             { 100, "Continue" },
             { 101, "Switching Protocols" },
             { 102, "Processing" },

@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Net.Internal
 {
@@ -18,7 +19,7 @@ namespace EmbedIO.Net.Internal
         /// Initializes a new instance of the <see cref="SystemHttpRequest"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public SystemHttpRequest(System.Net.HttpListenerContext context)
+        public SystemHttpRequest([ValidatedNotNull] System.Net.HttpListenerContext context)
         {
             _request = context.Request;
             Enum.TryParse<HttpVerb>(_request.HttpMethod.Trim(), true, out var verb);

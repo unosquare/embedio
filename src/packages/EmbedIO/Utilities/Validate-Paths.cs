@@ -25,7 +25,9 @@ namespace EmbedIO.Utilities
         /// <para><paramref name="value"/> does not start with a slash (<c>/</c>) character.</para>
         /// </exception>
         /// <seealso cref="Utilities.UrlPath.Normalize"/>
-        public static string UrlPath(string argumentName, string value, bool isBasePath)
+#pragma warning disable CA1055 // Change the return type to System.Uri - No. An URL path is an URL path, not an URL.
+        public static string UrlPath(string argumentName, [ValidatedNotNull] string value, bool isBasePath)
+#pragma warning restore CA1055
         {
             var exception = Utilities.UrlPath.ValidateInternal(argumentName, value);
             if (exception != null)
@@ -52,7 +54,7 @@ namespace EmbedIO.Utilities
         /// <para>- or -</para>
         /// <para><paramref name="getFullPath"/> is <see langword="true"/> and the full path could not be obtained.</para>
         /// </exception>
-        public static string LocalPath(string argumentName, string value, bool getFullPath)
+        public static string LocalPath(string argumentName, [ValidatedNotNull] string value, bool getFullPath)
         {
             if (value == null)
                 throw new ArgumentNullException(argumentName);

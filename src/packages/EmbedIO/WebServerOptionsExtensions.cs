@@ -14,19 +14,19 @@ namespace EmbedIO
         /// Adds a URL prefix.
         /// </summary>
         /// <param name="this">The <see cref="WebServerOptions"/> on which this method is called.</param>
-        /// <param name="urlPrefix">The URL prefix.</param>
-        /// <returns><paramref name="this"/> with <paramref name="urlPrefix"/> added.</returns>
+        /// <param name="prefix">The URL prefix.</param>
+        /// <returns><paramref name="this"/> with <paramref name="prefix"/> added.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="urlPrefix"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="prefix"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">
-        /// <para><paramref name="urlPrefix"/> is the empty string.</para>
+        /// <para><paramref name="prefix"/> is the empty string.</para>
         /// <para>- or -</para>
-        /// <para><paramref name="urlPrefix"/> is already registered.</para>
+        /// <para><paramref name="prefix"/> is already registered.</para>
         /// </exception>
-        public static WebServerOptions WithUrlPrefix(this WebServerOptions @this, string urlPrefix)
+        public static WebServerOptions WithUrlPrefix(this WebServerOptions @this, string prefix)
         {
-            @this.AddUrlPrefix(urlPrefix);
+            @this.AddUrlPrefix(prefix);
             return @this;
         }
 

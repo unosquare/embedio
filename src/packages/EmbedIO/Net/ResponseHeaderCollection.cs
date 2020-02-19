@@ -44,7 +44,7 @@ namespace EmbedIO.Net
     ///       <para><c>Set-Cookie</c></para>
     ///       <para><c>Set-Cookie2</c></para>
     ///     </term>
-    ///     <description>Cookies are set through the <see cref="IHttpMessage.Cookies"/> property.</description>
+    ///     <description>Cookies are set through the <see cref="IHttpResponse.Cookies"/> property.</description>
     ///   </item>
     ///   <item>
     ///     <term>
@@ -163,7 +163,8 @@ namespace EmbedIO.Net
             if (values == null || values.Length == 0 || !AllowsMultipleValues(name))
                 return values;
 
-            return values.Where(v => !string.IsNullOrEmpty(v)).Aggregate(new List<string>(), (result, value) => {
+            return values.Where(v => !string.IsNullOrEmpty(v)).Aggregate(new List<string>(), (result, value) =>
+            {
                 result.AddRange(ParseMultipleValues(value));
                 return result;
             }).ToArray();
@@ -300,7 +301,8 @@ namespace EmbedIO.Net
         // NOTE TO COLLABORATORS: Always keep the class XML docs in sync with this list!
         private static string[] CreateRestrictedNames()
         {
-            var result = new List<string> {
+            var result = new List<string>
+            {
                 // Set automatically by EmbedIO
                 HttpHeaderNames.Connection,
                 HttpHeaderNames.ContentEncoding,
@@ -361,7 +363,8 @@ namespace EmbedIO.Net
 
         private static string[] CreateMultiValueNames()
         {
-            var result = new List<string> {
+            var result = new List<string>
+            {
                 HttpHeaderNames.Allow,
                 HttpHeaderNames.CacheControl,
                 HttpHeaderNames.ContentLanguage,

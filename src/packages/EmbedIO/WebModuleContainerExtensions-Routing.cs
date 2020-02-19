@@ -1,6 +1,6 @@
-﻿using EmbedIO.Routing;
+﻿using System;
+using EmbedIO.Routing;
 using EmbedIO.Utilities;
-using System;
 
 namespace EmbedIO
 {

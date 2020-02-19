@@ -42,7 +42,7 @@ namespace EmbedIO.Actions
         public override bool IsFinalHandler => false;
 
         /// <inheritdoc />
-        protected override async Task OnRequestAsync(IHttpContext context)
+        protected override async Task OnRequestAsync([ValidatedNotNull] IHttpContext context)
         {
             if (_verb != HttpVerb.Any && context.Request.HttpVerb != _verb)
                 return;

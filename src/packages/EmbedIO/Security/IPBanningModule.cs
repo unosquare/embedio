@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Security.Internal;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Security
 {
@@ -28,9 +29,10 @@ namespace EmbedIO.Security
         /// <param name="baseRoute">The base route.</param>
         /// <param name="whitelist">A collection of valid IPs that never will be banned.</param>
         /// <param name="banMinutes">Minutes that an IP will remain banned.</param>
-        public IPBanningModule(string baseRoute = "/",
-                               IEnumerable<string>? whitelist = null,
-                               int banMinutes = DefaultBanMinutes)
+        public IPBanningModule(
+            string baseRoute = "/",
+            IEnumerable<string>? whitelist = null,
+            int banMinutes = DefaultBanMinutes)
             : base(baseRoute)
         {
             Configuration = IPBanningExecutor.RetrieveInstance(baseRoute, banMinutes);
@@ -157,7 +159,7 @@ namespace EmbedIO.Security
         }
 
         /// <inheritdoc />
-        protected override Task OnRequestAsync(IHttpContext context)
+        protected override Task OnRequestAsync([ValidatedNotNull] IHttpContext context)
         {
             ClientAddress = context.Request.RemoteEndPoint.Address;
             return Configuration.CheckClient(ClientAddress);

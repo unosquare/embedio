@@ -18,26 +18,42 @@ namespace EmbedIO.Testing
         /// <summary>
         /// The base URL that a <see cref="TestWebServer"/>, by default, simulates being bound to.
         /// </summary>
+        /// <seealso cref="DefaultBaseUri"/>
         public const string DefaultBaseUrl = "http://test.example.com:8080/";
 
-        private CancellationTokenSource _internalCancellationTokenSource;
+        /// <summary>
+        /// The base URI that a <see cref="TestWebServer"/>, by default, simulates being bound to.
+        /// </summary>
+        /// <seealso cref="DefaultBaseUrl"/>
+        public static readonly Uri DefaultBaseUri = new Uri(DefaultBaseUrl);
+
+        // This field is initialized by the Prepare method.
+        private CancellationTokenSource _internalCancellationTokenSource = null!;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestWebServer"/> class.
         /// </summary>
-        /// <param name="baseUrl"></param>
+        /// <param name="baseUrl">The base URL to simulate binding the server to.
+        /// The default is <see cref="DefaultBaseUrl"/>.</param>
+        /// <seealso cref="TestWebServer(Uri)"/>
         public TestWebServer(string baseUrl = DefaultBaseUrl)
         {
-            BaseUrl = Validate.NotNullOrEmpty(nameof(baseUrl), baseUrl);
+            BaseUrl = new Uri(Validate.Url(nameof(baseUrl), baseUrl, UriKind.Absolute, true));
             Client = TestHttpClient.Create(this);
         }
 
         /// <summary>
-        /// <para>Gets a <see cref="HttpClient"/> that communicates with this server.</para>
-        /// <para>The returned client is already initialized with a base address,
-        /// so requests URLs may omit the scheme and host parts.</para>
+        /// Initializes a new instance of the <see cref="TestWebServer"/> class.
         /// </summary>
-        public string BaseUrl { get; }
+        /// <param name="baseUri">The base URI to simulate binding the server to.</param>
+        /// <seealso cref="TestWebServer(string)"/>
+        public TestWebServer(Uri baseUri)
+            : this(Validate.NotNull(nameof(baseUri), baseUri).AbsoluteUri)
+        {
+        }
+
+        /// <inheritdoc />
+        public Uri BaseUrl { get; }
 
         /// <summary>
         /// <para>Gets a <see cref="TestHttpClient"/> that communicates with this server.</para>
@@ -47,10 +63,11 @@ namespace EmbedIO.Testing
         public TestHttpClient Client { get; }
 
         /// <summary>
-        /// Encapsulates the creation and use of a <see cref="TestWebServer"/>.
+        /// Asynchronously create and use a <see cref="TestWebServer"/>.
         /// </summary>
         /// <param name="configure">A callback used to configure the server.</param>
         /// <param name="use">A callback used to pass requests to the server.</param>
+        /// <returns>A <see cref="Task"/> that represents the ongoing operation.</returns>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="configure"/> is <see langword="null"/>.</para>
         /// <para>- or -</para>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EmbedIO.Utilities;
 using Swan.Formatters;
 using Swan.Logging;
 
@@ -12,7 +13,7 @@ namespace EmbedIO
     {
         /// <summary>
         /// <para>The default request deserializer used by EmbedIO.</para>
-        /// <para>Equivalent to <see cref="Json{TData}"/>.</para>
+        /// <para>Equivalent to <see cref="Json{TData}(IHttpContext)"/>.</para>
         /// </summary>
         /// <typeparam name="TData">The expected type of the deserialized data.</typeparam>
         /// <param name="context">The <see cref="IHttpContext"/> whose request body is to be deserialized.</param>
@@ -37,11 +38,14 @@ namespace EmbedIO
         /// <param name="jsonSerializerCase">The <see cref="JsonSerializerCase"/> to use.</param>
         /// <returns>A <see cref="RequestDeserializerCallback{TData}"/> that can be used to deserialize
         /// a JSON request body.</returns>
+        [CLSCompliant(false)]
         public static RequestDeserializerCallback<TData> Json<TData>(JsonSerializerCase jsonSerializerCase)
             => context => JsonInternal<TData>(context, jsonSerializerCase);
 
         private static async Task<TData> JsonInternal<TData>(IHttpContext context, JsonSerializerCase jsonSerializerCase)
         {
+            Validate.NotNull(nameof(context), context);
+
             string body;
             using (var reader = context.OpenRequestText())
             {

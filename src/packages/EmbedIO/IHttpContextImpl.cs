@@ -79,9 +79,9 @@ namespace EmbedIO
         /// An <see cref="IWebSocketContext"/> interface.
         /// </returns>
         Task<IWebSocketContext> AcceptWebSocketAsync(
-            IEnumerable<string> requestedProtocols, 
-            string acceptedProtocol, 
-            int receiveBufferSize, 
+            IEnumerable<string> requestedProtocols,
+            string acceptedProtocol,
+            int receiveBufferSize,
             TimeSpan keepAliveInterval,
             CancellationToken cancellationToken);
     }

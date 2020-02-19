@@ -11,7 +11,7 @@ namespace EmbedIO.Testing
 
             public IEnumerator<KeyValuePair<string, MockDirectoryEntry>> GetEnumerator() => _entries.GetEnumerator();
 
-            IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _entries).GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_entries).GetEnumerator();
 
             public void Add(KeyValuePair<string, MockDirectoryEntry> item) => (_entries as ICollection<KeyValuePair<string, MockDirectoryEntry>>).Add(item);
 

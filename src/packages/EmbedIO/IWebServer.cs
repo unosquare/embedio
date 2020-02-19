@@ -42,7 +42,7 @@ namespace EmbedIO
         /// <para>Gets or sets the registered session ID manager, if any.</para>
         /// <para>A session ID manager is an implementation of <see cref="ISessionManager"/>.</para>
         /// <para>Note that this property can only be set before starting the web server.</para>
-        /// </summary>  
+        /// </summary>
         /// <value>
         /// The session manager, or <see langword="null"/> if no session manager is present.
         /// </value>

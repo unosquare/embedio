@@ -282,7 +282,7 @@ namespace EmbedIO.WebApi
         private static T AwaitAndCastResult<T>(string parameterName, Task<object> task)
         {
             var result = task.ConfigureAwait(false).GetAwaiter().GetResult();
-            
+
             return result switch {
                 null when typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null => throw new InvalidCastException($"Cannot cast null to {typeof(T).FullName} for parameter \"{parameterName}\"."),
                 null => default,
@@ -351,9 +351,11 @@ namespace EmbedIO.WebApi
 
                 // First, check for generic request data interfaces in attributes
                 var requestDataInterfaces = parameter.GetCustomAttributes<Attribute>()
-                        .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) => {
+                        .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) =>
+                        {
                             list.AddRange(attr.GetType().GetInterfaces()
-                                .Where(x => {
+                                .Where(x =>
+                                {
                                     if (!x.IsConstructedGenericType)
                                         return false;
 
@@ -400,7 +402,8 @@ namespace EmbedIO.WebApi
 
                 // Check for non-generic request data interfaces in attributes
                 requestDataInterfaces = parameter.GetCustomAttributes<Attribute>()
-                        .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) => {
+                        .Aggregate(new List<(Attribute Attr, Type Intf)>(), (list, attr) =>
+                        {
                             list.AddRange(attr.GetType().GetInterfaces()
                                 .Where(x => x.IsConstructedGenericType
                                          && x.GetGenericTypeDefinition() == typeof(IRequestDataAttribute<>))
@@ -471,7 +474,7 @@ namespace EmbedIO.WebApi
             }
 
             // Create the controller and initialize its properties
-            bodyContents.Add(Expression.Assign(controller,factoryExpression));
+            bodyContents.Add(Expression.Assign(controller, factoryExpression));
             bodyContents.Add(Expression.Call(controller, HttpContextSetter, contextInLambda));
             bodyContents.Add(Expression.Call(controller, RouteSetter, routeInLambda));
 
@@ -528,7 +531,7 @@ namespace EmbedIO.WebApi
                 //         (controller as IDisposable).Dispose();
                 //     }
                 workWithController = Expression.TryFinally(
-                    workWithController, 
+                    workWithController,
                     Expression.Call(Expression.TypeAs(controller, typeof(IDisposable)), DisposeMethod));
             }
 
