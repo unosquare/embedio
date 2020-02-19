@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{97
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{73F25F81-0412-412E-89C9-BAD33E9BCCDE}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Common.props = Common.props
 		StyleCop.Analyzers.ruleset = StyleCop.Analyzers.ruleset
 		..\VERSION = ..\VERSION
