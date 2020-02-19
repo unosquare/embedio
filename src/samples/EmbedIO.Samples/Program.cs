@@ -25,7 +25,7 @@ namespace EmbedIO.Samples
             {
                 Task.WaitAll(
                     RunWebServerAsync(url, ctSource.Token),
-                    OpenBrowser ? ShowBrowserAsync(url.Replace("*", "localhost"), ctSource.Token) : Task.CompletedTask,
+                    OpenBrowser ? ShowBrowserAsync(url.Replace("*", "localhost", StringComparison.Ordinal), ctSource.Token) : Task.CompletedTask,
                     WaitForUserBreakAsync(ctSource.Cancel));
             }
 
