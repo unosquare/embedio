@@ -1,7 +1,6 @@
-<Project InitialTargets="_Build_GetGitInfo">
+<Project>
 
-  <!-- Skip on non-packable projects to save some time. -->
-  <Target Name="_Build_GetGitInfo">
+  <Target Name="_Build_GetGitInfo" BeforeTargets="BeforeBuild">
 
     <PropertyGroup>
       <_Build_IsGitRepo>false</_Build_IsGitRepo>
