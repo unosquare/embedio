@@ -90,7 +90,7 @@ namespace EmbedIO.Cors
             if (_origins == All)
                 return Task.CompletedTask;
 
-            if (_validOrigins.Contains(currentOrigin))
+            if (_validOrigins.Contains(currentOrigin.ToUpperInvariant()))
             {
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowOrigin,  currentOrigin);
 
