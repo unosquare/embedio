@@ -164,26 +164,31 @@
       <NoWarn>$(NoWarn)NU1603</NoWarn>
   </PropertyGroup>
 
-  <!-- Generate documentation file by default only for libraries.
-       We cannot use GenerateDocumentationFile directly, because it is set to some default
-       by some standard import; we cannot set a sensible default in Build.props, either,
-       because OutputType and Configuration are still unknown. -->
+  <!-- By default, enable XML docs only for libraries. -->
   <PropertyGroup Condition="'$(XmlDoc)' == ''">
     <XmlDoc Condition="'$(_Build_IsLibraryProject)' == 'true'">true</XmlDoc>
   </PropertyGroup>
   <PropertyGroup>
     <XmlDoc Condition="'$(XmlDoc)' != 'true'">false</XmlDoc>
   </PropertyGroup>
-
-  <!-- Copy XmlDoc to GenerateDocumentationFile -->
+  
+  <!-- Always enable XML docs generation, so code analyzers can check
+       the semantics of XML documentation.
+       However, if XmlDoc is false, suppress warnings about missing XML docs.
+       https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA0001.md
+  -->
   <PropertyGroup>
-    <GenerateDocumentationFile>$(XmlDoc)</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="!$(XmlDoc)">
+      <NoWarn Condition="'$(NoWarn)' != ''">$(NoWarn);</NoWarn>
+      <NoWarn>$(NoWarn);CS1573;CS1591;CS1712</NoWarn>
   </PropertyGroup>
 
   <!-- Always put XML documentation, if any, alongside the compiled assembly.
        We cannot trust MSBuild's default for this: at least in legacy projects,
        it would give the file an ugly upper-case .XML extension. -->
-  <PropertyGroup Condition="$(GenerateDocumentationFile)">
+  <PropertyGroup>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
