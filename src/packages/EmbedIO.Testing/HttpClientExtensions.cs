@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using EmbedIO.Utilities;
 
 namespace EmbedIO.Testing
 {
@@ -16,7 +15,7 @@ namespace EmbedIO.Testing
         /// <param name="this">The <see cref="HttpClient"/> on which this method is called.</param>
         /// <param name="url">The request URL.</param>
         /// <returns>A <see cref="Task{TResult}"/> whose result will be a <see cref="HttpResponseMessage"/>.</returns>
-        public static async Task<HttpResponseMessage> HeadAsync([ValidatedNotNull] this HttpClient @this, string url)
+        public static async Task<HttpResponseMessage> HeadAsync(this HttpClient @this, string url)
         {
             using var request = new HttpRequestMessage(HttpMethod.Head, url);
             return await @this.SendAsync(request).ConfigureAwait(false);
@@ -28,7 +27,7 @@ namespace EmbedIO.Testing
         /// <param name="this">The <see cref="HttpClient"/> on which this method is called.</param>
         /// <param name="url">The request URL.</param>
         /// <returns>A <see cref="Task{TResult}"/> whose result will be a <see cref="HttpResponseMessage"/>.</returns>
-        public static async Task<HttpResponseMessage> HeadAsync([ValidatedNotNull] this HttpClient @this, Uri url)
+        public static async Task<HttpResponseMessage> HeadAsync(this HttpClient @this, Uri url)
         {
             using var request = new HttpRequestMessage(HttpMethod.Head, url);
             return await @this.SendAsync(request).ConfigureAwait(false);
@@ -40,7 +39,7 @@ namespace EmbedIO.Testing
         /// <param name="this">The <see cref="HttpClient"/> on which this method is called.</param>
         /// <param name="url">The request URL.</param>
         /// <returns>A <see cref="Task{TResult}"/> whose result will be a <see cref="HttpResponseMessage"/>.</returns>
-        public static async Task<HttpResponseMessage> OptionsAsync([ValidatedNotNull] this HttpClient @this, string url)
+        public static async Task<HttpResponseMessage> OptionsAsync(this HttpClient @this, string url)
         {
             using var request = new HttpRequestMessage(HttpMethod.Options, url);
             return await @this.SendAsync(request).ConfigureAwait(false);
@@ -52,7 +51,7 @@ namespace EmbedIO.Testing
         /// <param name="this">The <see cref="HttpClient"/> on which this method is called.</param>
         /// <param name="url">The request URL.</param>
         /// <returns>A <see cref="Task{TResult}"/> whose result will be a <see cref="HttpResponseMessage"/>.</returns>
-        public static async Task<HttpResponseMessage> OptionsAsync([ValidatedNotNull] this HttpClient @this, Uri url)
+        public static async Task<HttpResponseMessage> OptionsAsync(this HttpClient @this, Uri url)
         {
             using var request = new HttpRequestMessage(HttpMethod.Options, url);
             return await @this.SendAsync(request).ConfigureAwait(false);

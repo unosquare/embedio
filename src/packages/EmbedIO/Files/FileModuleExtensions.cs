@@ -1,5 +1,4 @@
 ﻿using System;
-using EmbedIO.Utilities;
 
 namespace EmbedIO.Files
 {
@@ -21,7 +20,7 @@ namespace EmbedIO.Files
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         /// <seealso cref="FileModule.Cache"/>
-        public static TModule WithCache<TModule>([ValidatedNotNull] this TModule @this, FileCache value)
+        public static TModule WithCache<TModule>(this TModule @this, FileCache value)
             where TModule : FileModule
         {
             @this.Cache = value;
@@ -41,7 +40,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.ContentCaching"/>
-        public static TModule WithContentCaching<TModule>([ValidatedNotNull] this TModule @this, bool value)
+        public static TModule WithContentCaching<TModule>(this TModule @this, bool value)
             where TModule : FileModule
         {
             @this.ContentCaching = value;
@@ -58,7 +57,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.ContentCaching"/>
-        public static TModule WithContentCaching<TModule>([ValidatedNotNull] this TModule @this)
+        public static TModule WithContentCaching<TModule>(this TModule @this)
             where TModule : FileModule
         {
             @this.ContentCaching = true;
@@ -77,7 +76,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.ContentCaching"/>
-        public static TModule WithContentCaching<TModule>([ValidatedNotNull] this TModule @this, int maxFileSizeKb, int maxSizeKb)
+        public static TModule WithContentCaching<TModule>(this TModule @this, int maxFileSizeKb, int maxSizeKb)
             where TModule : FileModule
         {
             @this.ContentCaching = true;
@@ -96,7 +95,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.ContentCaching"/>
-        public static TModule WithoutContentCaching<TModule>([ValidatedNotNull] this TModule @this)
+        public static TModule WithoutContentCaching<TModule>(this TModule @this)
             where TModule : FileModule
         {
             @this.ContentCaching = false;
@@ -115,7 +114,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.DefaultDocument"/>
-        public static TModule WithDefaultDocument<TModule>([ValidatedNotNull] this TModule @this, string value)
+        public static TModule WithDefaultDocument<TModule>(this TModule @this, string value)
             where TModule : FileModule
         {
             @this.DefaultDocument = value;
@@ -132,7 +131,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.DefaultDocument"/>
-        public static TModule WithoutDefaultDocument<TModule>([ValidatedNotNull] this TModule @this)
+        public static TModule WithoutDefaultDocument<TModule>(this TModule @this)
             where TModule : FileModule
         {
             @this.DefaultDocument = null;
@@ -153,7 +152,7 @@ namespace EmbedIO.Files
         /// <exception cref="ArgumentException"><paramref name="value"/> is a non-<see langword="null"/>,
         /// non-empty string that does not start with a period (<c>.</c>).</exception>
         /// <seealso cref="FileModule.DefaultExtension"/>
-        public static TModule WithDefaultExtension<TModule>([ValidatedNotNull] this TModule @this, string value)
+        public static TModule WithDefaultExtension<TModule>(this TModule @this, string value)
             where TModule : FileModule
         {
             @this.DefaultExtension = value;
@@ -170,7 +169,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.DefaultExtension"/>
-        public static TModule WithoutDefaultExtension<TModule>([ValidatedNotNull] this TModule @this)
+        public static TModule WithoutDefaultExtension<TModule>(this TModule @this)
             where TModule : FileModule
         {
             @this.DefaultExtension = null;
@@ -190,7 +189,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.DirectoryLister"/>
-        public static TModule WithDirectoryLister<TModule>([ValidatedNotNull] this TModule @this, IDirectoryLister value)
+        public static TModule WithDirectoryLister<TModule>(this TModule @this, IDirectoryLister value)
             where TModule : FileModule
         {
             @this.DirectoryLister = value;
@@ -208,7 +207,7 @@ namespace EmbedIO.Files
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
         /// <seealso cref="FileModule.DirectoryLister"/>
-        public static TModule WithoutDirectoryLister<TModule>([ValidatedNotNull] this TModule @this)
+        public static TModule WithoutDirectoryLister<TModule>(this TModule @this)
             where TModule : FileModule
         {
             @this.DirectoryLister = null;
@@ -229,7 +228,7 @@ namespace EmbedIO.Files
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <see langword="null"/>.</exception>
         /// <seealso cref="FileModule.OnMappingFailed"/>
         /// <seealso cref="FileRequestHandler"/>
-        public static TModule HandleMappingFailed<TModule>([ValidatedNotNull] this TModule @this, FileRequestHandlerCallback callback)
+        public static TModule HandleMappingFailed<TModule>(this TModule @this, FileRequestHandlerCallback callback)
             where TModule : FileModule
         {
             @this.OnMappingFailed = callback;
@@ -251,7 +250,7 @@ namespace EmbedIO.Files
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <see langword="null"/>.</exception>
         /// <seealso cref="FileModule.OnDirectoryNotListable"/>
         /// <seealso cref="FileRequestHandler"/>
-        public static TModule HandleDirectoryNotListable<TModule>([ValidatedNotNull] this TModule @this, FileRequestHandlerCallback callback)
+        public static TModule HandleDirectoryNotListable<TModule>(this TModule @this, FileRequestHandlerCallback callback)
             where TModule : FileModule
         {
             @this.OnDirectoryNotListable = callback;
@@ -273,7 +272,7 @@ namespace EmbedIO.Files
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <see langword="null"/>.</exception>
         /// <seealso cref="FileModule.OnMethodNotAllowed"/>
         /// <seealso cref="FileRequestHandler"/>
-        public static TModule HandleMethodNotAllowed<TModule>([ValidatedNotNull] this TModule @this, FileRequestHandlerCallback callback)
+        public static TModule HandleMethodNotAllowed<TModule>(this TModule @this, FileRequestHandlerCallback callback)
             where TModule : FileModule
         {
             @this.OnMethodNotAllowed = callback;
