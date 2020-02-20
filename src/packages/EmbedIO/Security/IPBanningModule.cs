@@ -65,8 +65,8 @@ namespace EmbedIO.Security
         /// Registers the criterion.
         /// </summary>
         /// <param name="criterion">The criterion.</param>
-        public void RegisterCriterion(IIPBanningCriterion criterion) => 
-            Configuration.RegisterCriterion(criterion);
+        public void RegisterCriterion(IIPBanningCriterion criterion)
+            => Configuration.RegisterCriterion(criterion);
 
         /// <inheritdoc />
         public void Dispose()
@@ -83,10 +83,10 @@ namespace EmbedIO.Security
         /// A collection of <see cref="BanInfo" /> in the blacklist.
         /// </returns>
         /// <exception cref="ArgumentException">baseRoute</exception>
-        public static IEnumerable<BanInfo> GetBannedIPs(string baseRoute = "/") => 
-            IPBanningExecutor.TryGetInstance(baseRoute, out var instance) 
-            ? instance.BlackList 
-            : throw new ArgumentException(NoConfigurationFound, nameof(baseRoute));
+        public static IEnumerable<BanInfo> GetBannedIPs(string baseRoute = "/")
+            => IPBanningExecutor.TryGetInstance(baseRoute, out var instance)
+                ? instance.BlackList
+                : throw new ArgumentException(NoConfigurationFound, nameof(baseRoute));
 
         /// <summary>
         /// Tries to ban an IP explicitly.
@@ -98,8 +98,8 @@ namespace EmbedIO.Security
         /// <returns>
         ///   <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
         /// </returns>
-        public static bool TryBanIP(IPAddress address, int banMinutes, string baseRoute = "/", bool isExplicit = true) =>
-            TryBanIP(address, DateTime.Now.AddMinutes(banMinutes), baseRoute, isExplicit);
+        public static bool TryBanIP(IPAddress address, int banMinutes, string baseRoute = "/", bool isExplicit = true)
+            => TryBanIP(address, DateTime.Now.AddMinutes(banMinutes), baseRoute, isExplicit);
 
         /// <summary>
         /// Tries to ban an IP explicitly.
@@ -111,8 +111,8 @@ namespace EmbedIO.Security
         /// <returns>
         ///   <c>true</c> if the IP was added to the blacklist; otherwise, <c>false</c>.
         /// </returns>
-        public static bool TryBanIP(IPAddress address, TimeSpan banDuration, string baseRoute = "/", bool isExplicit = true) =>
-            TryBanIP(address, DateTime.Now.Add(banDuration), baseRoute, isExplicit);
+        public static bool TryBanIP(IPAddress address, TimeSpan banDuration, string baseRoute = "/", bool isExplicit = true)
+            => TryBanIP(address, DateTime.Now.Add(banDuration), baseRoute, isExplicit);
 
         /// <summary>
         /// Tries to ban an IP explicitly.
@@ -142,10 +142,10 @@ namespace EmbedIO.Security
         ///   <c>true</c> if the IP was removed from the blacklist; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="ArgumentException">baseRoute</exception>
-        public static bool TryUnbanIP(IPAddress address, string baseRoute = "/") => 
-            IPBanningExecutor.TryGetInstance(baseRoute, out var instance) 
-            ? instance.TryRemoveBlackList(address) 
-            : throw new ArgumentException(NoConfigurationFound, nameof(baseRoute));
+        public static bool TryUnbanIP(IPAddress address, string baseRoute = "/")
+            => IPBanningExecutor.TryGetInstance(baseRoute, out var instance)
+                ? instance.TryRemoveBlackList(address)
+                : throw new ArgumentException(NoConfigurationFound, nameof(baseRoute));
 
         internal void AddToWhitelist(IEnumerable<string>? whitelist) =>
             Configuration.AddToWhitelistAsync(whitelist).GetAwaiter().GetResult();
@@ -171,7 +171,9 @@ namespace EmbedIO.Security
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
+
             if (disposing)
             {
                 IPBanningExecutor.TryRemoveInstance(BaseRoute);

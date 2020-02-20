@@ -20,7 +20,7 @@ namespace EmbedIO.Internal
                     return str[4] switch {
                         ':' => true,
                         's' => str.Length >= 6 && str[5] == ':',
-                        _ => false
+                        _ => false,
                     };
 
                 case 'w':
@@ -31,7 +31,7 @@ namespace EmbedIO.Internal
                     return str[2] switch {
                         ':' => true,
                         's' => str.Length >= 4 && str[3] == ':',
-                        _ => false
+                        _ => false,
                     };
 
                 default:

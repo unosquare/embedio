@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Authentication
 {
@@ -47,7 +48,7 @@ namespace EmbedIO.Authentication
         public string Realm { get; }
 
         /// <inheritdoc />
-        protected sealed override async Task<IPrincipal> AuthenticateAsync(IHttpContext context)
+        protected sealed override async Task<IPrincipal> AuthenticateAsync([ValidatedNotNull] IHttpContext context)
         {
             var authHeader = context.Request.Headers[HttpHeaderNames.Authorization];
             if (authHeader == null || !authHeader.StartsWith("basic ", StringComparison.OrdinalIgnoreCase))

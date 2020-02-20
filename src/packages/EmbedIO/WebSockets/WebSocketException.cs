@@ -9,12 +9,12 @@ namespace EmbedIO.WebSockets
     public class WebSocketException : Exception
 #pragma warning restore CA1032
     {
-        internal WebSocketException(string? message = null) 
+        internal WebSocketException(string? message = null)
             : this(CloseStatusCode.Abnormal, message)
         {
             // Ignore
         }
-        
+
         internal WebSocketException(CloseStatusCode code, Exception? innerException = null)
             : this(code, null, innerException)
         {
@@ -45,7 +45,7 @@ namespace EmbedIO.WebSockets
             CloseStatusCode.MandatoryExtension => "WebSocket client didn't receive expected extension(s).",
             CloseStatusCode.ServerError => "WebSocket server got an internal error.",
             CloseStatusCode.TlsHandshakeFailure => "An error has occurred during a TLS handshake.",
-            _ => string.Empty
+            _ => string.Empty,
         };
     }
 }

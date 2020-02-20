@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EmbedIO.Utilities;
 
 namespace EmbedIO.Authentication
 {
@@ -52,7 +53,7 @@ namespace EmbedIO.Authentication
         /// <para>The <see cref="BasicAuthenticationModule.Accounts">Accounts</see> dictionary already contains
         /// the maximum number of elements (<see cref="int.MaxValue">MaxValue</see>).</para>
         /// </exception>
-        public static BasicAuthenticationModule WithAccounts(this BasicAuthenticationModule @this, IEnumerable<KeyValuePair<string, string>> accounts)
+        public static BasicAuthenticationModule WithAccounts(this BasicAuthenticationModule @this, [ValidatedNotNull] IEnumerable<KeyValuePair<string, string>> accounts)
         {
             foreach (var account in accounts)
             {

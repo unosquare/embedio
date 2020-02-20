@@ -12,7 +12,7 @@
         /// The count.
         /// </value>
         int Count { get; }
-        
+
         /// <summary>
         /// Gets a value indicating whether [end of message].
         /// </summary>
@@ -20,7 +20,7 @@
         ///   <c>true</c> if [end of message]; otherwise, <c>false</c>.
         /// </value>
         bool EndOfMessage { get; }
-        
+
         /// <summary>
         /// Gets the type of the message.
         /// </summary>

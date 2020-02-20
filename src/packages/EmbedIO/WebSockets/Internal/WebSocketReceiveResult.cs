@@ -19,10 +19,10 @@ namespace EmbedIO.WebSockets.Internal
 
         /// <inheritdoc />
         public int Count { get; }
-        
+
         /// <inheritdoc />
         public bool EndOfMessage { get; }
-        
+
         /// <inheritdoc />
         public int MessageType { get; }
     }

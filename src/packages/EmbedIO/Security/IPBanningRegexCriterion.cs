@@ -1,11 +1,11 @@
-﻿using Swan.Logging;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Swan.Logging;
 
 namespace EmbedIO.Security
 {
@@ -46,7 +46,8 @@ namespace EmbedIO.Security
             _maxMatchCount = maxMatchCount;
             _parent = parent;
 
-            AddRules(rules);
+            if (rules != null)
+                AddRules(rules);
 
             if (_failRegex.Any())
                 _innerLogger = new InnerRegexCriterionLogger(this);
@@ -81,7 +82,8 @@ namespace EmbedIO.Security
 
             foreach (var k in _failRegexMatches.Keys)
             {
-                if (!_failRegexMatches.TryGetValue(k, out var failRegexMatches)) continue;
+                if (!_failRegexMatches.TryGetValue(k, out var failRegexMatches))
+                    continue;
 
                 var recentMatches = new ConcurrentBag<long>(failRegexMatches.Where(x => x >= minTime));
                 if (!recentMatches.Any())
@@ -134,7 +136,8 @@ namespace EmbedIO.Security
             {
                 try
                 {
-                    if (!regex.IsMatch(message)) continue;
+                    if (!regex.IsMatch(message))
+                        continue;
 
                     _failRegexMatches.GetOrAdd(address, new ConcurrentBag<long>()).Add(DateTime.Now.Ticks);
                     break;
@@ -177,9 +180,8 @@ namespace EmbedIO.Security
             /// <inheritdoc />
             public LogLevel LogLevel => LogLevel.Trace;
 
-            public void Dispose() 
-            { 
-                // DO nothing
+            public void Dispose()
+            {
             }
 
             /// <inheritdoc />

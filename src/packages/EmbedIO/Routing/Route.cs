@@ -75,7 +75,7 @@ namespace EmbedIO.Routing
             ArgumentNullException _ => new ArgumentNullException(argumentName),
             FormatException formatException => new ArgumentException(formatException.Message, argumentName),
             Exception exception => exception,
-            _ => null
+            _ => null,
         };
 
         // Validate and parse a route, constructing a Regex pattern.

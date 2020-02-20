@@ -47,12 +47,15 @@ namespace EmbedIO
         /// <summary>
         /// Sends an empty <c>500 Internal Server Error</c> response.
         /// </summary>
-        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
-        /// <param name="exception">The unhandled exception.</param>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
+        /// <param name="exception">The unhandled exception. This parameter is ignored, because there is no possible
+        /// use for it in an empty response.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+#pragma warning disable CA1801 // Unused parameter - We must respect the signature of ExceptionHandlerCallback.
         public static Task EmptyResponse(IHttpContext context, Exception exception)
+#pragma warning restore CA1801
         {
-            context.Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
+            Validate.NotNull(nameof(context), context).Response.SetEmptyResponse((int)HttpStatusCode.InternalServerError);
             return Task.CompletedTask;
         }
 
@@ -83,7 +86,7 @@ namespace EmbedIO
         /// <para>- or -</para>
         /// <para><paramref name="exception"/> is <see langword="null"/>.</para>
         /// </exception>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         public static Task EmptyResponseWithHeaders(IHttpContext context, Exception exception)
         {
             Validate.NotNull(nameof(context), context);
@@ -101,9 +104,9 @@ namespace EmbedIO
         /// if specified via the <see cref="ContactInformation"/> and <see cref="IncludeStackTraces"/>
         /// properties, respectively.
         /// </summary>
-        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="exception">The unhandled exception.</param>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         public static Task HtmlResponse(IHttpContext context, Exception exception)
             => context.SendStandardHtmlAsync(
                 (int)HttpStatusCode.InternalServerError,

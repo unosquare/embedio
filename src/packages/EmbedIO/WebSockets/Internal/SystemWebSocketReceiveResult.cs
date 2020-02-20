@@ -19,11 +19,11 @@
 
         /// <inheritdoc/>
         public int Count => _results.Count;
-        
+
         /// <inheritdoc/>
-        public bool EndOfMessage=> _results.EndOfMessage;
-        
+        public bool EndOfMessage => _results.EndOfMessage;
+
         /// <inheritdoc/>
-        public int MessageType => (int) _results.MessageType;
+        public int MessageType => (int)_results.MessageType;
     }
 }

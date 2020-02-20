@@ -31,10 +31,13 @@ namespace EmbedIO
         /// <summary>
         /// Sends an empty response.
         /// </summary>
-        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
-        /// <param name="httpException">The HTTP exception.</param>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
+        /// <param name="httpException">The HTTP exception. This parameter is ignore, because there is no possible
+        /// use for it in an empty response.</param>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
+#pragma warning disable CA1801 // Unused parameters - We must respect the signature of HttpExceptionHandlerCallback.
         public static Task EmptyResponse(IHttpContext context, IHttpException httpException)
+#pragma warning restore CA1801
             => Task.CompletedTask;
 
         /// <summary>
@@ -42,9 +45,9 @@ namespace EmbedIO
         /// as a plain text response.</para>
         /// <para>This handler does not use the <see cref="IHttpException.DataObject">DataObject</see> property.</para>
         /// </summary>
-        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         public static Task PlainTextResponse(IHttpContext context, IHttpException httpException)
             => context.SendStringAsync(Validate.NotNull(nameof(httpException), httpException).Message ?? string.Empty, MimeType.PlainText, Encoding.UTF8);
 
@@ -55,9 +58,9 @@ namespace EmbedIO
         /// and <see cref="ExceptionHandler.IncludeStackTraces"/> properties, respectively.</para>
         /// <para>This handler does not use the <see cref="IHttpException.DataObject">DataObject</see> property.</para>
         /// </summary>
-        /// <param name="context">An <see cref="IHttpContext" /> interface representing the context of the request.</param>
+        /// <param name="context">An <see cref="IHttpContext"/> interface representing the context of the request.</param>
         /// <param name="httpException">The HTTP exception.</param>
-        /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
+        /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         public static Task HtmlResponse(IHttpContext context, IHttpException httpException)
             => context.SendStandardHtmlAsync(
                 Validate.NotNull(nameof(httpException), httpException).StatusCode,
@@ -84,11 +87,11 @@ namespace EmbedIO
                 });
 
         /// <summary>
-        /// <para>Gets a <see cref="HttpExceptionHandlerCallback" /> that will serialize a HTTP exception's
+        /// <para>Gets a <see cref="HttpExceptionHandlerCallback"/> that will serialize a HTTP exception's
         /// <see cref="IHttpException.DataObject">DataObject</see> property and send it as a JSON response.</para>
         /// </summary>
-        /// <param name="serializerCallback">A <see cref="ResponseSerializerCallback" /> used to serialize data and send it to the client.</param>
-        /// <returns>A <see cref="HttpExceptionHandlerCallback" />.</returns>
+        /// <param name="serializerCallback">A <see cref="ResponseSerializerCallback"/> used to serialize data and send it to the client.</param>
+        /// <returns>A <see cref="HttpExceptionHandlerCallback"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="serializerCallback"/> is <see langword="null"/>.</exception>
         public static HttpExceptionHandlerCallback DataResponse(ResponseSerializerCallback serializerCallback)
         {
@@ -98,13 +101,13 @@ namespace EmbedIO
         }
 
         /// <summary>
-        /// <para>Gets a <see cref="HttpExceptionHandlerCallback" /> that will serialize a HTTP exception's
+        /// <para>Gets a <see cref="HttpExceptionHandlerCallback"/> that will serialize a HTTP exception's
         /// <see cref="IHttpException.Message">Message</see> and <see cref="IHttpException.DataObject">DataObject</see> properties
         /// and send them as a JSON response.</para>
         /// <para>The response will be a JSON object with a <c>message</c> property and a <c>data</c> property.</para>
         /// </summary>
-        /// <param name="serializerCallback">A <see cref="ResponseSerializerCallback" /> used to serialize data and send it to the client.</param>
-        /// <returns>A <see cref="HttpExceptionHandlerCallback" />.</returns>
+        /// <param name="serializerCallback">A <see cref="ResponseSerializerCallback"/> used to serialize data and send it to the client.</param>
+        /// <returns>A <see cref="HttpExceptionHandlerCallback"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="serializerCallback"/> is <see langword="null"/>.</exception>
         public static HttpExceptionHandlerCallback FullDataResponse(ResponseSerializerCallback serializerCallback)
         {

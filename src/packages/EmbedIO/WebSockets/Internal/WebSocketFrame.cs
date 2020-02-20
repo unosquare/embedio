@@ -10,7 +10,7 @@ namespace EmbedIO.WebSockets.Internal
     internal class WebSocketFrame
     {
         internal static readonly byte[] EmptyPingBytes = CreatePingFrame().ToArray();
-        
+
         internal WebSocketFrame(Opcode opcode, PayloadData payloadData)
             : this(Fin.Final, opcode, payloadData)
         {
@@ -176,25 +176,29 @@ Extended Payload Length: {extPayloadLen}
 
             if (webSocket.InContinuation && (Opcode == Opcode.Text || Opcode == Opcode.Binary))
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                throw new WebSocketException(
+                    CloseStatusCode.ProtocolError,
                     "A data frame has been received while receiving continuation frames.");
             }
 
             if (IsCompressed && webSocket.Compression == CompressionMethod.None)
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                throw new WebSocketException(
+                    CloseStatusCode.ProtocolError,
                     "A compressed frame has been received without any agreement for it.");
             }
 
             if (Rsv2 == Rsv.On)
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                throw new WebSocketException(
+                    CloseStatusCode.ProtocolError,
                     "The RSV2 of a frame is non-zero without any negotiation for it.");
             }
 
             if (Rsv3 == Rsv.On)
             {
-                throw new WebSocketException(CloseStatusCode.ProtocolError,
+                throw new WebSocketException(
+                    CloseStatusCode.ProtocolError,
                     "The RSV3 of a frame is non-zero without any negotiation for it.");
             }
         }

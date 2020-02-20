@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using EmbedIO.Utilities;
 
 namespace EmbedIO
 {
@@ -24,7 +25,7 @@ namespace EmbedIO
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
         public static async Task Json(IHttpContext context, object? data)
         {
-            context.Response.ContentType = MimeType.Json;
+            Validate.NotNull(nameof(context), context).Response.ContentType = MimeType.Json;
             using var text = context.OpenResponseText(new UTF8Encoding(false));
             await text.WriteAsync(Swan.Formatters.Json.Serialize(data)).ConfigureAwait(false);
         }

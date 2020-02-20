@@ -21,12 +21,12 @@ namespace EmbedIO.Samples
         {
             var url = args.Length > 0 ? args[0] : "http://*:8877";
 
-            using (var ctSource = new CancellationTokenSource())
+            using (var cts = new CancellationTokenSource())
             {
                 Task.WaitAll(
-                    RunWebServerAsync(url, ctSource.Token),
-                    OpenBrowser ? ShowBrowserAsync(url.Replace("*", "localhost", StringComparison.Ordinal), ctSource.Token) : Task.CompletedTask,
-                    WaitForUserBreakAsync(ctSource.Cancel));
+                    RunWebServerAsync(url, cts.Token),
+                    OpenBrowser ? ShowBrowserAsync(url.Replace("*", "localhost", StringComparison.Ordinal), cts.Token) : Task.CompletedTask,
+                    WaitForUserBreakAsync(cts.Cancel));
             }
 
             // Clean up
@@ -66,12 +66,9 @@ namespace EmbedIO.Samples
                     .WithRegexRules("HTTP exception 404"))
                 .WithLocalSessionManager()
                 .WithCors(
-                    // Origins, separated by comma without last slash
-                    "http://unosquare.github.io,http://run.plnkr.co",
-                    // Allowed headers
-                    "content-type, accept",
-                    // Allowed methods
-                    "post")
+                    "http://unosquare.github.io,http://run.plnkr.co", // Origins, separated by comma without last slash
+                    "content-type, accept", // Allowed headers
+                    "post") // Allowed methods
                 .WithWebApi("/api", m => m
                     .WithController<PeopleController>())
                 .WithModule(new WebSocketChatModule("/chat"))
@@ -103,9 +100,12 @@ namespace EmbedIO.Samples
             await Task.Yield();
 
             // Fire up the browser to show the content!
-            using var browser = new Process();
-            browser.StartInfo = new ProcessStartInfo(url) {
-                UseShellExecute = true
+            using var browser = new Process
+            {
+                StartInfo = new ProcessStartInfo(url)
+                {
+                    UseShellExecute = true,
+                },
             };
             browser.Start();
         }

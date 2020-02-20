@@ -18,7 +18,8 @@ namespace EmbedIO.WebSockets.Internal
 
         internal async Task<WebSocketFrame?> ReadFrameAsync(WebSocket webSocket)
         {
-            if (_stream == null) return null;
+            if (_stream == null)
+                return null;
 
             var frame = ProcessHeader(await _stream.ReadBytesAsync(2).ConfigureAwait(false));
 
@@ -35,9 +36,9 @@ namespace EmbedIO.WebSockets.Internal
 
             return frame;
         }
-        
+
         private static bool IsOpcodeData(byte opcode) => opcode == 0x1 || opcode == 0x2;
-        
+
         private static bool IsOpcodeControl(byte opcode) => opcode > 0x7 && opcode < 0x10;
 
         private static WebSocketFrame ProcessHeader(byte[] header)
@@ -90,7 +91,7 @@ namespace EmbedIO.WebSockets.Internal
                 PayloadLength = payloadLen,
             };
         }
-        
+
         private async Task ReadExtendedPayloadLengthAsync(WebSocketFrame frame)
         {
             var len = frame.ExtendedPayloadLengthCount;

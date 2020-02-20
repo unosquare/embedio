@@ -36,12 +36,12 @@ namespace EmbedIO.WebSockets.Internal
                 cancellationToken);
 
         /// <inheritdoc />
-        public Task CloseAsync(CancellationToken cancellationToken = default) =>
-            UnderlyingWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, cancellationToken);
+        public Task CloseAsync(CancellationToken cancellationToken = default)
+            => UnderlyingWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, cancellationToken);
 
         /// <inheritdoc />
-        public Task CloseAsync(CloseStatusCode code, string? comment = null, CancellationToken cancellationToken = default)=>
-            UnderlyingWebSocket.CloseAsync(MapCloseStatus(code), comment ?? string.Empty, cancellationToken);
+        public Task CloseAsync(CloseStatusCode code, string? comment = null, CancellationToken cancellationToken = default)
+            => UnderlyingWebSocket.CloseAsync(MapCloseStatus(code), comment ?? string.Empty, cancellationToken);
 
         private void Dispose(bool disposing)
         {
@@ -60,7 +60,7 @@ namespace EmbedIO.WebSockets.Internal
             CloseStatusCode.TooBig => WebSocketCloseStatus.MessageTooBig,
             CloseStatusCode.MandatoryExtension => WebSocketCloseStatus.MandatoryExtension,
             CloseStatusCode.ServerError => WebSocketCloseStatus.InternalServerError,
-            _ => throw new ArgumentOutOfRangeException(nameof(code), code, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(code), code, null),
         };
     }
 }

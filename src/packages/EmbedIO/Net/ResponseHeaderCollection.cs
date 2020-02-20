@@ -44,7 +44,7 @@ namespace EmbedIO.Net
     ///       <para><c>Set-Cookie</c></para>
     ///       <para><c>Set-Cookie2</c></para>
     ///     </term>
-    ///     <description>Cookies are set through the <see cref="IHttpResponse.Cookies"/> property.</description>
+    ///     <description>Cookies are set through the <see cref="IHttpMessage.Cookies"/> property.</description>
     ///   </item>
     ///   <item>
     ///     <term>

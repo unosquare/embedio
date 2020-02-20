@@ -10,24 +10,24 @@ using Unosquare.Tubular;
 namespace EmbedIO.Samples
 {
     // A very simple controller to handle People CRUD.
-    // Notice how it Inherits from WebApiController and the methods have WebApiHandler attributes 
+    // Notice how it Inherits from WebApiController and the methods have WebApiHandler attributes
     // This is for sampling purposes only.
     public sealed class PeopleController : WebApiController
     {
         // Gets all records.
-        // This will respond to 
+        // This will respond to
         //     GET http://localhost:9696/api/people
         [Route(HttpVerb.Get, "/people")]
         public Task<IEnumerable<Person>> GetAllPeople() => Person.GetDataAsync();
 
         // Gets the first record.
-        // This will respond to 
+        // This will respond to
         //     GET http://localhost:9696/api/people/first
         [Route(HttpVerb.Get, "/people/first")]
         public async Task<Person> GetFirstPeople() => (await Person.GetDataAsync().ConfigureAwait(false)).First();
 
         // Gets a single record.
-        // This will respond to 
+        // This will respond to
         //     GET http://localhost:9696/api/people/1
         //     GET http://localhost:9696/api/people/{n}
         //
