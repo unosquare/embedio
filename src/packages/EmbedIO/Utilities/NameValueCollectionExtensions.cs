@@ -29,7 +29,7 @@ namespace EmbedIO.Utilities
                 return values.Length switch {
                     0 => null,
                     1 => (object)values[0],
-                    _ => (object)values
+                    _ => (object)values,
                 };
             });
 

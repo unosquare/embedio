@@ -68,7 +68,7 @@ namespace EmbedIO.Routing
             Assembly assembly => assembly.GetExportedTypes().Sum(t => AddFrom(null, t)),
             MethodInfo method => method.IsStatic ? Add(null, method) : 0,
             Delegate callback => Add(callback.Target, callback.Method),
-            _ => AddFrom(target, target.GetType())
+            _ => AddFrom(target, target.GetType()),
         };
 
         /// <inheritdoc />

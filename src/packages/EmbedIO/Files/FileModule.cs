@@ -616,7 +616,7 @@ namespace EmbedIO.Files
         // Uses DirectoryLister to generate a directory listing asynchronously.
         // Returns a tuple of the generated content and its *uncompressed* length
         // (useful to decide whether it can be cached).
-        private async Task<(byte[], long)> GenerateDirectoryListingAsync(
+        private async Task<(byte[] Content, long UncompressedLength)> GenerateDirectoryListingAsync(
             IHttpContext context,
             MappedResourceInfo info,
             CompressionMethod compressionMethod)

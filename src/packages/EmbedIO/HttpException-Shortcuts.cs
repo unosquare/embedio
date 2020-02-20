@@ -3,7 +3,9 @@ using System.Net;
 
 namespace EmbedIO
 {
+#pragma warning disable CA1032 // Implement standard exception constructors - they have no meaning here.
     partial class HttpException
+#pragma warning restore CA1032
     {
         /// <summary>
         /// Returns a new instance of <see cref="HttpException" /> that, when thrown,

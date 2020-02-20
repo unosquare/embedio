@@ -75,7 +75,7 @@ namespace EmbedIO
         /// whose result will be the deserialized data.</returns>
         /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="deserializer"/> is <see langword="null"/>.</exception>
-        public static Task<TData> GetRequestDataAsync<TData>(this IHttpContext @this,RequestDeserializerCallback<TData> deserializer)
+        public static Task<TData> GetRequestDataAsync<TData>(this IHttpContext @this, RequestDeserializerCallback<TData> deserializer)
             => Validate.NotNull(nameof(deserializer), deserializer)(@this);
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace EmbedIO
                 NameValueCollection collection => collection,
                 Exception exception => throw exception.RethrowPreservingStackTrace(),
                 null => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is null."),
-                _ => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}")
+                _ => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestFormDataAsync)} is of unexpected type {previousResult.GetType().FullName}"),
             };
         }
 
@@ -153,7 +153,7 @@ namespace EmbedIO
                 NameValueCollection collection => collection,
                 Exception exception => throw exception.RethrowPreservingStackTrace(),
                 null => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is null."),
-                _ => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is of unexpected type {previousResult.GetType().FullName}")
+                _ => throw SelfCheck.Failure($"Previous result of {nameof(HttpContextExtensions)}.{nameof(GetRequestQueryData)} is of unexpected type {previousResult.GetType().FullName}"),
             };
         }
     }

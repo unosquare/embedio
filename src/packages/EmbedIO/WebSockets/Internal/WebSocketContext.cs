@@ -13,7 +13,7 @@ namespace EmbedIO.WebSockets.Internal
     {
         internal WebSocketContext(
             IHttpContextImpl httpContext,
-            string webSocketVersion, 
+            string webSocketVersion,
             IEnumerable<string> requestedProtocols,
             string acceptedProtocol,
             IWebSocket webSocket,

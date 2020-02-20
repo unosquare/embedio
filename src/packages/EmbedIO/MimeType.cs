@@ -104,7 +104,7 @@ namespace EmbedIO
         /// <exception cref="ArgumentNullException"><paramref name="mimeType"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="mimeType"/> is not a valid
         /// MIME type or media range.</exception>
-        public static (string type, string subtype) Split(string mimeType)
+        public static (string Type, string Subtype) Split(string mimeType)
             => UnsafeSplit(Validate.MimeType(nameof(mimeType), mimeType, true));
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace EmbedIO
                 Validate.MimeType(nameof(mimeType), mimeType, false),
                 Validate.MimeType(nameof(mediaRange), mediaRange, true));
 
-        internal static (string type, string subtype) UnsafeSplit(string mimeType)
+        internal static (string Type, string Subtype) UnsafeSplit(string mimeType)
         {
             var slashPos = mimeType.IndexOf('/');
             return (mimeType.Substring(0, slashPos), mimeType.Substring(slashPos + 1));

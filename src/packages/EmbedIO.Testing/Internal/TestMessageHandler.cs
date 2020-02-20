@@ -93,7 +93,7 @@ namespace EmbedIO.Testing.Internal
             HttpHeaderNames.LastModified => ResponseHeaderType.Content,
 
             // All other headers belong to Response.
-            _ => ResponseHeaderType.Response
+            _ => ResponseHeaderType.Response,
         };
     }
 }

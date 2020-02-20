@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Swan;
 using EmbedIO.Net.Internal;
+using Swan;
 
 namespace EmbedIO.WebSockets.Internal
 {
@@ -55,7 +55,8 @@ namespace EmbedIO.WebSockets.Internal
         internal static byte[] Append(ushort code, string? reason)
         {
             var ret = code.ToByteArray(Endianness.Big);
-            if (string.IsNullOrEmpty(reason)) return ret;
+            if (string.IsNullOrEmpty(reason))
+                return ret;
 
             var buff = new List<byte>(ret);
             buff.AddRange(Encoding.UTF8.GetBytes(reason));

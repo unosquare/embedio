@@ -25,7 +25,9 @@ namespace EmbedIO
         /// <summary>
         /// Gets the raw URL.
         /// </summary>
+#pragma warning disable CA1056 // Change type to System.Uri - This property mirrors HttpListenerRequest.RawUrl, which is a string.
         string RawUrl { get; }
+#pragma warning restore CA1056
 
         /// <summary>
         /// Gets the query string.
@@ -43,7 +45,7 @@ namespace EmbedIO
         HttpVerb HttpVerb { get; }
 
         /// <summary>
-        /// Gets the URL.
+        /// Gets the requested URL.
         /// </summary>
         Uri Url { get; }
 

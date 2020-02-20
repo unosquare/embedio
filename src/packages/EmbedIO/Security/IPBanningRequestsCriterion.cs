@@ -62,7 +62,8 @@ namespace EmbedIO.Security
 
             foreach (var k in Requests.Keys)
             {
-                if (!Requests.TryGetValue(k, out var requests)) continue;
+                if (!Requests.TryGetValue(k, out var requests))
+                    continue;
 
                 var recentRequests = new ConcurrentBag<long>(requests.Where(x => x >= minTime));
                 if (!recentRequests.Any())
@@ -81,7 +82,9 @@ namespace EmbedIO.Security
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
+
             if (disposing)
             {
                 Requests.Clear();

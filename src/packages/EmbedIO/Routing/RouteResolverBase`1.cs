@@ -16,8 +16,8 @@ namespace EmbedIO.Routing
     /// <seealso cref="ConfiguredObject" />
     public abstract class RouteResolverBase<TData> : ConfiguredObject
     {
-        private readonly List<(TData data, RouteHandlerCallback handler)> _dataHandlerPairs
-            = new List<(TData data, RouteHandlerCallback handler)>();
+        private readonly List<(TData Data, RouteHandlerCallback Handler)> _dataHandlerPairs
+            = new List<(TData Data, RouteHandlerCallback Handler)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteResolverBase{TData}"/> class.

@@ -35,7 +35,7 @@ namespace EmbedIO
             return compressionMethod switch {
                 CompressionMethod.Gzip => new GZipStream(stream, CompressionMode.Compress),
                 CompressionMethod.Deflate => new DeflateStream(stream, CompressionMode.Compress),
-                _ => stream
+                _ => stream,
             };
         }
 

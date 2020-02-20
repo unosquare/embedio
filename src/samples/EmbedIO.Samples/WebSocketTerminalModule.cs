@@ -21,9 +21,9 @@ namespace EmbedIO.Samples
         }
 
         /// <inheritdoc />
-        protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] rxBuffer, IWebSocketReceiveResult rxResult)
+        protected override Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result)
             => _processes.TryGetValue(context, out var process)
-                ? process.StandardInput.WriteLineAsync(Encoding.GetString(rxBuffer))
+                ? process.StandardInput.WriteLineAsync(Encoding.GetString(buffer))
                 : Task.CompletedTask;
 
         /// <inheritdoc />
@@ -42,8 +42,8 @@ namespace EmbedIO.Samples
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
-                    WorkingDirectory = Environment.CurrentDirectory
-                }
+                    WorkingDirectory = Environment.CurrentDirectory,
+                },
             };
 #pragma warning restore CA2000
 

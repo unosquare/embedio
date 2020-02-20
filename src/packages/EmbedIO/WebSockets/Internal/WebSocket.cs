@@ -22,7 +22,7 @@ namespace EmbedIO.WebSockets.Internal
     internal sealed class WebSocket : IWebSocket
     {
         public const string SupportedVersion = "13";
-        
+
         private readonly object _stateSyncRoot = new object();
         private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
         private readonly Action _closeConnection;
@@ -109,25 +109,17 @@ namespace EmbedIO.WebSockets.Internal
             return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, cancellationToken);
         }
 
-        /// <summary>
-        /// Sends a ping using the WebSocket connection.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
-        /// otherwise, <c>false</c>.
-        /// </returns>
+        /// <summary>Asynchronously sends a ping on the WebSocket connection.</summary>
+        /// <returns>A <see cref="Task{TResult}"/> whose result will be <c>true</c> if the <see cref="WebSocket"/>
+        /// receives a pong to this ping in a time; otherwise, the  task's result will be <c>false</c>.</returns>
         public Task<bool> PingAsync() => PingAsync(WebSocketFrame.EmptyPingBytes, _waitTime);
 
         /// <summary>
-        /// Sends a ping with the specified <paramref name="message"/> using the WebSocket connection.
+        /// Asynchronously sends a ping with the specified <paramref name="message"/> on the WebSocket connection.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if the <see cref="WebSocket"/> receives a pong to this ping in a time;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="message">
-        /// A <see cref="string"/> that represents the message to send.
-        /// </param>
+        /// <param name="message">A <see cref="string"/> that represents the message to send.</param>
+        /// <returns>A <see cref="Task{TResult}"/> whose result will be <c>true</c> if the <see cref="WebSocket"/>
+        /// receives a pong to this ping in a time; otherwise, the  task's result will be <c>false</c>.</returns>
         public Task<bool> PingAsync(string message)
         {
             if (string.IsNullOrEmpty(message))
@@ -144,18 +136,13 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         /// <summary>
-        /// Sends binary <paramref name="data" /> using the WebSocket connection.
+        /// Asynchronously sends binary data on the WebSocket connection.
         /// </summary>
-        /// <param name="data">An array of <see cref="byte" /> that represents the binary data to send.</param>
+        /// <param name="data">An array of <see cref="byte"/>s that represents the binary data to send.</param>
         /// <param name="opcode">The opcode.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous of send 
-        /// binary data using websocket.
-        /// </returns>
-#pragma warning disable CA1801 // Unused parameter
+        /// <returns>A <see cref="Task"/> that represents the ongoing operation.</returns>
         public async Task SendAsync(byte[] data, Opcode opcode, CancellationToken cancellationToken = default)
-#pragma warning restore CA1801
         {
             if (_readyState != WebSocketState.Open)
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
@@ -174,15 +161,15 @@ namespace EmbedIO.WebSockets.Internal
 
         internal static async Task<WebSocket> AcceptAsync(HttpListenerContext httpContext, string acceptedProtocol)
         {
-            string CreateResponseKey(string clientKey)
+            static string CreateResponseKey(string clientKey)
             {
                 const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
                 var buff = new StringBuilder(clientKey, 64).Append(Guid);
-#pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
+#pragma warning disable CA5350 // Do not use weak cryptographic algorithms - RFC6455 mandates the use of SHA1 here.
                 using var sha1 = SHA1.Create();
                 return Convert.ToBase64String(sha1.ComputeHash(Encoding.UTF8.GetBytes(buff.ToString())));
-#pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
+#pragma warning restore CA5350
             }
 
             var requestHeaders = httpContext.Request.Headers;
@@ -193,10 +180,10 @@ namespace EmbedIO.WebSockets.Internal
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketKey} header, or it has an invalid value.");
 
             var webSocketVersion = requestHeaders[HttpHeaderNames.SecWebSocketVersion];
-            
+
             if (webSocketVersion == null || webSocketVersion != SupportedVersion)
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketVersion} header, or it has an invalid value.");
-            
+
             var handshakeResponse = new WebSocketHandshakeResponse(httpContext);
 
             handshakeResponse.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
@@ -458,12 +445,13 @@ namespace EmbedIO.WebSockets.Internal
                 _receivePong = null;
             }
 
-            if (_exitReceiving == null) return;
+            if (_exitReceiving == null)
+                return;
 
             _exitReceiving.Dispose();
             _exitReceiving = null;
         }
-        
+
         private Task Send(WebSocketFrame frame)
         {
             lock (_stateSyncRoot)

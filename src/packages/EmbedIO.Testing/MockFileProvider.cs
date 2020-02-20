@@ -176,7 +176,7 @@ namespace EmbedIO.Testing
             return result;
         }
 
-        private (string name, MockDirectoryEntry entry) FindEntry(string path)
+        private (string Name, MockDirectoryEntry Entry) FindEntry(string path)
         {
             if (path == null)
                 return default;
@@ -213,7 +213,7 @@ namespace EmbedIO.Testing
         {
             MockFile file => MappedResourceInfo.ForFile(path, name, file.LastModifiedUtc, file.Data.Length, mimeTypeProvider.GetMimeType(Path.GetExtension(name))),
             MockDirectory _ => MappedResourceInfo.ForDirectory(string.Empty, name, _root.LastModifiedUtc),
-            _ => null
+            _ => null,
         };
     }
 }

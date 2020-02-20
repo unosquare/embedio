@@ -234,7 +234,7 @@ namespace EmbedIO
         /// </summary>
         /// <param name="context">The context of the request.</param>
         /// <returns>A <see cref="Task"/> representing the ongoing operation.</returns>
-        protected async Task DoHandleContextAsync(IHttpContextImpl context)
+        protected async Task DoHandleContextAsync([ValidatedNotNull] IHttpContextImpl context)
         {
             context.SupportCompressedRequests = Options.SupportCompressedRequests;
             context.MimeTypeProviders.Push(this);
