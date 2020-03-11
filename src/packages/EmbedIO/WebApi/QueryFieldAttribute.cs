@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
@@ -146,10 +146,11 @@ namespace EmbedIO.WebApi
             if (!data.ContainsKey(fieldName) && BadRequestIfMissing)
                 throw HttpException.BadRequest($"Missing query field {fieldName}.");
 
+            object result = null;
             if (type.IsArray)
             {
                 var fieldValues = data.GetValues(fieldName) ?? Array.Empty<string>();
-                if (!FromString.TryConvertTo(type, fieldValues, out var result))
+                if (!FromString.TryConvertTo(type, fieldValues, out result))
                     throw HttpException.BadRequest($"Cannot convert field {fieldName} to an array of {type.GetElementType().Name}.");
 
                 return Task.FromResult(result);
@@ -158,9 +159,17 @@ namespace EmbedIO.WebApi
             {
                 var fieldValue = data.GetValues(fieldName)?.LastOrDefault();
                 if (fieldValue == null)
-                    return Task.FromResult(type.IsValueType ? Activator.CreateInstance(type) : null);
+                {
+                    if (type.IsValueType)
+                    {
+                        var parameter = controller.CurrentMethod.GetParameters().FirstOrDefault(p => p.Name == parameterName);
+                        result = parameter.HasDefaultValue ? parameter.DefaultValue : Activator.CreateInstance(type);
+                    }
 
-                if (!FromString.TryConvertTo(type, fieldValue, out var result))
+                    return Task.FromResult(result);
+                }
+
+                if (!FromString.TryConvertTo(type, fieldValue, out result))
                     throw HttpException.BadRequest($"Cannot convert field {fieldName} to {type.Name}.");
 
                 return Task.FromResult(result);
