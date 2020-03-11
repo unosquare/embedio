@@ -1,4 +1,6 @@
-﻿using System.Security.Principal;
+using System.Linq;
+using System.Reflection;
+using System.Security.Principal;
 using System.Threading;
 using EmbedIO.Routing;
 using EmbedIO.Sessions;
@@ -54,6 +56,13 @@ namespace EmbedIO.WebApi
         /// Gets the session proxy associated with the HTTP context.
         /// </summary>
         public ISessionProxy Session => HttpContext.Session;
+
+        /// <summary>
+        /// Gets the method of the controller that will be called by the current route.
+        /// </summary>
+        internal MethodInfo CurrentMethod => GetType().GetMethods()
+            .FirstOrDefault(m => m.GetCustomAttributes<RouteAttribute>(true)
+                .Any(ca => ca.Verb == HttpContext.Request.HttpVerb && ca.Matcher.Match(HttpContext.Route.SubPath) != null));
 
         /// <summary>
         /// <para>This method is meant to be called internally by EmbedIO.</para>
