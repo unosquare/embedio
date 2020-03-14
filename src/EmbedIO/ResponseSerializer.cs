@@ -14,7 +14,7 @@ namespace EmbedIO
     {
         /// <summary>
         /// <para>The default response serializer callback used by EmbedIO.</para>
-        /// <para>Equivalent to <see cref="Swan.Formatters.Json">Json</see>.</para>
+        /// <para>Equivalent to <see cref="Json(EmbedIO.IHttpContext,object?)">Json</see>.</para>
         /// </summary>
         public static readonly ResponseSerializerCallback Default = Json;
 
