@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace EmbedIO.WebApi
 {
     /// <summary>
-    /// <para>Specified that a parameter of a controller method will receive a <see cref="NameValueCollection"/>
+    /// <para>Specifies that a parameter of a controller method will receive a <see cref="NameValueCollection"/>
     /// of HTML form data, obtained by deserializing a request URL query.</para>
     /// <para>The received collection will be read-only.</para>
     /// <para>This class cannot be inherited.</para>
