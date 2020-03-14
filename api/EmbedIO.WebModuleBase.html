@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class WebModuleBase
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebModuleBase
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -403,7 +403,7 @@ extracting values for the route&apos;s parameters and a sub-path.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouteMatch MatchUrlPath(string urlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public RouteMatch MatchUrlPath(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -417,7 +417,7 @@ extracting values for the route&apos;s parameters and a sub-path.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path to match.</p>
 </td>
       </tr>
@@ -516,6 +516,41 @@ otherwise, <span class="xref">null</span>.</p>
   </table>
   
   
+  <a id="EmbedIO_WebModuleBase_SetContainer_" data-uid="EmbedIO.WebModuleBase.SetContainer*"></a>
+  <h4 id="EmbedIO_WebModuleBase_SetContainer_EmbedIO_IWebModuleContainer_" data-uid="EmbedIO.WebModuleBase.SetContainer(EmbedIO.IWebModuleContainer)">SetContainer(IWebModuleContainer)</h4>
+  <div class="markdown level1 summary"><p>Sets the container of this module.</p>
+<p>This API supports the EmbedIO infrastructure; it is not intended to be used directly from your code.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void SetContainer(IWebModuleContainer value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The container to associate this module with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="EmbedIO_WebModuleBase_SetContainer_EmbedIO_IWebModuleContainer__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.IWebModule.html#EmbedIO_IWebModule_Container">Container</a></div>
+      <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>
+  </div>
+  
+  
   <a id="EmbedIO_WebModuleBase_Start_" data-uid="EmbedIO.WebModuleBase.Start*"></a>
   <h4 id="EmbedIO_WebModuleBase_Start_CancellationToken_" data-uid="EmbedIO.WebModuleBase.Start(CancellationToken)">Start(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Signals a module that the web server is starting.</p>
@@ -550,32 +585,35 @@ otherwise, <span class="xref">null</span>.</p>
   </h3>
   
   
-  <a id="EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container_" data-uid="EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container*"></a>
-  <h4 id="EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container" data-uid="EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container">IWebModuleImpl.Container</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the container of this module.</p>
+  <a id="EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_SetContainer_" data-uid="EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#SetContainer*"></a>
+  <h4 id="EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_SetContainer_EmbedIO_IWebModuleContainer_" data-uid="EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#SetContainer(EmbedIO.IWebModuleContainer)">IWebModuleImpl.SetContainer(IWebModuleContainer)</h4>
+  <div class="markdown level1 summary"><p>Sets the container of this module.</p>
 <p>This API supports the EmbedIO infrastructure; it is not intended to be used directly from your code.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IWebModuleContainer IWebModuleImpl.Container { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">void IWebModuleImpl.SetContainer(IWebModuleContainer value)</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></td>
-        <td></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The container to associate this module with.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 id="EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container_seealso">See Also</h5>
+  <h5 id="EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_SetContainer_EmbedIO_IWebModuleContainer__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.IWebModule.html#EmbedIO_IWebModule_Container">Container</a></div>
       <div><a class="xref" href="EmbedIO.IWebModuleContainer.html">IWebModuleContainer</a></div>

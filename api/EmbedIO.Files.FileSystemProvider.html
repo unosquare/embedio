@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class FileSystemProvider
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FileSystemProvider
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -257,7 +257,7 @@ will never change.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;MappedResourceInfo&gt; GetDirectoryEntries(string path, IMimeTypeProvider mimeTypeProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;MappedResourceInfo&gt; GetDirectoryEntries(string providerPath, IMimeTypeProvider mimeTypeProvider)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -271,7 +271,7 @@ will never change.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">path</span></td>
+        <td><span class="parametername">providerPath</span></td>
         <td><p>The provider-specific path for the directory.</p>
 </td>
       </tr>
@@ -296,7 +296,7 @@ for determining the MIME type of files.</p>
       <tr>
         <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="EmbedIO.Files.MappedResourceInfo.html">MappedResourceInfo</a>&gt;</td>
         <td><p>An enumeration of <a class="xref" href="EmbedIO.Files.MappedResourceInfo.html">MappedResourceInfo</a> objects identifying the entries
-in the directory identified by <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
+in the directory identified by <code data-dev-comment-type="paramref" class="paramref">providerPath</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -310,7 +310,7 @@ in the directory identified by <code data-dev-comment-type="paramref" class="par
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MappedResourceInfo MapUrlPath(string urlPath, IMimeTypeProvider mimeTypeProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">public MappedResourceInfo MapUrlPath(string path, IMimeTypeProvider mimeTypeProvider)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -324,7 +324,7 @@ in the directory identified by <code data-dev-comment-type="paramref" class="par
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
@@ -350,7 +350,7 @@ for determining the MIME type of a file.</p>
         <td><a class="xref" href="EmbedIO.Files.MappedResourceInfo.html">MappedResourceInfo</a></td>
         <td><p>A provider-specific path identifying a file or directory,
 or <span class="xref">null</span> if this instance cannot provide a resource associated
-to <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
+to <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -364,7 +364,7 @@ to <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Stream OpenFile(string path)</code></pre>
+    <pre><code class="lang-csharp hljs">public Stream OpenFile(string providerPath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -378,7 +378,7 @@ to <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">path</span></td>
+        <td><span class="parametername">providerPath</span></td>
         <td><p>The provider-specific path for the file.</p>
 </td>
       </tr>
@@ -434,7 +434,9 @@ to <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
   
   
   <h4 id="EmbedIO_Files_FileSystemProvider_ResourceChanged" data-uid="EmbedIO.Files.FileSystemProvider.ResourceChanged">ResourceChanged</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Occurs when a file or directory provided by this instance is modified or removed.</p>
+<p>The event&apos;s parameter is the provider-specific path of the resource that changed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

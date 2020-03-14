@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class WebServer
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebServer
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -133,10 +133,10 @@
       <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_HandleContextAsync_EmbedIO_IHttpContextImpl_">WebServerBase&lt;WebServerOptions&gt;.HandleContextAsync(IHttpContextImpl)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_GetMimeType_System_String_">WebServerBase&lt;WebServerOptions&gt;.IMimeTypeProvider.GetMimeType(String)</a>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_GetMimeType_System_String_">WebServerBase&lt;WebServerOptions&gt;.GetMimeType(String)</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_TryDetermineCompression_System_String_System_Boolean__">WebServerBase&lt;WebServerOptions&gt;.IMimeTypeProvider.TryDetermineCompression(String, Boolean)</a>
+      <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_TryDetermineCompression_System_String_System_Boolean__">WebServerBase&lt;WebServerOptions&gt;.TryDetermineCompression(String, Boolean)</a>
     </div>
     <div>
       <a class="xref" href="EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_AddCustomMimeType_System_String_System_String_">WebServerBase&lt;WebServerOptions&gt;.AddCustomMimeType(String, String)</a>
@@ -430,6 +430,58 @@ with the specified URL prefixes.</p>
   </h3>
   
   
+  <a id="EmbedIO_WebServer_IsIPv4Supported_" data-uid="EmbedIO.WebServer.IsIPv4Supported*"></a>
+  <h4 id="EmbedIO_WebServer_IsIPv4Supported" data-uid="EmbedIO.WebServer.IsIPv4Supported">IsIPv4Supported</h4>
+  <div class="markdown level1 summary"><p>Gets whether IPv4 is supported on the machine.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsIPv4Supported { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_WebServer_IsIPv6Supported_" data-uid="EmbedIO.WebServer.IsIPv6Supported*"></a>
+  <h4 id="EmbedIO_WebServer_IsIPv6Supported" data-uid="EmbedIO.WebServer.IsIPv6Supported">IsIPv6Supported</h4>
+  <div class="markdown level1 summary"><p>Gets whether IPv6 is supported on the machine.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsIPv6Supported { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_WebServer_Listener_" data-uid="EmbedIO.WebServer.Listener*"></a>
   <h4 id="EmbedIO_WebServer_Listener" data-uid="EmbedIO.WebServer.Listener">Listener</h4>
   <div class="markdown level1 summary"><p>Gets the underlying HTTP listener.</p>
@@ -460,7 +512,8 @@ with the specified URL prefixes.</p>
   
   <a id="EmbedIO_WebServer_Dispose_" data-uid="EmbedIO.WebServer.Dispose*"></a>
   <h4 id="EmbedIO_WebServer_Dispose_System_Boolean_" data-uid="EmbedIO.WebServer.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -479,7 +532,8 @@ with the specified URL prefixes.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">disposing</span></td>
-        <td></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -489,7 +543,9 @@ with the specified URL prefixes.</p>
   
   <a id="EmbedIO_WebServer_OnFatalException_" data-uid="EmbedIO.WebServer.OnFatalException*"></a>
   <h4 id="EmbedIO_WebServer_OnFatalException" data-uid="EmbedIO.WebServer.OnFatalException">OnFatalException()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Called when an exception is caught in the web server&apos;s request processing loop.</p>
+<p>This method should tell the server socket to stop accepting further requests.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -501,7 +557,8 @@ with the specified URL prefixes.</p>
   
   <a id="EmbedIO_WebServer_Prepare_" data-uid="EmbedIO.WebServer.Prepare*"></a>
   <h4 id="EmbedIO_WebServer_Prepare_CancellationToken_" data-uid="EmbedIO.WebServer.Prepare(CancellationToken)">Prepare(CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Prepares a web server for running.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -520,7 +577,8 @@ with the specified URL prefixes.</p>
       <tr>
         <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td></td>
+        <td><p>A <see cref="!:CancellationToken"></see> used to stop the web server.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -530,7 +588,8 @@ with the specified URL prefixes.</p>
   
   <a id="EmbedIO_WebServer_ProcessRequestsAsync_" data-uid="EmbedIO.WebServer.ProcessRequestsAsync*"></a>
   <h4 id="EmbedIO_WebServer_ProcessRequestsAsync_CancellationToken_" data-uid="EmbedIO.WebServer.ProcessRequestsAsync(CancellationToken)">ProcessRequestsAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Asynchronously receives requests and processes them.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -549,7 +608,8 @@ with the specified URL prefixes.</p>
       <tr>
         <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td></td>
+        <td><p>A <see cref="!:CancellationToken"></see> used to stop the web server.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -564,7 +624,8 @@ with the specified URL prefixes.</p>
     <tbody>
       <tr>
         <td><span class="xref">Task</span></td>
-        <td></td>
+        <td><p>A <see cref="!:Task"></see> representing the ongoing operation.</p>
+</td>
       </tr>
     </tbody>
   </table>

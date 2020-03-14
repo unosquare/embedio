@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class RouteVerbResolver
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RouteVerbResolver
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -157,7 +157,10 @@ possibly handling different HTTP methods via different handlers.</p>
   
   <a id="EmbedIO_Routing_RouteVerbResolver_GetContextData_" data-uid="EmbedIO.Routing.RouteVerbResolver.GetContextData*"></a>
   <h4 id="EmbedIO_Routing_RouteVerbResolver_GetContextData_EmbedIO_IHttpContext_" data-uid="EmbedIO.Routing.RouteVerbResolver.GetContextData(EmbedIO.IHttpContext)">GetContextData(IHttpContext)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync(IHttpContext)</a> to extract data from a context.</p>
+<p>The extracted data are then used to select which handlers are suitable
+to handle the context.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -176,7 +179,8 @@ possibly handling different HTTP methods via different handlers.</p>
       <tr>
         <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td></td>
+        <td><p>The HTTP context to extract data from.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -191,21 +195,29 @@ possibly handling different HTTP methods via different handlers.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
-        <td></td>
+        <td><p>The extracted data.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">EmbedIO.Routing.RouteResolverBase&lt;EmbedIO.HttpVerb&gt;.GetContextData(EmbedIO.IHttpContext)</span></div>
+  <h5 id="EmbedIO_Routing_RouteVerbResolver_GetContextData_EmbedIO_IHttpContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync</a>(<a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a>)</div>
+      <div><a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_MatchContextData__0__0_">MatchContextData</a>(TData, TData)</div>
+  </div>
   
   
   <a id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData*"></a>
   <h4 id="EmbedIO_Routing_RouteVerbResolver_MatchContextData_EmbedIO_HttpVerb_EmbedIO_HttpVerb_" data-uid="EmbedIO.Routing.RouteVerbResolver.MatchContextData(EmbedIO.HttpVerb,EmbedIO.HttpVerb)">MatchContextData(HttpVerb, HttpVerb)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync(IHttpContext)</a> to match data extracted from a context
+against data associated with a handler.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override bool MatchContextData(HttpVerb contextVerb, HttpVerb handlerVerb)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override bool MatchContextData(HttpVerb contextData, HttpVerb handlerData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -219,12 +231,12 @@ possibly handling different HTTP methods via different handlers.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
-        <td><span class="parametername">contextVerb</span></td>
+        <td><span class="parametername">contextData</span></td>
         <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="EmbedIO.HttpVerb.html">HttpVerb</a></td>
-        <td><span class="parametername">handlerVerb</span></td>
+        <td><span class="parametername">handlerData</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -240,7 +252,9 @@ possibly handling different HTTP methods via different handlers.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p><span class="xref">true</span> if the handler should be called to handle the context;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
       </tr>
     </tbody>
   </table>

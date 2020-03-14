@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class FormDataAttribute
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FormDataAttribute
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -81,7 +81,7 @@
   
   <h1 id="EmbedIO_WebApi_FormDataAttribute" data-uid="EmbedIO.WebApi.FormDataAttribute" class="text-break">Class FormDataAttribute
   </h1>
-  <div class="markdown level0 summary"><p>Specified that a parameter of a controller method will receive a <see cref="!:NameValueCollection"></see>
+  <div class="markdown level0 summary"><p>Specifies that a parameter of a controller method will receive a <see cref="!:NameValueCollection"></see>
 of HTML form data, obtained by deserializing a request body with a content type
 of <code>application/x-www-form-urlencoded</code>.</p>
 <p>The received collection will be read-only.</p>
@@ -108,7 +108,8 @@ of <code>application/x-www-form-urlencoded</code>.</p>
   
   <a id="EmbedIO_WebApi_FormDataAttribute_GetRequestDataAsync_" data-uid="EmbedIO.WebApi.FormDataAttribute.GetRequestDataAsync*"></a>
   <h4 id="EmbedIO_WebApi_FormDataAttribute_GetRequestDataAsync_EmbedIO_WebApi_WebApiController_System_String_" data-uid="EmbedIO.WebApi.FormDataAttribute.GetRequestDataAsync(EmbedIO.WebApi.WebApiController,System.String)">GetRequestDataAsync(WebApiController, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Asynchronously obtains data from a controller&apos;s context.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -132,7 +133,8 @@ of <code>application/x-www-form-urlencoded</code>.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">parameterName</span></td>
-        <td></td>
+        <td><p>The name of the parameter that has to receive the data.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -147,7 +149,9 @@ of <code>application/x-www-form-urlencoded</code>.</p>
     <tbody>
       <tr>
         <td><span class="xref">Task</span>&lt;<span class="xref">NameValueCollection</span>&gt;</td>
-        <td></td>
+        <td><p>a <see cref="!:Task"></see> whose result will be the data
+to pass as a parameter to a controller method.</p>
+</td>
       </tr>
     </tbody>
   </table>

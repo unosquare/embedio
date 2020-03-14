@@ -105,6 +105,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Actions.RedirectModule.IsFinalHandler
   nameWithType: RedirectModule.IsFinalHandler
+- uid: EmbedIO.Actions.RedirectModule.Location
+  name: Location
+  href: api/EmbedIO.Actions.RedirectModule.html#EmbedIO_Actions_RedirectModule_Location
+  commentId: P:EmbedIO.Actions.RedirectModule.Location
+  fullName: EmbedIO.Actions.RedirectModule.Location
+  nameWithType: RedirectModule.Location
+- uid: EmbedIO.Actions.RedirectModule.Location*
+  name: Location
+  href: api/EmbedIO.Actions.RedirectModule.html#EmbedIO_Actions_RedirectModule_Location_
+  commentId: Overload:EmbedIO.Actions.RedirectModule.Location
+  isSpec: "True"
+  fullName: EmbedIO.Actions.RedirectModule.Location
+  nameWithType: RedirectModule.Location
 - uid: EmbedIO.Actions.RedirectModule.OnRequestAsync(EmbedIO.IHttpContext)
   name: OnRequestAsync(IHttpContext)
   href: api/EmbedIO.Actions.RedirectModule.html#EmbedIO_Actions_RedirectModule_OnRequestAsync_EmbedIO_IHttpContext_
@@ -118,19 +131,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Actions.RedirectModule.OnRequestAsync
   nameWithType: RedirectModule.OnRequestAsync
-- uid: EmbedIO.Actions.RedirectModule.RedirectUrl
-  name: RedirectUrl
-  href: api/EmbedIO.Actions.RedirectModule.html#EmbedIO_Actions_RedirectModule_RedirectUrl
-  commentId: P:EmbedIO.Actions.RedirectModule.RedirectUrl
-  fullName: EmbedIO.Actions.RedirectModule.RedirectUrl
-  nameWithType: RedirectModule.RedirectUrl
-- uid: EmbedIO.Actions.RedirectModule.RedirectUrl*
-  name: RedirectUrl
-  href: api/EmbedIO.Actions.RedirectModule.html#EmbedIO_Actions_RedirectModule_RedirectUrl_
-  commentId: Overload:EmbedIO.Actions.RedirectModule.RedirectUrl
-  isSpec: "True"
-  fullName: EmbedIO.Actions.RedirectModule.RedirectUrl
-  nameWithType: RedirectModule.RedirectUrl
 - uid: EmbedIO.Actions.RedirectModule.StatusCode
   name: StatusCode
   href: api/EmbedIO.Actions.RedirectModule.html#EmbedIO_Actions_RedirectModule_StatusCode
@@ -908,41 +908,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Files.FileModule.Dispose
   nameWithType: FileModule.Dispose
-- uid: EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#GetMimeType(System.String)
-  name: IMimeTypeProvider.GetMimeType(String)
-  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_EmbedIO_IMimeTypeProvider_GetMimeType_System_String_
-  commentId: M:EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#GetMimeType(System.String)
-  name.vb: EmbedIO.IMimeTypeProvider.GetMimeType(String)
-  fullName: EmbedIO.Files.FileModule.EmbedIO.IMimeTypeProvider.GetMimeType(System.String)
-  nameWithType: FileModule.IMimeTypeProvider.GetMimeType(String)
-  nameWithType.vb: FileModule.EmbedIO.IMimeTypeProvider.GetMimeType(String)
-- uid: EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#GetMimeType*
-  name: IMimeTypeProvider.GetMimeType
-  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_EmbedIO_IMimeTypeProvider_GetMimeType_
-  commentId: Overload:EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#GetMimeType
-  isSpec: "True"
-  name.vb: EmbedIO.IMimeTypeProvider.GetMimeType
-  fullName: EmbedIO.Files.FileModule.EmbedIO.IMimeTypeProvider.GetMimeType
-  nameWithType: FileModule.IMimeTypeProvider.GetMimeType
-  nameWithType.vb: FileModule.EmbedIO.IMimeTypeProvider.GetMimeType
-- uid: EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#TryDetermineCompression(System.String,System.Boolean@)
-  name: IMimeTypeProvider.TryDetermineCompression(String, out Boolean)
-  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_EmbedIO_IMimeTypeProvider_TryDetermineCompression_System_String_System_Boolean__
-  commentId: M:EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#TryDetermineCompression(System.String,System.Boolean@)
-  name.vb: EmbedIO.IMimeTypeProvider.TryDetermineCompression(String, ByRef Boolean)
-  fullName: EmbedIO.Files.FileModule.EmbedIO.IMimeTypeProvider.TryDetermineCompression(System.String, out System.Boolean)
-  fullName.vb: EmbedIO.Files.FileModule.EmbedIO.IMimeTypeProvider.TryDetermineCompression(System.String, ByRef System.Boolean)
-  nameWithType: FileModule.IMimeTypeProvider.TryDetermineCompression(String, out Boolean)
-  nameWithType.vb: FileModule.EmbedIO.IMimeTypeProvider.TryDetermineCompression(String, ByRef Boolean)
-- uid: EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#TryDetermineCompression*
-  name: IMimeTypeProvider.TryDetermineCompression
-  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_EmbedIO_IMimeTypeProvider_TryDetermineCompression_
-  commentId: Overload:EmbedIO.Files.FileModule.EmbedIO#IMimeTypeProvider#TryDetermineCompression
-  isSpec: "True"
-  name.vb: EmbedIO.IMimeTypeProvider.TryDetermineCompression
-  fullName: EmbedIO.Files.FileModule.EmbedIO.IMimeTypeProvider.TryDetermineCompression
-  nameWithType: FileModule.IMimeTypeProvider.TryDetermineCompression
-  nameWithType.vb: FileModule.EmbedIO.IMimeTypeProvider.TryDetermineCompression
 - uid: EmbedIO.Files.FileModule.Finalize
   name: Finalize()
   href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_Finalize
@@ -956,6 +921,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Files.FileModule.Finalize
   nameWithType: FileModule.Finalize
+- uid: EmbedIO.Files.FileModule.GetMimeType(System.String)
+  name: GetMimeType(String)
+  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_GetMimeType_System_String_
+  commentId: M:EmbedIO.Files.FileModule.GetMimeType(System.String)
+  fullName: EmbedIO.Files.FileModule.GetMimeType(System.String)
+  nameWithType: FileModule.GetMimeType(String)
+- uid: EmbedIO.Files.FileModule.GetMimeType*
+  name: GetMimeType
+  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_GetMimeType_
+  commentId: Overload:EmbedIO.Files.FileModule.GetMimeType
+  isSpec: "True"
+  fullName: EmbedIO.Files.FileModule.GetMimeType
+  nameWithType: FileModule.GetMimeType
 - uid: EmbedIO.Files.FileModule.IsFinalHandler
   name: IsFinalHandler
   href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_IsFinalHandler
@@ -1073,6 +1051,22 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Files.FileModule.Provider
   nameWithType: FileModule.Provider
+- uid: EmbedIO.Files.FileModule.TryDetermineCompression(System.String,System.Boolean@)
+  name: TryDetermineCompression(String, out Boolean)
+  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_TryDetermineCompression_System_String_System_Boolean__
+  commentId: M:EmbedIO.Files.FileModule.TryDetermineCompression(System.String,System.Boolean@)
+  name.vb: TryDetermineCompression(String, ByRef Boolean)
+  fullName: EmbedIO.Files.FileModule.TryDetermineCompression(System.String, out System.Boolean)
+  fullName.vb: EmbedIO.Files.FileModule.TryDetermineCompression(System.String, ByRef System.Boolean)
+  nameWithType: FileModule.TryDetermineCompression(String, out Boolean)
+  nameWithType.vb: FileModule.TryDetermineCompression(String, ByRef Boolean)
+- uid: EmbedIO.Files.FileModule.TryDetermineCompression*
+  name: TryDetermineCompression
+  href: api/EmbedIO.Files.FileModule.html#EmbedIO_Files_FileModule_TryDetermineCompression_
+  commentId: Overload:EmbedIO.Files.FileModule.TryDetermineCompression
+  isSpec: "True"
+  fullName: EmbedIO.Files.FileModule.TryDetermineCompression
+  nameWithType: FileModule.TryDetermineCompression
 - uid: EmbedIO.Files.FileModuleExtensions
   name: FileModuleExtensions
   href: api/EmbedIO.Files.FileModuleExtensions.html
@@ -4765,19 +4759,19 @@ references:
   commentId: T:EmbedIO.IWebModuleImpl
   fullName: EmbedIO.IWebModuleImpl
   nameWithType: IWebModuleImpl
-- uid: EmbedIO.IWebModuleImpl.Container
-  name: Container
-  href: api/EmbedIO.IWebModuleImpl.html#EmbedIO_IWebModuleImpl_Container
-  commentId: P:EmbedIO.IWebModuleImpl.Container
-  fullName: EmbedIO.IWebModuleImpl.Container
-  nameWithType: IWebModuleImpl.Container
-- uid: EmbedIO.IWebModuleImpl.Container*
-  name: Container
-  href: api/EmbedIO.IWebModuleImpl.html#EmbedIO_IWebModuleImpl_Container_
-  commentId: Overload:EmbedIO.IWebModuleImpl.Container
+- uid: EmbedIO.IWebModuleImpl.SetContainer(EmbedIO.IWebModuleContainer)
+  name: SetContainer(IWebModuleContainer)
+  href: api/EmbedIO.IWebModuleImpl.html#EmbedIO_IWebModuleImpl_SetContainer_EmbedIO_IWebModuleContainer_
+  commentId: M:EmbedIO.IWebModuleImpl.SetContainer(EmbedIO.IWebModuleContainer)
+  fullName: EmbedIO.IWebModuleImpl.SetContainer(EmbedIO.IWebModuleContainer)
+  nameWithType: IWebModuleImpl.SetContainer(IWebModuleContainer)
+- uid: EmbedIO.IWebModuleImpl.SetContainer*
+  name: SetContainer
+  href: api/EmbedIO.IWebModuleImpl.html#EmbedIO_IWebModuleImpl_SetContainer_
+  commentId: Overload:EmbedIO.IWebModuleImpl.SetContainer
   isSpec: "True"
-  fullName: EmbedIO.IWebModuleImpl.Container
-  nameWithType: IWebModuleImpl.Container
+  fullName: EmbedIO.IWebModuleImpl.SetContainer
+  nameWithType: IWebModuleImpl.SetContainer
 - uid: EmbedIO.IWebServer
   name: IWebServer
   href: api/EmbedIO.IWebServer.html
@@ -5064,41 +5058,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.ModuleGroup.Dispose
   nameWithType: ModuleGroup.Dispose
-- uid: EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#GetMimeType(System.String)
-  name: IMimeTypeProvider.GetMimeType(String)
-  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_EmbedIO_IMimeTypeProvider_GetMimeType_System_String_
-  commentId: M:EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#GetMimeType(System.String)
-  name.vb: EmbedIO.IMimeTypeProvider.GetMimeType(String)
-  fullName: EmbedIO.ModuleGroup.EmbedIO.IMimeTypeProvider.GetMimeType(System.String)
-  nameWithType: ModuleGroup.IMimeTypeProvider.GetMimeType(String)
-  nameWithType.vb: ModuleGroup.EmbedIO.IMimeTypeProvider.GetMimeType(String)
-- uid: EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#GetMimeType*
-  name: IMimeTypeProvider.GetMimeType
-  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_EmbedIO_IMimeTypeProvider_GetMimeType_
-  commentId: Overload:EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#GetMimeType
-  isSpec: "True"
-  name.vb: EmbedIO.IMimeTypeProvider.GetMimeType
-  fullName: EmbedIO.ModuleGroup.EmbedIO.IMimeTypeProvider.GetMimeType
-  nameWithType: ModuleGroup.IMimeTypeProvider.GetMimeType
-  nameWithType.vb: ModuleGroup.EmbedIO.IMimeTypeProvider.GetMimeType
-- uid: EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#TryDetermineCompression(System.String,System.Boolean@)
-  name: IMimeTypeProvider.TryDetermineCompression(String, out Boolean)
-  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_EmbedIO_IMimeTypeProvider_TryDetermineCompression_System_String_System_Boolean__
-  commentId: M:EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#TryDetermineCompression(System.String,System.Boolean@)
-  name.vb: EmbedIO.IMimeTypeProvider.TryDetermineCompression(String, ByRef Boolean)
-  fullName: EmbedIO.ModuleGroup.EmbedIO.IMimeTypeProvider.TryDetermineCompression(System.String, out System.Boolean)
-  fullName.vb: EmbedIO.ModuleGroup.EmbedIO.IMimeTypeProvider.TryDetermineCompression(System.String, ByRef System.Boolean)
-  nameWithType: ModuleGroup.IMimeTypeProvider.TryDetermineCompression(String, out Boolean)
-  nameWithType.vb: ModuleGroup.EmbedIO.IMimeTypeProvider.TryDetermineCompression(String, ByRef Boolean)
-- uid: EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#TryDetermineCompression*
-  name: IMimeTypeProvider.TryDetermineCompression
-  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_EmbedIO_IMimeTypeProvider_TryDetermineCompression_
-  commentId: Overload:EmbedIO.ModuleGroup.EmbedIO#IMimeTypeProvider#TryDetermineCompression
-  isSpec: "True"
-  name.vb: EmbedIO.IMimeTypeProvider.TryDetermineCompression
-  fullName: EmbedIO.ModuleGroup.EmbedIO.IMimeTypeProvider.TryDetermineCompression
-  nameWithType: ModuleGroup.IMimeTypeProvider.TryDetermineCompression
-  nameWithType.vb: ModuleGroup.EmbedIO.IMimeTypeProvider.TryDetermineCompression
 - uid: EmbedIO.ModuleGroup.Finalize
   name: Finalize()
   href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_Finalize
@@ -5112,6 +5071,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.ModuleGroup.Finalize
   nameWithType: ModuleGroup.Finalize
+- uid: EmbedIO.ModuleGroup.GetMimeType(System.String)
+  name: GetMimeType(String)
+  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_GetMimeType_System_String_
+  commentId: M:EmbedIO.ModuleGroup.GetMimeType(System.String)
+  fullName: EmbedIO.ModuleGroup.GetMimeType(System.String)
+  nameWithType: ModuleGroup.GetMimeType(String)
+- uid: EmbedIO.ModuleGroup.GetMimeType*
+  name: GetMimeType
+  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_GetMimeType_
+  commentId: Overload:EmbedIO.ModuleGroup.GetMimeType
+  isSpec: "True"
+  fullName: EmbedIO.ModuleGroup.GetMimeType
+  nameWithType: ModuleGroup.GetMimeType
 - uid: EmbedIO.ModuleGroup.IsFinalHandler
   name: IsFinalHandler
   href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_IsFinalHandler
@@ -5203,6 +5175,22 @@ references:
   isSpec: "True"
   fullName: EmbedIO.ModuleGroup.SharedItems
   nameWithType: ModuleGroup.SharedItems
+- uid: EmbedIO.ModuleGroup.TryDetermineCompression(System.String,System.Boolean@)
+  name: TryDetermineCompression(String, out Boolean)
+  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_TryDetermineCompression_System_String_System_Boolean__
+  commentId: M:EmbedIO.ModuleGroup.TryDetermineCompression(System.String,System.Boolean@)
+  name.vb: TryDetermineCompression(String, ByRef Boolean)
+  fullName: EmbedIO.ModuleGroup.TryDetermineCompression(System.String, out System.Boolean)
+  fullName.vb: EmbedIO.ModuleGroup.TryDetermineCompression(System.String, ByRef System.Boolean)
+  nameWithType: ModuleGroup.TryDetermineCompression(String, out Boolean)
+  nameWithType.vb: ModuleGroup.TryDetermineCompression(String, ByRef Boolean)
+- uid: EmbedIO.ModuleGroup.TryDetermineCompression*
+  name: TryDetermineCompression
+  href: api/EmbedIO.ModuleGroup.html#EmbedIO_ModuleGroup_TryDetermineCompression_
+  commentId: Overload:EmbedIO.ModuleGroup.TryDetermineCompression
+  isSpec: "True"
+  fullName: EmbedIO.ModuleGroup.TryDetermineCompression
+  nameWithType: ModuleGroup.TryDetermineCompression
 - uid: EmbedIO.Net
   name: EmbedIO.Net
   href: api/EmbedIO.Net.html
@@ -5940,6 +5928,232 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Net.Internal.SystemHttpResponse.StatusDescription
   nameWithType: SystemHttpResponse.StatusDescription
+- uid: EmbedIO.Net.ResponseHeaderCollection
+  name: ResponseHeaderCollection
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html
+  commentId: T:EmbedIO.Net.ResponseHeaderCollection
+  fullName: EmbedIO.Net.ResponseHeaderCollection
+  nameWithType: ResponseHeaderCollection
+- uid: EmbedIO.Net.ResponseHeaderCollection.Add(System.String,System.String)
+  name: Add(String, String)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Add_System_String_System_String_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.Add(System.String,System.String)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Add(System.String, System.String)
+  nameWithType: ResponseHeaderCollection.Add(String, String)
+- uid: EmbedIO.Net.ResponseHeaderCollection.Add*
+  name: Add
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Add_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.Add
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Add
+  nameWithType: ResponseHeaderCollection.Add
+- uid: EmbedIO.Net.ResponseHeaderCollection.AllKeys
+  name: AllKeys
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_AllKeys
+  commentId: P:EmbedIO.Net.ResponseHeaderCollection.AllKeys
+  fullName: EmbedIO.Net.ResponseHeaderCollection.AllKeys
+  nameWithType: ResponseHeaderCollection.AllKeys
+- uid: EmbedIO.Net.ResponseHeaderCollection.AllKeys*
+  name: AllKeys
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_AllKeys_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.AllKeys
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.AllKeys
+  nameWithType: ResponseHeaderCollection.AllKeys
+- uid: EmbedIO.Net.ResponseHeaderCollection.Clear
+  name: Clear()
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Clear
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.Clear
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Clear()
+  nameWithType: ResponseHeaderCollection.Clear()
+- uid: EmbedIO.Net.ResponseHeaderCollection.Clear*
+  name: Clear
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Clear_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.Clear
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Clear
+  nameWithType: ResponseHeaderCollection.Clear
+- uid: EmbedIO.Net.ResponseHeaderCollection.Count
+  name: Count
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Count
+  commentId: P:EmbedIO.Net.ResponseHeaderCollection.Count
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Count
+  nameWithType: ResponseHeaderCollection.Count
+- uid: EmbedIO.Net.ResponseHeaderCollection.Count*
+  name: Count
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Count_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.Count
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Count
+  nameWithType: ResponseHeaderCollection.Count
+- uid: EmbedIO.Net.ResponseHeaderCollection.Get(System.Int32)
+  name: Get(Int32)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Get_System_Int32_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.Get(System.Int32)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Get(System.Int32)
+  nameWithType: ResponseHeaderCollection.Get(Int32)
+- uid: EmbedIO.Net.ResponseHeaderCollection.Get(System.String)
+  name: Get(String)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Get_System_String_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.Get(System.String)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Get(System.String)
+  nameWithType: ResponseHeaderCollection.Get(String)
+- uid: EmbedIO.Net.ResponseHeaderCollection.Get*
+  name: Get
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Get_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.Get
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Get
+  nameWithType: ResponseHeaderCollection.Get
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetEnumerator
+  name: GetEnumerator()
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetEnumerator
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.GetEnumerator
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetEnumerator()
+  nameWithType: ResponseHeaderCollection.GetEnumerator()
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetEnumerator*
+  name: GetEnumerator
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetEnumerator_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.GetEnumerator
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetEnumerator
+  nameWithType: ResponseHeaderCollection.GetEnumerator
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetHashCode
+  name: GetHashCode()
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetHashCode
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.GetHashCode
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetHashCode()
+  nameWithType: ResponseHeaderCollection.GetHashCode()
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetHashCode*
+  name: GetHashCode
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetHashCode_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.GetHashCode
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetHashCode
+  nameWithType: ResponseHeaderCollection.GetHashCode
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetKey(System.Int32)
+  name: GetKey(Int32)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetKey_System_Int32_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.GetKey(System.Int32)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetKey(System.Int32)
+  nameWithType: ResponseHeaderCollection.GetKey(Int32)
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetKey*
+  name: GetKey
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetKey_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.GetKey
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetKey
+  nameWithType: ResponseHeaderCollection.GetKey
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: ResponseHeaderCollection.GetObjectData(SerializationInfo, StreamingContext)
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetObjectData*
+  name: GetObjectData
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetObjectData_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.GetObjectData
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetObjectData
+  nameWithType: ResponseHeaderCollection.GetObjectData
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetValues(System.Int32)
+  name: GetValues(Int32)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetValues_System_Int32_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.GetValues(System.Int32)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetValues(System.Int32)
+  nameWithType: ResponseHeaderCollection.GetValues(Int32)
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetValues(System.String)
+  name: GetValues(String)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetValues_System_String_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.GetValues(System.String)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetValues(System.String)
+  nameWithType: ResponseHeaderCollection.GetValues(String)
+- uid: EmbedIO.Net.ResponseHeaderCollection.GetValues*
+  name: GetValues
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_GetValues_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.GetValues
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.GetValues
+  nameWithType: ResponseHeaderCollection.GetValues
+- uid: EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName(System.String)
+  name: IsRestrictedName(String)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_IsRestrictedName_System_String_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName(System.String)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName(System.String)
+  nameWithType: ResponseHeaderCollection.IsRestrictedName(String)
+- uid: EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName*
+  name: IsRestrictedName
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_IsRestrictedName_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName
+  nameWithType: ResponseHeaderCollection.IsRestrictedName
+- uid: EmbedIO.Net.ResponseHeaderCollection.Keys
+  name: Keys
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Keys
+  commentId: P:EmbedIO.Net.ResponseHeaderCollection.Keys
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Keys
+  nameWithType: ResponseHeaderCollection.Keys
+- uid: EmbedIO.Net.ResponseHeaderCollection.Keys*
+  name: Keys
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Keys_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.Keys
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Keys
+  nameWithType: ResponseHeaderCollection.Keys
+- uid: EmbedIO.Net.ResponseHeaderCollection.OnDeserialization(System.Object)
+  name: OnDeserialization(Object)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_OnDeserialization_System_Object_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.OnDeserialization(System.Object)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.OnDeserialization(System.Object)
+  nameWithType: ResponseHeaderCollection.OnDeserialization(Object)
+- uid: EmbedIO.Net.ResponseHeaderCollection.OnDeserialization*
+  name: OnDeserialization
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_OnDeserialization_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.OnDeserialization
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.OnDeserialization
+  nameWithType: ResponseHeaderCollection.OnDeserialization
+- uid: EmbedIO.Net.ResponseHeaderCollection.Remove(System.String)
+  name: Remove(String)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Remove_System_String_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.Remove(System.String)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Remove(System.String)
+  nameWithType: ResponseHeaderCollection.Remove(String)
+- uid: EmbedIO.Net.ResponseHeaderCollection.Remove*
+  name: Remove
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Remove_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.Remove
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Remove
+  nameWithType: ResponseHeaderCollection.Remove
+- uid: EmbedIO.Net.ResponseHeaderCollection.Set(System.String,System.String)
+  name: Set(String, String)
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Set_System_String_System_String_
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.Set(System.String,System.String)
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Set(System.String, System.String)
+  nameWithType: ResponseHeaderCollection.Set(String, String)
+- uid: EmbedIO.Net.ResponseHeaderCollection.Set*
+  name: Set
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_Set_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.Set
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.Set
+  nameWithType: ResponseHeaderCollection.Set
+- uid: EmbedIO.Net.ResponseHeaderCollection.ToString
+  name: ToString()
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_ToString
+  commentId: M:EmbedIO.Net.ResponseHeaderCollection.ToString
+  fullName: EmbedIO.Net.ResponseHeaderCollection.ToString()
+  nameWithType: ResponseHeaderCollection.ToString()
+- uid: EmbedIO.Net.ResponseHeaderCollection.ToString*
+  name: ToString
+  href: api/EmbedIO.Net.ResponseHeaderCollection.html#EmbedIO_Net_ResponseHeaderCollection_ToString_
+  commentId: Overload:EmbedIO.Net.ResponseHeaderCollection.ToString
+  isSpec: "True"
+  fullName: EmbedIO.Net.ResponseHeaderCollection.ToString
+  nameWithType: ResponseHeaderCollection.ToString
 - uid: EmbedIO.RequestDeserializer
   name: RequestDeserializer
   href: api/EmbedIO.RequestDeserializer.html
@@ -6104,6 +6318,18 @@ references:
   commentId: M:EmbedIO.ResponseSerializer.Json(EmbedIO.IHttpContext,System.Object)
   fullName: EmbedIO.ResponseSerializer.Json(EmbedIO.IHttpContext, System.Object)
   nameWithType: ResponseSerializer.Json(IHttpContext, Object)
+- uid: EmbedIO.ResponseSerializer.Json(JsonSerializerCase)
+  name: Json(JsonSerializerCase)
+  href: api/EmbedIO.ResponseSerializer.html#EmbedIO_ResponseSerializer_Json_JsonSerializerCase_
+  commentId: M:EmbedIO.ResponseSerializer.Json(JsonSerializerCase)
+  fullName: EmbedIO.ResponseSerializer.Json(JsonSerializerCase)
+  nameWithType: ResponseSerializer.Json(JsonSerializerCase)
+- uid: EmbedIO.ResponseSerializer.Json(SerializerOptions)
+  name: Json(SerializerOptions)
+  href: api/EmbedIO.ResponseSerializer.html#EmbedIO_ResponseSerializer_Json_SerializerOptions_
+  commentId: M:EmbedIO.ResponseSerializer.Json(SerializerOptions)
+  fullName: EmbedIO.ResponseSerializer.Json(SerializerOptions)
+  nameWithType: ResponseSerializer.Json(SerializerOptions)
 - uid: EmbedIO.ResponseSerializer.Json*
   name: Json
   href: api/EmbedIO.ResponseSerializer.html#EmbedIO_ResponseSerializer_Json_
@@ -9230,6 +9456,31 @@ references:
   fullName.vb: EmbedIO.Utilities.ComponentCollectionExtensions.Add(Of T)(EmbedIO.Utilities.IComponentCollection(Of T), T)
   nameWithType: ComponentCollectionExtensions.Add<T>(IComponentCollection<T>, T)
   nameWithType.vb: ComponentCollectionExtensions.Add(Of T)(IComponentCollection(Of T), T)
+- uid: EmbedIO.Utilities.ConfigurationLockSource
+  name: ConfigurationLockSource
+  href: api/EmbedIO.Utilities.ConfigurationLockSource.html
+  commentId: T:EmbedIO.Utilities.ConfigurationLockSource
+  fullName: EmbedIO.Utilities.ConfigurationLockSource
+  nameWithType: ConfigurationLockSource
+- uid: EmbedIO.Utilities.ConfigurationLockSource.#ctor(System.String)
+  name: ConfigurationLockSource(String)
+  href: api/EmbedIO.Utilities.ConfigurationLockSource.html#EmbedIO_Utilities_ConfigurationLockSource__ctor_System_String_
+  commentId: M:EmbedIO.Utilities.ConfigurationLockSource.#ctor(System.String)
+  fullName: EmbedIO.Utilities.ConfigurationLockSource.ConfigurationLockSource(System.String)
+  nameWithType: ConfigurationLockSource.ConfigurationLockSource(String)
+- uid: EmbedIO.Utilities.ConfigurationLockSource.#ctor(Type)
+  name: ConfigurationLockSource(Type)
+  href: api/EmbedIO.Utilities.ConfigurationLockSource.html#EmbedIO_Utilities_ConfigurationLockSource__ctor_Type_
+  commentId: M:EmbedIO.Utilities.ConfigurationLockSource.#ctor(Type)
+  fullName: EmbedIO.Utilities.ConfigurationLockSource.ConfigurationLockSource(Type)
+  nameWithType: ConfigurationLockSource.ConfigurationLockSource(Type)
+- uid: EmbedIO.Utilities.ConfigurationLockSource.#ctor*
+  name: ConfigurationLockSource
+  href: api/EmbedIO.Utilities.ConfigurationLockSource.html#EmbedIO_Utilities_ConfigurationLockSource__ctor_
+  commentId: Overload:EmbedIO.Utilities.ConfigurationLockSource.#ctor
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.ConfigurationLockSource.ConfigurationLockSource
+  nameWithType: ConfigurationLockSource.ConfigurationLockSource
 - uid: EmbedIO.Utilities.DisposableComponentCollection`1
   name: DisposableComponentCollection<T>
   href: api/EmbedIO.Utilities.DisposableComponentCollection-1.html
@@ -9471,6 +9722,241 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.IPParser.TryParseSimpleIPRange
   nameWithType: IPParser.TryParseSimpleIPRange
+- uid: EmbedIO.Utilities.LockedException
+  name: LockedException
+  href: api/EmbedIO.Utilities.LockedException.html
+  commentId: T:EmbedIO.Utilities.LockedException
+  fullName: EmbedIO.Utilities.LockedException
+  nameWithType: LockedException
+- uid: EmbedIO.Utilities.LockedException.#ctor
+  name: LockedException()
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor
+  commentId: M:EmbedIO.Utilities.LockedException.#ctor
+  fullName: EmbedIO.Utilities.LockedException.LockedException()
+  nameWithType: LockedException.LockedException()
+- uid: EmbedIO.Utilities.LockedException.#ctor(EmbedIO.Utilities.LockToken)
+  name: LockedException(LockToken)
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor_EmbedIO_Utilities_LockToken_
+  commentId: M:EmbedIO.Utilities.LockedException.#ctor(EmbedIO.Utilities.LockToken)
+  fullName: EmbedIO.Utilities.LockedException.LockedException(EmbedIO.Utilities.LockToken)
+  nameWithType: LockedException.LockedException(LockToken)
+- uid: EmbedIO.Utilities.LockedException.#ctor(SerializationInfo,StreamingContext)
+  name: LockedException(SerializationInfo, StreamingContext)
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:EmbedIO.Utilities.LockedException.#ctor(SerializationInfo,StreamingContext)
+  fullName: EmbedIO.Utilities.LockedException.LockedException(SerializationInfo, StreamingContext)
+  nameWithType: LockedException.LockedException(SerializationInfo, StreamingContext)
+- uid: EmbedIO.Utilities.LockedException.#ctor(System.String)
+  name: LockedException(String)
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor_System_String_
+  commentId: M:EmbedIO.Utilities.LockedException.#ctor(System.String)
+  fullName: EmbedIO.Utilities.LockedException.LockedException(System.String)
+  nameWithType: LockedException.LockedException(String)
+- uid: EmbedIO.Utilities.LockedException.#ctor(System.String,EmbedIO.Utilities.LockToken)
+  name: LockedException(String, LockToken)
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor_System_String_EmbedIO_Utilities_LockToken_
+  commentId: M:EmbedIO.Utilities.LockedException.#ctor(System.String,EmbedIO.Utilities.LockToken)
+  fullName: EmbedIO.Utilities.LockedException.LockedException(System.String, EmbedIO.Utilities.LockToken)
+  nameWithType: LockedException.LockedException(String, LockToken)
+- uid: EmbedIO.Utilities.LockedException.#ctor(System.String,System.Nullable{Exception})
+  name: LockedException(String, Nullable<Exception>)
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor_System_String_System_Nullable_Exception__
+  commentId: M:EmbedIO.Utilities.LockedException.#ctor(System.String,System.Nullable{Exception})
+  name.vb: LockedException(String, Nullable(Of Exception))
+  fullName: EmbedIO.Utilities.LockedException.LockedException(System.String, System.Nullable<Exception>)
+  fullName.vb: EmbedIO.Utilities.LockedException.LockedException(System.String, System.Nullable(Of Exception))
+  nameWithType: LockedException.LockedException(String, Nullable<Exception>)
+  nameWithType.vb: LockedException.LockedException(String, Nullable(Of Exception))
+- uid: EmbedIO.Utilities.LockedException.#ctor(System.String,System.Nullable{Exception},EmbedIO.Utilities.LockToken)
+  name: LockedException(String, Nullable<Exception>, LockToken)
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor_System_String_System_Nullable_Exception__EmbedIO_Utilities_LockToken_
+  commentId: M:EmbedIO.Utilities.LockedException.#ctor(System.String,System.Nullable{Exception},EmbedIO.Utilities.LockToken)
+  name.vb: LockedException(String, Nullable(Of Exception), LockToken)
+  fullName: EmbedIO.Utilities.LockedException.LockedException(System.String, System.Nullable<Exception>, EmbedIO.Utilities.LockToken)
+  fullName.vb: EmbedIO.Utilities.LockedException.LockedException(System.String, System.Nullable(Of Exception), EmbedIO.Utilities.LockToken)
+  nameWithType: LockedException.LockedException(String, Nullable<Exception>, LockToken)
+  nameWithType.vb: LockedException.LockedException(String, Nullable(Of Exception), LockToken)
+- uid: EmbedIO.Utilities.LockedException.#ctor*
+  name: LockedException
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException__ctor_
+  commentId: Overload:EmbedIO.Utilities.LockedException.#ctor
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockedException.LockedException
+  nameWithType: LockedException.LockedException
+- uid: EmbedIO.Utilities.LockedException.Token
+  name: Token
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException_Token
+  commentId: P:EmbedIO.Utilities.LockedException.Token
+  fullName: EmbedIO.Utilities.LockedException.Token
+  nameWithType: LockedException.Token
+- uid: EmbedIO.Utilities.LockedException.Token*
+  name: Token
+  href: api/EmbedIO.Utilities.LockedException.html#EmbedIO_Utilities_LockedException_Token_
+  commentId: Overload:EmbedIO.Utilities.LockedException.Token
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockedException.Token
+  nameWithType: LockedException.Token
+- uid: EmbedIO.Utilities.LockToken
+  name: LockToken
+  href: api/EmbedIO.Utilities.LockToken.html
+  commentId: T:EmbedIO.Utilities.LockToken
+  fullName: EmbedIO.Utilities.LockToken
+  nameWithType: LockToken
+- uid: EmbedIO.Utilities.LockToken.Equals(EmbedIO.Utilities.LockToken)
+  name: Equals(LockToken)
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_Equals_EmbedIO_Utilities_LockToken_
+  commentId: M:EmbedIO.Utilities.LockToken.Equals(EmbedIO.Utilities.LockToken)
+  fullName: EmbedIO.Utilities.LockToken.Equals(EmbedIO.Utilities.LockToken)
+  nameWithType: LockToken.Equals(LockToken)
+- uid: EmbedIO.Utilities.LockToken.Equals(System.Object)
+  name: Equals(Object)
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_Equals_System_Object_
+  commentId: M:EmbedIO.Utilities.LockToken.Equals(System.Object)
+  fullName: EmbedIO.Utilities.LockToken.Equals(System.Object)
+  nameWithType: LockToken.Equals(Object)
+- uid: EmbedIO.Utilities.LockToken.Equals*
+  name: Equals
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_Equals_
+  commentId: Overload:EmbedIO.Utilities.LockToken.Equals
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockToken.Equals
+  nameWithType: LockToken.Equals
+- uid: EmbedIO.Utilities.LockToken.GetHashCode
+  name: GetHashCode()
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_GetHashCode
+  commentId: M:EmbedIO.Utilities.LockToken.GetHashCode
+  fullName: EmbedIO.Utilities.LockToken.GetHashCode()
+  nameWithType: LockToken.GetHashCode()
+- uid: EmbedIO.Utilities.LockToken.GetHashCode*
+  name: GetHashCode
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_GetHashCode_
+  commentId: Overload:EmbedIO.Utilities.LockToken.GetHashCode
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockToken.GetHashCode
+  nameWithType: LockToken.GetHashCode
+- uid: EmbedIO.Utilities.LockToken.IsLocked
+  name: IsLocked
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_IsLocked
+  commentId: P:EmbedIO.Utilities.LockToken.IsLocked
+  fullName: EmbedIO.Utilities.LockToken.IsLocked
+  nameWithType: LockToken.IsLocked
+- uid: EmbedIO.Utilities.LockToken.IsLocked*
+  name: IsLocked
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_IsLocked_
+  commentId: Overload:EmbedIO.Utilities.LockToken.IsLocked
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockToken.IsLocked
+  nameWithType: LockToken.IsLocked
+- uid: EmbedIO.Utilities.LockToken.None
+  name: None
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_None
+  commentId: P:EmbedIO.Utilities.LockToken.None
+  fullName: EmbedIO.Utilities.LockToken.None
+  nameWithType: LockToken.None
+- uid: EmbedIO.Utilities.LockToken.None*
+  name: None
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_None_
+  commentId: Overload:EmbedIO.Utilities.LockToken.None
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockToken.None
+  nameWithType: LockToken.None
+- uid: EmbedIO.Utilities.LockToken.op_Equality(EmbedIO.Utilities.LockToken,EmbedIO.Utilities.LockToken)
+  name: Equality(LockToken, LockToken)
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_op_Equality_EmbedIO_Utilities_LockToken_EmbedIO_Utilities_LockToken_
+  commentId: M:EmbedIO.Utilities.LockToken.op_Equality(EmbedIO.Utilities.LockToken,EmbedIO.Utilities.LockToken)
+  fullName: EmbedIO.Utilities.LockToken.Equality(EmbedIO.Utilities.LockToken, EmbedIO.Utilities.LockToken)
+  nameWithType: LockToken.Equality(LockToken, LockToken)
+- uid: EmbedIO.Utilities.LockToken.op_Equality*
+  name: Equality
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_op_Equality_
+  commentId: Overload:EmbedIO.Utilities.LockToken.op_Equality
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockToken.Equality
+  nameWithType: LockToken.Equality
+- uid: EmbedIO.Utilities.LockToken.op_Inequality(EmbedIO.Utilities.LockToken,EmbedIO.Utilities.LockToken)
+  name: Inequality(LockToken, LockToken)
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_op_Inequality_EmbedIO_Utilities_LockToken_EmbedIO_Utilities_LockToken_
+  commentId: M:EmbedIO.Utilities.LockToken.op_Inequality(EmbedIO.Utilities.LockToken,EmbedIO.Utilities.LockToken)
+  fullName: EmbedIO.Utilities.LockToken.Inequality(EmbedIO.Utilities.LockToken, EmbedIO.Utilities.LockToken)
+  nameWithType: LockToken.Inequality(LockToken, LockToken)
+- uid: EmbedIO.Utilities.LockToken.op_Inequality*
+  name: Inequality
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_op_Inequality_
+  commentId: Overload:EmbedIO.Utilities.LockToken.op_Inequality
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockToken.Inequality
+  nameWithType: LockToken.Inequality
+- uid: EmbedIO.Utilities.LockToken.ThrowIfLocked
+  name: ThrowIfLocked()
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_ThrowIfLocked
+  commentId: M:EmbedIO.Utilities.LockToken.ThrowIfLocked
+  fullName: EmbedIO.Utilities.LockToken.ThrowIfLocked()
+  nameWithType: LockToken.ThrowIfLocked()
+- uid: EmbedIO.Utilities.LockToken.ThrowIfLocked*
+  name: ThrowIfLocked
+  href: api/EmbedIO.Utilities.LockToken.html#EmbedIO_Utilities_LockToken_ThrowIfLocked_
+  commentId: Overload:EmbedIO.Utilities.LockToken.ThrowIfLocked
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockToken.ThrowIfLocked
+  nameWithType: LockToken.ThrowIfLocked
+- uid: EmbedIO.Utilities.LockTokenSource
+  name: LockTokenSource
+  href: api/EmbedIO.Utilities.LockTokenSource.html
+  commentId: T:EmbedIO.Utilities.LockTokenSource
+  fullName: EmbedIO.Utilities.LockTokenSource
+  nameWithType: LockTokenSource
+- uid: EmbedIO.Utilities.LockTokenSource.#ctor(System.String)
+  name: LockTokenSource(String)
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource__ctor_System_String_
+  commentId: M:EmbedIO.Utilities.LockTokenSource.#ctor(System.String)
+  fullName: EmbedIO.Utilities.LockTokenSource.LockTokenSource(System.String)
+  nameWithType: LockTokenSource.LockTokenSource(String)
+- uid: EmbedIO.Utilities.LockTokenSource.#ctor*
+  name: LockTokenSource
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource__ctor_
+  commentId: Overload:EmbedIO.Utilities.LockTokenSource.#ctor
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockTokenSource.LockTokenSource
+  nameWithType: LockTokenSource.LockTokenSource
+- uid: EmbedIO.Utilities.LockTokenSource.IsLocked
+  name: IsLocked
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource_IsLocked
+  commentId: P:EmbedIO.Utilities.LockTokenSource.IsLocked
+  fullName: EmbedIO.Utilities.LockTokenSource.IsLocked
+  nameWithType: LockTokenSource.IsLocked
+- uid: EmbedIO.Utilities.LockTokenSource.IsLocked*
+  name: IsLocked
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource_IsLocked_
+  commentId: Overload:EmbedIO.Utilities.LockTokenSource.IsLocked
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockTokenSource.IsLocked
+  nameWithType: LockTokenSource.IsLocked
+- uid: EmbedIO.Utilities.LockTokenSource.Lock
+  name: Lock()
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource_Lock
+  commentId: M:EmbedIO.Utilities.LockTokenSource.Lock
+  fullName: EmbedIO.Utilities.LockTokenSource.Lock()
+  nameWithType: LockTokenSource.Lock()
+- uid: EmbedIO.Utilities.LockTokenSource.Lock*
+  name: Lock
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource_Lock_
+  commentId: Overload:EmbedIO.Utilities.LockTokenSource.Lock
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockTokenSource.Lock
+  nameWithType: LockTokenSource.Lock
+- uid: EmbedIO.Utilities.LockTokenSource.Token
+  name: Token
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource_Token
+  commentId: P:EmbedIO.Utilities.LockTokenSource.Token
+  fullName: EmbedIO.Utilities.LockTokenSource.Token
+  nameWithType: LockTokenSource.Token
+- uid: EmbedIO.Utilities.LockTokenSource.Token*
+  name: Token
+  href: api/EmbedIO.Utilities.LockTokenSource.html#EmbedIO_Utilities_LockTokenSource_Token_
+  commentId: Overload:EmbedIO.Utilities.LockTokenSource.Token
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.LockTokenSource.Token
+  nameWithType: LockTokenSource.Token
 - uid: EmbedIO.Utilities.MimeTypeProviderStack
   name: MimeTypeProviderStack
   href: api/EmbedIO.Utilities.MimeTypeProviderStack.html
@@ -9824,6 +10310,25 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.StringExtensions.SplitByComma
   nameWithType: StringExtensions.SplitByComma
+- uid: EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String,System.Int32)
+  name: TrimmedSubstring(String, Int32)
+  href: api/EmbedIO.Utilities.StringExtensions.html#EmbedIO_Utilities_StringExtensions_TrimmedSubstring_System_String_System_Int32_
+  commentId: M:EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String,System.Int32)
+  fullName: EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String, System.Int32)
+  nameWithType: StringExtensions.TrimmedSubstring(String, Int32)
+- uid: EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String,System.Int32,System.Int32)
+  name: TrimmedSubstring(String, Int32, Int32)
+  href: api/EmbedIO.Utilities.StringExtensions.html#EmbedIO_Utilities_StringExtensions_TrimmedSubstring_System_String_System_Int32_System_Int32_
+  commentId: M:EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String,System.Int32,System.Int32)
+  fullName: EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String, System.Int32, System.Int32)
+  nameWithType: StringExtensions.TrimmedSubstring(String, Int32, Int32)
+- uid: EmbedIO.Utilities.StringExtensions.TrimmedSubstring*
+  name: TrimmedSubstring
+  href: api/EmbedIO.Utilities.StringExtensions.html#EmbedIO_Utilities_StringExtensions_TrimmedSubstring_
+  commentId: Overload:EmbedIO.Utilities.StringExtensions.TrimmedSubstring
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.StringExtensions.TrimmedSubstring
+  nameWithType: StringExtensions.TrimmedSubstring
 - uid: EmbedIO.Utilities.UniqueIdGenerator
   name: UniqueIdGenerator
   href: api/EmbedIO.Utilities.UniqueIdGenerator.html
@@ -9997,6 +10502,32 @@ references:
   commentId: T:EmbedIO.Utilities.Validate
   fullName: EmbedIO.Utilities.Validate
   nameWithType: Validate
+- uid: EmbedIO.Utilities.Validate.HttpHeaderName(System.String,System.String)
+  name: HttpHeaderName(String, String)
+  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_HttpHeaderName_System_String_System_String_
+  commentId: M:EmbedIO.Utilities.Validate.HttpHeaderName(System.String,System.String)
+  fullName: EmbedIO.Utilities.Validate.HttpHeaderName(System.String, System.String)
+  nameWithType: Validate.HttpHeaderName(String, String)
+- uid: EmbedIO.Utilities.Validate.HttpHeaderName*
+  name: HttpHeaderName
+  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_HttpHeaderName_
+  commentId: Overload:EmbedIO.Utilities.Validate.HttpHeaderName
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.Validate.HttpHeaderName
+  nameWithType: Validate.HttpHeaderName
+- uid: EmbedIO.Utilities.Validate.HttpHeaderValue(System.String,System.String)
+  name: HttpHeaderValue(String, String)
+  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_HttpHeaderValue_System_String_System_String_
+  commentId: M:EmbedIO.Utilities.Validate.HttpHeaderValue(System.String,System.String)
+  fullName: EmbedIO.Utilities.Validate.HttpHeaderValue(System.String, System.String)
+  nameWithType: Validate.HttpHeaderValue(String, String)
+- uid: EmbedIO.Utilities.Validate.HttpHeaderValue*
+  name: HttpHeaderValue
+  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_HttpHeaderValue_
+  commentId: Overload:EmbedIO.Utilities.Validate.HttpHeaderValue
+  isSpec: "True"
+  fullName: EmbedIO.Utilities.Validate.HttpHeaderValue
+  nameWithType: Validate.HttpHeaderValue
 - uid: EmbedIO.Utilities.Validate.LocalPath(System.String,System.String,System.Boolean)
   name: LocalPath(String, String, Boolean)
   href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_LocalPath_System_String_System_String_System_Boolean_
@@ -10052,12 +10583,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.Validate.NotNullOrEmpty
   nameWithType: Validate.NotNullOrEmpty
-- uid: EmbedIO.Utilities.Validate.Rfc2616Token(System.String,System.String)
-  name: Rfc2616Token(String, String)
-  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_Rfc2616Token_System_String_System_String_
-  commentId: M:EmbedIO.Utilities.Validate.Rfc2616Token(System.String,System.String)
-  fullName: EmbedIO.Utilities.Validate.Rfc2616Token(System.String, System.String)
-  nameWithType: Validate.Rfc2616Token(String, String)
+- uid: EmbedIO.Utilities.Validate.Rfc2616Token(System.String,System.String,System.String)
+  name: Rfc2616Token(String, String, String)
+  href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_Rfc2616Token_System_String_System_String_System_String_
+  commentId: M:EmbedIO.Utilities.Validate.Rfc2616Token(System.String,System.String,System.String)
+  fullName: EmbedIO.Utilities.Validate.Rfc2616Token(System.String, System.String, System.String)
+  nameWithType: Validate.Rfc2616Token(String, String, String)
 - uid: EmbedIO.Utilities.Validate.Rfc2616Token*
   name: Rfc2616Token
   href: api/EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_Rfc2616Token_
@@ -10110,6 +10641,12 @@ references:
   isSpec: "True"
   fullName: EmbedIO.Utilities.Validate.UrlPath
   nameWithType: Validate.UrlPath
+- uid: EmbedIO.Utilities.ValidatedNotNullAttribute
+  name: ValidatedNotNullAttribute
+  href: api/EmbedIO.Utilities.ValidatedNotNullAttribute.html
+  commentId: T:EmbedIO.Utilities.ValidatedNotNullAttribute
+  fullName: EmbedIO.Utilities.ValidatedNotNullAttribute
+  nameWithType: ValidatedNotNullAttribute
 - uid: EmbedIO.WebApi
   name: EmbedIO.WebApi
   href: api/EmbedIO.WebApi.html
@@ -10331,6 +10868,25 @@ references:
   fullName.vb: EmbedIO.WebApi.IRequestDataAttribute(Of TController, TData).GetRequestDataAsync
   nameWithType: IRequestDataAttribute<TController, TData>.GetRequestDataAsync
   nameWithType.vb: IRequestDataAttribute(Of TController, TData).GetRequestDataAsync
+- uid: EmbedIO.WebApi.JsonDataAttribute
+  name: JsonDataAttribute
+  href: api/EmbedIO.WebApi.JsonDataAttribute.html
+  commentId: T:EmbedIO.WebApi.JsonDataAttribute
+  fullName: EmbedIO.WebApi.JsonDataAttribute
+  nameWithType: JsonDataAttribute
+- uid: EmbedIO.WebApi.JsonDataAttribute.GetRequestDataAsync(EmbedIO.WebApi.WebApiController,Type,System.String)
+  name: GetRequestDataAsync(WebApiController, Type, String)
+  href: api/EmbedIO.WebApi.JsonDataAttribute.html#EmbedIO_WebApi_JsonDataAttribute_GetRequestDataAsync_EmbedIO_WebApi_WebApiController_Type_System_String_
+  commentId: M:EmbedIO.WebApi.JsonDataAttribute.GetRequestDataAsync(EmbedIO.WebApi.WebApiController,Type,System.String)
+  fullName: EmbedIO.WebApi.JsonDataAttribute.GetRequestDataAsync(EmbedIO.WebApi.WebApiController, Type, System.String)
+  nameWithType: JsonDataAttribute.GetRequestDataAsync(WebApiController, Type, String)
+- uid: EmbedIO.WebApi.JsonDataAttribute.GetRequestDataAsync*
+  name: GetRequestDataAsync
+  href: api/EmbedIO.WebApi.JsonDataAttribute.html#EmbedIO_WebApi_JsonDataAttribute_GetRequestDataAsync_
+  commentId: Overload:EmbedIO.WebApi.JsonDataAttribute.GetRequestDataAsync
+  isSpec: "True"
+  fullName: EmbedIO.WebApi.JsonDataAttribute.GetRequestDataAsync
+  nameWithType: JsonDataAttribute.GetRequestDataAsync
 - uid: EmbedIO.WebApi.QueryDataAttribute
   name: QueryDataAttribute
   href: api/EmbedIO.WebApi.QueryDataAttribute.html
@@ -10838,23 +11394,23 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleBase.Container
   nameWithType: WebModuleBase.Container
-- uid: EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container
-  name: IWebModuleImpl.Container
-  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container
-  commentId: P:EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container
-  name.vb: EmbedIO.IWebModuleImpl.Container
-  fullName: EmbedIO.WebModuleBase.EmbedIO.IWebModuleImpl.Container
-  nameWithType: WebModuleBase.IWebModuleImpl.Container
-  nameWithType.vb: WebModuleBase.EmbedIO.IWebModuleImpl.Container
-- uid: EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container*
-  name: IWebModuleImpl.Container
-  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container_
-  commentId: Overload:EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#Container
+- uid: EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#SetContainer(EmbedIO.IWebModuleContainer)
+  name: IWebModuleImpl.SetContainer(IWebModuleContainer)
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_SetContainer_EmbedIO_IWebModuleContainer_
+  commentId: M:EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#SetContainer(EmbedIO.IWebModuleContainer)
+  name.vb: EmbedIO.IWebModuleImpl.SetContainer(IWebModuleContainer)
+  fullName: EmbedIO.WebModuleBase.EmbedIO.IWebModuleImpl.SetContainer(EmbedIO.IWebModuleContainer)
+  nameWithType: WebModuleBase.IWebModuleImpl.SetContainer(IWebModuleContainer)
+  nameWithType.vb: WebModuleBase.EmbedIO.IWebModuleImpl.SetContainer(IWebModuleContainer)
+- uid: EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#SetContainer*
+  name: IWebModuleImpl.SetContainer
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_SetContainer_
+  commentId: Overload:EmbedIO.WebModuleBase.EmbedIO#IWebModuleImpl#SetContainer
   isSpec: "True"
-  name.vb: EmbedIO.IWebModuleImpl.Container
-  fullName: EmbedIO.WebModuleBase.EmbedIO.IWebModuleImpl.Container
-  nameWithType: WebModuleBase.IWebModuleImpl.Container
-  nameWithType.vb: WebModuleBase.EmbedIO.IWebModuleImpl.Container
+  name.vb: EmbedIO.IWebModuleImpl.SetContainer
+  fullName: EmbedIO.WebModuleBase.EmbedIO.IWebModuleImpl.SetContainer
+  nameWithType: WebModuleBase.IWebModuleImpl.SetContainer
+  nameWithType.vb: WebModuleBase.EmbedIO.IWebModuleImpl.SetContainer
 - uid: EmbedIO.WebModuleBase.HandleRequestAsync(EmbedIO.IHttpContext)
   name: HandleRequestAsync(IHttpContext)
   href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_HandleRequestAsync_EmbedIO_IHttpContext_
@@ -10959,6 +11515,19 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebModuleBase.OnUnhandledException
   nameWithType: WebModuleBase.OnUnhandledException
+- uid: EmbedIO.WebModuleBase.SetContainer(EmbedIO.IWebModuleContainer)
+  name: SetContainer(IWebModuleContainer)
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_SetContainer_EmbedIO_IWebModuleContainer_
+  commentId: M:EmbedIO.WebModuleBase.SetContainer(EmbedIO.IWebModuleContainer)
+  fullName: EmbedIO.WebModuleBase.SetContainer(EmbedIO.IWebModuleContainer)
+  nameWithType: WebModuleBase.SetContainer(IWebModuleContainer)
+- uid: EmbedIO.WebModuleBase.SetContainer*
+  name: SetContainer
+  href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_SetContainer_
+  commentId: Overload:EmbedIO.WebModuleBase.SetContainer
+  isSpec: "True"
+  fullName: EmbedIO.WebModuleBase.SetContainer
+  nameWithType: WebModuleBase.SetContainer
 - uid: EmbedIO.WebModuleBase.Start(CancellationToken)
   name: Start(CancellationToken)
   href: api/EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Start_CancellationToken_
@@ -11607,6 +12176,32 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebServer.Dispose
   nameWithType: WebServer.Dispose
+- uid: EmbedIO.WebServer.IsIPv4Supported
+  name: IsIPv4Supported
+  href: api/EmbedIO.WebServer.html#EmbedIO_WebServer_IsIPv4Supported
+  commentId: P:EmbedIO.WebServer.IsIPv4Supported
+  fullName: EmbedIO.WebServer.IsIPv4Supported
+  nameWithType: WebServer.IsIPv4Supported
+- uid: EmbedIO.WebServer.IsIPv4Supported*
+  name: IsIPv4Supported
+  href: api/EmbedIO.WebServer.html#EmbedIO_WebServer_IsIPv4Supported_
+  commentId: Overload:EmbedIO.WebServer.IsIPv4Supported
+  isSpec: "True"
+  fullName: EmbedIO.WebServer.IsIPv4Supported
+  nameWithType: WebServer.IsIPv4Supported
+- uid: EmbedIO.WebServer.IsIPv6Supported
+  name: IsIPv6Supported
+  href: api/EmbedIO.WebServer.html#EmbedIO_WebServer_IsIPv6Supported
+  commentId: P:EmbedIO.WebServer.IsIPv6Supported
+  fullName: EmbedIO.WebServer.IsIPv6Supported
+  nameWithType: WebServer.IsIPv6Supported
+- uid: EmbedIO.WebServer.IsIPv6Supported*
+  name: IsIPv6Supported
+  href: api/EmbedIO.WebServer.html#EmbedIO_WebServer_IsIPv6Supported_
+  commentId: Overload:EmbedIO.WebServer.IsIPv6Supported
+  isSpec: "True"
+  fullName: EmbedIO.WebServer.IsIPv6Supported
+  nameWithType: WebServer.IsIPv6Supported
 - uid: EmbedIO.WebServer.Listener
   name: Listener
   href: api/EmbedIO.WebServer.html#EmbedIO_WebServer_Listener
@@ -11773,44 +12368,6 @@ references:
   fullName.vb: EmbedIO.WebServerBase(Of TOptions).DoHandleContextAsync
   nameWithType: WebServerBase<TOptions>.DoHandleContextAsync
   nameWithType.vb: WebServerBase(Of TOptions).DoHandleContextAsync
-- uid: EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#GetMimeType(System.String)
-  name: IMimeTypeProvider.GetMimeType(String)
-  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_GetMimeType_System_String_
-  commentId: M:EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#GetMimeType(System.String)
-  name.vb: EmbedIO.IMimeTypeProvider.GetMimeType(String)
-  fullName: EmbedIO.WebServerBase<TOptions>.EmbedIO.IMimeTypeProvider.GetMimeType(System.String)
-  fullName.vb: EmbedIO.WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.GetMimeType(System.String)
-  nameWithType: WebServerBase<TOptions>.IMimeTypeProvider.GetMimeType(String)
-  nameWithType.vb: WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.GetMimeType(String)
-- uid: EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#GetMimeType*
-  name: IMimeTypeProvider.GetMimeType
-  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_GetMimeType_
-  commentId: Overload:EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#GetMimeType
-  isSpec: "True"
-  name.vb: EmbedIO.IMimeTypeProvider.GetMimeType
-  fullName: EmbedIO.WebServerBase<TOptions>.EmbedIO.IMimeTypeProvider.GetMimeType
-  fullName.vb: EmbedIO.WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.GetMimeType
-  nameWithType: WebServerBase<TOptions>.IMimeTypeProvider.GetMimeType
-  nameWithType.vb: WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.GetMimeType
-- uid: EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#TryDetermineCompression(System.String,System.Boolean@)
-  name: IMimeTypeProvider.TryDetermineCompression(String, out Boolean)
-  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_TryDetermineCompression_System_String_System_Boolean__
-  commentId: M:EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#TryDetermineCompression(System.String,System.Boolean@)
-  name.vb: EmbedIO.IMimeTypeProvider.TryDetermineCompression(String, ByRef Boolean)
-  fullName: EmbedIO.WebServerBase<TOptions>.EmbedIO.IMimeTypeProvider.TryDetermineCompression(System.String, out System.Boolean)
-  fullName.vb: EmbedIO.WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.TryDetermineCompression(System.String, ByRef System.Boolean)
-  nameWithType: WebServerBase<TOptions>.IMimeTypeProvider.TryDetermineCompression(String, out Boolean)
-  nameWithType.vb: WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.TryDetermineCompression(String, ByRef Boolean)
-- uid: EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#TryDetermineCompression*
-  name: IMimeTypeProvider.TryDetermineCompression
-  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_TryDetermineCompression_
-  commentId: Overload:EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#TryDetermineCompression
-  isSpec: "True"
-  name.vb: EmbedIO.IMimeTypeProvider.TryDetermineCompression
-  fullName: EmbedIO.WebServerBase<TOptions>.EmbedIO.IMimeTypeProvider.TryDetermineCompression
-  fullName.vb: EmbedIO.WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.TryDetermineCompression
-  nameWithType: WebServerBase<TOptions>.IMimeTypeProvider.TryDetermineCompression
-  nameWithType.vb: WebServerBase(Of TOptions).EmbedIO.IMimeTypeProvider.TryDetermineCompression
 - uid: EmbedIO.WebServerBase`1.Finalize
   name: Finalize()
   href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_Finalize
@@ -11828,6 +12385,23 @@ references:
   fullName.vb: EmbedIO.WebServerBase(Of TOptions).Finalize
   nameWithType: WebServerBase<TOptions>.Finalize
   nameWithType.vb: WebServerBase(Of TOptions).Finalize
+- uid: EmbedIO.WebServerBase`1.GetMimeType(System.String)
+  name: GetMimeType(String)
+  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_GetMimeType_System_String_
+  commentId: M:EmbedIO.WebServerBase`1.GetMimeType(System.String)
+  fullName: EmbedIO.WebServerBase<TOptions>.GetMimeType(System.String)
+  fullName.vb: EmbedIO.WebServerBase(Of TOptions).GetMimeType(System.String)
+  nameWithType: WebServerBase<TOptions>.GetMimeType(String)
+  nameWithType.vb: WebServerBase(Of TOptions).GetMimeType(String)
+- uid: EmbedIO.WebServerBase`1.GetMimeType*
+  name: GetMimeType
+  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_GetMimeType_
+  commentId: Overload:EmbedIO.WebServerBase`1.GetMimeType
+  isSpec: "True"
+  fullName: EmbedIO.WebServerBase<TOptions>.GetMimeType
+  fullName.vb: EmbedIO.WebServerBase(Of TOptions).GetMimeType
+  nameWithType: WebServerBase<TOptions>.GetMimeType
+  nameWithType.vb: WebServerBase(Of TOptions).GetMimeType
 - uid: EmbedIO.WebServerBase`1.HandleContextAsync(EmbedIO.IHttpContextImpl)
   name: HandleContextAsync(IHttpContextImpl)
   href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_HandleContextAsync_EmbedIO_IHttpContextImpl_
@@ -12091,6 +12665,24 @@ references:
   fullName.vb: EmbedIO.WebServerBase(Of TOptions).StateChanged
   nameWithType: WebServerBase<TOptions>.StateChanged
   nameWithType.vb: WebServerBase(Of TOptions).StateChanged
+- uid: EmbedIO.WebServerBase`1.TryDetermineCompression(System.String,System.Boolean@)
+  name: TryDetermineCompression(String, out Boolean)
+  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_TryDetermineCompression_System_String_System_Boolean__
+  commentId: M:EmbedIO.WebServerBase`1.TryDetermineCompression(System.String,System.Boolean@)
+  name.vb: TryDetermineCompression(String, ByRef Boolean)
+  fullName: EmbedIO.WebServerBase<TOptions>.TryDetermineCompression(System.String, out System.Boolean)
+  fullName.vb: EmbedIO.WebServerBase(Of TOptions).TryDetermineCompression(System.String, ByRef System.Boolean)
+  nameWithType: WebServerBase<TOptions>.TryDetermineCompression(String, out Boolean)
+  nameWithType.vb: WebServerBase(Of TOptions).TryDetermineCompression(String, ByRef Boolean)
+- uid: EmbedIO.WebServerBase`1.TryDetermineCompression*
+  name: TryDetermineCompression
+  href: api/EmbedIO.WebServerBase-1.html#EmbedIO_WebServerBase_1_TryDetermineCompression_
+  commentId: Overload:EmbedIO.WebServerBase`1.TryDetermineCompression
+  isSpec: "True"
+  fullName: EmbedIO.WebServerBase<TOptions>.TryDetermineCompression
+  fullName.vb: EmbedIO.WebServerBase(Of TOptions).TryDetermineCompression
+  nameWithType: WebServerBase<TOptions>.TryDetermineCompression
+  nameWithType.vb: WebServerBase(Of TOptions).TryDetermineCompression
 - uid: EmbedIO.WebServerExtensions
   name: WebServerExtensions
   href: api/EmbedIO.WebServerExtensions.html
@@ -12638,12 +13230,6 @@ references:
   isSpec: "True"
   fullName: EmbedIO.WebServerStateChangedEventArgs.OldState
   nameWithType: WebServerStateChangedEventArgs.OldState
-- uid: EmbedIO.WebServerStateChangedEventHandler
-  name: WebServerStateChangedEventHandler
-  href: api/EmbedIO.WebServerStateChangedEventHandler.html
-  commentId: T:EmbedIO.WebServerStateChangedEventHandler
-  fullName: EmbedIO.WebServerStateChangedEventHandler
-  nameWithType: WebServerStateChangedEventHandler
 - uid: EmbedIO.WebSockets
   name: EmbedIO.WebSockets
   href: api/EmbedIO.WebSockets.html

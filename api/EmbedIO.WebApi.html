@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Namespace EmbedIO.WebApi
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace EmbedIO.WebApi
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -86,7 +86,7 @@
     <h3 id="classes">Classes
   </h3>
       <h4><a class="xref" href="EmbedIO.WebApi.FormDataAttribute.html">FormDataAttribute</a></h4>
-      <section><p>Specified that a parameter of a controller method will receive a <see cref="!:NameValueCollection"></see>
+      <section><p>Specifies that a parameter of a controller method will receive a <see cref="!:NameValueCollection"></see>
 of HTML form data, obtained by deserializing a request body with a content type
 of <code>application/x-www-form-urlencoded</code>.</p>
 <p>The received collection will be read-only.</p>
@@ -110,8 +110,18 @@ specifying the name of the missing field.</p>
 an array parameter will receive an array of length 0.</p>
 <p>This class cannot be inherited.</p>
 </section>
+      <h4><a class="xref" href="EmbedIO.WebApi.JsonDataAttribute.html">JsonDataAttribute</a></h4>
+      <section><p>Specifies that a parameter of a controller method will receive
+an object obtained by deserializing the request body as JSON.</p>
+<p>The received object will be <span class="xref">null</span>
+only if the deserialized object is <code>null</code>.</p>
+<p>If the request body is not valid JSON,
+or if it cannot be deserialized to the type of the parameter,
+a <code>400 Bad Request</code> response will be sent to the client.</p>
+<p>This class cannot be inherited.</p>
+</section>
       <h4><a class="xref" href="EmbedIO.WebApi.QueryDataAttribute.html">QueryDataAttribute</a></h4>
-      <section><p>Specified that a parameter of a controller method will receive a <see cref="!:NameValueCollection"></see>
+      <section><p>Specifies that a parameter of a controller method will receive a <see cref="!:NameValueCollection"></see>
 of HTML form data, obtained by deserializing a request URL query.</p>
 <p>The received collection will be read-only.</p>
 <p>This class cannot be inherited.</p>

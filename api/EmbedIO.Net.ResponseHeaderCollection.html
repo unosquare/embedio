@@ -1,0 +1,802 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ResponseHeaderCollection
+   | EmbedIO </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ResponseHeaderCollection
+   | EmbedIO ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../src/Command/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="logo" src="../best-practices/resources/images/unosquare_logo.svg" alt="Unosquare">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar">
+          <div class="container-fluid hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container-fluid body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container-fluid body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="EmbedIO.Net.ResponseHeaderCollection">
+  
+  
+  <h1 id="EmbedIO_Net_ResponseHeaderCollection" data-uid="EmbedIO.Net.ResponseHeaderCollection" class="text-break">Class ResponseHeaderCollection
+  </h1>
+  <div class="markdown level0 summary"><p><p>Contains protocol headers associated with an HTTP response.</p>
+<p>Unlike <see cref="!:WebHeaderCollection"></see>, that supports a variety of scenarios,
+this class is only meant to be used for the <a class="xref" href="EmbedIO.IHttpResponse.html#EmbedIO_IHttpResponse_Headers">Headers</a>
+property of the <a class="xref" href="EmbedIO.IHttpResponse.html">IHttpResponse</a> interface. Therefore, some header names
+are restricted and cannot be read or set through an instance of this class.</p>
+<p>The restricted headers are the following:</p>
+<table><thead><tr><th>Header name</th><th>Rationale</th></tr></thead><tbody><tr><td>
+<p><code>Connection</code></p>
+<p><code>Content-Encoding</code></p>
+<p><code>Content-Length</code></p>
+<p><code>Date</code></p>
+<p><code>Keep-Alive</code></p>
+<p><code>Sec-Web-Socket-Accept</code></p>
+<p><code>Sec-Web-Socket-Extensions</code></p>
+<p><code>Sec-Web-Socket-Protocol</code></p>
+<p><code>Sec-Web-Socket-Version</code></p>
+<p><code>Server</code></p>
+<p><code>Trailer</code></p>
+<p><code>Transfer-Encoding</code></p>
+</td><td>These headers are automatically managed by EmbedIO.</td></tr><tr><td>
+<p><code>Set-Cookie</code></p>
+<p><code>Set-Cookie2</code></p>
+</td><td>Cookies are set through the <a class="xref" href="EmbedIO.IHttpMessage.html#EmbedIO_IHttpMessage_Cookies">Cookies</a> property.</td></tr><tr><td>
+<p><code>Accept</code></p>
+<p><code>Accept-Charset</code></p>
+<p><code>Accept-Encoding</code></p>
+<p><code>Accept-Language</code></p>
+<p><code>Accept-Patch</code></p>
+<p><code>Accept-Ranges</code></p>
+<p><code>Access-Control-Request-Headers</code></p>
+<p><code>Access-Control-Request-Method</code></p>
+<p><code>Authorization</code></p>
+<p><code>Cookie</code></p>
+<p><code>Cookie2</code></p>
+<p><code>Expect</code></p>
+<p><code>From</code></p>
+<p><code>Host</code></p>
+<p><code>If-Match</code></p>
+<p><code>If-Modified-Since</code></p>
+<p><code>If-None-Match</code></p>
+<p><code>If-Range</code></p>
+<p><code>If-Unmodified-Since</code></p>
+<p><code>Origin</code></p>
+<p><code>Proxy-Authorization</code></p>
+<p><code>Range</code></p>
+<p><code>Referer</code></p>
+<p><code>Sec-Web-Socket-Key</code></p>
+<p><code>TE</code></p>
+<p><code>Upgrade</code></p>
+<p><code>Upgrade-Insecure-Requests</code></p>
+<p><code>User-Agent</code></p>
+</td><td>These headers are only meant to be included in HTTP requests, not in responses.</td></tr><tr><td>
+<p><code>Age</code></p>
+<p><code>Proxy-Authentication</code></p>
+<p><code>Proxy-Connection</code></p>
+<p><code>Via</code></p>
+</td><td>These headers are only meant to be sent by proxies, not servers.</td></tr></tbody></table></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ResponseHeaderCollection</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Net.html">EmbedIO.Net</a></h6>
+  <h5 id="EmbedIO_Net_ResponseHeaderCollection_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ResponseHeaderCollection : NameValueCollection</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_AllKeys_" data-uid="EmbedIO.Net.ResponseHeaderCollection.AllKeys*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_AllKeys" data-uid="EmbedIO.Net.ResponseHeaderCollection.AllKeys">AllKeys</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string[] AllKeys { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Count_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Count*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Count" data-uid="EmbedIO.Net.ResponseHeaderCollection.Count">Count</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Keys_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Keys*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Keys" data-uid="EmbedIO.Net.ResponseHeaderCollection.Keys">Keys</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override KeysCollection Keys { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">KeysCollection</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Add_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Add*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Add_System_String_System_String_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Add(System.String,System.String)">Add(String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Add(string name, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Clear_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Clear*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Clear" data-uid="EmbedIO.Net.ResponseHeaderCollection.Clear">Clear()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Clear()</code></pre>
+  </div>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Get_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Get*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Get_System_Int32_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Get(System.Int32)">Get(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Get(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Get_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Get*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Get_System_String_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Get(System.String)">Get(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Get(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_GetEnumerator_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetEnumerator*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_GetEnumerator" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerator GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_GetHashCode_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetHashCode*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_GetHashCode" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_GetKey_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetKey*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_GetKey_System_Int32_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetKey(System.Int32)">GetKey(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string GetKey(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_GetObjectData_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetObjectData*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_GetObjectData_SerializationInfo_StreamingContext_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializationInfo</span></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">StreamingContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_GetValues_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetValues*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_GetValues_System_Int32_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetValues(System.Int32)">GetValues(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string[] GetValues(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_GetValues_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetValues*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_GetValues_System_String_" data-uid="EmbedIO.Net.ResponseHeaderCollection.GetValues(System.String)">GetValues(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string[] GetValues(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_IsRestrictedName_" data-uid="EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_IsRestrictedName_System_String_" data-uid="EmbedIO.Net.ResponseHeaderCollection.IsRestrictedName(System.String)">IsRestrictedName(String)</h4>
+  <div class="markdown level1 summary"><p>Determines whether a specified header name is restricted, i.e. its value cannot be read or set
+through a <a class="xref" href="EmbedIO.Net.ResponseHeaderCollection.html">ResponseHeaderCollection</a>.</p>
+<p>See the documentation for <a class="xref" href="EmbedIO.Net.ResponseHeaderCollection.html">ResponseHeaderCollection</a>
+for a list of restricted header names.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsRestrictedName(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The header name to test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">name</code> is a restricted header name;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_OnDeserialization_" data-uid="EmbedIO.Net.ResponseHeaderCollection.OnDeserialization*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_OnDeserialization_System_Object_" data-uid="EmbedIO.Net.ResponseHeaderCollection.OnDeserialization(System.Object)">OnDeserialization(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnDeserialization(object sender)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">sender</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Remove_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Remove*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Remove_System_String_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Remove(System.String)">Remove(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Remove(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_Set_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Set*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_Set_System_String_System_String_" data-uid="EmbedIO.Net.ResponseHeaderCollection.Set(System.String,System.String)">Set(String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Set(string name, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Net_ResponseHeaderCollection_ToString_" data-uid="EmbedIO.Net.ResponseHeaderCollection.ToString*"></a>
+  <h4 id="EmbedIO_Net_ResponseHeaderCollection_ToString" data-uid="EmbedIO.Net.ResponseHeaderCollection.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+<h3 id="disqus_thread">Comments</h3>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://unolabs.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="doc" align="center">
+              <span class="small mobile-hide">
+                <img id="logo" class="doc-logo" src="../embedio.png" alt="">
+              </span>
+            </div>
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2017-2019 <a href="https://www.unosquare.com">Unosquare</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-8535255-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+  </body>
+</html>

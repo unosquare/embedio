@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class WebServerBase&lt;TOptions&gt;
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WebServerBase&lt;TOptions&gt;
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -567,6 +567,52 @@ directly from your code, unless to address specific needs in module development.
   </div>
   
   
+  <a id="EmbedIO_WebServerBase_1_GetMimeType_" data-uid="EmbedIO.WebServerBase`1.GetMimeType*"></a>
+  <h4 id="EmbedIO_WebServerBase_1_GetMimeType_System_String_" data-uid="EmbedIO.WebServerBase`1.GetMimeType(System.String)">GetMimeType(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the MIME type associated to a file extension.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetMimeType(string extension)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">extension</span></td>
+        <td><p>The file extension for which a corresponding MIME type is wanted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The MIME type corresponding to <code data-dev-comment-type="paramref" class="paramref">extension</code>, if one is found;
+otherwise, <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="EmbedIO_WebServerBase_1_HandleContextAsync_" data-uid="EmbedIO.WebServerBase`1.HandleContextAsync*"></a>
   <h4 id="EmbedIO_WebServerBase_1_HandleContextAsync_EmbedIO_IHttpContextImpl_" data-uid="EmbedIO.WebServerBase`1.HandleContextAsync(EmbedIO.IHttpContextImpl)">HandleContextAsync(IHttpContextImpl)</h4>
   <div class="markdown level1 summary"><p>Asynchronously handles a HTTP context, generating a suitable response
@@ -791,86 +837,17 @@ the specified media range.</p>
       </tr>
     </tbody>
   </table>
-  <h3 id="events">Events
-  </h3>
   
   
-  <h4 id="EmbedIO_WebServerBase_1_StateChanged" data-uid="EmbedIO.WebServerBase`1.StateChanged">StateChanged</h4>
-  <div class="markdown level1 summary"><p>Occurs when the <a class="xref" href="EmbedIO.IWebServer.html#EmbedIO_IWebServer_State">State</a> property changes.</p>
+  <a id="EmbedIO_WebServerBase_1_TryDetermineCompression_" data-uid="EmbedIO.WebServerBase`1.TryDetermineCompression*"></a>
+  <h4 id="EmbedIO_WebServerBase_1_TryDetermineCompression_System_String_System_Boolean__" data-uid="EmbedIO.WebServerBase`1.TryDetermineCompression(System.String,System.Boolean@)">TryDetermineCompression(String, out Boolean)</h4>
+  <div class="markdown level1 summary"><p>Attempts to determine whether compression should be preferred
+when negotiating content encoding for a response with the specified content type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public event WebServerStateChangedEventHandler StateChanged</code></pre>
-  </div>
-  <h5 class="eventType">Event Type</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="EmbedIO.WebServerStateChangedEventHandler.html">WebServerStateChangedEventHandler</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="eii">Explicit Interface Implementations
-  </h3>
-  
-  
-  <a id="EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_GetMimeType_" data-uid="EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#GetMimeType*"></a>
-  <h4 id="EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_GetMimeType_System_String_" data-uid="EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#GetMimeType(System.String)">IMimeTypeProvider.GetMimeType(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string IMimeTypeProvider.GetMimeType(string extension)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">extension</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_TryDetermineCompression_" data-uid="EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#TryDetermineCompression*"></a>
-  <h4 id="EmbedIO_WebServerBase_1_EmbedIO_IMimeTypeProvider_TryDetermineCompression_System_String_System_Boolean__" data-uid="EmbedIO.WebServerBase`1.EmbedIO#IMimeTypeProvider#TryDetermineCompression(System.String,System.Boolean@)">IMimeTypeProvider.TryDetermineCompression(String, out Boolean)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool IMimeTypeProvider.TryDetermineCompression(string mimeType, out bool preferCompression)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool TryDetermineCompression(string mimeType, out bool preferCompression)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -885,12 +862,16 @@ the specified media range.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">mimeType</span></td>
-        <td></td>
+        <td><p>The MIME type to check.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">preferCompression</span></td>
-        <td></td>
+        <td><p>When this method returns <span class="xref">true</span>,
+a value indicating whether compression should be preferred.
+This parameter is passed uninitialized.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -905,6 +886,34 @@ the specified media range.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if a value is found for <code data-dev-comment-type="paramref" class="paramref">mimeType</code>;
+    otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="events">Events
+  </h3>
+  
+  
+  <h4 id="EmbedIO_WebServerBase_1_StateChanged" data-uid="EmbedIO.WebServerBase`1.StateChanged">StateChanged</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WebServerStateChangedEventArgs&gt;? StateChanged</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">EventHandler</span>&lt;<a class="xref" href="EmbedIO.WebServerStateChangedEventArgs.html">WebServerStateChangedEventArgs</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>

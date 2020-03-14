@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Namespace EmbedIO.Net
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace EmbedIO.Net
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -96,6 +96,65 @@ use this class directly.</p>
       <h4><a class="xref" href="EmbedIO.Net.HttpListener.html">HttpListener</a></h4>
       <section><p>The EmbedIO implementation of the standard HTTP Listener class.</p>
 <p>Based on MONO HttpListener class.</p>
+</section>
+      <h4><a class="xref" href="EmbedIO.Net.ResponseHeaderCollection.html">ResponseHeaderCollection</a></h4>
+      <section><p><p>Contains protocol headers associated with an HTTP response.</p>
+<p>Unlike <see cref="!:WebHeaderCollection"></see>, that supports a variety of scenarios,
+this class is only meant to be used for the <a class="xref" href="EmbedIO.IHttpResponse.html#EmbedIO_IHttpResponse_Headers">Headers</a>
+property of the <a class="xref" href="EmbedIO.IHttpResponse.html">IHttpResponse</a> interface. Therefore, some header names
+are restricted and cannot be read or set through an instance of this class.</p>
+<p>The restricted headers are the following:</p>
+<table><thead><tr><th>Header name</th><th>Rationale</th></tr></thead><tbody><tr><td>
+<p><code>Connection</code></p>
+<p><code>Content-Encoding</code></p>
+<p><code>Content-Length</code></p>
+<p><code>Date</code></p>
+<p><code>Keep-Alive</code></p>
+<p><code>Sec-Web-Socket-Accept</code></p>
+<p><code>Sec-Web-Socket-Extensions</code></p>
+<p><code>Sec-Web-Socket-Protocol</code></p>
+<p><code>Sec-Web-Socket-Version</code></p>
+<p><code>Server</code></p>
+<p><code>Trailer</code></p>
+<p><code>Transfer-Encoding</code></p>
+</td><td>These headers are automatically managed by EmbedIO.</td></tr><tr><td>
+<p><code>Set-Cookie</code></p>
+<p><code>Set-Cookie2</code></p>
+</td><td>Cookies are set through the <a class="xref" href="EmbedIO.IHttpMessage.html#EmbedIO_IHttpMessage_Cookies">Cookies</a> property.</td></tr><tr><td>
+<p><code>Accept</code></p>
+<p><code>Accept-Charset</code></p>
+<p><code>Accept-Encoding</code></p>
+<p><code>Accept-Language</code></p>
+<p><code>Accept-Patch</code></p>
+<p><code>Accept-Ranges</code></p>
+<p><code>Access-Control-Request-Headers</code></p>
+<p><code>Access-Control-Request-Method</code></p>
+<p><code>Authorization</code></p>
+<p><code>Cookie</code></p>
+<p><code>Cookie2</code></p>
+<p><code>Expect</code></p>
+<p><code>From</code></p>
+<p><code>Host</code></p>
+<p><code>If-Match</code></p>
+<p><code>If-Modified-Since</code></p>
+<p><code>If-None-Match</code></p>
+<p><code>If-Range</code></p>
+<p><code>If-Unmodified-Since</code></p>
+<p><code>Origin</code></p>
+<p><code>Proxy-Authorization</code></p>
+<p><code>Range</code></p>
+<p><code>Referer</code></p>
+<p><code>Sec-Web-Socket-Key</code></p>
+<p><code>TE</code></p>
+<p><code>Upgrade</code></p>
+<p><code>Upgrade-Insecure-Requests</code></p>
+<p><code>User-Agent</code></p>
+</td><td>These headers are only meant to be included in HTTP requests, not in responses.</td></tr><tr><td>
+<p><code>Age</code></p>
+<p><code>Proxy-Authentication</code></p>
+<p><code>Proxy-Connection</code></p>
+<p><code>Via</code></p>
+</td><td>These headers are only meant to be sent by proxies, not servers.</td></tr></tbody></table></p>
 </section>
 
 <h3 id="disqus_thread">Comments</h3>

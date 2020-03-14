@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class HttpContextExtensions
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class HttpContextExtensions
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -720,7 +720,8 @@ it will return the same collection instead of trying to parse the request body a
   <a id="EmbedIO_HttpContextExtensions_OpenResponseStream_" data-uid="EmbedIO.HttpContextExtensions.OpenResponseStream*"></a>
   <h4 id="EmbedIO_HttpContextExtensions_OpenResponseStream_EmbedIO_IHttpContext_System_Boolean_System_Boolean_" data-uid="EmbedIO.HttpContextExtensions.OpenResponseStream(EmbedIO.IHttpContext,System.Boolean,System.Boolean)">OpenResponseStream(IHttpContext, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Wraps the response output stream and returns a <see cref="!:Stream"></see> that can be used directly.</p>
-<p>Optional buffering is applied, so that the response may be sent as one instead of using chunked transfer.</p>
+<p>Optional buffering is applied, so that the response may be sent as one (thereby properly setting the
+<code>Content-Length</code> header) instead of using chunked transfer.</p>
 <p>Proactive negotiation is performed to select the best compression method supported by the client.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -747,9 +748,10 @@ it will return the same collection instead of trying to parse the request body a
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">buffered</span></td>
-        <td><p>If set to <span class="xref">true</span>, sent data is collected
-in a <see cref="!:MemoryStream"></see> and sent all at once when the returned <see cref="!:Stream"></see>
-is disposed; if set to <span class="xref">false</span> (the default), chunked transfer will be used.</p>
+        <td><p>If set to <span class="xref">true</span>, the data to send will be collected
+in memory and sent all at once when the returned <see cref="!:Stream"></see> is disposed,
+setting the <code>Content-Length</code> response header;
+if set to <span class="xref">false</span> (the default), chunked transfer will be used.</p>
 </td>
       </tr>
       <tr>
@@ -787,7 +789,8 @@ is disposed; if set to <span class="xref">false</span> (the default), chunked tr
   <a id="EmbedIO_HttpContextExtensions_OpenResponseText_" data-uid="EmbedIO.HttpContextExtensions.OpenResponseText*"></a>
   <h4 id="EmbedIO_HttpContextExtensions_OpenResponseText_EmbedIO_IHttpContext_System_Nullable_Encoding__System_Boolean_System_Boolean_" data-uid="EmbedIO.HttpContextExtensions.OpenResponseText(EmbedIO.IHttpContext,System.Nullable{Encoding},System.Boolean,System.Boolean)">OpenResponseText(IHttpContext, Nullable&lt;Encoding&gt;, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Wraps the response output stream and returns a <see cref="!:TextWriter"></see> that can be used directly.</p>
-<p>Optional buffering is applied, so that the response may be sent as one instead of using chunked transfer.</p>
+<p>Optional buffering is applied, so that the response may be sent as one (thereby properly setting the
+<code>Content-Length</code> header) instead of using chunked transfer.</p>
 <p>Proactive negotiation is performed to select the best compression method supported by the client.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -814,8 +817,8 @@ is disposed; if set to <span class="xref">false</span> (the default), chunked tr
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Encoding</span>&gt;</td>
         <td><span class="parametername">encoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> to use to convert text to data bytes.</p>
-<p>If <span class="xref">null</span> (the default), <see cref="!:Encoding.UTF8">UTF-8</see> is used.</p>
+        <td><p>The <see cref="!:Encoding"></see> to use to convert text to data bytes.
+By default, <see cref="!:Encoding.UTF8">UTF-8</see> is used.</p>
 </td>
       </tr>
       <tr>

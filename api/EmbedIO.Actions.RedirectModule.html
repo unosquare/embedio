@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class RedirectModule
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RedirectModule
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -101,7 +101,7 @@
       <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_Container">WebModuleBase.Container</a>
     </div>
     <div>
-      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_Container">WebModuleBase.IWebModuleImpl.Container</a>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_EmbedIO_IWebModuleImpl_SetContainer_EmbedIO_IWebModuleContainer_">WebModuleBase.IWebModuleImpl.SetContainer(IWebModuleContainer)</a>
     </div>
     <div>
       <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_BaseRoute">WebModuleBase.BaseRoute</a>
@@ -127,6 +127,9 @@
     <div>
       <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_OnStart_CancellationToken_">WebModuleBase.OnStart(CancellationToken)</a>
     </div>
+    <div>
+      <a class="xref" href="EmbedIO.WebModuleBase.html#EmbedIO_WebModuleBase_SetContainer_EmbedIO_IWebModuleContainer_">WebModuleBase.SetContainer(IWebModuleContainer)</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="EmbedIO.Actions.html">EmbedIO.Actions</a></h6>
   <h5 id="EmbedIO_Actions_RedirectModule_syntax">Syntax</h5>
@@ -145,7 +148,7 @@ that will redirect all served requests.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RedirectModule(string baseRoute, string redirectUrl, HttpStatusCode statusCode = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public RedirectModule(string baseRoute, string location, HttpStatusCode statusCode = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,7 +168,7 @@ that will redirect all served requests.</p>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">redirectUrl</span></td>
+        <td><span class="parametername">location</span></td>
         <td><p>The redirect URL.</p>
 </td>
       </tr>
@@ -192,7 +195,7 @@ returns <span class="xref">true</span>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RedirectModule(string baseRoute, string redirectUrl, Func&lt;IHttpContext, bool&gt;? shouldRedirect, HttpStatusCode statusCode = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public RedirectModule(string baseRoute, string location, Func&lt;IHttpContext, bool&gt;? shouldRedirect, HttpStatusCode statusCode = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -212,7 +215,7 @@ returns <span class="xref">true</span>.</p>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">redirectUrl</span></td>
+        <td><span class="parametername">location</span></td>
         <td><p>The redirect URL.</p>
 </td>
       </tr>
@@ -280,14 +283,14 @@ the context from being passed further along to other modules.</p>
   </div>
   
   
-  <a id="EmbedIO_Actions_RedirectModule_RedirectUrl_" data-uid="EmbedIO.Actions.RedirectModule.RedirectUrl*"></a>
-  <h4 id="EmbedIO_Actions_RedirectModule_RedirectUrl" data-uid="EmbedIO.Actions.RedirectModule.RedirectUrl">RedirectUrl</h4>
+  <a id="EmbedIO_Actions_RedirectModule_Location_" data-uid="EmbedIO.Actions.RedirectModule.Location*"></a>
+  <h4 id="EmbedIO_Actions_RedirectModule_Location" data-uid="EmbedIO.Actions.RedirectModule.Location">Location</h4>
   <div class="markdown level1 summary"><p>Gets the redirect URL.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string RedirectUrl { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Location { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">

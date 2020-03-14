@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class Validate
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Validate
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -120,6 +120,118 @@
   </div>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="EmbedIO_Utilities_Validate_HttpHeaderName_" data-uid="EmbedIO.Utilities.Validate.HttpHeaderName*"></a>
+  <h4 id="EmbedIO_Utilities_Validate_HttpHeaderName_System_String_System_String_" data-uid="EmbedIO.Utilities.Validate.HttpHeaderName(System.String,System.String)">HttpHeaderName(String, String)</h4>
+  <div class="markdown level1 summary"><p>Ensures that a <span class="xref">langword_csharp_string</span> argument is valid as an HTTP header name as defined by
+<a href="https://tools.ietf.org/html/rfc7230#section-3.2">RFC7230, Section 3.2</a>.</p>
+<p>The rules for valid HTTP header names are defined by RFC7230 to be the same as for
+RFC2616 tokens; for further information, please see the documentation for the
+<a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_Rfc2616Token_System_String_System_String_System_String_">Rfc2616Token(String, String, String)</a> method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string HttpHeaderName(string argumentName, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">argumentName</span></td>
+        <td><p>The name of the argument to validate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to validate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">value</code>, if it is a valid HTTP header name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Utilities_Validate_HttpHeaderValue_" data-uid="EmbedIO.Utilities.Validate.HttpHeaderValue*"></a>
+  <h4 id="EmbedIO_Utilities_Validate_HttpHeaderValue_System_String_System_String_" data-uid="EmbedIO.Utilities.Validate.HttpHeaderValue(System.String,System.String)">HttpHeaderValue(String, String)</h4>
+  <div class="markdown level1 summary"><p>Ensures that a <span class="xref">langword_csharp_string</span> argument is valid as an HTTP header value as defined by
+<a href="https://tools.ietf.org/html/rfc7230#section-3.2">RFC7230, Section 3.2</a>.</p>
+<p>Only visible ASCII visible characters, plus space and horizontal tab, are allowed.</p>
+<p><span class="xref">null</span> is allowed, but it is turned into the empty string.</p>
+<p>Obsolete line folding (see <a href="https://tools.ietf.org/html/rfc7230#section-3.2.4">Section 3.2.4</a>)
+is NOT allowed, even if it is still allowed by Microsoft&apos;s <see cref="!:WebHeaderCollection"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string HttpHeaderValue(string argumentName, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">argumentName</span></td>
+        <td><p>The name of the argument to validate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to validate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">value</code>, if it is a valid HTTP header value, with spaces
+    and horizontal tabs trimmed on both ends..</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="EmbedIO_Utilities_Validate_LocalPath_" data-uid="EmbedIO.Utilities.Validate.LocalPath*"></a>
@@ -359,7 +471,7 @@ and <code>type/*</code>) are considered valid; otherwise, they are rejected as i
   
   
   <a id="EmbedIO_Utilities_Validate_Rfc2616Token_" data-uid="EmbedIO.Utilities.Validate.Rfc2616Token*"></a>
-  <h4 id="EmbedIO_Utilities_Validate_Rfc2616Token_System_String_System_String_" data-uid="EmbedIO.Utilities.Validate.Rfc2616Token(System.String,System.String)">Rfc2616Token(String, String)</h4>
+  <h4 id="EmbedIO_Utilities_Validate_Rfc2616Token_System_String_System_String_System_String_" data-uid="EmbedIO.Utilities.Validate.Rfc2616Token(System.String,System.String,System.String)">Rfc2616Token(String, String, String)</h4>
   <div class="markdown level1 summary"><p><p>Ensures that a <span class="xref">langword_csharp_string</span> argument is valid as a token as defined by
 <a href="https://tools.ietf.org/html/rfc2616#section-2.2">RFC2616, Section 2.2</a>.</p>
 <p>RFC2616 tokens are used, for example, as:</p>
@@ -372,7 +484,7 @@ and <code>type/*</code>) are considered valid; otherwise, they are rejected as i
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string Rfc2616Token(string argumentName, string value)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string Rfc2616Token(string argumentName, string value, string entity = &quot;Token&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -394,6 +506,13 @@ and <code>type/*</code>) are considered valid; otherwise, they are rejected as i
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">value</span></td>
         <td><p>The value to validate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">entity</span></td>
+        <td><p>What is being validated. This string is put at the start of the exception
+message when validation fails. Default is <code>&quot;Token&quot;</code>, as in <code>&quot;Token contains one or more invalid characters.&quot;</code></p>
 </td>
       </tr>
     </tbody>
@@ -520,7 +639,7 @@ obtained by combining <code data-dev-comment-type="paramref" class="paramref">ba
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">enforceHttp</span></td>
-        <td><p>Ensure that the resulting URL&apos;s scheme is either <code>http</code> or <code>https</code>.</p>
+        <td><p>Ensure that the scheme of the resulting URL is either <code>http</code> or <code>https</code>.</p>
 </td>
       </tr>
     </tbody>

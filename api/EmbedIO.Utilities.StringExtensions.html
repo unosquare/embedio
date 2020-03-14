@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class StringExtensions
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class StringExtensions
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -329,6 +329,118 @@ You can specify whether the substrings include empty array elements.</p>
   <div class="seealso">
       <div><a class="xref" href="EmbedIO.Utilities.StringExtensions.html#EmbedIO_Utilities_StringExtensions_SplitByComma_System_String_">SplitByComma(String)</a></div>
   </div>
+  
+  
+  <a id="EmbedIO_Utilities_StringExtensions_TrimmedSubstring_" data-uid="EmbedIO.Utilities.StringExtensions.TrimmedSubstring*"></a>
+  <h4 id="EmbedIO_Utilities_StringExtensions_TrimmedSubstring_System_String_System_Int32_" data-uid="EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String,System.Int32)">TrimmedSubstring(String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Retrieves a substring from this instance, with leading and trailing white-space characters removed.
+The substring starts at a specified character position and continues to the end of the string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string TrimmedSubstring(this string this, int startIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">startIndex</span></td>
+        <td><p>The zero-based starting character position of the substring to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A string that is equivalent to the substring that begins at <code data-dev-comment-type="paramref" class="paramref">startIndex</code>
+in <code data-dev-comment-type="paramref" class="paramref">this</code>, minus any leading and/or trailing white-space characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="EmbedIO_Utilities_StringExtensions_TrimmedSubstring_" data-uid="EmbedIO.Utilities.StringExtensions.TrimmedSubstring*"></a>
+  <h4 id="EmbedIO_Utilities_StringExtensions_TrimmedSubstring_System_String_System_Int32_System_Int32_" data-uid="EmbedIO.Utilities.StringExtensions.TrimmedSubstring(System.String,System.Int32,System.Int32)">TrimmedSubstring(String, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Retrieves a substring from this instance, with leading and trailing white-space characters removed.
+The substring starts at a specified character position and has a specified length.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string TrimmedSubstring(this string this, int startIndex, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">this</span></td>
+        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> on which this method is called.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">startIndex</span></td>
+        <td><p>The zero-based starting character position of the substring to retrieve.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The length of the substring to retrieve, including leading and/or trailing white-space characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A string that is equivalent to the substring of length <code data-dev-comment-type="paramref" class="paramref">length</code> that begins at <code data-dev-comment-type="paramref" class="paramref">startIndex</code>
+in <code data-dev-comment-type="paramref" class="paramref">this</code>, minus any leading and/or trailing white-space characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 <h3 id="disqus_thread">Comments</h3>
 <script>

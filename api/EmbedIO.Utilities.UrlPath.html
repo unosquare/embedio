@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class UrlPath
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class UrlPath
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -156,7 +156,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasPrefix(string urlPath, string baseUrlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool HasPrefix(string path, string basePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -170,13 +170,13 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseUrlPath</span></td>
+        <td><span class="parametername">basePath</span></td>
         <td><p>The base URL path.</p>
 </td>
       </tr>
@@ -193,7 +193,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is prefixed by <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code>;
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">path</code> is prefixed by <code data-dev-comment-type="paramref" class="paramref">basePath</code>;
 otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
@@ -201,9 +201,9 @@ otherwise, <span class="xref">false</span>.</p>
   </table>
   <h5 id="EmbedIO_Utilities_UrlPath_HasPrefix_System_String_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method returns <span class="xref">true</span> even if the two URL paths are equivalent,
-for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is <code>&quot;/download&quot;</code> and
-<code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> is <code>&quot;/download/&quot;</code>.</p>
-<p>If you are sure that both <code data-dev-comment-type="paramref" class="paramref">urlPath</code> and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code>
+for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">path</code> is <code>&quot;/download&quot;</code> and
+<code data-dev-comment-type="paramref" class="paramref">basePath</code> is <code>&quot;/download/&quot;</code>.</p>
+<p>If you are sure that both <code data-dev-comment-type="paramref" class="paramref">path</code> and <code data-dev-comment-type="paramref" class="paramref">basePath</code>
 are valid and normalized, for example because you have called <a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_UrlPath_System_String_System_String_System_Boolean_">UrlPath(String, String, Boolean)</a>,
 then you may call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeHasPrefix_System_String_System_String_">UnsafeHasPrefix(String, String)</a> instead of this method. <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeHasPrefix_System_String_System_String_">UnsafeHasPrefix(String, String)</a>
 is slightly faster because it skips validity checks.</p>
@@ -224,7 +224,7 @@ is slightly faster because it skips validity checks.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsValid(string urlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsValid(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,7 +238,7 @@ is slightly faster because it skips validity checks.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
@@ -280,7 +280,7 @@ must not be empty, and must start with a slash (<code>/</code>) character.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string Normalize(string urlPath, bool isBasePath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string Normalize(string path, bool isBasePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -294,7 +294,7 @@ must not be empty, and must start with a slash (<code>/</code>) character.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
@@ -328,7 +328,7 @@ otherwise, ensure that it does NOT end with a slash character.</p>
   <div class="markdown level1 remarks"><p>A normalized URL path is one where each run of two or more slash
 (<code>/</code>) characters has been replaced with a single slash character.</p>
 <p>This method does NOT try to decode URL-encoded characters.</p>
-<p>If you are sure that <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is a valid URL path,
+<p>If you are sure that <code data-dev-comment-type="paramref" class="paramref">path</code> is a valid URL path,
 for example because you have called <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_IsValid_System_String_">IsValid(String)</a> and it returned
 <span class="xref">true</span>, then you may call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeNormalize_System_String_System_Boolean_">UnsafeNormalize(String, Boolean)</a>
 instead of this method. <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeNormalize_System_String_System_Boolean_">UnsafeNormalize(String, Boolean)</a> is slightly faster because
@@ -351,7 +351,7 @@ for which you have already called <a class="xref" href="EmbedIO.Utilities.Valida
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;string&gt; Split(string urlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;string&gt; Split(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -365,7 +365,7 @@ for which you have already called <a class="xref" href="EmbedIO.Utilities.Valida
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
@@ -389,8 +389,8 @@ for which you have already called <a class="xref" href="EmbedIO.Utilities.Valida
   </table>
   <h5 id="EmbedIO_Utilities_UrlPath_Split_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A root URL path (<code>/</code>) will result in an empty enumeration.</p>
-<p>The returned enumeration will be the same whether <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is a base URL path or not.</p>
-<p>If you are sure that <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is valid and normalized,
+<p>The returned enumeration will be the same whether <code data-dev-comment-type="paramref" class="paramref">path</code> is a base URL path or not.</p>
+<p>If you are sure that <code data-dev-comment-type="paramref" class="paramref">path</code> is valid and normalized,
 for example because you have called <a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_UrlPath_System_String_System_String_System_Boolean_">UrlPath(String, String, Boolean)</a>,
 then you may call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeSplit_System_String_">UnsafeSplit(String)</a> instead of this method. <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeSplit_System_String_">UnsafeSplit(String)</a>
 is slightly faster because it skips validity checks.</p>
@@ -410,7 +410,7 @@ is slightly faster because it skips validity checks.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string StripPrefix(string urlPath, string baseUrlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string StripPrefix(string path, string basePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -424,13 +424,13 @@ is slightly faster because it skips validity checks.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseUrlPath</span></td>
+        <td><span class="parametername">basePath</span></td>
         <td><p>The base URL path.</p>
 </td>
       </tr>
@@ -447,18 +447,18 @@ is slightly faster because it skips validity checks.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The relative path, or <span class="xref">null</span> if <code data-dev-comment-type="paramref" class="paramref">urlPath</code>
-is not prefixed by <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code>.</p>
+        <td><p>The relative path, or <span class="xref">null</span> if <code data-dev-comment-type="paramref" class="paramref">path</code>
+is not prefixed by <code data-dev-comment-type="paramref" class="paramref">basePath</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="EmbedIO_Utilities_UrlPath_StripPrefix_System_String_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The returned relative path is NOT prefixed by a slash (<code>/</code>) character.</p>
-<p>If <code data-dev-comment-type="paramref" class="paramref">urlPath</code> and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> are equivalent,
-for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is <code>&quot;/download&quot;</code>
-and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> is <code>&quot;/download/&quot;</code>, this method returns an empty string.</p>
-<p>If you are sure that both <code data-dev-comment-type="paramref" class="paramref">urlPath</code> and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code>
+<p>If <code data-dev-comment-type="paramref" class="paramref">path</code> and <code data-dev-comment-type="paramref" class="paramref">basePath</code> are equivalent,
+for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">path</code> is <code>&quot;/download&quot;</code>
+and <code data-dev-comment-type="paramref" class="paramref">basePath</code> is <code>&quot;/download/&quot;</code>, this method returns an empty string.</p>
+<p>If you are sure that both <code data-dev-comment-type="paramref" class="paramref">path</code> and <code data-dev-comment-type="paramref" class="paramref">basePath</code>
 are valid and normalized, for example because you have called <a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_UrlPath_System_String_System_String_System_Boolean_">UrlPath(String, String, Boolean)</a>,
 then you may call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeStripPrefix_System_String_System_String_">UnsafeStripPrefix(String, String)</a> instead of this method. <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_UnsafeStripPrefix_System_String_System_String_">UnsafeStripPrefix(String, String)</a>
 is slightly faster because it skips validity checks.</p>
@@ -480,7 +480,7 @@ assuming both paths are valid and normalized.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool UnsafeHasPrefix(string urlPath, string baseUrlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool UnsafeHasPrefix(string path, string basePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -494,13 +494,13 @@ assuming both paths are valid and normalized.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseUrlPath</span></td>
+        <td><span class="parametername">basePath</span></td>
         <td><p>The base URL path.</p>
 </td>
       </tr>
@@ -517,22 +517,22 @@ assuming both paths are valid and normalized.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is prefixed by <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code>;
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">path</code> is prefixed by <code data-dev-comment-type="paramref" class="paramref">basePath</code>;
 otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="EmbedIO_Utilities_UrlPath_UnsafeHasPrefix_System_String_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Unless both <code data-dev-comment-type="paramref" class="paramref">urlPath</code> and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> are valid,
+  <div class="markdown level1 remarks"><p>Unless both <code data-dev-comment-type="paramref" class="paramref">path</code> and <code data-dev-comment-type="paramref" class="paramref">basePath</code> are valid,
 normalized URL paths, the behavior of this method is unspecified. You should call this method
 only after calling either <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_Normalize_System_String_System_Boolean_">Normalize(String, Boolean)</a> or <a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_UrlPath_System_String_System_String_System_Boolean_">UrlPath(String, String, Boolean)</a>
 to check and normalize both parameters.</p>
 <p>If you are not sure about the validity and/or normalization of parameters,
 call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_HasPrefix_System_String_System_String_">HasPrefix(String, String)</a> instead of this method.</p>
 <p>This method returns <span class="xref">true</span> even if the two URL paths are equivalent,
-for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is <code>&quot;/download&quot;</code> and
-<code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> is <code>&quot;/download/&quot;</code>.</p>
+for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">path</code> is <code>&quot;/download&quot;</code> and
+<code data-dev-comment-type="paramref" class="paramref">basePath</code> is <code>&quot;/download/&quot;</code>.</p>
 </div>
   <h5 id="EmbedIO_Utilities_UrlPath_UnsafeHasPrefix_System_String_System_String__seealso">See Also</h5>
   <div class="seealso">
@@ -550,7 +550,7 @@ for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string UnsafeNormalize(string urlPath, bool isBasePath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string UnsafeNormalize(string path, bool isBasePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -564,7 +564,7 @@ for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
@@ -598,12 +598,12 @@ otherwise, ensure that it does NOT end with a slash character.</p>
   <div class="markdown level1 remarks"><p>A normalized URL path is one where each run of two or more slash
 (<code>/</code>) characters has been replaced with a single slash character.</p>
 <p>This method does NOT try to decode URL-encoded characters.</p>
-<p>If <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is not valid, the behavior of
+<p>If <code data-dev-comment-type="paramref" class="paramref">path</code> is not valid, the behavior of
 this method is unspecified. You should call this method only after
 <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_IsValid_System_String_">IsValid(String)</a> has returned <span class="xref">true</span>
-for the same <code data-dev-comment-type="paramref" class="paramref">urlPath</code>.</p>
+for the same <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
 <p>You should call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_Normalize_System_String_System_Boolean_">Normalize(String, Boolean)</a> instead of this method
-if you are not sure that <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is valid.</p>
+if you are not sure that <code data-dev-comment-type="paramref" class="paramref">path</code> is valid.</p>
 <p>There is no need to call this method for a method parameter
 for which you have already called <a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_UrlPath_System_String_System_String_System_Boolean_">UrlPath(String, String, Boolean)</a>.</p>
 </div>
@@ -622,7 +622,7 @@ for which you have already called <a class="xref" href="EmbedIO.Utilities.Valida
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;string&gt; UnsafeSplit(string urlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;string&gt; UnsafeSplit(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -636,7 +636,7 @@ for which you have already called <a class="xref" href="EmbedIO.Utilities.Valida
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
@@ -659,14 +659,14 @@ for which you have already called <a class="xref" href="EmbedIO.Utilities.Valida
     </tbody>
   </table>
   <h5 id="EmbedIO_Utilities_UrlPath_UnsafeSplit_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Unless <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is a valid, normalized URL path,
+  <div class="markdown level1 remarks"><p>Unless <code data-dev-comment-type="paramref" class="paramref">path</code> is a valid, normalized URL path,
 the behavior of this method is unspecified. You should call this method
 only after calling either <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_Normalize_System_String_System_Boolean_">Normalize(String, Boolean)</a> or <a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_UrlPath_System_String_System_String_System_Boolean_">UrlPath(String, String, Boolean)</a>
 to check and normalize both parameters.</p>
-<p>If you are not sure about the validity and/or normalization of <code data-dev-comment-type="paramref" class="paramref">urlPath</code>,
+<p>If you are not sure about the validity and/or normalization of <code data-dev-comment-type="paramref" class="paramref">path</code>,
 call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_StripPrefix_System_String_System_String_">StripPrefix(String, String)</a> instead of this method.</p>
 <p>A root URL path (<code>/</code>) will result in an empty enumeration.</p>
-<p>The returned enumeration will be the same whether <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is a base URL path or not.</p>
+<p>The returned enumeration will be the same whether <code data-dev-comment-type="paramref" class="paramref">path</code> is a base URL path or not.</p>
 </div>
   <h5 id="EmbedIO_Utilities_UrlPath_UnsafeSplit_System_String__seealso">See Also</h5>
   <div class="seealso">
@@ -684,7 +684,7 @@ assuming both paths are valid and normalized.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string UnsafeStripPrefix(string urlPath, string baseUrlPath)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string UnsafeStripPrefix(string path, string basePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -698,13 +698,13 @@ assuming both paths are valid and normalized.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">urlPath</span></td>
+        <td><span class="parametername">path</span></td>
         <td><p>The URL path.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">baseUrlPath</span></td>
+        <td><span class="parametername">basePath</span></td>
         <td><p>The base URL path.</p>
 </td>
       </tr>
@@ -721,23 +721,23 @@ assuming both paths are valid and normalized.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The relative path, or <span class="xref">null</span> if <code data-dev-comment-type="paramref" class="paramref">urlPath</code>
-is not prefixed by <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code>.</p>
+        <td><p>The relative path, or <span class="xref">null</span> if <code data-dev-comment-type="paramref" class="paramref">path</code>
+is not prefixed by <code data-dev-comment-type="paramref" class="paramref">basePath</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="EmbedIO_Utilities_UrlPath_UnsafeStripPrefix_System_String_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Unless both <code data-dev-comment-type="paramref" class="paramref">urlPath</code> and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> are valid,
+  <div class="markdown level1 remarks"><p>Unless both <code data-dev-comment-type="paramref" class="paramref">path</code> and <code data-dev-comment-type="paramref" class="paramref">basePath</code> are valid,
 normalized URL paths, the behavior of this method is unspecified. You should call this method
 only after calling either <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_Normalize_System_String_System_Boolean_">Normalize(String, Boolean)</a> or <a class="xref" href="EmbedIO.Utilities.Validate.html#EmbedIO_Utilities_Validate_UrlPath_System_String_System_String_System_Boolean_">UrlPath(String, String, Boolean)</a>
 to check and normalize both parameters.</p>
 <p>If you are not sure about the validity and/or normalization of parameters,
 call <a class="xref" href="EmbedIO.Utilities.UrlPath.html#EmbedIO_Utilities_UrlPath_StripPrefix_System_String_System_String_">StripPrefix(String, String)</a> instead of this method.</p>
 <p>The returned relative path is NOT prefixed by a slash (<code>/</code>) character.</p>
-<p>If <code data-dev-comment-type="paramref" class="paramref">urlPath</code> and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> are equivalent,
-for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">urlPath</code> is <code>&quot;/download&quot;</code>
-and <code data-dev-comment-type="paramref" class="paramref">baseUrlPath</code> is <code>&quot;/download/&quot;</code>, this method returns an empty string.</p>
+<p>If <code data-dev-comment-type="paramref" class="paramref">path</code> and <code data-dev-comment-type="paramref" class="paramref">basePath</code> are equivalent,
+for example if both are <code>&quot;/&quot;</code>, or if <code data-dev-comment-type="paramref" class="paramref">path</code> is <code>&quot;/download&quot;</code>
+and <code data-dev-comment-type="paramref" class="paramref">basePath</code> is <code>&quot;/download/&quot;</code>, this method returns an empty string.</p>
 </div>
   <h5 id="EmbedIO_Utilities_UrlPath_UnsafeStripPrefix_System_String_System_String__seealso">See Also</h5>
   <div class="seealso">

@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Namespace EmbedIO.Utilities
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace EmbedIO.Utilities
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -92,6 +92,9 @@
       <h4><a class="xref" href="EmbedIO.Utilities.ComponentCollectionExtensions.html">ComponentCollectionExtensions</a></h4>
       <section><p>Provides extension methods for types implementing <a class="xref" href="EmbedIO.Utilities.IComponentCollection-1.html">IComponentCollection&lt;T&gt;</a>.</p>
 </section>
+      <h4><a class="xref" href="EmbedIO.Utilities.ConfigurationLockSource.html">ConfigurationLockSource</a></h4>
+      <section><p>Signals to associated instances of <a class="xref" href="EmbedIO.Utilities.LockToken.html">LockToken</a> that an object&apos;s configuration is locked.</p>
+</section>
       <h4><a class="xref" href="EmbedIO.Utilities.DisposableComponentCollection-1.html">DisposableComponentCollection&lt;T&gt;</a></h4>
       <section><p>Implements a collection of components that automatically disposes each component
 implementing <see cref="!:IDisposable"></see>.</p>
@@ -102,6 +105,12 @@ implementing <see cref="!:IDisposable"></see>.</p>
 </section>
       <h4><a class="xref" href="EmbedIO.Utilities.IPParser.html">IPParser</a></h4>
       <section><p>Provides standard methods to parse IP address strings.</p>
+</section>
+      <h4><a class="xref" href="EmbedIO.Utilities.LockedException.html">LockedException</a></h4>
+      <section><p>The exception that is thrown when a <a class="xref" href="EmbedIO.Utilities.LockToken.html">LockToken</a> has been locked.</p>
+</section>
+      <h4><a class="xref" href="EmbedIO.Utilities.LockTokenSource.html">LockTokenSource</a></h4>
+      <section><p>Signals to associated instances of <a class="xref" href="EmbedIO.Utilities.LockToken.html">LockToken</a> that some data is locked.</p>
 </section>
       <h4><a class="xref" href="EmbedIO.Utilities.MimeTypeProviderStack.html">MimeTypeProviderStack</a></h4>
       <section><p>Manages a stack of MIME type providers.</p>
@@ -135,6 +144,18 @@ further parsed: parameters will appear as part of the name.</p>
 </section>
       <h4><a class="xref" href="EmbedIO.Utilities.Validate.html">Validate</a></h4>
       <section><p>Provides validation methods for method arguments.</p>
+</section>
+      <h4><a class="xref" href="EmbedIO.Utilities.ValidatedNotNullAttribute.html">ValidatedNotNullAttribute</a></h4>
+      <section><p>Indicates to static code analyzers that a parameter is guaranteed not to be <span class="xref">null</span>
+after a method returns.</p>
+<p>The presence of this attribute on a method parameter also relaxes null-validation
+requirements, thus suppressing the <a href="https://docs.microsoft.com/en-us/visualstudio/code-quality/ca1062">CA1062 warning</a>
+on the parameter.</p>
+</section>
+    <h3 id="structs">Structs
+  </h3>
+      <h4><a class="xref" href="EmbedIO.Utilities.LockToken.html">LockToken</a></h4>
+      <section><p>Propagates notification that some data has been locked and can no longer be modified.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>

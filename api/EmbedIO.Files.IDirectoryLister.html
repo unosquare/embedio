@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Interface IDirectoryLister
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IDirectoryLister
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -128,7 +128,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task ListDirectoryAsync(MappedResourceInfo info, string absoluteUrlPath, IEnumerable&lt;MappedResourceInfo&gt; entries, Stream stream, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">Task ListDirectoryAsync(MappedResourceInfo info, string absolutePath, IEnumerable&lt;MappedResourceInfo&gt; entries, Stream stream, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -149,7 +149,7 @@ the directory which is to be listed.</p>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">absoluteUrlPath</span></td>
+        <td><span class="parametername">absolutePath</span></td>
         <td><p>The absolute URL path that was mapped to <code data-dev-comment-type="paramref" class="paramref">info</code>.</p>
 </td>
       </tr>

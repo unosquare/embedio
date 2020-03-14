@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class RouteVerbResolverCollection
-   | Unosquare EmbedIO </title>
+   | EmbedIO </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RouteVerbResolverCollection
-   | Unosquare EmbedIO ">
+   | EmbedIO ">
     <meta name="generator" content="docfx 2.45.0.0">
     
     <link rel="shortcut icon" href="../src/Command/favicon.ico">
@@ -194,7 +194,12 @@ will count as one for each attribute.</p>
   
   <a id="EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver*"></a>
   <h4 id="EmbedIO_Routing_RouteVerbResolverCollection_CreateResolver_EmbedIO_Routing_RouteMatcher_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.CreateResolver(EmbedIO.Routing.RouteMatcher)">CreateResolver(RouteMatcher)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_RouteHandlerCallback_">Add(TData, RouteMatcher, RouteHandlerCallback)</a>
+and <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_Add__0_EmbedIO_Routing_RouteMatcher_EmbedIO_Routing_SyncRouteHandlerCallback_">Add(TData, RouteMatcher, SyncRouteHandlerCallback)</a> to create an instance
+of <code data-dev-comment-type="typeparamref" class="typeparamref">TResolver</code> that can resolve the specified route.</p>
+<p>If this method returns <span class="xref">null</span>, an <see cref="!:InvalidOperationException"></see>
+is thrown by the calling method.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -213,7 +218,8 @@ will count as one for each attribute.</p>
       <tr>
         <td><a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a></td>
         <td><span class="parametername">matcher</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="EmbedIO.Routing.RouteMatcher.html">RouteMatcher</a>to match URL paths against.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -228,7 +234,8 @@ will count as one for each attribute.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="EmbedIO.Routing.RouteVerbResolver.html">RouteVerbResolver</a></td>
-        <td></td>
+        <td><p>A newly-constructed instance of <code data-dev-comment-type="typeparamref" class="typeparamref">TResolver</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -238,7 +245,11 @@ will count as one for each attribute.</p>
   
   <a id="EmbedIO_Routing_RouteVerbResolverCollection_OnResolverCalled_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled*"></a>
   <h4 id="EmbedIO_Routing_RouteVerbResolverCollection_OnResolverCalled_EmbedIO_IHttpContext_EmbedIO_Routing_RouteVerbResolver_EmbedIO_Routing_RouteResolutionResult_" data-uid="EmbedIO.Routing.RouteVerbResolverCollection.OnResolverCalled(EmbedIO.IHttpContext,EmbedIO.Routing.RouteVerbResolver,EmbedIO.Routing.RouteResolutionResult)">OnResolverCalled(IHttpContext, RouteVerbResolver, RouteResolutionResult)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Called by <a class="xref" href="EmbedIO.Routing.RouteResolverCollectionBase-2.html#EmbedIO_Routing_RouteResolverCollectionBase_2_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync(IHttpContext)</a> when a resolver&apos;s
+<a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync(IHttpContext)</a> method has been called
+to resolve a context.</p>
+<p>This callback method may be used e.g. for logging or testing.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -257,7 +268,8 @@ will count as one for each attribute.</p>
       <tr>
         <td><a class="xref" href="EmbedIO.IHttpContext.html">IHttpContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td></td>
+        <td><p>The context to handle.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="EmbedIO.Routing.RouteVerbResolver.html">RouteVerbResolver</a></td>
@@ -267,7 +279,8 @@ will count as one for each attribute.</p>
       <tr>
         <td><a class="xref" href="EmbedIO.Routing.RouteResolutionResult.html">RouteResolutionResult</a></td>
         <td><span class="parametername">result</span></td>
-        <td></td>
+        <td><p>The result returned by <code data-dev-comment-type="paramref" class="paramref">resolver</code>.<a class="xref" href="EmbedIO.Routing.RouteResolverBase-1.html#EmbedIO_Routing_RouteResolverBase_1_ResolveAsync_EmbedIO_IHttpContext_">ResolveAsync(IHttpContext)</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
