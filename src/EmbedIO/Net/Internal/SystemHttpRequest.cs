@@ -62,7 +62,31 @@ namespace EmbedIO.Net.Internal
         public Stream InputStream => _request.InputStream;
 
         /// <inheritdoc />
-        public Encoding ContentEncoding => _request.ContentEncoding;
+        public Encoding ContentEncoding
+        {
+            get
+            {
+                if (_request.HasEntityBody && _request.ContentType != null)
+                {
+                    var charSet = HeaderUtility.GetCharset(ContentType);
+                    if (charSet != null)
+                    {
+                        try
+                        {
+                            return Encoding.GetEncoding(charSet);
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
+                    }
+                }
+
+                // Microsoft's implementation returns Encoding.Default,
+                // which is the system's active code page in .NET Framework.
+                // Return UTF-8 instead, like .NET Core's HttpListenerRequest.
+                return Encoding.UTF8;
+            }
+        }
 
         /// <inheritdoc />
         public IPEndPoint RemoteEndPoint { get; }

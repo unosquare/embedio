@@ -20,7 +20,6 @@ namespace EmbedIO.Net.Internal
         private static readonly char[] Separators = { ' ' };
 
         private readonly HttpListenerContext _context;
-        private Encoding? _contentEncoding;
         private CookieList? _cookies;
         private Stream? _inputStream;
         private Uri? _url;
@@ -49,37 +48,25 @@ namespace EmbedIO.Net.Internal
         {
             get
             {
-                if (_contentEncoding != null)
-                    return _contentEncoding;
-
-                var contentType = Headers[HttpHeaderNames.ContentType];
-
-                if (!string.IsNullOrEmpty(contentType))
+                if (HasEntityBody && ContentType != null)
                 {
-                    _contentEncoding = GetEncoding(contentType);
-
-                    if (_contentEncoding != null)
-                        return _contentEncoding;
-                }
-
-                var defaultEncoding = Encoding.UTF8;
-                var acceptCharset = Headers[HttpHeaderNames.AcceptCharset]?.SplitByComma()
-                    .Select(x => x.Trim().Split(';'))
-                    .Select(x => new
+                    var charSet = HeaderUtility.GetCharset(ContentType);
+                    if (charSet != null)
                     {
-                        Charset = x[0],
-                        Q = x.Length == 1 ? 1m : decimal.Parse(x[1].Trim().Replace("q=", string.Empty), CultureInfo.InvariantCulture),
-                    })
-                    .OrderBy(x => x.Q)
-                    .Select(x => x.Charset)
-                    .FirstOrDefault();
-
-                if (string.IsNullOrWhiteSpace(acceptCharset) == false)
-                {
-                    defaultEncoding = Encoding.GetEncoding(acceptCharset);
+                        try
+                        {
+                            return Encoding.GetEncoding(charSet);
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
+                    }
                 }
 
-                return _contentEncoding = defaultEncoding;
+                // Microsoft's implementation returns Encoding.Default,
+                // which is the system's active code page in .NET Framework.
+                // Return UTF-8 instead, like .NET Core's HttpListenerRequest.
+                return Encoding.UTF8;
             }
         }
 
@@ -374,20 +361,6 @@ namespace EmbedIO.Net.Internal
                     return false;
                 }
             }
-        }
-
-        private static Encoding GetEncoding(string contentType) => contentType
-            .Split(';')
-            .Select(p => p.Trim())
-            .Where(part => part.StartsWith("charset", StringComparison.OrdinalIgnoreCase))
-            .Select(part => Encoding.GetEncoding(GetValue(part)))
-            .FirstOrDefault();
-
-        private static string? GetValue(string nameAndValue)
-        {
-            var idx = nameAndValue.IndexOf('=');
-
-            return idx < 0 || idx == nameAndValue.Length - 1 ? null : nameAndValue.Substring(idx + 1).Trim().Unquote();
         }
 
         private void ParseCookies(string val)
