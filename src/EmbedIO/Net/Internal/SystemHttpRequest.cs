@@ -66,25 +66,25 @@ namespace EmbedIO.Net.Internal
         {
             get
             {
-                if (_request.HasEntityBody && _request.ContentType != null)
+                if (!_request.HasEntityBody || _request.ContentType == null)
                 {
-                    var charSet = HeaderUtility.GetCharset(ContentType);
-                    if (charSet != null)
-                    {
-                        try
-                        {
-                            return Encoding.GetEncoding(charSet);
-                        }
-                        catch (ArgumentException)
-                        {
-                        }
-                    }
+                    return WebServer.DefaultEncoding;
                 }
 
-                // Microsoft's implementation returns Encoding.Default,
-                // which is the system's active code page in .NET Framework.
-                // Return UTF-8 instead, like .NET Core's HttpListenerRequest.
-                return Encoding.UTF8;
+                var charSet = HeaderUtility.GetCharset(ContentType);
+                if (string.IsNullOrEmpty(charSet))
+                {
+                    return WebServer.DefaultEncoding;
+                }
+
+                try
+                {
+                    return Encoding.GetEncoding(charSet);
+                }
+                catch (ArgumentException)
+                {
+                    return WebServer.DefaultEncoding;
+                }
             }
         }
 

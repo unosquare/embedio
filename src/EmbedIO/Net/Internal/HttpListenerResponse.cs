@@ -33,7 +33,7 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public Encoding? ContentEncoding { get; set; } = Encoding.UTF8;
+        public Encoding? ContentEncoding { get; set; } = WebServer.DefaultEncoding;
 
         /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
@@ -167,7 +167,7 @@ namespace EmbedIO.Net.Internal
             if (_contentType != null)
             {
                 var contentTypeValue = _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
-                    ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
+                    ? $"{_contentType}; charset={WebServer.DefaultEncoding.WebName}"
                     : _contentType;
 
                 Headers.Add(HttpHeaderNames.ContentType, contentTypeValue);
@@ -328,8 +328,8 @@ namespace EmbedIO.Net.Internal
         private MemoryStream WriteHeaders()
         {
             var stream = new MemoryStream();
-            var data = Encoding.UTF8.GetBytes(GetHeaderData());
-            var preamble = Encoding.UTF8.GetPreamble();
+            var data = WebServer.DefaultEncoding.GetBytes(GetHeaderData());
+            var preamble = WebServer.DefaultEncoding.GetPreamble();
             stream.Write(preamble, 0, preamble.Length);
             stream.Write(data, 0, data.Length);
 

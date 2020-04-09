@@ -45,7 +45,7 @@ namespace EmbedIO.Tests
                 var model = new Person { Key = 10, Name = "Test" };
                 var payloadJson = new StringContent(
                     Json.Serialize(model),
-                    System.Text.Encoding.UTF8,
+                    WebServer.DefaultEncoding,
                     MimeType.Json);
 
                 var response = await Client.PostAsync("/api/regex", payloadJson);

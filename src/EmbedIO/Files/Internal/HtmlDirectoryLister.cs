@@ -22,7 +22,7 @@ namespace EmbedIO.Files.Internal
 
         public static IDirectoryLister Instance => LazyInstance.Value;
 
-        public string ContentType { get; } = MimeType.Html + "; encoding=" + Encoding.UTF8.WebName;
+        public string ContentType { get; } = MimeType.Html + "; encoding=" + WebServer.DefaultEncoding.WebName;
 
         public async Task ListDirectoryAsync(
             MappedResourceInfo info,
@@ -38,7 +38,7 @@ namespace EmbedIO.Files.Internal
                 throw SelfCheck.Failure($"{nameof(HtmlDirectoryLister)}.{nameof(ListDirectoryAsync)} invoked with a file, not a directory.");
 
             var encodedPath = WebUtility.HtmlEncode(absoluteUrlPath);
-            using var text = new StreamWriter(stream, Encoding.UTF8);
+            using var text = new StreamWriter(stream, WebServer.DefaultEncoding);
             text.Write("<html><head><title>Index of ");
             text.Write(encodedPath);
             text.Write("</title></head><body><h1>Index of ");

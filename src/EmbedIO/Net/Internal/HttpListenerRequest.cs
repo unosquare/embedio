@@ -16,7 +16,7 @@ namespace EmbedIO.Net.Internal
     /// </summary>
     internal sealed partial class HttpListenerRequest : IHttpRequest
     {
-        private static readonly byte[] HttpStatus100 = Encoding.UTF8.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+        private static readonly byte[] HttpStatus100 = WebServer.DefaultEncoding.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
         private static readonly char[] Separators = { ' ' };
 
         private readonly HttpListenerContext _context;
@@ -48,25 +48,25 @@ namespace EmbedIO.Net.Internal
         {
             get
             {
-                if (HasEntityBody && ContentType != null)
+                if (!HasEntityBody || ContentType == null)
                 {
-                    var charSet = HeaderUtility.GetCharset(ContentType);
-                    if (charSet != null)
-                    {
-                        try
-                        {
-                            return Encoding.GetEncoding(charSet);
-                        }
-                        catch (ArgumentException)
-                        {
-                        }
-                    }
+                    return WebServer.DefaultEncoding;
                 }
 
-                // Microsoft's implementation returns Encoding.Default,
-                // which is the system's active code page in .NET Framework.
-                // Return UTF-8 instead, like .NET Core's HttpListenerRequest.
-                return Encoding.UTF8;
+                var charSet = HeaderUtility.GetCharset(ContentType);
+                if (string.IsNullOrEmpty(charSet))
+                {
+                    return WebServer.DefaultEncoding;
+                }
+
+                try
+                {
+                    return Encoding.GetEncoding(charSet);
+                }
+                catch (ArgumentException)
+                {
+                    return WebServer.DefaultEncoding;
+                }
             }
         }
 
