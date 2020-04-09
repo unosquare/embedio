@@ -165,7 +165,7 @@ namespace EmbedIO.Testing
         public static string GetText(string path, Encoding? encoding = null)
         {
             using var stream = Open(path);
-            using var reader = new StreamReader(stream, encoding ?? Encoding.UTF8, false, WebServer.StreamCopyBufferSize, true);
+            using var reader = new StreamReader(stream, encoding ?? WebServer.DefaultEncoding, false, WebServer.StreamCopyBufferSize, true);
             return reader.ReadToEnd();
         }
 

@@ -80,10 +80,10 @@ namespace EmbedIO
             @this.Response.StatusCode = statusCode;
             @this.Response.StatusDescription = statusDescription;
             @this.Response.ContentType = MimeType.Html;
-            @this.Response.ContentEncoding = Encoding.UTF8;
-            using (var text = @this.OpenResponseText(Encoding.UTF8))
+            @this.Response.ContentEncoding = WebServer.DefaultEncoding;
+            using (var text = @this.OpenResponseText(WebServer.DefaultEncoding))
             {
-                text.Write(StandardHtmlHeaderFormat, statusCode, statusDescription, Encoding.UTF8.WebName);
+                text.Write(StandardHtmlHeaderFormat, statusCode, statusDescription, WebServer.DefaultEncoding.WebName);
                 writeAdditionalHtml?.Invoke(text);
                 text.Write(StandardHtmlFooter);
             }

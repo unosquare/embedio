@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace EmbedIO
 {
@@ -18,5 +19,11 @@ namespace EmbedIO
         /// The signature string included in <c>Server</c> response headers.
         /// </summary>
         public static readonly string Signature = "EmbedIO/" + Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyInformationalVersionAttribute>().First().InformationalVersion;
+
+        /// <summary>
+        /// The default encoding that is both assumed for requests that do not specify an encoding,
+        /// and used for responses when an encoding is not specified.
+        /// </summary>
+        public static readonly Encoding DefaultEncoding = Encoding.UTF8;
     }
 }

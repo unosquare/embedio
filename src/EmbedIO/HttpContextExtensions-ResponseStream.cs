@@ -44,7 +44,7 @@ namespace EmbedIO
         /// <param name="this">The <see cref="IHttpContext" /> on which this method is called.</param>
         /// <param name="encoding">
         /// <para>The <see cref="Encoding"/> to use to convert text to data bytes.</para>
-        /// <para>If <see langword="null"/> (the default), <see cref="Encoding.UTF8">UTF-8</see> is used.</para>
+        /// <para>If <see langword="null"/> (the default), <see cref="WebServer.DefaultEncoding"/> (UTF-8) is used.</para>
         /// </param>
         /// <param name="buffered">If set to <see langword="true" />, sent data is collected
         /// in a <see cref="MemoryStream" /> and sent all at once when the returned <see cref="Stream" />
@@ -58,7 +58,7 @@ namespace EmbedIO
         /// <seealso cref="OpenResponseStream"/>
         public static TextWriter OpenResponseText(this IHttpContext @this, Encoding? encoding = null, bool buffered = false, bool preferCompression = true)
         {
-            encoding ??= Encoding.UTF8;
+            encoding ??= WebServer.DefaultEncoding;
             @this.Response.ContentEncoding = encoding;
             return new StreamWriter(OpenResponseStream(@this, buffered, preferCompression), encoding);
         }

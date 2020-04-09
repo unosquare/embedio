@@ -16,7 +16,7 @@ namespace EmbedIO.Tests
         public Task OnAny_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnAny(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnAny(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {
@@ -33,7 +33,7 @@ namespace EmbedIO.Tests
         public Task OnGet_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnGet(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnGet(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {
@@ -50,7 +50,7 @@ namespace EmbedIO.Tests
         public Task OnPost_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnPost(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnPost(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {
@@ -67,7 +67,7 @@ namespace EmbedIO.Tests
         public Task OnPut_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnPut(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnPut(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {
@@ -84,7 +84,7 @@ namespace EmbedIO.Tests
         public Task OnHead_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnHead(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnHead(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {
@@ -101,7 +101,7 @@ namespace EmbedIO.Tests
         public Task OnDelete_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnDelete(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnDelete(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {
@@ -118,7 +118,7 @@ namespace EmbedIO.Tests
         public Task OnOptions_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnOptions(ctx=> ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnOptions(ctx=> ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {
@@ -135,7 +135,7 @@ namespace EmbedIO.Tests
         public Task OnPatch_ResponseOK()
         {
             void Configure(IWebServer server) => server
-                .OnPatch(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, Encoding.UTF8));
+                .OnPatch(ctx => ctx.SendStringAsync(Ok, MimeType.PlainText, WebServer.DefaultEncoding));
 
             async Task Use(HttpClient client)
             {

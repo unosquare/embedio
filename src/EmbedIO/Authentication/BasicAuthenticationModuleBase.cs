@@ -87,7 +87,7 @@ namespace EmbedIO.Authentication
             string credentials;
             try
             {
-                credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Substring(6).Trim()));
+                credentials = WebServer.DefaultEncoding.GetString(Convert.FromBase64String(authHeader.Substring(6).Trim()));
             }
             catch (FormatException)
             {

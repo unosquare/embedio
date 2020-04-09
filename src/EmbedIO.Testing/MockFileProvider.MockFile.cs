@@ -16,7 +16,7 @@ namespace EmbedIO.Testing
             {
                 Data = text == null
                     ? Array.Empty<byte>()
-                    : Encoding.UTF8.GetBytes(text);
+                    : WebServer.DefaultEncoding.GetBytes(text);
             }
 
             public byte[] Data { get; private set; }
@@ -31,7 +31,7 @@ namespace EmbedIO.Testing
             {
                 Data = text == null
                     ? Array.Empty<byte>()
-                    : Encoding.UTF8.GetBytes(text);
+                    : WebServer.DefaultEncoding.GetBytes(text);
                 Touch();
             }
         }

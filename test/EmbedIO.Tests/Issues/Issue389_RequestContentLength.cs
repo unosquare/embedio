@@ -22,7 +22,7 @@ namespace EmbedIO.Tests.Issues
             _ = server.RunAsync();
 
             using var client = new HttpClient();
-            using var content = new StringContent(Content, Encoding.UTF8, "text/plain");
+            using var content = new StringContent(Content, WebServer.DefaultEncoding, "text/plain");
             using var response = await client.PostAsync(DefaultUrl, content).ConfigureAwait(false);
             var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -43,7 +43,7 @@ namespace EmbedIO.Tests.Issues
             _ = server.RunAsync();
 
             using var client = new HttpClient();
-            using var content = new StringContent(Content, Encoding.UTF8, "text/plain");
+            using var content = new StringContent(Content, WebServer.DefaultEncoding, "text/plain");
             using var response = await client.PostAsync(DefaultUrl, content).ConfigureAwait(false);
             var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 

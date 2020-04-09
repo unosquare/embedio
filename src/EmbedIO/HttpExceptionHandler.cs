@@ -48,7 +48,7 @@ namespace EmbedIO
         /// <param name="httpException">The HTTP exception.</param>
         /// <returns>A <see cref="Task" /> representing the ongoing operation.</returns>
         public static Task PlainTextResponse(IHttpContext context, IHttpException httpException)
-            => context.SendStringAsync(httpException.Message ?? string.Empty, MimeType.PlainText, Encoding.UTF8);
+            => context.SendStringAsync(httpException.Message ?? string.Empty, MimeType.PlainText, WebServer.DefaultEncoding);
 
         /// <summary>
         /// <para>Sends a response with a HTML payload

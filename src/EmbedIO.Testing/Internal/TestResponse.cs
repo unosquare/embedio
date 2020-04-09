@@ -24,7 +24,7 @@ namespace EmbedIO.Testing.Internal
 
         public ICookieCollection Cookies { get; } = new Net.CookieList();
 
-        public Encoding? ContentEncoding { get; set; } = Encoding.UTF8;
+        public Encoding? ContentEncoding { get; set; } = WebServer.DefaultEncoding;
 
         public bool KeepAlive { get; set; }
 

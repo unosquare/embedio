@@ -33,10 +33,10 @@ namespace EmbedIO.Tests
         public void OpenFile_ReturnsCorrectContent(string urlPath)
         {
             var info = _fileProvider.MapUrlPath(urlPath, _mimeTypeProvider);
-            var expectedText = StockResource.GetText(urlPath, Encoding.UTF8);
+            var expectedText = StockResource.GetText(urlPath, WebServer.DefaultEncoding);
 
             using var stream = _fileProvider.OpenFile(info.Path);
-            using var reader = new StreamReader(stream, Encoding.UTF8, false, WebServer.StreamCopyBufferSize, true);
+            using var reader = new StreamReader(stream, WebServer.DefaultEncoding, false, WebServer.StreamCopyBufferSize, true);
             var actualText = reader.ReadToEnd();
 
             Assert.AreEqual(expectedText, actualText, "Content is the same as embedded resource");

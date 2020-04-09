@@ -12,7 +12,7 @@ namespace EmbedIO.Tests.Issues
         {
             const string DefaultUrl = "http://localhost:1234/";
 
-            var ok = Encoding.UTF8.GetBytes("content");
+            var ok = WebServer.DefaultEncoding.GetBytes("content");
 
             using var server = new WebServer(HttpListenerMode.EmbedIO, DefaultUrl);
             server.WithAction("/", HttpVerbs.Get, async context =>
@@ -34,7 +34,7 @@ namespace EmbedIO.Tests.Issues
         [Test]
         public async Task ActionModuleWithHeaderCollection_Handle_ContentLengthProperly()
         {
-            var ok = Encoding.UTF8.GetBytes("content");
+            var ok = WebServer.DefaultEncoding.GetBytes("content");
 
             using var server = new WebServer(1234);
             server.WithAction("/", HttpVerbs.Get, async context =>

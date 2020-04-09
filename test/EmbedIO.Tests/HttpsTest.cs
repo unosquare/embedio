@@ -31,7 +31,7 @@ namespace EmbedIO.Tests
                 .WithMode(HttpListenerMode.EmbedIO);
 
             using var webServer = new WebServer(options);
-            webServer.OnAny(ctx => ctx.SendStringAsync(DefaultMessage, MimeType.PlainText, Encoding.UTF8));
+            webServer.OnAny(ctx => ctx.SendStringAsync(DefaultMessage, MimeType.PlainText, WebServer.DefaultEncoding));
 
             _ = webServer.RunAsync();
 

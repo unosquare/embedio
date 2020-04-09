@@ -53,7 +53,7 @@ namespace EmbedIO.Testing.Internal
             HttpVerb = HttpMethodToVerb(clientRequest.Method);
             Url = clientRequest.RequestUri;
             HasEntityBody = _content != null;
-            ContentEncoding = Encoding.GetEncoding(_content?.Headers.ContentType?.CharSet ?? Encoding.UTF8.WebName);
+            ContentEncoding = Encoding.GetEncoding(_content?.Headers.ContentType?.CharSet ?? WebServer.DefaultEncoding.WebName);
             RemoteEndPoint = new IPEndPoint(IPAddress.Loopback, 9999);
             UserAgent = clientRequest.Headers.UserAgent?.ToString();
             LocalEndPoint = new IPEndPoint(IPAddress.Loopback, 8080);

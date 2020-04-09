@@ -47,8 +47,6 @@ namespace EmbedIO
         /// <summary>
         /// <para>Wraps the request input stream and returns a <see cref="TextReader" /> that can be used directly.</para>
         /// <para>Decompression of compressed request bodies is implemented if specified in the web server's options.</para>
-        /// <para>If the request does not specify a content encoding,
-        /// <see cref="Encoding.UTF8">UTF-8</see> is used by default.</para>
         /// </summary>
         /// <param name="this">The <see cref="IHttpContext" /> on which this method is called.</param>
         /// <returns>
@@ -58,6 +56,6 @@ namespace EmbedIO
         /// <seealso cref="OpenRequestStream"/>
         /// <seealso cref="WebServerOptionsBase.SupportCompressedRequests"/>
         public static TextReader OpenRequestText(this IHttpContext @this)
-            => new StreamReader(OpenRequestStream(@this), @this.Request.ContentEncoding ?? Encoding.UTF8);
+            => new StreamReader(OpenRequestStream(@this), @this.Request.ContentEncoding);
     }
 }
