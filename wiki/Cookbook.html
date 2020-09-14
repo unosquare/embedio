@@ -72,90 +72,255 @@
 
 <p>This cookbook includes common tasks and solutions for EmbedIOv3.</p>
 <ul>
-<li><a href="#reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a dictionary (application/x-www-form-urlencoded)</a></li>
-<li><a href="#reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</a></li>
-<li><a href="#reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</a></li>
-<li><a href="#writing-a-binary-stream">Writing a binary stream</a></li>
-<li><a href="#how-to-turn-off-logging">How to turn off logging</a></li>
-<li><a href="#set-custom-error-page">Set custom Error page</a></li>
+<li><a href="#example-of-a-get-request">Example of a GET Request</a><ul>
+<li><a href="#automatic-serialization-of-results">Automatic serialization of results</a></li>
+<li><a href="#asynchronous-controller-methods">Asynchronous controller methods</a></li>
 </ul>
-<h2 id="reading-from-a-post-body-as-a-dictionary-applicationx-www-form-urlencoded">Reading from a POST body as a dictionary (application/x-www-form-urlencoded)</h2>
-<p>For reading a dictionary from an HTTP Request body inside a WebAPI method you can add an argument to your method with the attribute <code>FormData</code>.</p>
-<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
-    public async Task PostData([FormData] NameValueCollection data) 
+</li>
+<li><a href="#route-parameters">Route parameters</a><ul>
+<li><a href="#using-parametric-routes">Using parametric routes</a></li>
+<li><a href="#optional-route-parameters">Optional route parameters</a></li>
+</ul>
+</li>
+<li><a href="#url-query-parameters">URL query parameters</a><ul>
+<li><a href="#retrieving-single-parameters">Retrieving single parameters</a></li>
+<li><a href="#retrieving-all-parameters-as-a-collection">Retrieving all parameters as a collection</a></li>
+</ul>
+</li>
+<li><a href="#form-values-applicationx-www-form-urlencoded">Form values (<code>application/x-www-form-urlencoded</code>)</a><ul>
+<li><a href="#retrieving-single-values">Retrieving single values</a></li>
+<li><a href="#retrieving-all-values-as-a-collection">Retrieving all values as a collection</a></li>
+</ul>
+</li>
+<li><a href="#reading-a-request-body-as-json-applicationjson">Reading a request body as JSON (<code>application/json</code>)</a></li>
+<li><a href="#custom-deserialization-of-request-data-pass-anything-as-a-controller-method-parameter">Custom deserialization of request data (pass <strong>anything</strong> as a controller method parameter!)</a></li>
+<li><a href="#multi-part-forms-and-file-uploads-multipartform-data">Multi-part forms and file uploads (<code>multipart/form-data</code>)</a></li>
+<li><a href="#writing-a-custom-response-body">Writing a custom response body</a><ul>
+<li><a href="#writing-to-the-response-body-as-a-stream">Writing to the response body as a stream</a></li>
+<li><a href="#writing-to-the-response-body-as-text">Writing to the response body as text</a></li>
+</ul>
+</li>
+<li><a href="#logging-turn-off-or-customize">Logging (turn off or customize)</a></li>
+<li><a href="#setting-a-custom-error-page">Setting a custom error page</a></li>
+</ul>
+<h2 id="example-of-a-get-request">Example of a GET Request</h2>
+<p>Returning a simple value:</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Get, &quot;/ping&quot;)]
+    public string TableTennis()
     {
-        // Perform an operation with the data
-        await SaveData(data);
+        return &quot;pong&quot;;
     }
-</code></pre><p>Or you can use <a href="#">GetRequestFormDataAsync</a> extension method if you are working in a custom Web Module. This method works directly from <code>IHttpContext</code> and returns the key-value pairs sent by using the Content-Type &#39;application/x-www-form-urlencoded&#39;.</p>
-<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
-    public async Task PostData() 
+</code></pre><h3 id="automatic-serialization-of-results">Automatic serialization of results</h3>
+<p>Any returned value will be serialized and sent as response body.</p>
+<p>The default serialization method uses <a href="https://unosquare.github.io/swan/#the-json-formatter"><code>Swan.Json</code></a>. Serialization can be customized at module level by setting the <a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.WebApiModuleBase.html#EmbedIO_WebApi_WebApiModuleBase_Serializer"><code>Serializer</code></a> property.</p>
+<h3 id="asynchronous-controller-methods">Asynchronous controller methods</h3>
+<p>If any asynchronous operations are involved, a <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1"><code>Task&lt;TResult&gt;</code></a> object can be returned:</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Get, &quot;/ping&quot;)]
+    public async Task&lt;string&gt; TableTennisAsync()
     {
-        var data = HttpContext.GetRequestFormDataAsync();
+        // You will probably want to do something more useful than this.
+        await Task.Delay(500);
 
-        // Perform an operation with the data
-        await SaveData(data);
+        return &quot;pong&quot;;
     }
-</code></pre><h1 id="reading-from-a-post-body-as-a-json-payload-applicationjson">Reading from a POST body as a JSON payload (application/json)</h1>
-<p>For reading a JSON payload and deserialize it to an object from an HTTP Request body you can use <a href="#">GetRequestDataAsync<t></t></a>. This method works directly from <code>IHttpContext</code> and returns an object of the type specified in the generic type.</p>
-<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/data&quot;)]
-    public async Task PostJsonData() 
+</code></pre><h2 id="route-parameters">Route parameters</h2>
+<h3 id="using-parametric-routes">Using parametric routes</h3>
+<p>Routes can be parametric. Route parameters will be automatically passed as method parameters of the same name. If the type of the parameter is not <code>string</code> or <code>object</code>, the relevant part of the URL will be parsed and a <code>400 Bad Request</code> response will be sent to the client if parsing is not successful.</p>
+<pre><code class="lang-C#">    // hello/paul
+    [Route(HttpVerbs.Get, &quot;/hello/{name}&quot;)]
+    public string SayHello(string name)
     {
-        var data = HttpContext.GetRequestDataAsync&lt;MyData&gt;();
+        return $&quot;Hello, {name}&quot;;
+    }
+</code></pre><h3 id="optional-route-parameters">Optional route parameters</h3>
+<p>A route parameters preceded by a question mark is considered optional.</p>
+<pre><code class="lang-C#">    // orders/123 -&gt; list of orders for customer id 123
+    // orders/123/456 -&gt; list of orders for customer id 123 containing item id 456
+    [Route(HttpVerbs.Get, &quot;/orders/{customerId}/{?itemId}&quot;)]
+    public async IEnumerable&lt;Order&gt; RetrieveOrderListByCustomer(int customerId, int? itemId)
+    {
+        var orders = itemId.HasValue
+            ? await Database.GetOrdersByCustomerAndItem(customerId, itemId)
+            : await Database.GetOrdersByCustome(customerId);
 
-        // Perform an operation with the data
-        await SaveData(data);
+        if (orders == null)
+        {
+            throw HttpException.NotFound(&quot;No orders were found in database.&quot;);
+        }
+
+        return orders;
     }
-</code></pre><p>An alternative is creating a custom Attribute implementing <code>IRequestDataAttribute</code> interface. This interface requires the implementation of a method receiving an instance of the WebAPI Controller and returning a <code>Task&lt;T&gt;</code>. For example, you can use the following attribute to deserialize the content of the POST body into a <code>GridDataRequest</code> object from <a href="https://github.com/unosquare/tubular-dotnet">Tubular</a>:</p>
-<pre><code class="lang-csharp">    [AttributeUsage(AttributeTargets.Parameter)]
-    public class JsonGridDataRequestAttribute : Attribute, IRequestDataAttribute&lt;WebApiController, GridDataRequest&gt;
+</code></pre><h2 id="url-query-parameters">URL query parameters</h2>
+<h3 id="retrieving-single-parameters">Retrieving single parameters</h3>
+<p>URL query parameters can be retrieved as method parameters using the <a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.QueryFieldAttribute.html"><code>QueryField</code> attribute</a>.</p>
+<pre><code class="lang-C#">    // hello?username=Elvis
+    [Route(HttpVerbs.Get, &quot;/hello&quot;)]
+    public string Hello([QueryField] string username)
     {
-        public Task&lt;GridDataRequest&gt; GetRequestDataAsync(WebApiController controller)
-            =&gt; controller.HttpContext.GetRequestDataAsync(RequestDeserializer.Json&lt;GridDataRequest&gt;);
+        return $&quot;Hello {username}&quot;;
     }
-</code></pre><p>This attribute can be used in the argument of a Controller method:</p>
-<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/people&quot;)]
-    public async Task&lt;object&gt; PostPeople([JsonGridDataRequest] GridDataRequest gridDataRequest)
-        =&gt; gridDataRequest.CreateGridDataResponse((await _dbContext.People.SelectAllAsync()).AsQueryable());
-</code></pre><p>This way is effective if you are using the same type in multiple methods.</p>
-<h1 id="reading-from-a-post-body-as-a-formdata-multipartform-data">Reading from a POST body as a FormData (multipart/form-data)</h1>
-<p>EmbedIO doesn&#39;t provide the functionality to read from a Multipart FormData stream. But you can check the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser Nuget</a> and connect the Request input directly to the HttpMultipartParser, very helpful and small library.</p>
-<p>A sample code using the previous library:</p>
-<pre><code class="lang-csharp">    [Route(HttpVerbs.Post, &quot;/upload&quot;)]
+</code></pre><h3 id="retrieving-all-parameters-as-a-collection">Retrieving all parameters as a collection</h3>
+<p>The whole set of query parameters can be retrieved as a method parameter with the <a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.QueryDataAttribute.html"><code>QueryData</code> attribute</a>. Note that the parameter must be of type <a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.specialized.namevaluecollection"><code>System.Specialized.NameValueCollection</code></a>.</p>
+<p>If the request has no query parameters, an empty <code>NameValueCollection</code> will be passed to the method.</p>
+<pre><code class="lang-C#">    // hello?foo=bar&amp;anything=at_all
+    [Route(HttpVerbs.Get, &quot;/hello&quot;)]
+    public async Task&lt;string&gt; Hello([QueryData] NameValueCollection parameters)
+    {
+        var sb = new StringBuilder();
+        foreach (var key in parameters.AllKeys)
+        {
+            await Task.Yield(); // Easy on the CPU
+            sb.AppendLine($&quot;Parameter &#39;{key}&#39; is &#39;{parameters[key]}&#39;.&quot;);
+        }
+        return sb.ToString();
+    }
+</code></pre><p>Query parameters can also be retrieved directly from the HTTP context, using the <a href="https://unosquare.github.io/embedio/api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_GetRequestQueryData_EmbedIO_IHttpContext_"><code>GetRequestQueryData</code> extension method</a>.</p>
+<pre><code class="lang-C#">    // hello?foo=bar&amp;anything=at_all
+    [Route(HttpVerbs.Get, &quot;/hello&quot;)]
+    public async Task&lt;string&gt; Hello()
+    {
+        var parameters = HttpContext.GetRequestQueryData();
+        var sb = new StringBuilder();
+        foreach (var key in parameters.AllKeys)
+        {
+            await Task.Yield(); // Easy on the CPU
+            sb.AppendLine($&quot;Parameter &#39;{key}&#39; is &#39;{parameters[key]}&#39;.&quot;);
+        }
+        return sb.ToString();
+    }
+</code></pre><h2 id="form-values-applicationx-www-form-urlencoded">Form values (<code>application/x-www-form-urlencoded</code>)</h2>
+<h3 id="retrieving-single-values">Retrieving single values</h3>
+<p>Form values can be retrieved as method parameters using the <a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.FormFieldAttribute.html"><code>FormField</code> attribute</a>.</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Post, &quot;/login&quot;)]
+    public async Task Login([FormField] string user, [FormField(&quot;pwd&quot;)] string password)
+    {
+        // Note that MyProgram.CheckCredentialsAsync is just an example, not part of EmbedIO.
+        // We&#39;ll assume it returns Task&lt;bool&gt;.
+        var location = await MyProgram.CheckCredentialsAsync(user, password) ? &quot;/home&quot; : &quot;/loginFailed&quot;;
+
+        throw HttpException.Redirect(location);
+    }
+</code></pre><h3 id="retrieving-all-values-as-a-collection">Retrieving all values as a collection</h3>
+<p>The whole set of form values can be retrieved as a method parameter with the <a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.FormDataAttribute.html"><code>FormData</code> attribute</a>. Note that the parameter must be of type <a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.specialized.namevaluecollection"><code>System.Specialized.NameValueCollection</code></a>.</p>
+<p>If the request body contains no form data, an empty <code>NameValueCollection</code> will be passed to the method.</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Post, &quot;/login&quot;)]
+    public async Task Login([FormData] NameValueCollection data)
+    {
+        // Note that MyProgram.CheckCredentialsAsync is just an example, not part of EmbedIO.
+        // We&#39;ll assume it returns Task&lt;bool&gt;.
+        var location = await MyProgram.CheckCredentialsAsync(data[&quot;user&quot;], data[&quot;pwd&quot;])
+            ? &quot;/home&quot;
+            : &quot;/loginFailed&quot;;
+
+        throw HttpException.Redirect(location);
+    }
+</code></pre><p>Form data can also be retrieved directly from the HTTP context, using the <a href="https://unosquare.github.io/embedio/api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_GetRequestFormDataAsync_EmbedIO_IHttpContext_"><code>GetRequestFormDataAsync</code> extension method</a>.</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Post, &quot;/login&quot;)]
+    public async Task Login()
+    {
+        // Note that MyProgram.CheckCredentialsAsync is just an example, not part of EmbedIO.
+        // We&#39;ll assume it returns Task&lt;bool&gt;.
+        var data = await HttpContext.GetRequestFormDataAsync();
+        var location = await MyProgram.CheckCredentialsAsync(data[&quot;user&quot;], data[&quot;pwd&quot;])
+            ? &quot;/home&quot;
+            : &quot;/loginFailed&quot;;
+
+        throw HttpException.Redirect(location);
+    }
+</code></pre><h2 id="reading-a-request-body-as-json-applicationjson">Reading a request body as JSON (<code>application/json</code>)</h2>
+<p>A request body, deserialized as JSON, can be retrieved as a method parameter using the <a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.JsonDataAttribute.html"><code>JsonData</code> attribute</a>.</p>
+<p>If the request body cannot be deserialized to the type of the parameter, a <code>400 Bad Request</code> response will be sent to the client.</p>
+<pre><code class="lang-C#">    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+    }
+
+    // Request body: { &quot;Name&quot;: &quot;John&quot;; &quot;Age&quot;: 42 }
+    [Route(HttpVerbs.Post, &quot;/describe&quot;)]
+    public string DescribePerson([JsonData] Person person)
+    {
+        return $&quot;{person.Name} is {person.Age} years old.&quot;;
+    }
+</code></pre><p>A deserialized request body can also be retrieved directly from the HTTP context, using the <a href="https://unosquare.github.io/embedio/api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_GetRequestDataAsync__1_EmbedIO_IHttpContext_"><code>GetRequestDataAsync&lt;TData&gt;</code> extension method</a>.</p>
+<pre><code class="lang-C#">    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+    }
+
+    // Request body: { &quot;Name&quot;: &quot;John&quot;; &quot;Age&quot;: 42 }
+    [Route(HttpVerbs.Post, &quot;/describe&quot;)]
+    public async Task&lt;string&gt; DescribePerson()
+    {
+        var data = await HttpContext.GetRequestDataAsync&lt;Person&gt;();
+        return $&quot;{person.Name} is {person.Age} years old.&quot;;
+    }
+</code></pre><h2 id="custom-deserialization-of-request-data-pass-anything-as-a-controller-method-parameter">Custom deserialization of request data (pass <strong>anything</strong> as a controller method parameter!)</h2>
+<p>The attributes used in the above examples are not based on some internal-use-only black magic. If an attribute that implements one or more of the following interfaces, if placed on a controller method parameter, will be automatically used to retrieve data from a request and inject it into the method call:</p>
+<ul>
+<li><a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.IRequestDataAttribute-1.html"><code>IRequestDataAttribute&lt;TController&gt;</code></a> when the code to retrieve data is independent of the type of the parameter;</li>
+<li><a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.IRequestDataAttribute-2.html"><code>IRequestDataAttribute&lt;TController, TData&gt;</code></a> when a specific parameter type is required to inject retrieved data;</li>
+<li><a href="https://unosquare.github.io/embedio/api/EmbedIO.WebApi.INonNullRequestDataAttribute-2.html"><code>INonNullRequestDataAttribute&lt;TController, TData&gt;</code></a> same as the previous, to use when the retrieved data can never be <code>null</code>, to keep static analyzers happy.</li>
+</ul>
+<p>All three interfaces are quite simple, each consisting of just one method. Refer to the linked documentation for more details. You can also have a look at the source code for the following classes to see how simple it is to create your own data-retrieving attributes:</p>
+<ul>
+<li><a href="https://github.com/unosquare/embedio/blob/v3.X/src/EmbedIO/WebApi/JsonDataAttribute.cs"><code>JsonDataAttribute</code></a> (implementing <code>IRequestDataAttribute&lt;TController&gt;</code>)</li>
+<li><a href="https://github.com/unosquare/embedio/blob/v3.X/src/EmbedIO/WebApi/QueryDataAttribute.cs"><code>QueryDataAttribute</code></a> and <a href="https://github.com/unosquare/embedio/blob/v3.X/src/EmbedIO/WebApi/FormDataAttribute.cs"><code>FormDataAttribute</code></a> (implementing <code>IRequestDataAttribute&lt;TController, TData&gt;</code>)</li>
+<li><a href="https://github.com/unosquare/embedio/blob/v3.X/src/EmbedIO/WebApi/QueryFieldAttribute.cs"><code>QueryFieldAttribute</code></a> and <a href="https://github.com/unosquare/embedio/blob/v3.X/src/EmbedIO/WebApi/FormFieldAttribute.cs"><code>FormFieldAttribute</code></a> (implementing both <code>IRequestDataAttribute&lt;TController&gt;</code> and <code>IRequestDataAttribute&lt;TController, TData&gt;</code> - twice!)</li>
+</ul>
+<h2 id="multi-part-forms-and-file-uploads-multipartform-data">Multi-part forms and file uploads (<code>multipart/form-data</code>)</h2>
+<p>There is no built-in functionality in EmbedIO to read a multi-part form from a request body. However, you can use the <a href="https://www.nuget.org/packages/HttpMultipartParser/">HttpMultipartParser library</a> to do that, as shown below.</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Post, &quot;/upload&quot;)]
     public async Task UploadFile()
     {
         var parser = await MultipartFormDataParser.ParseAsync(Request.InputStream);
+
         // Now you can access parser.Files
+        // ...
     }
-</code></pre><p>There is <a href="http://stackoverflow.com/questions/7460088/reading-file-input-from-a-multipart-form-data-post">another solution</a> but it requires this <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client">Microsoft Nuget</a>.</p>
-<h1 id="writing-a-binary-stream">Writing a binary stream</h1>
-<p>You can open the Response Output Stream with the extension <a href="">OpenResponseStream</a>.</p>
-<pre><code class="lang-csharp">    [Route(HttpVerbs.Get, &quot;/binary&quot;)]
-    public async Task GetBinary() 
+</code></pre><h2 id="writing-a-custom-response-body">Writing a custom response body</h2>
+<h3 id="writing-to-the-response-body-as-a-stream">Writing to the response body as a stream</h3>
+<p>You can open the response body as a <code>Stream</code> with the <a href="https://unosquare.github.io/embedio/api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_OpenRequestStream_EmbedIO_IHttpContext_"><code>OpenResponseStream</code> extension method</a>.</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Get, &quot;/binary&quot;)]
+    public async Task GetBinary()
     {
-    // Call a fictional external source
-    using (var stream = HttpContext.OpenResponseStream())
-        await stream.WriteAsync(dataBuffer, 0, 0);
+        // Call a fictional external source
+        using (var stream = HttpContext.OpenResponseStream())
+        {
+            await stream.WriteAsync(dataBuffer, 0, 0);
+        }
     }
-</code></pre><h2 id="how-to-turn-off-logging">How to turn off logging</h2>
-<p>We moved the logging from SWAN to a new class <code>Logger</code>. You can Register or Unregister log targets, by default the <code>ConsoleLogger</code> is enabled in the startup. You can Unregister using:</p>
-<pre><code class="lang-csharp">Logger.UnregisterLogger&lt;ConsoleLogger&gt;();
-</code></pre><h2 id="set-custom-error-page">Set custom Error page</h2>
-<p>EmbedIO can handle two types of HTTP Exceptions, one by Webserver and another by <code>WebModule</code> by using the same extension method <code>HandleHttpException</code>. So you can set a general handler and/or specific handler by each module. The following snippet shows how to set a custom handler for a Webserver:</p>
-<pre><code class="lang-csharp">    var server = new WebServer(8877);
+</code></pre><h3 id="writing-to-the-response-body-as-text">Writing to the response body as text</h3>
+<p>You can open the response body as a <code>TextWriter</code> with the <a href="https://unosquare.github.io/embedio/api/EmbedIO.HttpContextExtensions.html#EmbedIO_HttpContextExtensions_OpenResponseText_EmbedIO_IHttpContext_System_Nullable_Encoding__System_Boolean_System_Boolean_"><code>OpenResponseText</code> extension method</a>.</p>
+<pre><code class="lang-C#">    [Route(HttpVerbs.Get, &quot;/hello&quot;)]
+    public async Task GetBinary()
+    {
+        using (var writer = HttpContext.OpenResponseText())
+        {
+            await writer.WriteAsync(&quot;Hello!&quot;);
+        }
+    }
+</code></pre><h2 id="logging-turn-off-or-customize">Logging (turn off or customize)</h2>
+<p>If all you want is to turn logging off, do this before initializing your web server:</p>
+<pre><code class="lang-C#">Logger.UnregisterLogger&lt;ConsoleLogger&gt;();
+</code></pre><p>Refer to the <a href="https://unosquare.github.io/swan/api/Swan.Logging.Logger.html">documentation for <code>Swan.Logger</code></a> for more detailed information, including how to log on files.</p>
+<h2 id="setting-a-custom-error-page">Setting a custom error page</h2>
+<p>HTTP exceptions can be handled both at module level and at web server level.</p>
+<p>Here&#39;s how toset a custom handler for a web server:</p>
+<pre><code class="lang-C#">    var server = new WebServer(8877);
 
-    // use this method to set a callback
-    server.HandleHttpException(async (ctx, ex) =&gt; {
-        ctx.Response.StatusCode = ex.StatusCode;
+    server.HandleHttpException(async (context, exception) =&gt;
+    {
+        context.Response.StatusCode = exception.StatusCode;
 
-        switch (ex.StatusCode)
+        switch (exception.StatusCode)
         {
             case 404:
-                await ctx.SendStringAsync(&quot;Your content&quot;, &quot;text/html&quot;, Encoding.UTF8);
+                await context.SendStringAsync(&quot;Your content&quot;, &quot;text/html&quot;, Encoding.UTF8);
                 break;
             default:
-                // Handle other HTTP Status codes or call the default handler &#39;SendStandardHtmlAsync&#39;
-                await ctx.SendStandardHtmlAsync(ex.StatusCode);
+                await HttpExceptionHandler.Default(context, exception);
                 break;
         }
     });
