@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Unosquare.Swan.Lite" Version="3.0.0" />
+    <PackageReference Include="Unosquare.Swan.Lite" Version="3.*" />
   </ItemGroup>
   
 </Project>
