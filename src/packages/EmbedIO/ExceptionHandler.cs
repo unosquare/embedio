@@ -141,7 +141,7 @@ namespace EmbedIO
                 return;
             }
 
-            exception.Log(logSource, $"[{context.Id}] Unhandled exception.");
+            exception.Log(logSource, $"[{context.Id}] Unhandled exception: {exception.Message}");
 
             try
             {
@@ -169,7 +169,7 @@ namespace EmbedIO
             catch (Exception exception2)
 #pragma warning restore CA1031
             {
-                exception2.Log(logSource, $"[{context.Id}] Unhandled exception while handling exception.");
+                exception2.Log(logSource, $"[{context.Id}] Unhandled exception while handling exception: {exception2.Message}");
             }
         }
     }
