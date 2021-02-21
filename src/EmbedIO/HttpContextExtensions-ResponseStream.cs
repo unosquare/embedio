@@ -25,8 +25,10 @@ namespace EmbedIO
         /// <seealso cref="OpenResponseText"/>
         public static Stream OpenResponseStream(this IHttpContext @this, bool buffered = false, bool preferCompression = true)
         {
-            @this.Request.TryNegotiateContentEncoding(preferCompression, out var compressionMethod, out var prepareResponse);
-            prepareResponse(@this.Response); // The callback will throw HttpNotAcceptableException if negotiationSuccess is false.
+            // No need to check whether negotiation is successful;
+            // the returned callback will throw HttpNotAcceptableException if it was not.
+            _ = @this.Request.TryNegotiateContentEncoding(preferCompression, out var compressionMethod, out var prepareResponse);
+            prepareResponse(@this.Response);
             var stream = buffered ? new BufferingResponseStream(@this.Response) : @this.Response.OutputStream;
 
             return compressionMethod switch {

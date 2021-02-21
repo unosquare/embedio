@@ -245,39 +245,39 @@ namespace EmbedIO.Net.Internal
             if (cookie.Name.Length == 0)
                 return;
 
-            sb.Append("Set-Cookie: ");
+            _ = sb.Append("Set-Cookie: ");
 
             if (cookie.Version > 0)
-                sb.Append("Version=").Append(cookie.Version).Append("; ");
+                _ = sb.Append("Version=").Append(cookie.Version).Append("; ");
 
-            sb
+            _ = sb
                 .Append(cookie.Name)
                 .Append("=")
                 .Append(cookie.Value);
 
             if (cookie.Expires != DateTime.MinValue)
             {
-                sb
+                _ = sb
                     .Append("; Expires=")
                     .Append(HttpDate.Format(cookie.Expires));
             }
 
             if (!string.IsNullOrEmpty(cookie.Path))
-                sb.Append("; Path=").Append(QuotedString(cookie, cookie.Path));
+                _ = sb.Append("; Path=").Append(QuotedString(cookie, cookie.Path));
 
             if (!string.IsNullOrEmpty(cookie.Domain))
-                sb.Append("; Domain=").Append(QuotedString(cookie, cookie.Domain));
+                _ = sb.Append("; Domain=").Append(QuotedString(cookie, cookie.Domain));
 
             if (!string.IsNullOrEmpty(cookie.Port))
-                sb.Append("; Port=").Append(cookie.Port);
+                _ = sb.Append("; Port=").Append(cookie.Port);
 
             if (cookie.Secure)
-                sb.Append("; Secure");
+                _ = sb.Append("; Secure");
 
             if (cookie.HttpOnly)
-                sb.Append("; HttpOnly");
+                _ = sb.Append("; HttpOnly");
 
-            sb.Append("\r\n");
+            _ = sb.Append("\r\n");
         }
 
         private static string QuotedString(Cookie cookie, string value)
@@ -303,7 +303,7 @@ namespace EmbedIO.Net.Internal
 
             foreach (var key in Headers.AllKeys.Where(x => x != "Set-Cookie"))
             {
-                sb
+                _ = sb
                     .Append(key)
                     .Append(": ")
                     .Append(Headers[key])

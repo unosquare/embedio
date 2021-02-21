@@ -206,7 +206,7 @@ namespace EmbedIO.Net.Internal
             }
 
             HttpMethod = parts[0];
-            Enum.TryParse<HttpVerbs>(HttpMethod, true, out var verb);
+            _ = Enum.TryParse<HttpVerbs>(HttpMethod, true, out var verb);
             HttpVerb = verb;
 
             foreach (var c in HttpMethod)

@@ -195,7 +195,7 @@ namespace EmbedIO.WebSockets
                     context.CancellationToken).ConfigureAwait(false);
 
             PurgeDisconnectedContexts();
-            _contexts.TryAdd(webSocketContext.Id, webSocketContext);
+            _ = _contexts.TryAdd(webSocketContext.Id, webSocketContext);
 
             $"{BaseRoute} - WebSocket connection accepted - There are now {_contexts.Count} sockets connected."
                 .Debug(nameof(WebSocketModule));
@@ -512,14 +512,14 @@ namespace EmbedIO.WebSockets
 
         private void RemoveWebSocket(IWebSocketContext context)
         {
-            _contexts.TryRemove(context.Id, out _);
+            _ = _contexts.TryRemove(context.Id, out _);
             context.WebSocket?.Dispose();
 
             // OnClientDisconnectedAsync is better called in its own task,
             // so it may call methods that require a lock on _contextsAccess.
             // Otherwise, calling e.g. Broadcast would result in a deadlock.
 #pragma warning disable CS4014 // Call is not awaited - it is intentionally forked.
-            Task.Run(async () => {
+            _ = Task.Run(async () => {
                 try
                 {
                     await OnClientDisconnectedAsync(context).ConfigureAwait(false);

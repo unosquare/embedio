@@ -308,7 +308,7 @@ namespace EmbedIO.Files
             {
                 info = MapUrlPath(path, context);
                 if (info != null)
-                    _mappingCache.AddOrUpdate(path, info, (_, __) => info);
+                    _ = _mappingCache.AddOrUpdate(path, info, (_, __) => info);
             }
 
             if (info == null)
@@ -494,7 +494,7 @@ namespace EmbedIO.Files
                 (content, uncompressedLength) = await GenerateDirectoryListingAsync(context, info, compressionMethod)
                     .ConfigureAwait(false);
                 if (ContentCaching && uncompressedLength <= cachingThreshold)
-                    cacheItem.SetContent(compressionMethod, content);
+                    _ = cacheItem.SetContent(compressionMethod, content);
             }
 
             var contentLength = content?.Length ?? info.Length;
@@ -543,7 +543,7 @@ namespace EmbedIO.Files
                     responseContentLength = content.Length;
                 }
 
-                cacheItem.SetContent(compressionMethod, content);
+                _ = cacheItem.SetContent(compressionMethod, content);
             }
 
             // Transfer cached content if present.

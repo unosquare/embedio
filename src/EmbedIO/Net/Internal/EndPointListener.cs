@@ -172,17 +172,19 @@ namespace EmbedIO.Net.Internal
                 prefs = _prefixes;
                 ListenerPrefix lpKey = null;
                 foreach (var p in _prefixes.Keys)
+                {
                     if (p.Path == prefix.Path)
                     {
                         lpKey = p;
                         break;
                     }
+                }
 
                 if (lpKey is null)
                     break;
 
                 p2 = prefs.ToDictionary(x => x.Key, x => x.Value);
-                p2.Remove(lpKey);
+                _ = p2.Remove(lpKey);
             }
             while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
 
@@ -193,7 +195,7 @@ namespace EmbedIO.Net.Internal
         {
             lock (_unregistered)
             {
-                _unregistered.Remove(conn);
+                _ = _unregistered.Remove(conn);
             }
         }
 
