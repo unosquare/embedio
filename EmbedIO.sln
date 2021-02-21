@@ -8,7 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73F25F81-0412-412E-89C9-BAD33E9BCCDE}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
-		src\Directory.Build.props = src\Directory.Build.props
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		LICENSE = LICENSE
 		README.md = README.md
 		StyleCop.Analyzers.ruleset = StyleCop.Analyzers.ruleset
