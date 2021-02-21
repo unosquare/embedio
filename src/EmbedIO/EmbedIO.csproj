@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/unosquare/embedio/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webserver websocket webapi http</PackageTags>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
