@@ -158,7 +158,7 @@ namespace EmbedIO.WebSockets.Internal
 #pragma warning restore CA1801
         {
             if (_readyState != WebSocketState.Open)
-                throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
+                throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState}");
 
             using var stream = new WebSocketStream(data, opcode, Compression);
             foreach (var frame in stream.GetFrames())
@@ -174,7 +174,7 @@ namespace EmbedIO.WebSockets.Internal
 
         internal static async Task<WebSocket> AcceptAsync(HttpListenerContext httpContext, string acceptedProtocol)
         {
-            string CreateResponseKey(string clientKey)
+            static string CreateResponseKey(string clientKey)
             {
                 const string Guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
@@ -298,7 +298,7 @@ namespace EmbedIO.WebSockets.Internal
             }
 
             if (receive && sent)
-                _exitReceiving?.WaitOne(_waitTime);
+                _ = _exitReceiving?.WaitOne(_waitTime);
         }
 
         private void Fatal(string message, Exception? exception = null)
@@ -335,7 +335,7 @@ namespace EmbedIO.WebSockets.Internal
                 return;
             }
 
-            Task.Run(() => Messages(e));
+            _ = Task.Run(() => Messages(e));
         }
 
         private void Open()
@@ -404,7 +404,7 @@ namespace EmbedIO.WebSockets.Internal
 
         private void ProcessPongFrame()
         {
-            _receivePong?.Set();
+            _ = _receivePong?.Set();
             "Received a pong.".Trace(nameof(ProcessPongFrame));
         }
 
@@ -491,7 +491,7 @@ namespace EmbedIO.WebSockets.Internal
 
             var frameStream = new WebSocketFrameStream(_stream);
 
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 while (_readyState == WebSocketState.Open)
                 {
@@ -506,7 +506,7 @@ namespace EmbedIO.WebSockets.Internal
 
                         if (!result || _readyState == WebSocketState.Closed)
                         {
-                            _exitReceiving?.Set();
+                            _ = _exitReceiving?.Set();
 
                             return;
                         }

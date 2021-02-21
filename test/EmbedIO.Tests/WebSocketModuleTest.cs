@@ -18,7 +18,7 @@ namespace EmbedIO.Tests
 
         protected override void OnSetUp()
         {
-            Server
+            _ = Server
                 .WithModule(new TestWebSocket("/test"))
                 .WithModule(new BigDataWebSocket("/bigdata"))
                 .WithModule(new CloseWebSocket("/close"));

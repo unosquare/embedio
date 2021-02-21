@@ -141,7 +141,7 @@ namespace EmbedIO
             "Started HTTP Listener".Info(LogSource);
 
             // close port when the cancellation token is cancelled
-            cancellationToken.Register(() => Listener?.Stop());
+            _ = cancellationToken.Register(() => Listener?.Stop());
         }
 
         /// <inheritdoc />
@@ -154,7 +154,7 @@ namespace EmbedIO
                 context.Route = RouteMatch.UnsafeFromRoot(UrlPath.Normalize(context.Request.Url.AbsolutePath, false));
 
 #pragma warning disable CS4014 // Call is not awaited - of course, it has to run in parallel.
-                Task.Run(() => DoHandleContextAsync(context), cancellationToken);
+                _ = Task.Run(() => DoHandleContextAsync(context), cancellationToken);
 #pragma warning restore CS4014
             }
         }
