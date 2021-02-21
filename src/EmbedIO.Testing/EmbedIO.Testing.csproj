@@ -3,9 +3,7 @@
   <PropertyGroup>
     <AssemblyTitle>EmbedIO Web Server Testing</AssemblyTitle>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

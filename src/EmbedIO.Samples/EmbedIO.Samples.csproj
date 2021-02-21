@@ -5,9 +5,6 @@
     <AssemblyName>EmbedIO.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
     <IsPackable>false</IsPackable>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-    <CodeAnalysisRuleSet>..\..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,11 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Tubular.ServerSide" Version="2.1.0" />
+    <PackageReference Include="Tubular.ServerSide" />
   </ItemGroup>
 
   <ItemGroup>
