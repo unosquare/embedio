@@ -44,7 +44,7 @@ namespace EmbedIO
         /// <param name="this">The <see cref="IHttpContext" /> on which this method is called.</param>
         /// <param name="encoding">
         /// <para>The <see cref="Encoding"/> to use to convert text to data bytes.</para>
-        /// <para>If <see langword="null"/> (the default), <see cref="WebServer.DefaultEncoding"/> (UTF-8) is used.</para>
+        /// <para>If <see langword="null"/> (the default), <see cref="WebServer.DefaultEncoding"/> (UTF-8 without a byte order mark) is used.</para>
         /// </param>
         /// <param name="buffered">If set to <see langword="true" />, sent data is collected
         /// in a <see cref="MemoryStream" /> and sent all at once when the returned <see cref="Stream" />
