@@ -61,7 +61,7 @@ namespace EmbedIO.Files.Internal
 
             foreach (var file in entries.Where(m => m.IsFile).OrderBy(e => e.Name))
             {
-                text.Write($"<a href=\"{Uri.EscapeDataString(file.Name)}{Path.DirectorySeparatorChar}\">{WebUtility.HtmlEncode(file.Name)}</a>");
+                text.Write($"<a href=\"{Uri.EscapeDataString(file.Name)}\">{WebUtility.HtmlEncode(file.Name)}</a>");
                 text.Write(new string(' ', Math.Max(1, MaxEntryLength - file.Name.Length + 1)));
                 text.Write(HttpDate.Format(file.LastModifiedUtc));
                 text.Write($" {file.Length.ToString("#,###", CultureInfo.InvariantCulture),SizeIndent}\n");
