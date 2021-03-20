@@ -79,7 +79,7 @@ namespace EmbedIO.Net.Internal
                 if (root == -1)
                     throw new ArgumentException("No path specified.");
 
-                if (!int.TryParse(uri.Substring(colon + 1, root - colon - 1), out var p) || p <= 0 || p >= 65536)
+                if (!int.TryParse(uri.Substring(colon + 1, root - colon - 1), out var p) || p < 0 || p >= 65536)
                     throw new ArgumentException("Invalid port.");
             }
             else
