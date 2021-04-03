@@ -30,9 +30,9 @@ namespace EmbedIO.Net.Internal
         internal HttpListenerContext(HttpConnection cnc)
         {
             Connection = cnc;
-            Request = new HttpListenerRequest(this);
+            HttpListenerRequest = new HttpListenerRequest(this);
             User = Auth.NoUser;
-            Response = new HttpListenerResponse(this);
+            HttpListenerResponse = new HttpListenerResponse(this);
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
@@ -50,13 +50,13 @@ namespace EmbedIO.Net.Internal
 
         public IPEndPoint RemoteEndPoint { get; }
 
-        public IHttpRequest Request { get; }
+        public IHttpRequest Request => HttpListenerRequest;
 
         public RouteMatch Route { get; set; }
 
         public string RequestedPath => Route.SubPath ?? string.Empty; // It will never be empty, because modules are matched via base routes - this is just to silence a warning.
 
-        public IHttpResponse Response { get; }
+        public IHttpResponse Response => HttpListenerResponse;
 
         public IPrincipal User { get; set;  }
 
@@ -70,9 +70,9 @@ namespace EmbedIO.Net.Internal
 
         public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
 
-        internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
+        internal HttpListenerRequest HttpListenerRequest { get; }
 
-        internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
+        internal HttpListenerResponse HttpListenerResponse { get; }
 
         internal HttpListener? Listener { get; set; }
 
