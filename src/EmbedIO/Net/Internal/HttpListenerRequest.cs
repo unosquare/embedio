@@ -19,7 +19,7 @@ namespace EmbedIO.Net.Internal
         private static readonly byte[] HttpStatus100 = WebServer.DefaultEncoding.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
         private static readonly char[] Separators = { ' ' };
 
-        private readonly HttpListenerContext _context;
+        private readonly HttpConnection _connection;
         private CookieList? _cookies;
         private Stream? _inputStream;
         private Uri? _url;
@@ -30,8 +30,8 @@ namespace EmbedIO.Net.Internal
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
-            _context = context;
             Headers = new NameValueCollection();
+            _connection = context.Connection;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace EmbedIO.Net.Internal
         public HttpVerbs HttpVerb { get; private set; }
 
         /// <inheritdoc />
-        public Stream InputStream => _inputStream ??= ContentLength64 > 0 ? _context.Connection.GetRequestStream(ContentLength64) : Stream.Null;
+        public Stream InputStream => _inputStream ??= ContentLength64 > 0 ? _connection.GetRequestStream(ContentLength64) : Stream.Null;
 
         /// <inheritdoc />
         public bool IsAuthenticated => false;
@@ -100,7 +100,7 @@ namespace EmbedIO.Net.Internal
         public bool IsLocal => LocalEndPoint.Address?.Equals(RemoteEndPoint.Address) ?? true;
 
         /// <inheritdoc />
-        public bool IsSecureConnection => _context.Connection.IsSecure;
+        public bool IsSecureConnection => _connection.IsSecure;
 
         /// <inheritdoc />
         public bool KeepAlive
@@ -121,7 +121,7 @@ namespace EmbedIO.Net.Internal
         }
 
         /// <inheritdoc />
-        public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
+        public IPEndPoint LocalEndPoint => _connection.LocalEndPoint;
 
         /// <inheritdoc />
         public Version ProtocolVersion { get; private set; } = HttpVersion.Version11;
@@ -133,7 +133,7 @@ namespace EmbedIO.Net.Internal
         public string RawUrl { get; private set; }
 
         /// <inheritdoc />
-        public IPEndPoint RemoteEndPoint => _context.Connection.RemoteEndPoint;
+        public IPEndPoint RemoteEndPoint => _connection.RemoteEndPoint;
 
         /// <inheritdoc />
         public Uri? Url => _url;
@@ -193,14 +193,14 @@ namespace EmbedIO.Net.Internal
         /// Gets the client certificate.
         /// </summary>
         /// <returns>The client certificate.</returns>
-        public X509Certificate2? GetClientCertificate() => _context.Connection.ClientCertificate;
+        public X509Certificate2? GetClientCertificate() => _connection.ClientCertificate;
 
         internal void SetRequestLine(string req)
         {
             var parts = req.Split(Separators, 3);
             if (parts.Length != 3)
             {
-                _context.ErrorMessage = "Invalid request line (parts).";
+                _connection.SetError("Invalid request line (parts).");
                 return;
             }
 
@@ -219,14 +219,14 @@ namespace EmbedIO.Net.Internal
                      c != ']' && c != '?' && c != '=' && c != '{' && c != '}'))
                     continue;
 
-                _context.ErrorMessage = "(Invalid verb)";
+                _connection.SetError("(Invalid verb)");
                 return;
             }
 
             RawUrl = parts[1];
             if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/"))
             {
-                _context.ErrorMessage = "Invalid request line (version).";
+                _connection.SetError("Invalid request line (missing HTTP version).");
                 return;
             }
 
@@ -239,7 +239,7 @@ namespace EmbedIO.Net.Internal
             }
             catch
             {
-                _context.ErrorMessage = "Invalid request line (version).";
+                _connection.SetError("Invalid request line (could not parse HTTP version).");
             }
         }
 
@@ -248,7 +248,7 @@ namespace EmbedIO.Net.Internal
             var host = UserHostName;
             if (ProtocolVersion > HttpVersion.Version10 && string.IsNullOrEmpty(host))
             {
-                _context.ErrorMessage = "Invalid host name";
+                _connection.SetError("Invalid host name");
                 return;
             }
 
@@ -267,7 +267,7 @@ namespace EmbedIO.Net.Internal
 
             if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
             {
-                _context.ErrorMessage = WebUtility.HtmlEncode($"Invalid url: {baseUri}{path}");
+                _connection.SetError(WebUtility.HtmlEncode($"Invalid url: {baseUri}{path}"));
                 return;
             }
 
@@ -278,7 +278,7 @@ namespace EmbedIO.Net.Internal
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                _context.Connection.GetResponseStream().InternalWrite(HttpStatus100, 0, HttpStatus100.Length);
+                _connection.GetResponseStream().InternalWrite(HttpStatus100, 0, HttpStatus100.Length);
             }
         }
 
@@ -287,7 +287,7 @@ namespace EmbedIO.Net.Internal
             var colon = header.IndexOf(':');
             if (colon == -1 || colon == 0)
             {
-                _context.ErrorMessage = "Bad Request";
+                _connection.SetError("Bad Request");
                 return;
             }
 
@@ -308,8 +308,8 @@ namespace EmbedIO.Net.Internal
                     Headers[HttpHeaderNames.ContentLength] = val.Trim();
                     
                     if (ContentLength64 < 0)
-                        _context.ErrorMessage = "Invalid Content-Length.";
-                    
+                        _connection.SetError("Invalid Content-Length.");
+
                     break;
                 case "referer":
                     try

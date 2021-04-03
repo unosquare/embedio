@@ -29,6 +29,7 @@ namespace EmbedIO.Net.Internal
         private InputState _inputState = InputState.RequestLine;
         private LineState _lineState = LineState.None;
         private int _position;
+        private string? _errorMessage;
 
         public HttpConnection(Socket sock, EndPointListener epl, X509Certificate cert)
         {
@@ -225,10 +226,12 @@ namespace EmbedIO.Net.Internal
 
                 if (ProcessInput(_ms))
                 {
-                    if (!_context.HaveError)
+                    if (_errorMessage is null)
+                    {
                         _context.HttpListenerRequest.FinishInitialization();
+                    }
 
-                    if (_context.HaveError || !_epl.BindContext(_context))
+                    if (_errorMessage != null || !_epl.BindContext(_context))
                     {
                         Close(true);
                         return;
@@ -269,7 +272,7 @@ namespace EmbedIO.Net.Internal
 
             while (true)
             {
-                if (_context.HaveError)
+                if (_errorMessage != null)
                     return true;
 
                 if (_position >= len)
@@ -283,7 +286,7 @@ namespace EmbedIO.Net.Internal
                 }
                 catch
                 {
-                    _context.ErrorMessage = "Bad request";
+                    _errorMessage = "Bad request";
                     return true;
                 }
 
@@ -312,7 +315,7 @@ namespace EmbedIO.Net.Internal
                     }
                     catch (Exception e)
                     {
-                        _context.ErrorMessage = e.Message;
+                        _errorMessage = e.Message;
                         return true;
                     }
                 }

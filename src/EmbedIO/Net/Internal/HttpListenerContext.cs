@@ -76,10 +76,6 @@ namespace EmbedIO.Net.Internal
 
         internal HttpListener? Listener { get; set; }
 
-        internal string? ErrorMessage { get; set; }
-
-        internal bool HaveError => ErrorMessage != null;
-
         internal HttpConnection Connection { get; }
 
         public void SetHandled() => IsHandled = true;
