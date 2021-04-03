@@ -46,7 +46,7 @@ namespace EmbedIO.Net.Internal
                     }
                 }
 
-                buff.Append(c);
+                _ = buff.Append(c);
             }
 
             if (buff.Length > 0)

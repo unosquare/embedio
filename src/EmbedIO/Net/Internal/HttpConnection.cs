@@ -93,14 +93,14 @@ namespace EmbedIO.Net.Internal
             {
                 if (Reuses == 1)
                     _sTimeout = 15000;
-                _timer.Change(_sTimeout, Timeout.Infinite);
+                _ = _timer.Change(_sTimeout, Timeout.Infinite);
 
                 var data = await Stream.ReadAsync(_buffer, 0, BufferSize).ConfigureAwait(false);
                 await OnReadInternal(data).ConfigureAwait(false);
             }
             catch
             {
-                _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                _ = _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 CloseSocket();
                 Unbind();
             }
@@ -144,9 +144,7 @@ namespace EmbedIO.Net.Internal
                     Reuses++;
                     Unbind();
                     Init();
-#pragma warning disable 4014
-                    BeginReadRequest();
-#pragma warning restore 4014
+                    _ = BeginReadRequest();
                     return;
                 }
             }
@@ -189,7 +187,7 @@ namespace EmbedIO.Net.Internal
 
         private async Task OnReadInternal(int offset)
         {
-            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            _ = _timer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // Continue reading until full header is received.
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
@@ -346,7 +344,7 @@ namespace EmbedIO.Net.Internal
                         _lineState = LineState.Lf;
                         break;
                     default:
-                        _currentLine.Append((char)b);
+                        _ = _currentLine.Append((char)b);
                         break;
                 }
             }

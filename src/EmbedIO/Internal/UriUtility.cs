@@ -49,7 +49,7 @@ namespace EmbedIO.Internal
 
         public static Uri StringToUri(string str)
         {
-            Uri.TryCreate(str, CanBeAbsoluteUrl(str) ? UriKind.Absolute : UriKind.Relative, out var result);
+            _ = Uri.TryCreate(str, CanBeAbsoluteUrl(str) ? UriKind.Absolute : UriKind.Relative, out var result);
             return result;
         }
 
@@ -58,7 +58,7 @@ namespace EmbedIO.Internal
             if (!CanBeAbsoluteUrl(str))
                 return null;
 
-            Uri.TryCreate(str, UriKind.Absolute, out var result);
+            _ = Uri.TryCreate(str, UriKind.Absolute, out var result);
             return result;
         }
     }

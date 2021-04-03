@@ -55,7 +55,7 @@ namespace EmbedIO.Net
             {
                 if (p.TryRemove(ep.Port, out _) && p.Count == 0)
                 {
-                    IPToEndpoints.TryRemove(ep.Address, out _);
+                    _ = IPToEndpoints.TryRemove(ep.Address, out _);
                 }
             }
 

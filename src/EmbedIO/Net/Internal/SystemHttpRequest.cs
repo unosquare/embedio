@@ -21,7 +21,7 @@ namespace EmbedIO.Net.Internal
         public SystemHttpRequest(System.Net.HttpListenerContext context)
         {
             _request = context.Request;
-            Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
+            _ = Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
             HttpVerb = verb;
             Cookies = new SystemCookieCollection(_request.Cookies);
             LocalEndPoint = _request.LocalEndPoint;

@@ -110,7 +110,7 @@ namespace EmbedIO.Net
             if (!_ctxQueue.TryAdd(context.Id, context))
                 throw new InvalidOperationException("Unable to register context");
 
-            _ctxQueueSem.Release();
+            _ = _ctxQueueSem.Release();
         }
 
         internal void UnregisterContext(HttpListenerContext context) => _ctxQueue.TryRemove(context.Id, out _);
