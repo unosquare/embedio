@@ -97,13 +97,19 @@ namespace EmbedIO.WebSockets.Internal
             }
 
             if (_readyState != WebSocketState.Open)
+            {
                 return Task.CompletedTask;
+            }
 
             if (code != CloseStatusCode.Undefined && !CheckParametersForClose())
+            {
                 return Task.CompletedTask;
+            }
 
             if (code == CloseStatusCode.NoStatus)
+            {
                 return InternalCloseAsync(cancellationToken: cancellationToken);
+            }
 
             var send = !IsOpcodeReserved(code);
             return InternalCloseAsync(new PayloadData((ushort)code, reason), send, send, cancellationToken);
@@ -131,12 +137,16 @@ namespace EmbedIO.WebSockets.Internal
         public Task<bool> PingAsync(string message)
         {
             if (string.IsNullOrEmpty(message))
+            {
                 return PingAsync();
+            }
 
             var data = Encoding.UTF8.GetBytes(message);
 
             if (data.Length <= 125)
+            {
                 return PingAsync(WebSocketFrame.CreatePingFrame(data).ToArray(), _waitTime);
+            }
 
             "A message has greater than the allowable max size.".Error(nameof(PingAsync));
 
@@ -158,11 +168,15 @@ namespace EmbedIO.WebSockets.Internal
 #pragma warning restore CA1801
         {
             if (_readyState != WebSocketState.Open)
+            {
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState}");
+            }
 
             using var stream = new WebSocketStream(data, opcode, Compression);
             foreach (var frame in stream.GetFrames())
+            {
                 await Send(frame).ConfigureAwait(false);
+            }
         }
 
         /// <inheritdoc />
@@ -190,19 +204,25 @@ namespace EmbedIO.WebSockets.Internal
             var webSocketKey = requestHeaders[HttpHeaderNames.SecWebSocketKey];
 
             if (string.IsNullOrEmpty(webSocketKey))
+            {
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketKey} header, or it has an invalid value.");
+            }
 
             var webSocketVersion = requestHeaders[HttpHeaderNames.SecWebSocketVersion];
             
             if (webSocketVersion == null || webSocketVersion != SupportedVersion)
+            {
                 throw new WebSocketException(CloseStatusCode.ProtocolError, $"Includes no {HttpHeaderNames.SecWebSocketVersion} header, or it has an invalid value.");
-            
+            }
+
             var handshakeResponse = new WebSocketHandshakeResponse(httpContext);
 
             handshakeResponse.Headers[HttpHeaderNames.SecWebSocketAccept] = CreateResponseKey(webSocketKey);
 
             if (acceptedProtocol.Length > 0)
+            {
                 handshakeResponse.Headers[HttpHeaderNames.SecWebSocketProtocol] = acceptedProtocol;
+            }
 
             var bytes = Encoding.UTF8.GetBytes(handshakeResponse.ToString());
             await httpContext.Connection.Stream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
@@ -218,7 +238,9 @@ namespace EmbedIO.WebSockets.Internal
         internal async Task<bool> PingAsync(byte[] frameAsBytes, TimeSpan timeout)
         {
             if (_readyState != WebSocketState.Open)
+            {
                 return false;
+            }
 
             await _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length).ConfigureAwait(false);
 
@@ -298,7 +320,9 @@ namespace EmbedIO.WebSockets.Internal
             }
 
             if (receive && sent)
+            {
                 _ = _exitReceiving?.WaitOne(_waitTime);
+            }
         }
 
         private void Fatal(string message, Exception? exception = null)
@@ -310,12 +334,16 @@ namespace EmbedIO.WebSockets.Internal
         private void Message()
         {
             if (_inMessage || _messageEventQueue.IsEmpty || _readyState != WebSocketState.Open)
+            {
                 return;
+            }
 
             _inMessage = true;
 
             if (_messageEventQueue.TryDequeue(out var e))
+            {
                 Messages(e);
+            }
         }
 
         private void Messages(MessageEventArgs e)
@@ -374,7 +402,9 @@ namespace EmbedIO.WebSockets.Internal
             {
                 // Must process first fragment.
                 if (frame.Opcode == Opcode.Cont)
+                {
                     return;
+                }
 
                 _fragmentsBuffer = new FragmentBuffer(frame.Opcode, frame.IsCompressed);
                 InContinuation = true;
@@ -397,7 +427,9 @@ namespace EmbedIO.WebSockets.Internal
         private Task ProcessPingFrame(WebSocketFrame frame)
         {
             if (EmitOnPing)
+            {
                 _messageEventQueue.Enqueue(new MessageEventArgs(frame));
+            }
 
             return Send(new WebSocketFrame(Opcode.Pong, frame.PayloadData));
         }
@@ -458,7 +490,10 @@ namespace EmbedIO.WebSockets.Internal
                 _receivePong = null;
             }
 
-            if (_exitReceiving == null) return;
+            if (_exitReceiving == null)
+            {
+                return;
+            }
 
             _exitReceiving.Dispose();
             _exitReceiving = null;
@@ -500,7 +535,9 @@ namespace EmbedIO.WebSockets.Internal
                         var frame = await frameStream.ReadFrameAsync(this).ConfigureAwait(false);
 
                         if (frame == null)
+                        {
                             return;
+                        }
 
                         var result = await ProcessReceivedFrame(frame).ConfigureAwait(false);
 

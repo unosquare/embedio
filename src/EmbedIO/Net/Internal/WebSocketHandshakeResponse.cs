@@ -22,7 +22,9 @@ namespace EmbedIO.Net.Internal
             Headers[HttpHeaderNames.Connection] = "Upgrade";
 
             foreach (var cookie in context.Request.Cookies)
+            {
                 Headers.Add("Set-Cookie", cookie.ToString());
+            }
         }
 
         public string Reason { get; }
@@ -39,7 +41,9 @@ namespace EmbedIO.Net.Internal
                 .AppendFormat(CultureInfo.InvariantCulture, "HTTP/{0} {1} {2}\r\n", ProtocolVersion, StatusCode, Reason);
 
             foreach (var key in Headers.AllKeys)
+            {
                 _ = output.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", key, Headers[key]);
+            }
 
             _ = output.Append("\r\n");
             

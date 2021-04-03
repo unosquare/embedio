@@ -75,7 +75,9 @@ namespace EmbedIO.Net
             var lp = new ListenerPrefix(p);
 
             if (!lp.IsValid())
+            {
                 throw new HttpListenerException(400, "Invalid path.");
+            }
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
             var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
@@ -93,10 +95,14 @@ namespace EmbedIO.Net
         private static IPAddress ResolveAddress(string host)
         {
             if (host == "*" || host == "+" || host == "0.0.0.0")
+            {
                 return UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
+            }
 
-            if (IPAddress.TryParse(host, out var address)) 
+            if (IPAddress.TryParse(host, out var address))
+            {
                 return address;
+            }
 
             try
             {
@@ -120,7 +126,9 @@ namespace EmbedIO.Net
                 var lp = new ListenerPrefix(prefix);
 
                 if (!lp.IsValid())
+                {
                     return;
+                }
 
                 var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
                 epl.RemovePrefix(lp);

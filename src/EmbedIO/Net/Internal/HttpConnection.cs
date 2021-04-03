@@ -349,17 +349,23 @@ namespace EmbedIO.Net.Internal
                 }
             }
 
-            if (_lineState != LineState.Lf) return null;
+            if (_lineState != LineState.Lf)
+            {
+                return null;
+            }
+
             _lineState = LineState.None;
             var result = _currentLine.ToString();
             _currentLine.Length = 0;
-
             return result;
         }
 
         private void Unbind()
         {
-            if (!_contextBound) return;
+            if (!_contextBound)
+            {
+                return;
+            }
 
             _epl.UnbindContext(_context);
             _contextBound = false;
@@ -368,7 +374,9 @@ namespace EmbedIO.Net.Internal
         private void CloseSocket()
         {
             if (_sock == null)
+            {
                 return;
+            }
 
             try
             {

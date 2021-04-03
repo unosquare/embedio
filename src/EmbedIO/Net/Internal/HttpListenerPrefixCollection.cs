@@ -15,12 +15,16 @@ namespace EmbedIO.Net.Internal
         {
             ListenerPrefix.CheckUri(uriPrefix);
             if (Contains(uriPrefix))
+            {
                 return;
+            }
 
             base.Add(uriPrefix);
 
             if (_listener.IsListening)
+            {
                 EndPointManager.AddPrefix(uriPrefix, _listener);
+            }
         }
     }
 }

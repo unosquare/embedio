@@ -26,14 +26,20 @@ namespace EmbedIO.Net.Internal
                 if (c == '"')
                 {
                     if (escaped)
+                    {
                         escaped = false;
+                    }
                     else
+                    {
                         quoted = !quoted;
+                    }
                 }
                 else if (c == '\\')
                 {
                     if (i < len - 1 && @this[i + 1] == '"')
+                    {
                         escaped = true;
+                    }
                 }
                 else if (c == ',' || (useCookieSeparators && c == ';'))
                 {
@@ -50,7 +56,9 @@ namespace EmbedIO.Net.Internal
             }
 
             if (buff.Length > 0)
+            {
                 yield return buff.ToString();
+            }
         }
 
         internal static string Unquote(this string str)
@@ -59,7 +67,9 @@ namespace EmbedIO.Net.Internal
             var end = str.LastIndexOf('\"');
 
             if (start >= 0 && end >= 0)
+            {
                 str = str.Substring(start + 1, end - 1);
+            }
 
             return str.Trim();
         }

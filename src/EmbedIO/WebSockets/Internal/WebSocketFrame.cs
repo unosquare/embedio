@@ -139,10 +139,14 @@ Extended Payload Length: {extPayloadLen}
             buff.Write(((ushort)header).ToByteArray(Endianness.Big), 0, 2);
 
             if (PayloadLength > 125)
+            {
                 buff.Write(ExtendedPayloadLength, 0, PayloadLength == 126 ? 2 : 8);
+            }
 
             if (Mask == Mask.On)
+            {
                 buff.Write(MaskingKey, 0, 4);
+            }
 
             if (PayloadLength > 0)
             {
@@ -172,7 +176,9 @@ Extended Payload Length: {extPayloadLen}
         internal void Validate(WebSocket webSocket)
         {
             if (!IsMasked)
+            {
                 throw new WebSocketException(CloseStatusCode.ProtocolError, "A frame from a client isn't masked.");
+            }
 
             if (webSocket.InContinuation && (Opcode == Opcode.Text || Opcode == Opcode.Binary))
             {
@@ -202,7 +208,9 @@ Extended Payload Length: {extPayloadLen}
         internal void Unmask()
         {
             if (Mask == Mask.Off)
+            {
                 return;
+            }
 
             Mask = Mask.Off;
             PayloadData.Mask(MaskingKey);

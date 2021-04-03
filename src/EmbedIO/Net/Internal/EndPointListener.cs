@@ -24,7 +24,9 @@ namespace EmbedIO.Net.Internal
             _sock = new Socket(address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             
             if (address.AddressFamily == AddressFamily.InterNetworkV6 && EndPointManager.UseIpv6)
+            {
                 _sock.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
+            }
 
             _sock.Bind(_endpoint);
             _sock.Listen(500);
@@ -46,7 +48,9 @@ namespace EmbedIO.Net.Internal
             var listener = SearchListener(req.Url, out var prefix);
 
             if (listener == null)
+            {
                 return false;
+            }
 
             context.Listener = listener;
             context.Connection.Prefix = prefix;
@@ -74,7 +78,9 @@ namespace EmbedIO.Net.Internal
             }
 
             foreach (var c in connections)
+            {
                 c.Dispose();
+            }
         }
 
         public void AddPrefix(ListenerPrefix prefix, HttpListener listener)
@@ -118,9 +124,11 @@ namespace EmbedIO.Net.Internal
                 prefs = _prefixes;
                 if (prefs.ContainsKey(prefix))
                 {
-                    var other = prefs[prefix];
-                    if (other != listener)
+                    if (prefs[prefix] != listener)
+                    {
                         throw new HttpListenerException(400, $"There is another listener for {prefix}");
+                    }
+
                     return;
                 }
 
@@ -142,7 +150,9 @@ namespace EmbedIO.Net.Internal
                     current = _unhandled;
                     future = current?.ToList() ?? new List<ListenerPrefix>();
                     if (!RemoveSpecial(future, prefix))
+                    {
                         break; // Prefix not found
+                    }
                 }
                 while (Interlocked.CompareExchange(ref _unhandled, future, current) != current);
 
@@ -157,7 +167,9 @@ namespace EmbedIO.Net.Internal
                     current = _all;
                     future = current?.ToList() ?? new List<ListenerPrefix>();
                     if (!RemoveSpecial(future, prefix))
+                    {
                         break; // Prefix not found
+                    }
                 }
                 while (Interlocked.CompareExchange(ref _all, future, current) != current);
 
@@ -181,7 +193,9 @@ namespace EmbedIO.Net.Internal
                 }
 
                 if (lpKey is null)
+                {
                     break;
+                }
 
                 p2 = prefs.ToDictionary(x => x.Key, x => x.Value);
                 _ = p2.Remove(lpKey);
@@ -234,13 +248,17 @@ namespace EmbedIO.Net.Internal
         {
             Socket? accepted = null;
             if (args.SocketError == SocketError.Success)
+            {
                 accepted = args.AcceptSocket;
+            }
 
             var epl = (EndPointListener)args.UserToken;
 
             Accept(epl._sock, args, ref accepted);
             if (accepted == null)
+            {
                 return;
+            }
 
             if (epl.Secure && epl.Listener.Certificate == null)
             {
@@ -272,14 +290,19 @@ namespace EmbedIO.Net.Internal
         {
             prefix = null;
             if (list == null)
+            {
                 return null;
+            }
 
             HttpListener? bestMatch = null;
             var bestLength = -1;
 
             foreach (var p in list)
             {
-                if (p.Path.Length < bestLength || !path.StartsWith(p.Path)) continue;
+                if (p.Path.Length < bestLength || !path.StartsWith(p.Path))
+                {
+                    continue;
+                }
 
                 bestLength = p.Path.Length;
                 bestMatch = p.Listener;
@@ -292,7 +315,9 @@ namespace EmbedIO.Net.Internal
         private static void AddSpecial(ICollection<ListenerPrefix> coll, ListenerPrefix prefix)
         {
             if (coll == null)
+            {
                 return;
+            }
 
             if (coll.Any(p => p.Path == prefix.Path))
             {
@@ -305,12 +330,17 @@ namespace EmbedIO.Net.Internal
         private static bool RemoveSpecial(IList<ListenerPrefix> coll, ListenerPrefix prefix)
         {
             if (coll == null)
+            {
                 return false;
+            }
 
             var c = coll.Count;
             for (var i = 0; i < c; i++)
             {
-                if (coll[i].Path != prefix.Path) continue;
+                if (coll[i].Path != prefix.Path)
+                {
+                    continue;
+                }
 
                 coll.RemoveAt(i);
                 return true;
@@ -323,7 +353,9 @@ namespace EmbedIO.Net.Internal
         {
             prefix = null;
             if (uri == null)
+            {
                 return null;
+            }
 
             var host = uri.Host;
             var port = uri.Port;
@@ -340,13 +372,19 @@ namespace EmbedIO.Net.Internal
                 foreach (var p in result.Keys)
                 {
                     if (p.Path.Length < bestLength)
+                    {
                         continue;
+                    }
 
                     if (p.Host != host || p.Port != port)
+                    {
                         continue;
+                    }
 
                     if (!path.StartsWith(p.Path) && !pathSlash.StartsWith(p.Path))
+                    {
                         continue;
+                    }
 
                     bestLength = p.Path.Length;
                     bestMatch = result[p];
@@ -354,20 +392,29 @@ namespace EmbedIO.Net.Internal
                 }
 
                 if (bestLength != -1)
+                {
                     return bestMatch;
+                }
             }
 
             var list = _unhandled;
             bestMatch = MatchFromList(path, list, out prefix);
             if (path != pathSlash && bestMatch == null)
+            {
                 bestMatch = MatchFromList(pathSlash, list, out prefix);
+            }
+
             if (bestMatch != null)
+            {
                 return bestMatch;
+            }
 
             list = _all;
             bestMatch = MatchFromList(path, list, out prefix);
             if (path != pathSlash && bestMatch == null)
+            {
                 bestMatch = MatchFromList(pathSlash, list, out prefix);
+            }
 
             return bestMatch;
         }
@@ -375,15 +422,21 @@ namespace EmbedIO.Net.Internal
         private void CheckIfRemove()
         {
             if (_prefixes.Count > 0)
+            {
                 return;
+            }
 
             var list = _unhandled;
             if (list != null && list.Count > 0)
+            {
                 return;
+            }
 
             list = _all;
             if (list != null && list.Count > 0)
+            {
                 return;
+            }
 
             EndPointManager.RemoveEndPoint(this, _endpoint);
         }

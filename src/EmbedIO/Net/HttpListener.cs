@@ -60,7 +60,9 @@ namespace EmbedIO.Net
         public void Start()
         {
             if (IsListening)
+            {
                 return;
+            }
 
             EndPointManager.AddListener(this);
             IsListening = true;
@@ -80,7 +82,9 @@ namespace EmbedIO.Net
         public void Dispose()
         {
             if (_disposed)
+            {
                 return;
+            }
 
             Close(true);
             _disposed = true;
@@ -108,7 +112,9 @@ namespace EmbedIO.Net
         internal void RegisterContext(HttpListenerContext context)
         {
             if (!_ctxQueue.TryAdd(context.Id, context))
+            {
                 throw new InvalidOperationException("Unable to register context");
+            }
 
             _ = _ctxQueueSem.Release();
         }
@@ -130,16 +136,23 @@ namespace EmbedIO.Net
             var list = new List<HttpConnection>(connections);
 
             for (var i = list.Count - 1; i >= 0; i--)
+            {
                 list[i].Close(true);
+            }
 
-            if (!closeExisting) return;
+            if (!closeExisting)
+            {
+                return;
+            }
 
             while (!_ctxQueue.IsEmpty)
             {
                 foreach (var key in _ctxQueue.Keys.ToArray())
                 {
                     if (_ctxQueue.TryGetValue(key, out var context))
+                    {
                         context.Connection.Close(true);
+                    }
                 }
             }
         }

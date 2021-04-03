@@ -74,7 +74,9 @@ namespace EmbedIO.Net.Internal
         public void OnClose(Action<IHttpContext> callback)
         {
             if (_closed)
+            {
                 throw new InvalidOperationException("HTTP context has already been closed.");
+            }
 
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }

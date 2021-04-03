@@ -56,7 +56,9 @@ namespace EmbedIO.Internal
         public static Uri? StringToAbsoluteUri(string str)
         {
             if (!CanBeAbsoluteUrl(str))
+            {
                 return null;
+            }
 
             _ = Uri.TryCreate(str, UriKind.Absolute, out var result);
             return result;

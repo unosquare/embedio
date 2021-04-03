@@ -13,7 +13,9 @@ namespace EmbedIO.Net.Internal
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
+            {
                 Array.Reverse(bytes);
+            }
 
             return bytes;
         }
@@ -22,7 +24,9 @@ namespace EmbedIO.Net.Internal
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
+            {
                 Array.Reverse(bytes);
+            }
 
             return bytes;
         }

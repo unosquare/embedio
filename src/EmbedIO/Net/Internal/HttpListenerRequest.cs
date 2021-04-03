@@ -193,7 +193,9 @@ namespace EmbedIO.Net.Internal
                 ProtocolVersion = new Version(parts[2].Substring(5));
 
                 if (ProtocolVersion.Major < 1)
+                {
                     throw new InvalidOperationException();
+                }
             }
             catch
             {
@@ -214,11 +216,15 @@ namespace EmbedIO.Net.Internal
             var path = rawUri?.PathAndQuery ?? RawUrl;
 
             if (string.IsNullOrEmpty(host))
+            {
                 host = rawUri?.Host ?? UserHostAddress;
+            }
 
             var colon = host.LastIndexOf(':');
             if (colon >= 0)
+            {
                 host = host.Substring(0, colon);
+            }
 
             // var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
             var baseUri = $"http://{host}:{LocalEndPoint.Port}";
@@ -232,7 +238,9 @@ namespace EmbedIO.Net.Internal
             InitializeQueryString(Url.Query);
             
             if (ContentLength64 == 0 && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
+            {
                 return;
+            }
 
             if (string.Compare(Headers["Expect"], "100-continue", StringComparison.OrdinalIgnoreCase) == 0)
             {
@@ -266,7 +274,9 @@ namespace EmbedIO.Net.Internal
                     Headers[HttpHeaderNames.ContentLength] = val.Trim();
                     
                     if (ContentLength64 < 0)
+                    {
                         _connection.SetError("Invalid Content-Length.");
+                    }
 
                     break;
                 case "referer":
@@ -291,11 +301,15 @@ namespace EmbedIO.Net.Internal
         internal bool FlushInput()
         {
             if (!HasEntityBody)
+            {
                 return true;
+            }
 
             var length = 2048;
             if (ContentLength64 > 0)
+            {
                 length = (int)Math.Min(ContentLength64, length);
+            }
 
             var bytes = new byte[length];
 
@@ -303,10 +317,10 @@ namespace EmbedIO.Net.Internal
             {
                 try
                 {
-                    var data = InputStream.Read(bytes, 0, length);
-
-                    if (data <= 0)
+                    if (InputStream.Read(bytes, 0, length) <= 0)
+                    {
                         return true;
+                    }
                 }
                 catch (ObjectDisposedException)
                 {
@@ -458,7 +472,9 @@ namespace EmbedIO.Net.Internal
             }
 
             if (query[0] == '?')
+            {
                 query = query.Substring(1);
+            }
 
             var components = query.Split('&');
 

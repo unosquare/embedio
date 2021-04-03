@@ -51,7 +51,9 @@ namespace EmbedIO.Net.Internal
         public override void Write(byte[] buffer, int offset, int count)
         {
             if (_disposed)
+            {
                 throw new ObjectDisposedException(nameof(ResponseStream));
+            }
 
             byte[] bytes;
             var ms = GetHeaders(false);
@@ -82,10 +84,14 @@ namespace EmbedIO.Net.Internal
             }
 
             if (count > 0)
+            {
                 InternalWrite(buffer, offset, count);
+            }
 
             if (chunked)
+            {
                 InternalWrite(CrLf, 0, 2);
+            }
         }
 
         /// <inheritdoc />
@@ -118,11 +124,17 @@ namespace EmbedIO.Net.Internal
 
         protected override void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (_disposed)
+            {
+                return;
+            }
 
             _disposed = true;
 
-            if (!disposing) return;
+            if (!disposing)
+            {
+                return;
+            }
 
             using var ms = GetHeaders(true);
             var chunked = _response.SendChunked;
@@ -170,7 +182,9 @@ namespace EmbedIO.Net.Internal
         private MemoryStream? GetHeaders(bool closing)
         {
             lock (_headersSyncRoot)
+            {
                 return _response.HeadersSent ? null : _response.SendHeaders(closing);
+            }
         }
     }
 }
