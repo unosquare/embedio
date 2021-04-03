@@ -31,7 +31,7 @@ namespace EmbedIO.Net.Internal
         private int _position;
         private string? _errorMessage;
 
-        public HttpConnection(Socket sock, EndPointListener epl, X509Certificate cert)
+        public HttpConnection(Socket sock, EndPointListener epl)
         {
             _sock = sock;
             _epl = epl;
@@ -39,17 +39,14 @@ namespace EmbedIO.Net.Internal
             LocalEndPoint = (IPEndPoint) sock.LocalEndPoint;
             RemoteEndPoint = (IPEndPoint) sock.RemoteEndPoint;
 
-            if (!IsSecure)
+            Stream = new NetworkStream(sock, false);
+            if (IsSecure)
             {
-                Stream = new NetworkStream(sock, false);
-            }
-            else
-            {
-                var sslStream = new SslStream(new NetworkStream(sock, false), true);
+                var sslStream = new SslStream(Stream, true);
 
                 try
                 {
-                    sslStream.AuthenticateAsServer(cert);
+                    sslStream.AuthenticateAsServer(epl.Listener.Certificate);
                 }
                 catch
                 {
