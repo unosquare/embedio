@@ -197,6 +197,8 @@ namespace EmbedIO.Net.Internal
 
         internal void SetRequestLine(string req)
         {
+            const string forbiddenMethodChars = "\"(),/:;<=>?@[\\]{}";
+
             var parts = req.Split(Separators, 3);
             if (parts.Length != 3)
             {
@@ -205,23 +207,18 @@ namespace EmbedIO.Net.Internal
             }
 
             HttpMethod = parts[0];
-            _ = Enum.TryParse<HttpVerbs>(HttpMethod, true, out var verb);
-            HttpVerb = verb;
-
             foreach (var c in HttpMethod)
             {
-                var ic = (int)c;
-
-                if ((ic >= 'A' && ic <= 'Z') ||
-                    (ic > 32 && c < 127 && c != '(' && c != ')' && c != '<' &&
-                     c != '<' && c != '>' && c != '@' && c != ',' && c != ';' &&
-                     c != ':' && c != '\\' && c != '"' && c != '/' && c != '[' &&
-                     c != ']' && c != '?' && c != '=' && c != '{' && c != '}'))
-                    continue;
-
-                _connection.SetError("(Invalid verb)");
-                return;
+                // See https://tools.ietf.org/html/rfc7230#section-3.2.6
+                // for the list of allowed characters
+                if (c < 32 || c >= 127 || forbiddenMethodChars.IndexOf(c) >= 0)
+                {
+                    _connection.SetError("(Invalid verb)");
+                    return;
+                }
             }
+
+            HttpVerb = IsKnownHttpMethod(HttpMethod, out var verb) ? verb : HttpVerbs.Any;
 
             RawUrl = parts[1];
             if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/"))
@@ -359,6 +356,78 @@ namespace EmbedIO.Net.Internal
                 {
                     return false;
                 }
+            }
+        }
+
+        // Optimized for the following list of methods:
+        // "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"
+        // ***NOTE***: The verb parameter is NOT VALID upon exit if false is returned.
+        private static bool IsKnownHttpMethod(string method, out HttpVerbs verb)
+        {
+            switch (method.Length)
+            {
+                case 3:
+                    switch (method[0])
+                    {
+                        case 'G':
+                            verb = HttpVerbs.Get;
+                            return method[1] == 'E' && method[2] == 'T';
+
+                        case 'P':
+                            verb = HttpVerbs.Put;
+                            return method[1] == 'U' && method[2] == 'T';
+
+                        default:
+                            verb = HttpVerbs.Any;
+                            return false;
+                    }
+
+                case 4:
+                    switch (method[0])
+                    {
+                        case 'H':
+                            verb = HttpVerbs.Head;
+                            return method[1] == 'E' && method[2] == 'A' && method[3] == 'D';
+
+                        case 'P':
+                            verb = HttpVerbs.Post;
+                            return method[1] == 'O' && method[2] == 'S' && method[3] == 'T';
+
+                        default:
+                            verb = HttpVerbs.Any;
+                            return false;
+                    }
+
+                case 5:
+                    verb = HttpVerbs.Patch;
+                    return method[0] == 'P'
+                        && method[1] == 'A'
+                        && method[2] == 'T'
+                        && method[3] == 'C'
+                        && method[4] == 'H';
+
+                case 6:
+                    verb = HttpVerbs.Delete;
+                    return method[0] == 'D'
+                        && method[1] == 'E'
+                        && method[2] == 'L'
+                        && method[3] == 'E'
+                        && method[4] == 'T'
+                        && method[5] == 'E';
+
+                case 7:
+                    verb = HttpVerbs.Options;
+                    return method[0] == 'O'
+                        && method[1] == 'P'
+                        && method[2] == 'T'
+                        && method[3] == 'I'
+                        && method[4] == 'O'
+                        && method[5] == 'N'
+                        && method[6] == 'S';
+
+                default:
+                    verb = HttpVerbs.Any;
+                    return false;
             }
         }
 
