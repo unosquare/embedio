@@ -81,8 +81,6 @@ namespace EmbedIO.Net.Internal
 
         public ListenerPrefix? Prefix { get; set; }
 
-        internal X509Certificate2? ClientCertificate { get; }
-
         public void Dispose()
         {
             Dispose(true);

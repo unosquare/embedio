@@ -26,8 +26,6 @@ namespace EmbedIO.Net.Internal
         private bool _kaSet;
         private bool _keepAlive;
 
-        private GccDelegate? _gccDelegate;
-
         internal HttpListenerRequest(HttpListenerContext context)
         {
             Headers = new NameValueCollection();
@@ -157,43 +155,6 @@ namespace EmbedIO.Net.Internal
             && Headers.Contains(HttpHeaderNames.Upgrade, "websocket")
             && Headers.Contains(HttpHeaderNames.Connection, "Upgrade");
 
-        /// <summary>
-        /// Begins to the get client certificate asynchronously.
-        /// </summary>
-        /// <param name="requestCallback">The request callback.</param>
-        /// <param name="state">The state.</param>
-        /// <returns>An async result.</returns>
-        public IAsyncResult? BeginGetClientCertificate(AsyncCallback requestCallback, object state)
-        {
-            if (_gccDelegate == null)
-                _gccDelegate = GetClientCertificate;
-
-            return _gccDelegate?.BeginInvoke(requestCallback, state);
-        }
-
-        /// <summary>
-        /// Finishes the get client certificate asynchronous operation.
-        /// </summary>
-        /// <param name="asyncResult">The asynchronous result.</param>
-        /// <returns>The certificate from the client.</returns>
-        /// <exception cref="System.ArgumentNullException">asyncResult.</exception>
-        /// <exception cref="System.InvalidOperationException"></exception>
-        public X509Certificate2 EndGetClientCertificate(IAsyncResult asyncResult)
-        {
-            if (asyncResult == null)
-                throw new ArgumentNullException(nameof(asyncResult));
-
-            if (_gccDelegate == null)
-                throw new InvalidOperationException();
-
-            return _gccDelegate.EndInvoke(asyncResult);
-        }
-
-        /// <summary>
-        /// Gets the client certificate.
-        /// </summary>
-        /// <returns>The client certificate.</returns>
-        public X509Certificate2? GetClientCertificate() => _connection.ClientCertificate;
 
         internal void SetRequestLine(string req)
         {
