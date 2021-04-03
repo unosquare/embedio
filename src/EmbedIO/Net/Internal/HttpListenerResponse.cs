@@ -15,6 +15,7 @@ namespace EmbedIO.Net.Internal
     internal sealed class HttpListenerResponse : IHttpResponse, IDisposable
     {
         private readonly HttpConnection _connection;
+        private readonly HttpListenerRequest _request;
         private readonly string _id;
         private bool _disposed;
         private string _contentType = MimeType.Html; // Same default value as Microsoft's implementation
@@ -26,10 +27,10 @@ namespace EmbedIO.Net.Internal
 
         internal HttpListenerResponse(HttpListenerContext context)
         {
+            _request = context.HttpListenerRequest;
             _connection = context.Connection;
             _id = context.Id;
             _keepAlive = context.Request.KeepAlive;
-            ProtocolVersion = context.Request.ProtocolVersion;
         }
 
         /// <inheritdoc />
@@ -90,7 +91,7 @@ namespace EmbedIO.Net.Internal
         public Stream OutputStream => _outputStream ??= _connection.GetResponseStream();
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; }
+        public Version ProtocolVersion => _request.ProtocolVersion;
 
         /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
