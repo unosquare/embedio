@@ -127,7 +127,7 @@ namespace EmbedIO.Net.Internal
         public Version ProtocolVersion { get; private set; } = HttpVersion.Version11;
 
         /// <inheritdoc />
-        public NameValueCollection? QueryString { get; private set; }
+        public NameValueCollection QueryString { get; } = new ();
 
         /// <inheritdoc />
         public string RawUrl { get; private set; }
@@ -268,7 +268,7 @@ namespace EmbedIO.Net.Internal
                 return;
             }
 
-            CreateQueryString(_url.Query);
+            InitializeQueryString(Url.Query);
             
             if (ContentLength64 == 0 && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
                 return;
@@ -489,15 +489,13 @@ namespace EmbedIO.Net.Internal
             }
         }
 
-        private void CreateQueryString(string query)
+        private void InitializeQueryString(string query)
         {
             if (string.IsNullOrEmpty(query))
             {
-                QueryString = new NameValueCollection(1);
                 return;
             }
 
-            QueryString = new NameValueCollection();
             if (query[0] == '?')
                 query = query.Substring(1);
 
