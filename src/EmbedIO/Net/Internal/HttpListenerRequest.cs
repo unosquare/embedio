@@ -32,7 +32,6 @@ namespace EmbedIO.Net.Internal
         {
             _context = context;
             Headers = new NameValueCollection();
-            ProtocolVersion = HttpVersion.Version10;
         }
 
         /// <summary>
@@ -125,7 +124,7 @@ namespace EmbedIO.Net.Internal
         public IPEndPoint LocalEndPoint => _context.Connection.LocalEndPoint;
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; private set; }
+        public Version ProtocolVersion { get; private set; } = HttpVersion.Version11;
 
         /// <inheritdoc />
         public NameValueCollection? QueryString { get; private set; }
