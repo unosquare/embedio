@@ -116,6 +116,6 @@ namespace EmbedIO.Net.Internal
         public bool IsAuthenticated => _request.IsAuthenticated;
 
         /// <inheritdoc />
-        public Uri UrlReferrer => _request.UrlReferrer;
+        public Uri? UrlReferrer => _request.UrlReferrer;
     }
 }

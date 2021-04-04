@@ -138,7 +138,7 @@ namespace EmbedIO.Net.Internal
         public Uri? Url => _url;
 
         /// <inheritdoc />
-        public Uri UrlReferrer { get; private set; }
+        public Uri? UrlReferrer { get; private set; }
 
         /// <inheritdoc />
         public string UserAgent => Headers[HttpHeaderNames.UserAgent];
@@ -287,7 +287,7 @@ namespace EmbedIO.Net.Internal
                     }
                     catch
                     {
-                        UrlReferrer = new Uri("http://someone.is.screwing.with.the.headers.com/");
+                        UrlReferrer = null;
                     }
 
                     break;
