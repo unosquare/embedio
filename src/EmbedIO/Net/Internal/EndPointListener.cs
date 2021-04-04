@@ -57,13 +57,7 @@ namespace EmbedIO.Net.Internal
             return true;
         }
 
-        public void UnbindContext(HttpListenerContext context)
-        {
-            if (context?.Request == null)
-                return;
-
-            context.Listener.UnregisterContext(context);
-        }
+        public void UnbindContext(HttpListenerContext context) => context.Listener.UnregisterContext(context);
 
         public void Dispose()
         {
