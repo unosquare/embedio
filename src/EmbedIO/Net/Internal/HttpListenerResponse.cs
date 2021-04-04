@@ -279,7 +279,7 @@ namespace EmbedIO.Net.Internal
 
             _ = sb
                 .Append(cookie.Name)
-                .Append("=")
+                .Append('=')
                 .Append(cookie.Value);
 
             if (cookie.Expires != DateTime.MinValue)
