@@ -75,16 +75,7 @@ namespace EmbedIO.WebSockets.Internal
             if (err != null)
                 throw new WebSocketException(CloseStatusCode.ProtocolError, err);
 
-            return new WebSocketFrame
-            {
-                Fin = fin,
-                Rsv1 = rsv1,
-                Rsv2 = rsv2,
-                Rsv3 = rsv3,
-                Opcode = (Opcode)opcode,
-                Mask = mask,
-                PayloadLength = payloadLen,
-            };
+            return new WebSocketFrame(fin, rsv1, rsv2, rsv3, (Opcode)opcode, mask, payloadLen);
         }
         
         private async Task ReadExtendedPayloadLengthAsync(WebSocketFrame frame)

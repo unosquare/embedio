@@ -55,8 +55,22 @@ namespace EmbedIO.WebSockets.Internal
             PayloadData = payloadData;
         }
 
-        internal WebSocketFrame()
+        internal WebSocketFrame(
+            Fin fin,
+            Rsv rsv1,
+            Rsv rsv2,
+            Rsv rsv3,
+            Opcode opcode,
+            Mask mask,
+            byte payloadLength)
         {
+            Fin = fin;
+            Rsv1 = rsv1;
+            Rsv2 = rsv2;
+            Rsv3 = rsv3;
+            Opcode = opcode;
+            Mask = mask;
+            PayloadLength = payloadLength;
         }
 
         public byte[]? ExtendedPayloadLength { get; internal set; }
