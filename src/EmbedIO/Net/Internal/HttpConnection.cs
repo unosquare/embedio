@@ -12,7 +12,7 @@ namespace EmbedIO.Net.Internal
 {
     internal sealed partial class HttpConnection : IDisposable
     {
-        internal const int BufferSize = 8192;
+        private const int BufferSize = 8192;
 
         private readonly Timer _timer;
         private readonly EndPointListener _epl;
