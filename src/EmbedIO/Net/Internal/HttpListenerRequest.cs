@@ -183,7 +183,7 @@ namespace EmbedIO.Net.Internal
             HttpVerb = IsKnownHttpMethod(HttpMethod, out var verb) ? verb : HttpVerbs.Any;
 
             RawUrl = parts[1];
-            if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/"))
+            if (parts[2].Length != 8 || !parts[2].StartsWith("HTTP/", StringComparison.Ordinal))
             {
                 _connection.SetError("Invalid request line (missing HTTP version).");
                 return;
