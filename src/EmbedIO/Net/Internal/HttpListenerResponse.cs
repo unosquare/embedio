@@ -374,8 +374,7 @@ namespace EmbedIO.Net.Internal
             stream.Write(preamble, 0, preamble.Length);
             stream.Write(data, 0, data.Length);
 
-            if (_outputStream == null)
-                _outputStream = _connection.GetResponseStream();
+            _outputStream ??= _connection.GetResponseStream();
 
             // Assumes that the ms was at position 0
             stream.Position = preamble.Length;

@@ -58,9 +58,9 @@ namespace EmbedIO.Net.Internal
             }
 
             _timer = new Timer(OnTimeout, null, Timeout.Infinite, Timeout.Infinite);
+            _context = null!; // Silence warning about uninitialized field - _context will be initialized by the Init method
             Init();
         }
-
 
         public int Reuses { get; private set; }
 
@@ -89,8 +89,7 @@ namespace EmbedIO.Net.Internal
 
         public async Task BeginReadRequest()
         {
-            if (_buffer == null)
-                _buffer = new byte[BufferSize];
+            _buffer ??= new byte[BufferSize];
 
             try
             {
@@ -114,13 +113,14 @@ namespace EmbedIO.Net.Internal
 
         public RequestStream GetRequestStream(long contentLength)
         {
-            if (_iStream != null) return _iStream;
+            if (_iStream == null)
+            {
+                var buffer = _ms.ToArray();
+                var length = (int) _ms.Length;
+                _ms = null;
 
-            var buffer = _ms.ToArray();
-            var length = (int)_ms.Length;
-            _ms = null;
-
-            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentLength);
+                _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentLength);
+            }
 
             return _iStream;
         }
@@ -260,10 +260,14 @@ namespace EmbedIO.Net.Internal
 
         private void RemoveConnection()
         {
-            if (_lastListener == null)
-                _epl.RemoveConnection(this);
-            else
+            if (_lastListener != null)
+            {
                 _lastListener.RemoveConnection(this);
+            }
+            else
+            {
+                _epl.RemoveConnection(this);
+            }
         }
 
         // true -> done processing
@@ -345,8 +349,7 @@ namespace EmbedIO.Net.Internal
 
         private string? ReadLine(byte[] buffer, int offset, int len, out int used)
         {
-            if (_currentLine == null)
-                _currentLine = new StringBuilder(128);
+            _currentLine ??= new StringBuilder(128);
 
             var last = offset + len;
             used = 0;

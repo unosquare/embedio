@@ -409,8 +409,7 @@ namespace EmbedIO.Net.Internal
 
         private void ParseCookies(string val)
         {
-            if (_cookies == null)
-                _cookies = new CookieList();
+            _cookies ??= new CookieList();
 
             var cookieStrings = val.SplitByAny(';', ',')
                 .Where(x => !string.IsNullOrEmpty(x));
