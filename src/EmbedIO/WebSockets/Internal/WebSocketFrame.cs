@@ -22,7 +22,10 @@ namespace EmbedIO.WebSockets.Internal
         }
 
         internal WebSocketFrame(
-            Fin fin, Opcode opcode, PayloadData payloadData, bool compressed = false)
+            Fin fin,
+            Opcode opcode,
+            PayloadData payloadData,
+            bool compressed = false)
         {
             Fin = fin;
             Rsv1 = IsOpcodeData(opcode) && compressed ? Rsv.On : Rsv.Off;
