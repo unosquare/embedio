@@ -176,23 +176,15 @@ namespace EmbedIO.Net.Internal
             do
             {
                 prefs = _prefixes;
-                ListenerPrefix lpKey = null;
-                foreach (var p in _prefixes.Keys)
-                {
-                    if (p.Path == prefix.Path)
-                    {
-                        lpKey = p;
-                        break;
-                    }
-                }
+                var prefixKey = _prefixes.Keys.FirstOrDefault(p => p.Path == prefix.Path);
 
-                if (lpKey is null)
+                if (prefixKey is null)
                 {
                     break;
                 }
 
                 p2 = prefs.ToDictionary(x => x.Key, x => x.Value);
-                _ = p2.Remove(lpKey);
+                _ = p2.Remove(prefixKey);
             }
             while (Interlocked.CompareExchange(ref _prefixes, p2, prefs) != prefs);
 
@@ -210,11 +202,11 @@ namespace EmbedIO.Net.Internal
         private static void Accept(Socket socket, SocketAsyncEventArgs e, ref Socket? accepted)
         {
             e.AcceptSocket = null;
-            bool asyn;
+            bool acceptPending;
 
             try
             {
-                asyn = socket.AcceptAsync(e);
+                acceptPending = socket.AcceptAsync(e);
             }
             catch
             {
@@ -228,11 +220,10 @@ namespace EmbedIO.Net.Internal
                 }
 
                 accepted = null;
-
                 return;
             }
 
-            if (!asyn)
+            if (!acceptPending)
             {
                 ProcessAccept(e);
             }
