@@ -24,8 +24,8 @@ namespace EmbedIO.Net.Internal
             _ = Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
             HttpVerb = verb;
             Cookies = new SystemCookieCollection(_request.Cookies);
-            LocalEndPoint = _request.LocalEndPoint;
-            RemoteEndPoint = _request.RemoteEndPoint;
+            LocalEndPoint = _request.LocalEndPoint!;
+            RemoteEndPoint = _request.RemoteEndPoint!;
         }
 
         /// <inheritdoc />

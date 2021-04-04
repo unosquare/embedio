@@ -22,13 +22,11 @@ namespace EmbedIO.Net.Internal
         private readonly HttpConnection _connection;
         private CookieList? _cookies;
         private Stream? _inputStream;
-        private Uri? _url;
         private bool _kaSet;
         private bool _keepAlive;
 
         internal HttpListenerRequest(HttpListenerContext context)
         {
-            Headers = new NameValueCollection();
             _connection = context.Connection;
         }
 
@@ -38,7 +36,7 @@ namespace EmbedIO.Net.Internal
         /// <value>
         /// The accept types.
         /// </value>
-        public string[]? AcceptTypes { get; private set; }
+        public string[] AcceptTypes { get; private set; } = Array.Empty<string>();
 
         /// <inheritdoc />
         public Encoding ContentEncoding
@@ -80,10 +78,10 @@ namespace EmbedIO.Net.Internal
         public bool HasEntityBody => ContentLength64 > 0;
 
         /// <inheritdoc />
-        public NameValueCollection Headers { get; }
+        public NameValueCollection Headers { get; } = new ();
 
         /// <inheritdoc />
-        public string? HttpMethod { get; private set; }
+        public string HttpMethod { get; private set; } = string.Empty;
 
         /// <inheritdoc />
         public HttpVerbs HttpVerb { get; private set; }
@@ -129,13 +127,13 @@ namespace EmbedIO.Net.Internal
         public NameValueCollection QueryString { get; } = new ();
 
         /// <inheritdoc />
-        public string RawUrl { get; private set; }
+        public string RawUrl { get; private set; } = string.Empty;
 
         /// <inheritdoc />
         public IPEndPoint RemoteEndPoint => _connection.RemoteEndPoint;
 
         /// <inheritdoc />
-        public Uri? Url => _url;
+        public Uri Url { get; private set; } = WebServer.NullUri;
 
         /// <inheritdoc />
         public Uri? UrlReferrer { get; private set; }
@@ -147,7 +145,7 @@ namespace EmbedIO.Net.Internal
 
         public string UserHostName => Headers[HttpHeaderNames.Host];
 
-        public string[] UserLanguages { get; private set; }
+        public string[] UserLanguages { get; private set; } = Array.Empty<string>();
 
         /// <inheritdoc />
         public bool IsWebSocketRequest
@@ -155,7 +153,6 @@ namespace EmbedIO.Net.Internal
             && ProtocolVersion >= HttpVersion.Version11
             && Headers.Contains(HttpHeaderNames.Upgrade, "websocket")
             && Headers.Contains(HttpHeaderNames.Connection, "Upgrade");
-
 
         internal void SetRequestLine(string req)
         {
@@ -230,12 +227,13 @@ namespace EmbedIO.Net.Internal
             // var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
             var baseUri = $"http://{host}:{LocalEndPoint.Port}";
 
-            if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out _url))
+            if (!Uri.TryCreate(baseUri + path, UriKind.Absolute, out var url))
             {
                 _connection.SetError(WebUtility.HtmlEncode($"Invalid url: {baseUri}{path}"));
                 return;
             }
 
+            Url = url;
             InitializeQueryString(Url.Query);
             
             if (ContentLength64 == 0 && (HttpVerb == HttpVerbs.Post || HttpVerb == HttpVerbs.Put))
