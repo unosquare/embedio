@@ -61,10 +61,6 @@ namespace EmbedIO.Net.Internal
             Init();
         }
 
-        ~HttpConnection()
-        {
-            Dispose(false);
-        }
 
         public int Reuses { get; private set; }
 
@@ -80,8 +76,15 @@ namespace EmbedIO.Net.Internal
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Close(true);
+
+            _timer.Dispose();
+            _sock?.Dispose();
+            _ms?.Dispose();
+            _iStream?.Dispose();
+            _oStream?.Dispose();
+            Stream?.Dispose();
+            _lastListener?.Dispose();
         }
 
         public async Task BeginReadRequest()
@@ -405,23 +408,6 @@ namespace EmbedIO.Net.Internal
             }
 
             RemoveConnection();
-        }
-
-        private void Dispose(bool disposing)
-        {
-            Close(true);
-
-            if (!disposing)
-                return;
-
-            _timer?.Dispose();
-            _sock?.Dispose();
-            _ms?.Dispose();
-            _iStream?.Dispose();
-            _oStream?.Dispose();
-            Stream?.Dispose();
-            _lastListener?.Dispose();
-            ClientCertificate?.Dispose();
         }
     }
 }
