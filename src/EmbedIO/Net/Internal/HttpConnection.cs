@@ -121,6 +121,8 @@ namespace EmbedIO.Net.Internal
 
         public ResponseStream GetResponseStream() => _oStream ??= new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true);
 
+        internal void SetError(string message) => _errorMessage = message;
+
         internal void ForceClose() => Close(true);
 
         internal void Close(bool forceClose = false)
