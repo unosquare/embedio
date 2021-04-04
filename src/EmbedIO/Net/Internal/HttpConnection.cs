@@ -92,7 +92,10 @@ namespace EmbedIO.Net.Internal
             try
             {
                 if (Reuses == 1)
+                {
                     _sTimeout = 15000;
+                }
+
                 _ = _timer.Change(_sTimeout, Timeout.Infinite);
 
                 var data = await Stream.ReadAsync(_buffer, 0, BufferSize).ConfigureAwait(false);
@@ -133,7 +136,10 @@ namespace EmbedIO.Net.Internal
                 _oStream = null;
             }
 
-            if (_sock == null) return;
+            if (_sock == null)
+            {
+                return;
+            }
 
             forceClose = forceClose
                       || !_context.Request.KeepAlive
@@ -268,10 +274,14 @@ namespace EmbedIO.Net.Internal
             while (true)
             {
                 if (_errorMessage != null)
+                {
                     return true;
+                }
 
                 if (_position >= len)
+                {
                     break;
+                }
 
                 string? line;
                 try
@@ -286,12 +296,17 @@ namespace EmbedIO.Net.Internal
                 }
 
                 if (line == null)
+                {
                     break;
+                }
 
                 if (string.IsNullOrEmpty(line))
                 {
                     if (_inputState == InputState.RequestLine)
+                    {
                         continue;
+                    }
+
                     _currentLine = null;
 
                     return true;
