@@ -17,7 +17,7 @@ namespace EmbedIO.Net
     /// <seealso cref="IDisposable" />
     public sealed class HttpListener : IHttpListener
     {
-        private readonly SemaphoreSlim _ctxQueueSem = new SemaphoreSlim(0);
+        private readonly SemaphoreSlim _ctxQueueSem = new (0);
         private readonly ConcurrentDictionary<string, HttpListenerContext> _ctxQueue;
         private readonly ConcurrentDictionary<HttpConnection, object> _connections;
         private readonly HttpListenerPrefixCollection _prefixes;

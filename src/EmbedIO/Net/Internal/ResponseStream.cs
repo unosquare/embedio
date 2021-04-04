@@ -8,7 +8,7 @@ namespace EmbedIO.Net.Internal
     internal class ResponseStream : Stream
     {
         private static readonly byte[] CrLf = { 13, 10 };
-        private readonly object _headersSyncRoot = new object();
+        private readonly object _headersSyncRoot = new ();
 
         private readonly Stream _stream;
         private readonly HttpListenerResponse _response;

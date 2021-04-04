@@ -167,11 +167,11 @@ Extended Payload Length: {extPayloadLen}
 
         public override string ToString() => BitConverter.ToString(ToArray());
 
-        internal static WebSocketFrame CreateCloseFrame(PayloadData? payloadData) => new WebSocketFrame(Fin.Final, Opcode.Close, payloadData ?? new PayloadData());
+        internal static WebSocketFrame CreateCloseFrame(PayloadData? payloadData) => new (Fin.Final, Opcode.Close, payloadData ?? new PayloadData());
 
-        internal static WebSocketFrame CreatePingFrame() => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData());
+        internal static WebSocketFrame CreatePingFrame() => new (Fin.Final, Opcode.Ping, new PayloadData());
 
-        internal static WebSocketFrame CreatePingFrame(byte[] data) => new WebSocketFrame(Fin.Final, Opcode.Ping, new PayloadData(data));
+        internal static WebSocketFrame CreatePingFrame(byte[] data) => new (Fin.Final, Opcode.Ping, new PayloadData(data));
 
         internal void Validate(WebSocket webSocket)
         {

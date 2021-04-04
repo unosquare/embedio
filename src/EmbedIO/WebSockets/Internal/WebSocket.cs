@@ -23,8 +23,8 @@ namespace EmbedIO.WebSockets.Internal
     {
         public const string SupportedVersion = "13";
         
-        private readonly object _stateSyncRoot = new object();
-        private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
+        private readonly object _stateSyncRoot = new ();
+        private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ();
         private readonly Action _closeConnection;
         private readonly TimeSpan _waitTime = TimeSpan.FromSeconds(1);
 

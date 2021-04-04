@@ -13,8 +13,7 @@ namespace EmbedIO.Net
     /// </summary>
     public static class EndPointManager
     {
-        private static readonly ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>> IPToEndpoints =
-            new ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>>();
+        private static readonly ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>> IPToEndpoints = new ();
 
         /// <summary>
         /// Gets or sets a value indicating whether [use IPv6]. By default, this flag is set.
