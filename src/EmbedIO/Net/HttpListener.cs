@@ -87,6 +87,7 @@ namespace EmbedIO.Net
             }
 
             Close(true);
+            _ctxQueueSem.Dispose();
             _disposed = true;
         }
 
