@@ -105,15 +105,16 @@ namespace EmbedIO.Net.Internal
         {
             get
             {
-                if (_kaSet)
-                    return _keepAlive;
+                if (!_kaSet)
+                {
+                    var cnc = Headers.GetValues(HttpHeaderNames.Connection);
+                    _keepAlive = ProtocolVersion < HttpVersion.Version11
+                        ? cnc != null && cnc.Length == 1 && string.Compare(cnc[0], "keep-alive", StringComparison.OrdinalIgnoreCase) == 0
+                        : cnc == null || cnc.All(s => string.Compare(s, "close", StringComparison.OrdinalIgnoreCase) != 0);
 
-                var cnc = Headers.GetValues(HttpHeaderNames.Connection);
-                _keepAlive = ProtocolVersion < HttpVersion.Version11
-                    ? cnc != null && cnc.Length == 1 && string.Compare(cnc[0], "keep-alive", StringComparison.OrdinalIgnoreCase) == 0
-                    : cnc == null || cnc.All(s => string.Compare(s, "close", StringComparison.OrdinalIgnoreCase) != 0);
+                    _kaSet = true;
+                }
 
-                _kaSet = true;
                 return _keepAlive;
             }
         }
@@ -418,19 +419,19 @@ namespace EmbedIO.Net.Internal
 
             foreach (var str in cookieStrings)
             {
-                if (str.StartsWith("$Version"))
+                if (str.StartsWith("$Version", StringComparison.Ordinal))
                 {
                     version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote(), CultureInfo.InvariantCulture);
                 }
-                else if (str.StartsWith("$Path") && current != null)
+                else if (str.StartsWith("$Path", StringComparison.Ordinal) && current != null)
                 {
                     current.Path = str.Substring(str.IndexOf('=') + 1).Trim();
                 }
-                else if (str.StartsWith("$Domain") && current != null)
+                else if (str.StartsWith("$Domain", StringComparison.Ordinal) && current != null)
                 {
                     current.Domain = str.Substring(str.IndexOf('=') + 1).Trim();
                 }
-                else if (str.StartsWith("$Port") && current != null)
+                else if (str.StartsWith("$Port", StringComparison.Ordinal) && current != null)
                 {
                     current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
                 }

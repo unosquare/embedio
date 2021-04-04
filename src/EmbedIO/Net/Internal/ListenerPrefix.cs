@@ -9,7 +9,7 @@ namespace EmbedIO.Net.Internal
         {
             var defaultPort = 80;
 
-            if (uri.StartsWith("https://"))
+            if (uri.StartsWith("https://", StringComparison.Ordinal))
             {
                 defaultPort = 443;
                 Secure = true;
@@ -64,7 +64,7 @@ namespace EmbedIO.Net.Internal
                 throw new ArgumentNullException(nameof(uri));
             }
 
-            if (!uri.StartsWith("http://") && !uri.StartsWith("https://"))
+            if (!uri.StartsWith("http://", StringComparison.Ordinal) && !uri.StartsWith("https://", StringComparison.Ordinal))
             {
                 throw new ArgumentException("Only 'http' and 'https' schemes are supported.");
             }
