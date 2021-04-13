@@ -9,7 +9,7 @@ namespace EmbedIO.Net.Internal
         {
             var defaultPort = 80;
 
-            if (uri.StartsWith("https://"))
+            if (uri.StartsWith("https://", StringComparison.Ordinal))
             {
                 defaultPort = 443;
                 Secure = true;
@@ -19,7 +19,9 @@ namespace EmbedIO.Net.Internal
             var startHost = uri.IndexOf(':') + 3;
 
             if (startHost >= length)
+            {
                 throw new ArgumentException("No host specified.");
+            }
 
             var colon = uri.LastIndexOf(':');
             int root;
@@ -40,7 +42,9 @@ namespace EmbedIO.Net.Internal
             Path = uri.Substring(root);
 
             if (Path.Length != 1)
+            {
                 Path = Path.Substring(0, Path.Length - 1);
+            }
         }
 
         public HttpListener? Listener { get; set; }
@@ -56,41 +60,57 @@ namespace EmbedIO.Net.Internal
         public static void CheckUri(string uri)
         {
             if (uri == null)
+            {
                 throw new ArgumentNullException(nameof(uri));
+            }
 
-            if (!uri.StartsWith("http://") && !uri.StartsWith("https://"))
+            if (!uri.StartsWith("http://", StringComparison.Ordinal) && !uri.StartsWith("https://", StringComparison.Ordinal))
+            {
                 throw new ArgumentException("Only 'http' and 'https' schemes are supported.");
+            }
 
             var length = uri.Length;
             var startHost = uri.IndexOf(':') + 3;
 
             if (startHost >= length)
+            {
                 throw new ArgumentException("No host specified.");
+            }
 
             var colon = uri.Substring(startHost).IndexOf(':') > 0 ? uri.LastIndexOf(':') : -1;
 
             if (startHost == colon)
+            {
                 throw new ArgumentException("No host specified.");
+            }
 
             int root;
             if (colon > 0)
             {
                 root = uri.IndexOf('/', colon, length - colon);
                 if (root == -1)
+                {
                     throw new ArgumentException("No path specified.");
+                }
 
                 if (!int.TryParse(uri.Substring(colon + 1, root - colon - 1), out var p) || p <= 0 || p >= 65536)
+                {
                     throw new ArgumentException("Invalid port.");
+                }
             }
             else
             {
                 root = uri.IndexOf('/', startHost, length - startHost);
                 if (root == -1)
+                {
                     throw new ArgumentException("No path specified.");
+                }
             }
 
             if (uri[uri.Length - 1] != '/')
+            {
                 throw new ArgumentException("The prefix must end with '/'");
+            }
         }
 
         public bool IsValid() => Path.IndexOf('%') == -1 && Path.IndexOf("//", StringComparison.Ordinal) == -1;

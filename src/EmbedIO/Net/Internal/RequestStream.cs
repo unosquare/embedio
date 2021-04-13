@@ -58,7 +58,9 @@ namespace EmbedIO.Net.Internal
             nread = _stream.Read(buffer, offset, count);
 
             if (nread > 0 && _remainingBody > 0)
+            {
                 _remainingBody -= nread;
+            }
 
             return nread;
         }
@@ -75,28 +77,47 @@ namespace EmbedIO.Net.Internal
         private int FillFromBuffer(byte[] buffer, int off, int count)
         {
             if (buffer == null)
+            {
                 throw new ArgumentNullException(nameof(buffer));
+            }
+
             if (off < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(off), "< 0");
+            }
+
             if (count < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(count), "< 0");
+            }
 
             var len = buffer.Length;
 
             if (off > len)
+            {
                 throw new ArgumentException("destination offset is beyond array size");
+            }
+
             if (off > len - count)
+            {
                 throw new ArgumentException("Reading would overrun buffer");
+            }
 
             if (_remainingBody == 0)
+            {
                 return -1;
+            }
 
             if (_length == 0)
+            {
                 return 0;
+            }
 
             var size = Math.Min(_length, count);
             if (_remainingBody > 0)
+            {
                 size = (int) Math.Min(size, _remainingBody);
+            }
 
             if (_offset > _buffer.Length - size)
             {
@@ -104,13 +125,18 @@ namespace EmbedIO.Net.Internal
             }
 
             if (size == 0)
+            {
                 return 0;
+            }
 
             Buffer.BlockCopy(_buffer, _offset, buffer, off, size);
             _offset += size;
             _length -= size;
             if (_remainingBody > 0)
+            {
                 _remainingBody -= size;
+            }
+
             return size;
         }
     }

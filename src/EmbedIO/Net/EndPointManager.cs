@@ -13,8 +13,7 @@ namespace EmbedIO.Net
     /// </summary>
     public static class EndPointManager
     {
-        private static readonly ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>> IPToEndpoints =
-            new ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>>();
+        private static readonly ConcurrentDictionary<IPAddress, ConcurrentDictionary<int, EndPointListener>> IPToEndpoints = new ();
 
         /// <summary>
         /// Gets or sets a value indicating whether [use IPv6]. By default, this flag is set.
@@ -55,7 +54,7 @@ namespace EmbedIO.Net
             {
                 if (p.TryRemove(ep.Port, out _) && p.Count == 0)
                 {
-                    IPToEndpoints.TryRemove(ep.Address, out _);
+                    _ = IPToEndpoints.TryRemove(ep.Address, out _);
                 }
             }
 
@@ -75,7 +74,9 @@ namespace EmbedIO.Net
             var lp = new ListenerPrefix(p);
 
             if (!lp.IsValid())
+            {
                 throw new HttpListenerException(400, "Invalid path.");
+            }
 
             // listens on all the interfaces if host name cannot be parsed by IPAddress.
             var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
@@ -93,10 +94,14 @@ namespace EmbedIO.Net
         private static IPAddress ResolveAddress(string host)
         {
             if (host == "*" || host == "+" || host == "0.0.0.0")
+            {
                 return UseIpv6 ? IPAddress.IPv6Any : IPAddress.Any;
+            }
 
-            if (IPAddress.TryParse(host, out var address)) 
+            if (IPAddress.TryParse(host, out var address))
+            {
                 return address;
+            }
 
             try
             {
@@ -120,7 +125,9 @@ namespace EmbedIO.Net
                 var lp = new ListenerPrefix(prefix);
 
                 if (!lp.IsValid())
+                {
                     return;
+                }
 
                 var epl = GetEpListener(lp.Host, lp.Port, listener, lp.Secure);
                 epl.RemovePrefix(lp);

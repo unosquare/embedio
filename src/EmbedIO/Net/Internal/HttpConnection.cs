@@ -12,7 +12,7 @@ namespace EmbedIO.Net.Internal
 {
     internal sealed partial class HttpConnection : IDisposable
     {
-        internal const int BufferSize = 8192;
+        private const int BufferSize = 8192;
 
         private readonly Timer _timer;
         private readonly EndPointListener _epl;
@@ -29,8 +29,9 @@ namespace EmbedIO.Net.Internal
         private InputState _inputState = InputState.RequestLine;
         private LineState _lineState = LineState.None;
         private int _position;
+        private string? _errorMessage;
 
-        public HttpConnection(Socket sock, EndPointListener epl, X509Certificate cert)
+        public HttpConnection(Socket sock, EndPointListener epl)
         {
             _sock = sock;
             _epl = epl;
@@ -38,17 +39,14 @@ namespace EmbedIO.Net.Internal
             LocalEndPoint = (IPEndPoint) sock.LocalEndPoint;
             RemoteEndPoint = (IPEndPoint) sock.RemoteEndPoint;
 
-            if (!IsSecure)
+            Stream = new NetworkStream(sock, false);
+            if (IsSecure)
             {
-                Stream = new NetworkStream(sock, false);
-            }
-            else
-            {
-                var sslStream = new SslStream(new NetworkStream(sock, false), true);
+                var sslStream = new SslStream(Stream, true);
 
                 try
                 {
-                    sslStream.AuthenticateAsServer(cert);
+                    sslStream.AuthenticateAsServer(epl.Listener.Certificate);
                 }
                 catch
                 {
@@ -60,12 +58,8 @@ namespace EmbedIO.Net.Internal
             }
 
             _timer = new Timer(OnTimeout, null, Timeout.Infinite, Timeout.Infinite);
+            _context = null!; // Silence warning about uninitialized field - _context will be initialized by the Init method
             Init();
-        }
-
-        ~HttpConnection()
-        {
-            Dispose(false);
         }
 
         public int Reuses { get; private set; }
@@ -80,31 +74,38 @@ namespace EmbedIO.Net.Internal
 
         public ListenerPrefix? Prefix { get; set; }
 
-        internal X509Certificate2? ClientCertificate { get; }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Close(true);
+
+            _timer.Dispose();
+            _sock?.Dispose();
+            _ms?.Dispose();
+            _iStream?.Dispose();
+            _oStream?.Dispose();
+            Stream?.Dispose();
+            _lastListener?.Dispose();
         }
 
         public async Task BeginReadRequest()
         {
-            if (_buffer == null)
-                _buffer = new byte[BufferSize];
+            _buffer ??= new byte[BufferSize];
 
             try
             {
                 if (Reuses == 1)
+                {
                     _sTimeout = 15000;
-                _timer.Change(_sTimeout, Timeout.Infinite);
+                }
+
+                _ = _timer.Change(_sTimeout, Timeout.Infinite);
 
                 var data = await Stream.ReadAsync(_buffer, 0, BufferSize).ConfigureAwait(false);
                 await OnReadInternal(data).ConfigureAwait(false);
             }
             catch
             {
-                _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                _ = _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 CloseSocket();
                 Unbind();
             }
@@ -112,18 +113,21 @@ namespace EmbedIO.Net.Internal
 
         public RequestStream GetRequestStream(long contentLength)
         {
-            if (_iStream != null) return _iStream;
+            if (_iStream == null)
+            {
+                var buffer = _ms.ToArray();
+                var length = (int) _ms.Length;
+                _ms = null;
 
-            var buffer = _ms.ToArray();
-            var length = (int)_ms.Length;
-            _ms = null;
-
-            _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentLength);
+                _iStream = new RequestStream(Stream, buffer, _position, length - _position, contentLength);
+            }
 
             return _iStream;
         }
 
         public ResponseStream GetResponseStream() => _oStream ??= new ResponseStream(Stream, _context.HttpListenerResponse, _context.Listener?.IgnoreWriteExceptions ?? true);
+
+        internal void SetError(string message) => _errorMessage = message;
 
         internal void ForceClose() => Close(true);
 
@@ -135,7 +139,10 @@ namespace EmbedIO.Net.Internal
                 _oStream = null;
             }
 
-            if (_sock == null) return;
+            if (_sock == null)
+            {
+                return;
+            }
 
             forceClose = forceClose
                       || !_context.Request.KeepAlive
@@ -148,9 +155,7 @@ namespace EmbedIO.Net.Internal
                     Reuses++;
                     Unbind();
                     Init();
-#pragma warning disable 4014
-                    BeginReadRequest();
-#pragma warning restore 4014
+                    _ = BeginReadRequest();
                     return;
                 }
             }
@@ -193,7 +198,7 @@ namespace EmbedIO.Net.Internal
 
         private async Task OnReadInternal(int offset)
         {
-            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            _ = _timer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // Continue reading until full header is received.
             // Especially important for multipart requests when the second part of the header arrives after a tiny delay
@@ -225,10 +230,12 @@ namespace EmbedIO.Net.Internal
 
                 if (ProcessInput(_ms))
                 {
-                    if (!_context.HaveError)
+                    if (_errorMessage is null)
+                    {
                         _context.HttpListenerRequest.FinishInitialization();
+                    }
 
-                    if (_context.HaveError || !_epl.BindContext(_context))
+                    if (_errorMessage != null || !_epl.BindContext(_context))
                     {
                         Close(true);
                         return;
@@ -253,10 +260,14 @@ namespace EmbedIO.Net.Internal
 
         private void RemoveConnection()
         {
-            if (_lastListener == null)
-                _epl.RemoveConnection(this);
-            else
+            if (_lastListener != null)
+            {
                 _lastListener.RemoveConnection(this);
+            }
+            else
+            {
+                _epl.RemoveConnection(this);
+            }
         }
 
         // true -> done processing
@@ -269,11 +280,15 @@ namespace EmbedIO.Net.Internal
 
             while (true)
             {
-                if (_context.HaveError)
+                if (_errorMessage != null)
+                {
                     return true;
+                }
 
                 if (_position >= len)
+                {
                     break;
+                }
 
                 string? line;
                 try
@@ -283,17 +298,22 @@ namespace EmbedIO.Net.Internal
                 }
                 catch
                 {
-                    _context.ErrorMessage = "Bad request";
+                    _errorMessage = "Bad request";
                     return true;
                 }
 
                 if (line == null)
+                {
                     break;
+                }
 
                 if (string.IsNullOrEmpty(line))
                 {
                     if (_inputState == InputState.RequestLine)
+                    {
                         continue;
+                    }
+
                     _currentLine = null;
 
                     return true;
@@ -312,7 +332,7 @@ namespace EmbedIO.Net.Internal
                     }
                     catch (Exception e)
                     {
-                        _context.ErrorMessage = e.Message;
+                        _errorMessage = e.Message;
                         return true;
                     }
                 }
@@ -329,8 +349,7 @@ namespace EmbedIO.Net.Internal
 
         private string? ReadLine(byte[] buffer, int offset, int len, out int used)
         {
-            if (_currentLine == null)
-                _currentLine = new StringBuilder(128);
+            _currentLine ??= new StringBuilder(128);
 
             var last = offset + len;
             used = 0;
@@ -348,22 +367,28 @@ namespace EmbedIO.Net.Internal
                         _lineState = LineState.Lf;
                         break;
                     default:
-                        _currentLine.Append((char)b);
+                        _ = _currentLine.Append((char)b);
                         break;
                 }
             }
 
-            if (_lineState != LineState.Lf) return null;
+            if (_lineState != LineState.Lf)
+            {
+                return null;
+            }
+
             _lineState = LineState.None;
             var result = _currentLine.ToString();
             _currentLine.Length = 0;
-
             return result;
         }
 
         private void Unbind()
         {
-            if (!_contextBound) return;
+            if (!_contextBound)
+            {
+                return;
+            }
 
             _epl.UnbindContext(_context);
             _contextBound = false;
@@ -372,7 +397,9 @@ namespace EmbedIO.Net.Internal
         private void CloseSocket()
         {
             if (_sock == null)
+            {
                 return;
+            }
 
             try
             {
@@ -384,23 +411,6 @@ namespace EmbedIO.Net.Internal
             }
 
             RemoveConnection();
-        }
-
-        private void Dispose(bool disposing)
-        {
-            Close(true);
-
-            if (!disposing)
-                return;
-
-            _timer?.Dispose();
-            _sock?.Dispose();
-            _ms?.Dispose();
-            _iStream?.Dispose();
-            _oStream?.Dispose();
-            Stream?.Dispose();
-            _lastListener?.Dispose();
-            ClientCertificate?.Dispose();
         }
     }
 }

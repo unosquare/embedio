@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,6 +15,11 @@ namespace EmbedIO
         /// <see href="https://referencesource.microsoft.com/#mscorlib/system/io/stream.cs,50">.NET Framework reference source</see>.</para>
         /// </summary>
         public const int StreamCopyBufferSize = 81920;
+
+        /// <summary>
+        /// <para>The scheme of <see cref="NullUri"/>.</para>
+        /// </summary>
+        public const string UriSchemeNull = "null";
 
         /// <summary>
         /// The signature string included in <c>Server</c> response headers.
@@ -33,5 +39,11 @@ namespace EmbedIO
         /// <para>This is the same as <see cref="Utf8NoBomEncoding"/>.</para>
         /// </summary>
         public static readonly Encoding DefaultEncoding = Utf8NoBomEncoding;
+
+        /// <summary>
+        /// <para>An <see cref="Uri"/> which cannot be equal to any HTTP / HTTP URI.</para>
+        /// <para>Used as the default value for non-nullable properties of type <see cref="Uri"/>.</para>
+        /// </summary>
+        public static readonly Uri NullUri = new ("null:");
     }
 }

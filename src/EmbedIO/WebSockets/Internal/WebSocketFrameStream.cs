@@ -66,29 +66,16 @@ namespace EmbedIO.WebSockets.Internal
             // Payload Length
             var payloadLen = (byte)(header[1] & 0x7f);
 
-            var err = !Enum.IsDefined(typeof(Opcode), opcode)
-                ? "An unsupported opcode."
-                : !IsOpcodeData(opcode) && rsv1 == Rsv.On
-                    ? "A non data frame is compressed."
-                    : IsOpcodeControl(opcode) && fin == Fin.More
-                        ? "A control frame is fragmented."
-                        : IsOpcodeControl(opcode) && payloadLen > 125
-                            ? "A control frame has a long payload length."
-                            : null;
+            var err = !Enum.IsDefined(typeof(Opcode), opcode) ? "An unsupported opcode."
+            : !IsOpcodeData(opcode) && rsv1 == Rsv.On ? "A non data frame is compressed."
+            : IsOpcodeControl(opcode) && fin == Fin.More ? "A control frame is fragmented."
+            : IsOpcodeControl(opcode) && payloadLen > 125 ? "A control frame has a long payload length."
+            : null;
 
             if (err != null)
                 throw new WebSocketException(CloseStatusCode.ProtocolError, err);
 
-            return new WebSocketFrame
-            {
-                Fin = fin,
-                Rsv1 = rsv1,
-                Rsv2 = rsv2,
-                Rsv3 = rsv3,
-                Opcode = (Opcode)opcode,
-                Mask = mask,
-                PayloadLength = payloadLen,
-            };
+            return new WebSocketFrame(fin, rsv1, rsv2, rsv3, (Opcode)opcode, mask, payloadLen);
         }
         
         private async Task ReadExtendedPayloadLengthAsync(WebSocketFrame frame)

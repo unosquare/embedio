@@ -18,21 +18,20 @@ namespace EmbedIO.Net.Internal
     // Provides access to the request and response objects used by the HttpListener class.
     internal sealed class HttpListenerContext : IHttpContextImpl
     {
-        private readonly Lazy<IDictionary<object, object>> _items =
-            new Lazy<IDictionary<object, object>>(() => new Dictionary<object, object>(), true);
+        private readonly Lazy<IDictionary<object, object>> _items = new (() => new Dictionary<object, object>(), true);
 
-        private readonly TimeKeeper _ageKeeper = new TimeKeeper();
+        private readonly TimeKeeper _ageKeeper = new ();
 
-        private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
+        private readonly Stack<Action<IHttpContext>> _closeCallbacks = new ();
 
         private bool _closed;
 
         internal HttpListenerContext(HttpConnection cnc)
         {
             Connection = cnc;
-            Request = new HttpListenerRequest(this);
+            HttpListenerRequest = new HttpListenerRequest(this);
             User = Auth.NoUser;
-            Response = new HttpListenerResponse(this);
+            HttpListenerResponse = new HttpListenerResponse(this);
             Id = UniqueIdGenerator.GetNext();
             LocalEndPoint = Request.LocalEndPoint;
             RemoteEndPoint = Request.RemoteEndPoint;
@@ -50,13 +49,13 @@ namespace EmbedIO.Net.Internal
 
         public IPEndPoint RemoteEndPoint { get; }
 
-        public IHttpRequest Request { get; }
+        public IHttpRequest Request => HttpListenerRequest;
 
         public RouteMatch Route { get; set; }
 
         public string RequestedPath => Route.SubPath ?? string.Empty; // It will never be empty, because modules are matched via base routes - this is just to silence a warning.
 
-        public IHttpResponse Response { get; }
+        public IHttpResponse Response => HttpListenerResponse;
 
         public IPrincipal User { get; set;  }
 
@@ -70,15 +69,11 @@ namespace EmbedIO.Net.Internal
 
         public MimeTypeProviderStack MimeTypeProviders { get; } = new MimeTypeProviderStack();
 
-        internal HttpListenerRequest HttpListenerRequest => Request as HttpListenerRequest;
+        internal HttpListenerRequest HttpListenerRequest { get; }
 
-        internal HttpListenerResponse HttpListenerResponse => Response as HttpListenerResponse;
+        internal HttpListenerResponse HttpListenerResponse { get; }
 
         internal HttpListener? Listener { get; set; }
-
-        internal string? ErrorMessage { get; set; }
-
-        internal bool HaveError => ErrorMessage != null;
 
         internal HttpConnection Connection { get; }
 
@@ -87,7 +82,9 @@ namespace EmbedIO.Net.Internal
         public void OnClose(Action<IHttpContext> callback)
         {
             if (_closed)
+            {
                 throw new InvalidOperationException("HTTP context has already been closed.");
+            }
 
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }

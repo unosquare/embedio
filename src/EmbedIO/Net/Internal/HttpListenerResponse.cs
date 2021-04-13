@@ -15,6 +15,7 @@ namespace EmbedIO.Net.Internal
     internal sealed class HttpListenerResponse : IHttpResponse, IDisposable
     {
         private readonly HttpConnection _connection;
+        private readonly HttpListenerRequest _request;
         private readonly string _id;
         private bool _disposed;
         private string _contentType = MimeType.Html; // Same default value as Microsoft's implementation
@@ -26,10 +27,10 @@ namespace EmbedIO.Net.Internal
 
         internal HttpListenerResponse(HttpListenerContext context)
         {
+            _request = context.HttpListenerRequest;
             _connection = context.Connection;
             _id = context.Id;
             _keepAlive = context.Request.KeepAlive;
-            ProtocolVersion = context.Request.ProtocolVersion;
         }
 
         /// <inheritdoc />
@@ -46,8 +47,10 @@ namespace EmbedIO.Net.Internal
             {
                 EnsureCanChangeHeaders();
                 if (value < 0)
+                {
                     throw new ArgumentOutOfRangeException(nameof(value), "Must be >= 0");
-                
+                }
+
                 Headers[HttpHeaderNames.ContentLength] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -90,7 +93,7 @@ namespace EmbedIO.Net.Internal
         public Stream OutputStream => _outputStream ??= _connection.GetResponseStream();
 
         /// <inheritdoc />
-        public Version ProtocolVersion { get; }
+        public Version ProtocolVersion => _request.ProtocolVersion;
 
         /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
@@ -117,7 +120,9 @@ namespace EmbedIO.Net.Internal
             {
                 EnsureCanChangeHeaders();
                 if (value < 100 || value > 999)
+                {
                     throw new ArgumentOutOfRangeException(nameof(StatusCode), "StatusCode must be between 100 and 999.");
+                }
 
                 _statusCode = value;
                 StatusDescription = HttpListenerResponseHelper.GetStatusDescription(value);
@@ -139,20 +144,26 @@ namespace EmbedIO.Net.Internal
 
         public void Close()
         {
-            if (!_disposed) Close(false);
+            if (!_disposed)
+            {
+                Close(false);
+            }
         }
 
         /// <inheritdoc />
         public void SetCookie(Cookie cookie)
         {
             if (cookie == null)
+            {
                 throw new ArgumentNullException(nameof(cookie));
+            }
 
             if (_cookies != null)
             {
-                if (_cookies.Any(c =>
-                    cookie.Name == c.Name && cookie.Domain == c.Domain && cookie.Path == c.Path))
+                if (_cookies.Any(c => cookie.Name == c.Name && cookie.Domain == c.Domain && cookie.Path == c.Path))
+                {
                     throw new ArgumentException("The cookie already exists.");
+                }
             }
             else
             {
@@ -174,10 +185,14 @@ namespace EmbedIO.Net.Internal
             }
 
             if (Headers[HttpHeaderNames.Server] == null)
+            {
                 Headers.Add(HttpHeaderNames.Server, WebServer.Signature);
+            }
 
             if (Headers[HttpHeaderNames.Date] == null)
+            {
                 Headers.Add(HttpHeaderNames.Date, HttpDate.Format(DateTime.UtcNow));
+            }
 
             if (closing)
             {
@@ -187,23 +202,29 @@ namespace EmbedIO.Net.Internal
             else
             {
                 if (ProtocolVersion < HttpVersion.Version11)
+                {
                     _chunked = false;
+                }
 
                 var haveContentLength = !_chunked
-                                 && Headers.ContainsKey(HttpHeaderNames.ContentLength)
-                                 && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var contentLength)
-                                 && contentLength >= 0L;
+                                     && Headers.ContainsKey(HttpHeaderNames.ContentLength)
+                                     && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var contentLength)
+                                     && contentLength >= 0L;
             
                 if (!haveContentLength)
                 {
                     Headers.Remove(HttpHeaderNames.ContentLength);
                     if (ProtocolVersion >= HttpVersion.Version11)
+                    {
                         _chunked = true;
+                    }
                 }
             }
 
             if (_chunked)
+            {
                 Headers.Add(HttpHeaderNames.TransferEncoding, "chunked");
+            }
 
             //// Apache forces closing the connection for these status codes:
             //// HttpStatusCode.BadRequest            400
@@ -230,7 +251,9 @@ namespace EmbedIO.Net.Internal
             {
                 Headers.Add(HttpHeaderNames.Connection, "keep-alive");
                 if (ProtocolVersion >= HttpVersion.Version11)
+                {
                     Headers.Add(HttpHeaderNames.KeepAlive, $"timeout=15,max={100 - reuses}");
+                }
             }
             else
             {
@@ -243,16 +266,20 @@ namespace EmbedIO.Net.Internal
         private static void AppendSetCookieHeader(StringBuilder sb, Cookie cookie)
         {
             if (cookie.Name.Length == 0)
+            {
                 return;
+            }
 
             _ = sb.Append("Set-Cookie: ");
 
             if (cookie.Version > 0)
+            {
                 _ = sb.Append("Version=").Append(cookie.Version).Append("; ");
+            }
 
             _ = sb
                 .Append(cookie.Name)
-                .Append("=")
+                .Append('=')
                 .Append(cookie.Value);
 
             if (cookie.Expires != DateTime.MinValue)
@@ -263,19 +290,29 @@ namespace EmbedIO.Net.Internal
             }
 
             if (!string.IsNullOrEmpty(cookie.Path))
+            {
                 _ = sb.Append("; Path=").Append(QuotedString(cookie, cookie.Path));
+            }
 
             if (!string.IsNullOrEmpty(cookie.Domain))
+            {
                 _ = sb.Append("; Domain=").Append(QuotedString(cookie, cookie.Domain));
+            }
 
             if (!string.IsNullOrEmpty(cookie.Port))
+            {
                 _ = sb.Append("; Port=").Append(cookie.Port);
+            }
 
             if (cookie.Secure)
+            {
                 _ = sb.Append("; Secure");
+            }
 
             if (cookie.HttpOnly)
+            {
                 _ = sb.Append("; HttpOnly");
+            }
 
             _ = sb.Append("\r\n");
         }
@@ -313,13 +350,17 @@ namespace EmbedIO.Net.Internal
             if (_cookies != null)
             {
                 foreach (var cookie in _cookies)
+                {
                     AppendSetCookieHeader(sb, cookie);
+                }
             }
 
             if (Headers.ContainsKey(HttpHeaderNames.SetCookie))
             {
                 foreach (var cookie in CookieList.Parse(Headers[HttpHeaderNames.SetCookie]))
+                {
                     AppendSetCookieHeader(sb, cookie);
+                }
             }
 
             return sb.Append("\r\n").ToString();
@@ -333,8 +374,7 @@ namespace EmbedIO.Net.Internal
             stream.Write(preamble, 0, preamble.Length);
             stream.Write(data, 0, data.Length);
 
-            if (_outputStream == null)
-                _outputStream = _connection.GetResponseStream();
+            _outputStream ??= _connection.GetResponseStream();
 
             // Assumes that the ms was at position 0
             stream.Position = preamble.Length;
@@ -346,10 +386,14 @@ namespace EmbedIO.Net.Internal
         private void EnsureCanChangeHeaders()
         {
             if (_disposed)
+            {
                 throw new ObjectDisposedException(_id);
+            }
 
             if (HeadersSent)
+            {
                 throw new InvalidOperationException("Header values cannot be changed after headers are sent.");
+            }
         }
     }
 }

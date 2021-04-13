@@ -17,7 +17,7 @@ namespace EmbedIO.Net
     /// <seealso cref="IDisposable" />
     public sealed class HttpListener : IHttpListener
     {
-        private readonly SemaphoreSlim _ctxQueueSem = new SemaphoreSlim(0);
+        private readonly SemaphoreSlim _ctxQueueSem = new (0);
         private readonly ConcurrentDictionary<string, HttpListenerContext> _ctxQueue;
         private readonly ConcurrentDictionary<HttpConnection, object> _connections;
         private readonly HttpListenerPrefixCollection _prefixes;
@@ -60,7 +60,9 @@ namespace EmbedIO.Net
         public void Start()
         {
             if (IsListening)
+            {
                 return;
+            }
 
             EndPointManager.AddListener(this);
             IsListening = true;
@@ -80,9 +82,12 @@ namespace EmbedIO.Net
         public void Dispose()
         {
             if (_disposed)
+            {
                 return;
+            }
 
             Close(true);
+            _ctxQueueSem.Dispose();
             _disposed = true;
         }
 
@@ -108,9 +113,11 @@ namespace EmbedIO.Net
         internal void RegisterContext(HttpListenerContext context)
         {
             if (!_ctxQueue.TryAdd(context.Id, context))
+            {
                 throw new InvalidOperationException("Unable to register context");
+            }
 
-            _ctxQueueSem.Release();
+            _ = _ctxQueueSem.Release();
         }
 
         internal void UnregisterContext(HttpListenerContext context) => _ctxQueue.TryRemove(context.Id, out _);
@@ -130,16 +137,23 @@ namespace EmbedIO.Net
             var list = new List<HttpConnection>(connections);
 
             for (var i = list.Count - 1; i >= 0; i--)
+            {
                 list[i].Close(true);
+            }
 
-            if (!closeExisting) return;
+            if (!closeExisting)
+            {
+                return;
+            }
 
             while (!_ctxQueue.IsEmpty)
             {
                 foreach (var key in _ctxQueue.Keys.ToArray())
                 {
                     if (_ctxQueue.TryGetValue(key, out var context))
+                    {
                         context.Connection.Close(true);
+                    }
                 }
             }
         }

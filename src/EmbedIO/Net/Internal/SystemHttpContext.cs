@@ -19,9 +19,9 @@ namespace EmbedIO.Net.Internal
     {
         private readonly System.Net.HttpListenerContext _context;
 
-        private readonly TimeKeeper _ageKeeper = new TimeKeeper();
+        private readonly TimeKeeper _ageKeeper = new ();
 
-        private readonly Stack<Action<IHttpContext>> _closeCallbacks = new Stack<Action<IHttpContext>>();
+        private readonly Stack<Action<IHttpContext>> _closeCallbacks = new ();
 
         private bool _closed;
 
@@ -74,7 +74,9 @@ namespace EmbedIO.Net.Internal
         public void OnClose(Action<IHttpContext> callback)
         {
             if (_closed)
+            {
                 throw new InvalidOperationException("HTTP context has already been closed.");
+            }
 
             _closeCallbacks.Push(Validate.NotNull(nameof(callback), callback));
         }

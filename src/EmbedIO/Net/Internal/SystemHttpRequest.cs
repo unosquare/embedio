@@ -21,11 +21,11 @@ namespace EmbedIO.Net.Internal
         public SystemHttpRequest(System.Net.HttpListenerContext context)
         {
             _request = context.Request;
-            Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
+            _ = Enum.TryParse<HttpVerbs>(_request.HttpMethod.Trim(), true, out var verb);
             HttpVerb = verb;
             Cookies = new SystemCookieCollection(_request.Cookies);
-            LocalEndPoint = _request.LocalEndPoint;
-            RemoteEndPoint = _request.RemoteEndPoint;
+            LocalEndPoint = _request.LocalEndPoint!;
+            RemoteEndPoint = _request.RemoteEndPoint!;
         }
 
         /// <inheritdoc />
@@ -116,6 +116,6 @@ namespace EmbedIO.Net.Internal
         public bool IsAuthenticated => _request.IsAuthenticated;
 
         /// <inheritdoc />
-        public Uri UrlReferrer => _request.UrlReferrer;
+        public Uri? UrlReferrer => _request.UrlReferrer;
     }
 }

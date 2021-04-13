@@ -13,7 +13,9 @@ namespace EmbedIO.Net.Internal
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
+            {
                 Array.Reverse(bytes);
+            }
 
             return bytes;
         }
@@ -22,24 +24,21 @@ namespace EmbedIO.Net.Internal
         {
             var bytes = BitConverter.GetBytes(value);
             if (!order.IsHostOrder())
+            {
                 Array.Reverse(bytes);
+            }
 
             return bytes;
         }
         
         internal static byte[] ToHostOrder(this byte[] source, Endianness sourceOrder)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
+            => source.Length < 1 ? source 
+            : sourceOrder.IsHostOrder() ? source
+            : source.Reverse().ToArray();
 
-            return source.Length > 1 && !sourceOrder.IsHostOrder() ? source.Reverse().ToArray() : source;
-        }
-        
-        internal static bool IsHostOrder(this Endianness order)
-        {
-            // true: !(true ^ true) or !(false ^ false)
-            // false: !(true ^ false) or !(false ^ true)
-            return !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
-        }
+        // true: !(true ^ true) or !(false ^ false)
+        // false: !(true ^ false) or !(false ^ true)
+        private static bool IsHostOrder(this Endianness order)
+            => !(BitConverter.IsLittleEndian ^ (order == Endianness.Little));
     }
 }
