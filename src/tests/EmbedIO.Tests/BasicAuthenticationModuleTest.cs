@@ -33,6 +33,13 @@ namespace EmbedIO.Tests
         }
 
         [Test]
+        public async Task RequestWithValidCredentials_ReturnsValidWWWAuthenticateHeader()
+        {
+            var response = await MakeRequest(UserName, Password).ConfigureAwait(false);
+            Assert.AreEqual("Basic realm=\"/\" charset=UTF-8", response.Headers.WwwAuthenticate.ToString());
+        }
+
+        [Test]
         public async Task RequestWithInvalidCredentials_ReturnsUnauthorized()
         {
             const string wrongPassword = "wrongpaassword";
@@ -42,10 +49,26 @@ namespace EmbedIO.Tests
         }
 
         [Test]
+        public async Task RequestWithInvalidCredentials_ReturnsValidWWWAuthenticateHeader()
+        {
+            const string wrongPassword = "wrongpaassword";
+
+            var response = await MakeRequest(UserName, wrongPassword).ConfigureAwait(false);
+            Assert.AreEqual("Basic realm=\"/\" charset=UTF-8", response.Headers.WwwAuthenticate.ToString());
+        }
+
+        [Test]
         public async Task RequestWithNoAuthorizationHeader_ReturnsUnauthorized()
         {
             var response = await MakeRequest(null, null).ConfigureAwait(false);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode, "Status Code Unauthorized");
+        }
+
+        [Test]
+        public async Task RequestWithNoAuthorizationHeader_ReturnsValidWWWAuthenticateHeader()
+        {
+            var response = await MakeRequest(null, null).ConfigureAwait(false);
+            Assert.AreEqual("Basic realm=\"/\" charset=UTF-8", response.Headers.WwwAuthenticate.ToString());
         }
 
         private Task<HttpResponseMessage> MakeRequest(string? userName, string? password)
