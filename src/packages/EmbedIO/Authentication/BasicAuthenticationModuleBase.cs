@@ -50,6 +50,8 @@ namespace EmbedIO.Authentication
         /// <inheritdoc />
         protected sealed override async Task<IPrincipal> AuthenticateAsync([ValidatedNotNull] IHttpContext context)
         {
+			context.Response.Headers.Set(HttpHeaderNames.WWWAuthenticate, _wwwAuthenticateHeaderValue);
+			
             var authHeader = context.Request.Headers[HttpHeaderNames.Authorization];
             if (authHeader == null || !authHeader.StartsWith("basic ", StringComparison.OrdinalIgnoreCase))
                 return Auth.NoUser;
