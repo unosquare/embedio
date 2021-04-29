@@ -1,0 +1,22 @@
+version: 2
+registries:
+  nuget-feed-npm-pkg-github-com-unosquare:
+    type: nuget-feed
+    url: https://npm.pkg.github.com/unosquare
+    token: "${{secrets.NUGET_FEED_NPM_PKG_GITHUB_COM_UNOSQUARE_TOKEN}}"
+  nuget-feed-nuget-pkg-github-com-unosquare-index-json:
+    type: nuget-feed
+    url: https://nuget.pkg.github.com/unosquare/index.json
+    username: "${{secrets.NUGET_FEED_NUGET_PKG_GITHUB_COM_UNOSQUARE_INDEX_JSON_USERNAME}}"
+    password: "${{secrets.NUGET_FEED_NUGET_PKG_GITHUB_COM_UNOSQUARE_INDEX_JSON_PASSWORD}}"
+
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  registries:
+  - nuget-feed-npm-pkg-github-com-unosquare
+  - nuget-feed-nuget-pkg-github-com-unosquare-index-json
