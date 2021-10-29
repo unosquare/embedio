@@ -273,7 +273,8 @@ namespace EmbedIO.Net.Internal
                 host = rawUri?.Host ?? UserHostAddress;
 
             var colon = host.LastIndexOf(':');
-            if (colon >= 0)
+            var ipV6Ending = host.LastIndexOf(']');
+            if (colon >= 0 && ipV6Ending < colon)
                 host = host.Substring(0, colon);
 
             // var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";

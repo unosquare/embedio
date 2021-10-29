@@ -324,12 +324,12 @@ namespace EmbedIO
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "netsh",
+                FileName = "cmd",
                 CreateNoWindow = true,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                Arguments = $"http {verb} sslcert ipport=0.0.0.0:{GetSslPort()} {options}",
+                Arguments = $"/c \"chcp 437 >nul 2>nul && netsh http {verb} sslcert ipport=0.0.0.0:{GetSslPort()} {options}\"",
             },
         };
     }
