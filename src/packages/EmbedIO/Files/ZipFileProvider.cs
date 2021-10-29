@@ -76,7 +76,7 @@ namespace EmbedIO.Files
 
             path = Uri.UnescapeDataString(path);
 
-            var entry = _zipArchive.GetEntry(path.Substring(1));
+            ZipArchiveEntry entry = _zipArchive.GetEntry(path.Substring(1));
             if (entry == null)
                 return null;
 
