@@ -17,7 +17,7 @@ jobs:
       with:
         dotnet-version: 3.1.100
     - name: Test with dotnet
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:Exclude=[NUnit3.TestAdapter]* ./src/test/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:Exclude=[NUnit3.TestAdapter]* ./src/tests/EmbedIO.Tests/EmbedIO.Tests.csproj -c Release
     - uses: codecov/codecov-action@v1
       with:
         file: test/EmbedIO.Tests/coverage.info
