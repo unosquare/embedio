@@ -167,8 +167,8 @@ namespace EmbedIO.Net.Internal
         {
             if (_contentType != null)
             {
-                var contentTypeValue = _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1
-                    ? $"{_contentType}; charset={Encoding.UTF8.WebName}"
+                var contentTypeValue = _contentType.IndexOf("charset=", StringComparison.Ordinal) == -1 && ContentEncoding != null
+                    ? $"{_contentType}; charset={ContentEncoding.WebName}"
                     : _contentType;
 
                 Headers.Add(HttpHeaderNames.ContentType, contentTypeValue);
