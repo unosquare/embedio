@@ -27,6 +27,7 @@ namespace EmbedIO.WebSockets.Internal
         private readonly ConcurrentQueue<MessageEventArgs> _messageEventQueue = new ConcurrentQueue<MessageEventArgs>();
         private readonly Action _closeConnection;
         private readonly TimeSpan _waitTime = TimeSpan.FromSeconds(1);
+        private readonly SemaphoreSlim _messageSendLock = new SemaphoreSlim(1);
 
         private volatile WebSocketState _readyState;
         private AutoResetEvent? _exitReceiving;
@@ -148,8 +149,16 @@ namespace EmbedIO.WebSockets.Internal
                 throw new WebSocketException(CloseStatusCode.Normal, $"This operation isn\'t available in: {_readyState.ToString()}");
 
             using var stream = new WebSocketStream(data, opcode, Compression);
-            foreach (var frame in stream.GetFrames())
-                await Send(frame).ConfigureAwait(false);
+            try
+            {
+                await _messageSendLock.WaitAsync(cancellationToken);
+                foreach (var frame in stream.GetFrames())
+                    await Send(frame, cancellationToken).ConfigureAwait(false);
+            } 
+            finally
+            {
+                _messageSendLock.Release();
+            }
         }
 
         /// <inheritdoc />
@@ -452,7 +461,7 @@ namespace EmbedIO.WebSockets.Internal
             _exitReceiving = null;
         }
 
-        private Task Send(WebSocketFrame frame)
+        private Task Send(WebSocketFrame frame, CancellationToken cancellationToken = default)
         {
             lock (_stateSyncRoot)
             {
@@ -464,7 +473,7 @@ namespace EmbedIO.WebSockets.Internal
             }
 
             var frameAsBytes = frame.ToArray();
-            return _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length);
+            return _stream.WriteAsync(frameAsBytes, 0, frameAsBytes.Length, cancellationToken);
         }
 
         private void StartReceiving()
