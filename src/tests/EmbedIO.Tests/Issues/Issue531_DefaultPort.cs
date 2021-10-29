@@ -14,6 +14,9 @@ namespace EmbedIO.Tests.Issues
         [Test]
         public async Task DefaultPort_IPv4()
         {
+            if (SwanRuntime.OS != OperatingSystem.Windows)
+                Assert.Ignore("Only Windows");
+
             const string DefaultUrl = "http://localhost/";
 
             using var server = new WebServer(HttpListenerMode.EmbedIO, DefaultUrl);
