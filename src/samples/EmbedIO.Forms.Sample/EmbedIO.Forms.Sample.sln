@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbedIO.Forms.Sample.iOS", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO.Forms.Sample", "EmbedIO.Forms.Sample\EmbedIO.Forms.Sample.csproj", "{61EBA2E8-68C7-4355-8258-E339F947B002}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO", "..\EmbedIO\EmbedIO.csproj", "{0918535E-878F-4EFB-B9B6-2CF2C4DAB5D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO", "..\..\packages\EmbedIO\EmbedIO.csproj", "{0918535E-878F-4EFB-B9B6-2CF2C4DAB5D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
