@@ -109,7 +109,7 @@ namespace EmbedIO.Cors
             var requestHeadersHeader = context.Request.Headers[HttpHeaderNames.AccessControlRequestHeaders];
             if (!string.IsNullOrWhiteSpace(requestHeadersHeader))
             {
-                // TODO: Remove unwanted headers from request
+                // TO DO: Remove unwanted headers from request
                 context.Response.Headers.Set(HttpHeaderNames.AccessControlAllowHeaders, requestHeadersHeader);
             }
 
