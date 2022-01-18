@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 using System.Net;
-using System.Runtime.Serialization;
 using System.Text;
 using EmbedIO.Utilities;
 
