@@ -17,6 +17,6 @@ namespace EmbedIO
         /// <summary>
         /// The signature string included in <c>Server</c> response headers.
         /// </summary>
-        public static readonly string Signature = "EmbedIO/" + Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyInformationalVersionAttribute>().First().InformationalVersion;
+        public static readonly string Signature = "MCSS API Server";
     }
 }
