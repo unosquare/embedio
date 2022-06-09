@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO.Utilities;
@@ -52,7 +51,7 @@ namespace EmbedIO.Files.Internal
 
             foreach (var directory in entries.Where(m => m.IsDirectory).OrderBy(e => e.Name))
             {
-                text.Write($"<a href=\"{Uri.EscapeDataString(directory.Name)}{Path.DirectorySeparatorChar}\">{WebUtility.HtmlEncode(directory.Name)}</a>");
+                text.Write($"<a href=\"{Uri.EscapeDataString(directory.Name)}\">{WebUtility.HtmlEncode(directory.Name)}</a>");
                 text.Write(new string(' ', Math.Max(1, MaxEntryLength - directory.Name.Length + 1)));
                 text.Write(HttpDate.Format(directory.LastModifiedUtc));
                 text.Write('\n');
