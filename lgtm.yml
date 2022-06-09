@@ -1,0 +1,7 @@
+extraction:
+  csharp:
+    index:
+      nuget_restore: false
+      dotnet:
+        version: 6.0.5
+        arguments: "-c Release -maxCpuCount:1"
