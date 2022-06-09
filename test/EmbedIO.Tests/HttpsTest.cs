@@ -3,11 +3,9 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.Tests.TestObjects;
 using NUnit.Framework;
-using Swan;
 
 namespace EmbedIO.Tests
 {
@@ -18,11 +16,9 @@ namespace EmbedIO.Tests
         private const string HttpsUrl = "https://localhost:5555";
 
         [Test]
+        [Platform("Win")]
         public async Task OpenWebServerHttps_RetrievesIndex()
         {
-            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
-                Assert.Ignore("Only Windows");
-
             ServicePointManager.ServerCertificateValidationCallback = ValidateCertificate;
 
             var options = new WebServerOptions()
@@ -41,11 +37,9 @@ namespace EmbedIO.Tests
         }
 
         [Test]
+        [Platform(Exclude = "Win")]
         public void OpenWebServerHttpsWithLinuxOrMac_ThrowsInvalidOperation()
         {
-            if (SwanRuntime.OS == Swan.OperatingSystem.Windows)
-                Assert.Ignore("Ignore Windows");
-
             Assert.Throws<PlatformNotSupportedException>(() => {
                 var options = new WebServerOptions()
                     .WithUrlPrefix(HttpsUrl)
@@ -56,11 +50,9 @@ namespace EmbedIO.Tests
         }
 
         [Test]
+        [Platform("Win")]
         public void OpenWebServerHttpsWithoutCert_ThrowsInvalidOperation()
         {
-            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
-                Assert.Ignore("Only Windows");
-
             var options = new WebServerOptions()
                 .WithUrlPrefix(HttpsUrl)
                 .WithAutoRegisterCertificate();
@@ -69,11 +61,9 @@ namespace EmbedIO.Tests
         }
 
         [Test]
+        [Platform("Win")]
         public void OpenWebServerHttpsWithInvalidStore_ThrowsInvalidOperation()
         {
-            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
-                Assert.Ignore("Only Windows");
-
             var options = new WebServerOptions()
                 .WithUrlPrefix(HttpsUrl)
                 .WithCertificate(new X509Certificate2())

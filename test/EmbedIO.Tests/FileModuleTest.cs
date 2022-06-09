@@ -1,16 +1,15 @@
-﻿using EmbedIO.Tests.TestObjects;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using EmbedIO.Testing;
+using EmbedIO.Tests.TestObjects;
 using EmbedIO.Utilities;
+using NUnit.Framework;
 
 namespace EmbedIO.Tests
 {
@@ -78,11 +77,9 @@ namespace EmbedIO.Tests
             }
 
             [Test]
+            [Platform(Exclude = "MacOsX", Reason = "OSX doesn't support FileSystemWatcher.")]
             public async Task FileWritable()
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    Assert.Ignore("OSX doesn't support FileSystemWatcher");
-
                 var root = Path.GetTempPath();
                 var file = Path.Combine(root, "index.html");
                 File.WriteAllText(file, Resources.Index);
