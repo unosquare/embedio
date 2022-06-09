@@ -1,6 +1,6 @@
 version: '3.0.{build}'
 image: 
-- Visual Studio 2019
+- Visual Studio 2022
 - Ubuntu
 environment:
   APPVEYOR_YML_DISABLE_PS_LINUX: true
