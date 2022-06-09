@@ -512,7 +512,11 @@ namespace EmbedIO.WebSockets
 
         private void RemoveWebSocket(IWebSocketContext context)
         {
-            _ = _contexts.TryRemove(context.Id, out _);
+            if (!_contexts.TryRemove(context.Id, out _))
+            {
+                return;
+            }
+
             context.WebSocket?.Dispose();
 
             // OnClientDisconnectedAsync is better called in its own task,
