@@ -1,8 +1,9 @@
-﻿using NUnit.Framework;
-using Swan;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using EmbedIO.Tests.TestObjects;
+using NUnit.Framework;
+using Swan;
 
 namespace EmbedIO.Tests
 {
@@ -11,13 +12,13 @@ namespace EmbedIO.Tests
     {
         [TestCase("http://[::1]:8877")]
         [TestCase("http://127.0.0.1:8877")]
-        public async Task WithUseIpv6_ReturnsValid(string urlTest)
+        public async Task WebServer_WithWildcardAddress_RespondsToClient(string urlTest)
         {
             if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
                 Assert.Ignore("Only Windows");
 
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://*:8877");
-            instance.OnAny(ctx => ctx.SendDataAsync(DateTime.Now));
+            instance.OnAny(Resources.SendTestStringAsync);
 
             _= instance.RunAsync();
 
@@ -32,7 +33,7 @@ namespace EmbedIO.Tests
                 Assert.Ignore("Only Windows");
 
             var instance = new WebServer(HttpListenerMode.EmbedIO, "http://[::1]:8877");
-            instance.OnAny(ctx => ctx.SendDataAsync(DateTime.Now));
+            instance.OnAny(Resources.SendTestStringAsync);
 
             _ = instance.RunAsync();
 

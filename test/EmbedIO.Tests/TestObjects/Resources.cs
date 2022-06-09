@@ -1,9 +1,12 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace EmbedIO.Tests.TestObjects
 {
     public static class Resources
     {
+        public static readonly string TestString = "This is a test.";
+
         public static readonly string SubIndex = @"<!DOCTYPE html>
 
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
@@ -30,12 +33,17 @@ namespace EmbedIO.Tests.TestObjects
 
         private static int _counter = 9699;
 
-        public static string GetServerAddress()
+        public static string GetServerAddress(bool useIPv6 = false)
         {
-            const string serverAddress = "http://localhost:{0}/";
+            var serverAddress = useIPv6
+                ? "http://[::1]:{0}/"
+                : "http://localhost:{0}/";
 
             Interlocked.Increment(ref _counter);
             return string.Format(serverAddress, _counter);
         }
+
+        public static Task SendTestStringAsync(this IHttpContext ctx)
+            => ctx.SendStringAsync(Resources.TestString, MimeType.PlainText, WebServer.DefaultEncoding);
     }
 }

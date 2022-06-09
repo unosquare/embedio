@@ -218,10 +218,11 @@ namespace EmbedIO.Net.Internal
                 host = rawUri?.Host ?? UserHostAddress;
             }
 
-            var colon = host.LastIndexOf(':');
-            if (colon >= 0)
+            var colonPos = host.LastIndexOf(':');
+            var closedSquareBracketPos = host.LastIndexOf(']');
+            if (colonPos >= 0 && closedSquareBracketPos < colonPos)
             {
-                host = host.Substring(0, colon);
+                host = host.Substring(0, colonPos);
             }
 
             // var baseUri = $"{(IsSecureConnection ? "https" : "http")}://{host}:{LocalEndPoint.Port}";
