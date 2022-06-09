@@ -223,9 +223,9 @@ namespace Unosquare
     /// <summary>
     /// Defines a very simple chat server.
     /// </summary>
-    public class WebSocketsChatServer : WebSocketModule
+    public class WebSocketsChatModule : WebSocketModule
     {
-        public WebSocketsChatServer(string urlPath)
+        public WebSocketsChatModule(string urlPath)
             : base(urlPath, true)
         {
             // placeholder
