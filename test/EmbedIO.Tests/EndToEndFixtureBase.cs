@@ -11,10 +11,12 @@ namespace EmbedIO.Tests
     public abstract class EndToEndFixtureBase : IDisposable
     {
         private readonly bool _useTestWebServer;
+        private readonly bool _useIPv6;
 
-        protected EndToEndFixtureBase(bool useTestWebServer = true)
+        protected EndToEndFixtureBase(bool useTestWebServer = true, bool useIPv6 = false)
         {
             _useTestWebServer = useTestWebServer;
+            _useIPv6 = useIPv6;
         }
 
         ~EndToEndFixtureBase()
@@ -37,7 +39,7 @@ namespace EmbedIO.Tests
         [SetUp]
         public void SetUp()
         {
-            WebServerUrl = Resources.GetServerAddress();
+            WebServerUrl = Resources.GetServerAddress(_useIPv6);
 
             if (_useTestWebServer)
             {
