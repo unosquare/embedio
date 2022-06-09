@@ -194,25 +194,37 @@ namespace EmbedIO.Net.Internal
                 Headers.Add(HttpHeaderNames.Date, HttpDate.Format(DateTime.UtcNow));
             }
 
-            if (closing)
+            // HTTP did not support chunked transfer encoding before version 1.1;
+            // besides, there's no point in setting transfer encoding at all without a request body.
+            if (closing || ProtocolVersion < HttpVersion.Version11)
             {
-                Headers[HttpHeaderNames.ContentLength] = "0";
                 _chunked = false;
             }
-            else
-            {
-                if (ProtocolVersion < HttpVersion.Version11)
-                {
-                    _chunked = false;
-                }
 
-                var haveContentLength = !_chunked
-                                     && Headers.ContainsKey(HttpHeaderNames.ContentLength)
-                                     && long.TryParse(Headers[HttpHeaderNames.ContentLength], out var contentLength)
-                                     && contentLength >= 0L;
-            
-                if (!haveContentLength)
+            // Was content length set to a valid value, AND chunked encoding not set?
+            // Note that this does not mean that a response body _will_ be sent
+            // as this could be the response to a HEAD request.
+            var haveContentLength = !_chunked
+                 && Headers.ContainsKey(HttpHeaderNames.ContentLength)
+                 && long.TryParse(Headers[HttpHeaderNames.ContentLength], NumberStyles.None, CultureInfo.InvariantCulture, out var contentLength)
+                 && contentLength >= 0L;
+
+            if (!haveContentLength)
+            {
+                // Content length could have been set to an invalid value (e.g. "-1")
+                // so we must either force it to 0, or remove the header completely.
+                if (closing)
                 {
+                    // Content length was not explicitly set to a valid value,
+                    // and there is no request body.
+                    Headers[HttpHeaderNames.ContentLength] = "0";
+                }
+                else
+                {
+                    // Content length was not explicitly set to a valid value,
+                    // and we're going to send a request body.
+                    //   - Remove possibly invalid Content-Length header
+                    //   - Enable chunked transfer encoding for HTTP 1.1
                     Headers.Remove(HttpHeaderNames.ContentLength);
                     if (ProtocolVersion >= HttpVersion.Version11)
                     {
