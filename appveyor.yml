@@ -1,7 +1,5 @@
 version: '3.0.{build}'
-image: 
-- Visual Studio 2022
-- Ubuntu
+image: ["Visual Studio 2022"] # TODO: change back to ["Visual Studio 2022", "Ubuntu"] when Ubuntu image gets .NET SDK updated to 6.0.300
 environment:
   APPVEYOR_YML_DISABLE_PS_LINUX: true
   COVERALLS_REPO_TOKEN:  
