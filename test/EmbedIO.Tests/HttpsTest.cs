@@ -18,29 +18,6 @@ namespace EmbedIO.Tests
         private const string HttpsUrl = "https://localhost:5555";
 
         [Test]
-        public async Task OpenWebServerHttps_RetrievesIndex()
-        {
-            if (SwanRuntime.OS != Swan.OperatingSystem.Windows)
-                Assert.Ignore("Only Windows");
-
-            ServicePointManager.ServerCertificateValidationCallback = ValidateCertificate;
-
-            var options = new WebServerOptions()
-                .WithUrlPrefix(HttpsUrl)
-                .WithAutoLoadCertificate()
-                .WithMode(HttpListenerMode.EmbedIO);
-
-            using var webServer = new WebServer(options);
-            webServer.OnAny(ctx => ctx.SendStringAsync(DefaultMessage, MimeType.PlainText, WebServer.DefaultEncoding));
-
-            _ = webServer.RunAsync();
-
-            using var httpClientHandler = new HttpClientHandler {ServerCertificateCustomValidationCallback = ValidateCertificate};
-            using var httpClient = new HttpClient(httpClientHandler);
-            Assert.AreEqual(DefaultMessage, await httpClient.GetStringAsync(HttpsUrl));
-        }
-
-        [Test]
         public void OpenWebServerHttpsWithLinuxOrMac_ThrowsInvalidOperation()
         {
             if (SwanRuntime.OS == Swan.OperatingSystem.Windows)
