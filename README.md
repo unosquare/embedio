@@ -3,7 +3,6 @@
  ![Buils status](https://github.com/unosquare/embedio/workflows/.NET%20Core%20CI/badge.svg)
  [![NuGet version](https://badge.fury.io/nu/embedio.svg)](https://www.nuget.org/packages/embedio)
  [![NuGet](https://img.shields.io/nuget/dt/embedio.svg)](https://www.nuget.org/packages/embedio)
-[![codecov](https://codecov.io/gh/unosquare/embedio/branch/master/graph/badge.svg)](https://codecov.io/gh/unosquare/embedio)
 [![BuiltWithDotnet](https://builtwithdot.net/project/105/embedio/badge)](https://builtwithdot.net/project/105/embedio)
 [![Slack](https://img.shields.io/badge/chat-slack-blue.svg)](https://join.slack.com/t/embedio/shared_invite/enQtNjcwMjgyNDk4NzUzLWQ4YTE2MDQ2MWRhZGIyMTRmNTU0YmY4MmE3MTJmNTY4MmZiZDAzM2M4MTljMmVmNjRiZDljM2VjYjI5MjdlM2U)
 
