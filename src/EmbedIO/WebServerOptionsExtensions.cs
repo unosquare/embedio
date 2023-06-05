@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using EmbedIO.Utilities;
 
@@ -126,6 +127,21 @@ namespace EmbedIO
         public static WebServerOptions WithCertificate(this WebServerOptions @this, X509Certificate2 value)
         {
             @this.Certificate = value;
+            return @this;
+        }
+        
+        /// <summary>
+        /// Sets the client certificate validation callback delegate
+        /// </summary>
+        /// <param name="this">The <see cref="WebServerOptions"/> on which this method is called.</param>
+        /// <param name="value">The RemoteCertificateValidationCallback to use for mutual SSL connections.</param>
+        /// <returns><paramref name="this"/> with its <see cref="WebServerOptions.ClientCertificateValidationCallback">ClientCertificateValidationCallback</see> property
+        /// set to <paramref name="value"/>.</returns>
+        /// <exception cref="NullReferenceException"><paramref name="this"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The configuration of <paramref name="this"/> is locked.</exception>
+        public static WebServerOptions WithClientCertificateValidation(this WebServerOptions @this, RemoteCertificateValidationCallback value)
+        {
+            @this.ClientCertificateValidationCallback = value;
             return @this;
         }
 
