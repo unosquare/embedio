@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,14 +42,16 @@ namespace EmbedIO.Net.Internal
             Stream = new NetworkStream(sock, false);
             if (IsSecure)
             {
-                var sslStream = new SslStream(Stream, true);
+                var sslStream = new SslStream(Stream, true, epl.Listener.ClientCertificateValidationCallback);
 
                 try
                 {
-                    sslStream.AuthenticateAsServer(epl.Listener.Certificate);
+                    var checkClientCertificate = epl.Listener.ClientCertificateValidationCallback != null;
+                    sslStream.AuthenticateAsServer(epl.Listener.Certificate, checkClientCertificate, SslProtocols.None, false);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Console.Error.WriteLine(e);
                     CloseSocket();
                     throw;
                 }

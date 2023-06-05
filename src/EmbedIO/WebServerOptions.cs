@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -34,6 +35,8 @@ namespace EmbedIO
         private StoreName _storeName = StoreName.My;
 
         private StoreLocation _storeLocation = StoreLocation.LocalMachine;
+
+        private RemoteCertificateValidationCallback _clientCertificateValidationCallback;
 
         /// <summary>
         /// Gets the URL prefixes.
@@ -166,6 +169,20 @@ namespace EmbedIO
             {
                 EnsureConfigurationNotLocked();
                 _storeLocation = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a callback to validate client-side certificates.
+        /// Client-certificate validation requires SSL to be enabled
+        /// </summary>
+        public RemoteCertificateValidationCallback ClientCertificateValidationCallback
+        {
+            get => _clientCertificateValidationCallback;
+            set
+            {
+                EnsureConfigurationNotLocked();
+                _clientCertificateValidationCallback = value;
             }
         }
 

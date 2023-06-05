@@ -22,4 +22,8 @@
     <ProjectReference Include="..\..\src\EmbedIO.Testing\EmbedIO.Testing.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="ssl\**" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
 </Project>
