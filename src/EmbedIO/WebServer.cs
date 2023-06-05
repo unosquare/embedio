@@ -167,8 +167,8 @@ namespace EmbedIO
             IHttpListener DoCreate() => Options.Mode switch {
                 HttpListenerMode.Microsoft => System.Net.HttpListener.IsSupported 
                     ? new SystemHttpListener(new System.Net.HttpListener()) as IHttpListener 
-                    : new Net.HttpListener(Options.Certificate),
-                _ => new Net.HttpListener(Options.Certificate)
+                    : new Net.HttpListener(Options.Certificate, Options.ClientCertificateValidationCallback),
+                _ => new Net.HttpListener(Options.Certificate, Options.ClientCertificateValidationCallback)
             };
 
             var listener = DoCreate();

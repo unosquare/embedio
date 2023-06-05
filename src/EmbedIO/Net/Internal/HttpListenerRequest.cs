@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 using System.Text;
 using EmbedIO.Internal;
 using EmbedIO.Utilities;
@@ -90,7 +90,7 @@ namespace EmbedIO.Net.Internal
         public Stream InputStream => _inputStream ??= ContentLength64 > 0 ? _connection.GetRequestStream(ContentLength64) : Stream.Null;
 
         /// <inheritdoc />
-        public bool IsAuthenticated => false;
+        public bool IsAuthenticated => _connection.Stream is SslStream sslStream && sslStream.IsMutuallyAuthenticated;
 
         /// <inheritdoc />
         public bool IsLocal => LocalEndPoint.Address?.Equals(RemoteEndPoint.Address) ?? true;

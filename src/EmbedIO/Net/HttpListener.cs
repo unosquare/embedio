@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,15 +28,17 @@ namespace EmbedIO.Net
         /// Initializes a new instance of the <see cref="HttpListener" /> class.
         /// </summary>
         /// <param name="certificate">The certificate.</param>
-        public HttpListener(X509Certificate? certificate = null)
+        /// <param name="clientCertificateValidationCallback">The client certificate validator</param>
+        public HttpListener(X509Certificate? certificate = null, RemoteCertificateValidationCallback? clientCertificateValidationCallback = null)
         {
             Certificate = certificate;
+            ClientCertificateValidationCallback = clientCertificateValidationCallback;
 
             _prefixes = new HttpListenerPrefixCollection(this);
             _connections = new ConcurrentDictionary<HttpConnection, object>();
             _ctxQueue = new ConcurrentDictionary<string, HttpListenerContext>();
         }
-        
+
         /// <inheritdoc />
         public bool IgnoreWriteExceptions { get; set; } = true;
 
@@ -55,6 +58,8 @@ namespace EmbedIO.Net
         /// The certificate.
         /// </value>
         internal X509Certificate? Certificate { get; }
+        
+        internal RemoteCertificateValidationCallback? ClientCertificateValidationCallback { get; }
 
         /// <inheritdoc />
         public void Start()
