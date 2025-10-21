@@ -77,7 +77,7 @@ namespace EmbedIO.Tests
         }
         
         /// <summary>
-        /// Test server with enabled mutual tls authentication for certificate acceptance on both sides
+        /// Test server with enabled mutual TLS authentication for certificate acceptance on both sides
         /// </summary>
         [Test]
         [Platform("Win")]
@@ -109,7 +109,7 @@ namespace EmbedIO.Tests
         }
         
         /// <summary>
-        /// Test server with enabled mutual tls authentication during a refused mutual authentication on the client side 
+        /// Test server with enabled mutual TLS authentication during a refused mutual authentication on the client side 
         /// </summary>
         [Test]
         [Platform("Win")]
@@ -141,7 +141,7 @@ namespace EmbedIO.Tests
         }
         
         /// <summary>
-        /// Test server with enabled mutual tls authentication when the provided client certificate is not accepted
+        /// Test server with enabled mutual TLS authentication when the provided client certificate is not accepted
         /// </summary>
         [Test]
         [Platform("Win")]
