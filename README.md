@@ -281,6 +281,7 @@ Name | Author | Description
 [EmbedIO.OWIN](https://www.nuget.org/packages/EmbedIO.OWIN/) | Unosquare | EmbedIO can use the OWIN platform in two different approach: You can use EmbedIO as OWIN server and use all OWIN framework with EmbedIO modules.
 [Microsoft.AspNetCore.Server.EmbedIO](https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/) | Dju  | EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel
 [SambaFetcher](https://github.com/nddipiazza/SambaFetcher/) | nddipiazza  | A .NET tool to connect a web server with Samba
+[SimpleW](https://stratdev3.github.io/SimpleW/) | stratdev3  | A .NET Core Web Server Library, inspired by EmbedIO
 
 ## Special Thanks
 
