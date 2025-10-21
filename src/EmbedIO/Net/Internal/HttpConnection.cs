@@ -51,7 +51,6 @@ namespace EmbedIO.Net.Internal
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine(e);
                     CloseSocket();
                     throw;
                 }
