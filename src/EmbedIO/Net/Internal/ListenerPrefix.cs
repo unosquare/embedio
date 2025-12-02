@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 namespace EmbedIO.Net.Internal
 {
@@ -7,44 +6,57 @@ namespace EmbedIO.Net.Internal
     {
         public ListenerPrefix(string uri)
         {
-            var defaultPort = 80;
+            var ur = new Uri(uri);
+            if (ur == null)
+                throw new ArgumentException("Invalid prefix.");
 
             if (uri.StartsWith("https://", StringComparison.Ordinal))
             {
-                defaultPort = 443;
                 Secure = true;
             }
 
-            var length = uri.Length;
-            var startHost = uri.IndexOf(':') + 3;
+            Host = ur.Host;
+            Port = ur.Port;
+            Path = ur.PathAndQuery + ur.Fragment;
 
-            if (startHost >= length)
-            {
-                throw new ArgumentException("No host specified.");
-            }
+            //var defaultPort = 80;
 
-            var colon = uri.LastIndexOf(':');
-            int root;
+            //if (uri.StartsWith("https://", StringComparison.Ordinal))
+            //{
+            //    defaultPort = 443;
+            //    Secure = true;
+            //}
 
-            if (colon > 0)
-            {
-                Host = uri.Substring(startHost, colon - startHost);
-                root = uri.IndexOf('/', colon, length - colon);
-                Port = int.Parse(uri.Substring(colon + 1, root - colon - 1), CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                root = uri.IndexOf('/', startHost, length - startHost);
-                Host = uri.Substring(startHost, root - startHost);
-                Port = defaultPort;
-            }
+            //var length = uri.Length;
+            //var startHost = uri.IndexOf(':') + 3;
 
-            Path = uri.Substring(root);
+            //if (startHost >= length)
+            //{
+            //    throw new ArgumentException("No host specified.");
+            //}
 
-            if (Path.Length != 1)
-            {
-                Path = Path.Substring(0, Path.Length - 1);
-            }
+            //var colon = uri.LastIndexOf(':');
+            //int root;
+
+            //if (colon > 0)
+            //{
+            //    Host = uri.Substring(startHost, colon - startHost);
+            //    root = uri.IndexOf('/', colon, length - colon);
+            //    Port = int.Parse(uri.Substring(colon + 1, root - colon - 1), CultureInfo.InvariantCulture);
+            //}
+            //else
+            //{
+            //    root = uri.IndexOf('/', startHost, length - startHost);
+            //    Host = uri.Substring(startHost, root - startHost);
+            //    Port = defaultPort;
+            //}
+
+            //Path = uri.Substring(root);
+
+            //if (Path.Length != 1)
+            //{
+            //    Path = Path.Substring(0, Path.Length - 1);
+            //}
         }
 
         public HttpListener? Listener { get; set; }
