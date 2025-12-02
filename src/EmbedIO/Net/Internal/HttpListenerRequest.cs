@@ -290,7 +290,7 @@ namespace EmbedIO.Net.Internal
 
                     break;
                 case "cookie":
-                    ParseCookies(val);
+                    _cookies = ParseCookies(val);
 
                     break;
             }
@@ -405,17 +405,18 @@ namespace EmbedIO.Net.Internal
             }
         }
 
-        private void ParseCookies(string val)
+        private static CookieList ParseCookies(string val)
         {
-            _cookies ??= new CookieList();
+            var cookies = new CookieList();
 
-            var cookieStrings = val.SplitByAny(';', ',')
+            var cookieStrings = val.SplitByAny(';')
                 .Where(x => !string.IsNullOrEmpty(x));
             Cookie? current = null;
             var version = 0;
 
-            foreach (var str in cookieStrings)
+            foreach (var cookieString in cookieStrings)
             {
+                var str = cookieString.Trim();
                 if (str.StartsWith("$Version", StringComparison.Ordinal))
                 {
                     version = int.Parse(str.Substring(str.IndexOf('=') + 1).Unquote(), CultureInfo.InvariantCulture);
@@ -430,36 +431,47 @@ namespace EmbedIO.Net.Internal
                 }
                 else if (str.StartsWith("$Port", StringComparison.Ordinal) && current != null)
                 {
-                    current.Port = str.Substring(str.IndexOf('=') + 1).Trim();
+                    current.Port = $"\"{str.Substring(str.IndexOf('=') + 1).Trim()}\"";
                 }
                 else
                 {
                     if (current != null)
                     {
-                        _cookies.Add(current);
+                        cookies.Add(current);
                     }
 
-                    current = new Cookie();
-                    var idx = str.IndexOf('=');
-                    if (idx > 0)
+                    try
                     {
-                        current.Name = str.Substring(0, idx).Trim();
-                        current.Value = str.Substring(idx + 1).Trim();
-                    }
-                    else
-                    {
-                        current.Name = str.Trim();
-                        current.Value = string.Empty;
-                    }
+                        var ck = new Cookie();
+                        var idx = str.IndexOf('=');
+                        if (idx > 0)
+                        {
+                            ck.Name = str.Substring(0, idx).Trim();
+                            ck.Value = str.Substring(idx + 1).Trim();
+                        }
+                        else
+                        {
+                            ck.Name = str.Trim();
+                            ck.Value = string.Empty;
+                        }
 
-                    current.Version = version;
+                        ck.Version = version;
+
+                        current = ck;
+                    }
+                    catch (Exception e)
+                    {
+                        current = null;
+                    }
                 }
             }
 
             if (current != null)
             {
-                _cookies.Add(current);
+                cookies.Add(current);
             }
+
+            return cookies;
         }
 
         private void InitializeQueryString(string query)
