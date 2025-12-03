@@ -140,7 +140,7 @@ namespace EmbedIO.Tests.Utilities
         }
 
         [Test]
-        public void ParseCookies()
+        public void ParseCookies_QuotedNameWithJsonValue_ParsesCorrectly()
         {
             var cookies = "\" \"; Location={\"country\":\"\",\"city\":\" \"}; id=5584".ParseCookies();
             Assert.AreEqual(3, cookies.Count);
