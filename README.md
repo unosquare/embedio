@@ -282,6 +282,7 @@ Name | Author | Description
 [Microsoft.AspNetCore.Server.EmbedIO](https://www.nuget.org/packages/Microsoft.AspNetCore.Server.EmbedIO/) | Dju  | EmbedIO web server support for ASP.NET Core, as a drop-in replacement for Kestrel
 [SambaFetcher](https://github.com/nddipiazza/SambaFetcher/) | nddipiazza  | A .NET tool to connect a web server with Samba
 [SimpleW](https://stratdev3.github.io/SimpleW/) | stratdev3  | A .NET Core Web Server Library, inspired by EmbedIO
+[LiquidPages](https://www.kinetq.com/docs/open-source-software/liquid-pages) Middleware that can be used with any web server to render liquid templates with EmbedIO support.
 
 ## Special Thanks
 
